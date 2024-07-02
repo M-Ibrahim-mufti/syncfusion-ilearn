@@ -1,0 +1,188 @@
+:root,
+p,
+div,
+span,
+input,
+label {
+  font-family: Segoe UI, Roboto, Arial, Helvetica, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+  font-size: 14px;
+}
+html {
+  font-size: 14px;
+}
+body {
+  position: relative;
+  /* height: 100vh;
+    width: 100vw; */
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+.p-menubar {
+  background-color: transparent;
+  border: none;
+}
+.p-menu .p-menuitem > .p-menuitem-content .p-menuitem-link {
+  padding: 0.2rem 0 0.3rem;
+}
+.p-menu .p-submenu-header {
+  margin: 25px 1px 0;
+  padding: 0.5rem 0.5rem;
+  color: #343a3f;
+  background: #ffffff;
+  font-weight: 600;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+.p-toolbar {
+  background-color: transparent !important;
+  border: 0;
+  border-bottom: 1px solid #aaa;
+}
+.form-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #aaa;
+  text-align: center;
+  margin: 0 auto;
+}
+:root {
+  font-family: Segoe UI, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+}
+.form-group.mt-2.dsDropDown {
+  width: 48%;
+  float: left;
+  margin-right: 2%;
+  text-align: center;
+  margin-bottom: 18px;
+}
+.p-dropdown {
+  width: 100% !important;
+  border: none;
+  border-bottom: 1px solid #aaa;
+}
+.p-multiselect {
+  width: 100% !important;
+  border: none;
+  border-bottom: 1px solid #aaa;
+}
+.row.dsCheckbox.mt-2 {
+    padding: 12px 4px;
+    background: #e7e7e7;
+  }
+  .row.dsCheckbox.mt-2 {
+    font-size: 12px;
+  }
+  .row.dsCheckbox.mt-2 {
+    padding: 12px 4px;
+    background: #e7e7e7;
+  }
+  .row.dsCheckbox.mt-2 div {
+    padding-right: 0px;
+  }
+  .row.dsCheckbox.mt-2 {
+    font-size: 12px;
+  }
+  * {
+    box-sizing: inherit;
+  }
+  a {
+    text-decoration: none !important;
+    color: var(--primary-color);
+  }
+  .p-datatable-wrapper {
+    border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+    border-left: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+    border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+    border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+  }
+  .p-paginator {
+    border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .p-tabview-nav-link {
+    text-decoration: none;
+    color: #1174c0;
+    background-color: #ffffff;
+  }
+  .p-dropdown {
+    width: 100% !important;
+  }
+  .p-button-sm {
+    font-size: 0.875rem !important;
+  }
+  .app-menubar dl,
+  ol,
+  ul {
+    margin-bottom: 0;
+    padding-left: 0;
+  }
+  .form-label {
+    font-weight: 600;
+    margin-bottom: 0.3rem !important;
+  }
+  .container-content {
+    flex: 1;
+    padding-bottom: 50px;
+    overflow-y: scroll;
+  }
+  .container-footer {
+    position: absolute;
+    height: 50px;
+    bottom: 0;
+    padding: 2px;
+    z-index: 999;
+    background-color: #1174c0;
+    color: #fff;
+    box-sizing: border-box;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .p-megamenu {
+    background-color: #ffffff !important;
+    border: 0 !important;
+  }
+  .p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) {
+    background-color: #f6f6f4;
+  }
+  .p-datatable .p-datatable-tbody > tr.p-highlight {
+    background: #44A1D9 !important;
+    color: #fff;
+  }
+  .product-inventory-box .p-card-content {
+    padding: 0 !important;
+    height: 80px;
+  }
+  .p-carousel .p-carousel-indicators .p-carousel-indicator button {
+    height: 0.2rem;
+    width: 1rem;
+  }
+  .crop-options .p-panel-content {
+    height: 100% !important;
+  }
+
+  .dsUserIcon:hover {
+    color: teal;
+}
+.dsUserIcon {
+    font-size: 1.7em;
+    color: lightgrey;
+}
+
+.custom-product-container {
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  max-height: 120px;
+  background-color: #fafbfc;
+}
+.custom-img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+}

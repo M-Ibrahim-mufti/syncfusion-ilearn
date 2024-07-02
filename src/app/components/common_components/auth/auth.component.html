@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-center align-items-center h-100">
+    <div class="login-container">
+      <form #loginForm="ngForm">
+        <img src="../../../assets/strapline/i-learn-logo-strapline-600.png" style="width: 100%;" />
+  
+        <div class="form-group mt-4">
+          <label for="username">Username</label>
+          <input type="text" id="username" [(ngModel)]="loginModel.Username" placeholder="Enter email or username"
+            name="username" class="form-control" required />
+        </div>
+        <div class="form-group mt-2">
+          <label for="password">Password</label>
+          <input type="password" id="password" [(ngModel)]="loginModel.Password" placeholder="Enter password"
+            name="password" class="form-control" required />
+        </div>
+        <!-- Submit button section -->
+        <div class="form-group text-center mt-2">
+          <div class="card flex justify-content-center">
+            <button pButton type="button" class="p-button-default p-button-outlined" label="Login"
+              [disabled]="!loginModel.Username || !loginModel.Password" (click)="login()"></button>
+          </div>
+        </div>
+         <!-- Forgot Password button -->
+         <div class="form-group text-center mt-2">
+          <a href="javascript:void(0)" (click)="onForgotPasswordDialog()">Forgot Password</a>
+        </div>
+        <!-- Signup link section -->
+        <div class="form-group text-center mt-2">
+          <a [routerLink]="['/register/student']">Don't have an account? Sign up now!</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  
+  <!-- Forgot Password Dialog -->
+  <!-- <p-dialog  [modal]="true" [(visible)]="showForgotPasswordDialog" [style]="{ 'width': '380px' }" (onHide)="closeDialog()">
+    <form class="p-4">
+      <img src="assets/images/thumb_AFP-logo-v02-noTagline-800.png" style="width: 100%;" />
+      <div class="form-group me-2 mt-4">
+        <label for="email" class="form-label"><span class="text-danger">*</span> Email</label>
+        <input type="email" id="email" name="email" 
+              class="form-control" placeholder="Email" [(ngModel)]="formData.Email" />
+      </div>
+      <div class="form-group text-sm mt-2">
+        <span class="text-muted">
+          <i class="fa fa-info-circle"></i>
+          Please enter the email address associated with your account
+        </span>
+      </div>
+      <div class="form-group text-center mt-4">
+        <button pButton type="button" label="Send Password Reset Link" [disabled]="!formData.Email" class="p-button-primary p-button-outlined w-100" (click)="SendForgotPasswordMail()" ></button>
+      </div>
+    </form>
+  </p-dialog> -->

@@ -1,0 +1,163 @@
+<div class="container">
+    <div class="row my-2">
+        <div class="col-md-12">
+            <img src="../../../assets/strapline/i-learn-logo-strapline-600.png" width="80px" />
+        </div>
+    </div>
+    <p-steps [model]="stepValues" [(activeIndex)]="activeIndex"></p-steps>
+    <div class="d-flex justify-content-center align-items-center my-4">
+        <div class="col-md-8">
+            <p-panel class="row">
+                <ng-template pTemplate="header">
+                    <span>Registration</span>
+                </ng-template>
+                <ng-template pTemplate="icons">
+                    <button *ngIf="activeIndex !== stepValues.length - 1" type="button" pButton icon="fa fa-arrow-right"
+                        label="Next" class="ms-2 p-button-outlined" [disabled]="!studentRegistrationForm.ParentEmail || !studentRegistrationForm.ParentFullName || !studentRegistrationForm.ParentAddress || !studentRegistrationForm.ParentPhoneNumber || !studentRegistrationForm.ParentRelationship" (click)="next()"></button>
+                    <button *ngIf="activeIndex === stepValues.length - 1" type="button" pButton icon="fa fa-arrow-left"
+                        label="Back" class="ms-2 p-button-outlined" (click)="back()"></button>
+                    <button *ngIf="activeIndex === stepValues.length - 1" type="button" pButton icon="fa fa-save"
+                        label="Register" class="ms-2 p-button-outlined" [disabled]="!studentRegistrationForm.StudentEmail || !studentRegistrationForm.StudentFullName || !studentRegistrationForm.StudentAddress || !studentRegistrationForm.StudentPhoneNumber || !studentRegistrationForm.StudentImgUrl" (click)="register()"></button>
+                </ng-template>
+                <!-- Parent Registration Form -->
+                <form *ngIf="activeIndex === 0" class="row g-3">
+                    <div class="col-md-2">
+                        <label for="parentHon" class="form-label">Hon (e.g. Mr, Ms)</label>
+                        <input type="text" class="form-control" id="parentHon" [(ngModel)]="studentRegistrationForm.ParentHon"
+                            name="parentHon">
+                    </div>
+                    <div class="col-md-10">
+                        <label for="parentFullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="parentFullName" [(ngModel)]="studentRegistrationForm.ParentFullName"
+                            name="parentFullName">
+                    </div>
+                    <div class="col-6">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="Email" [(ngModel)]="studentRegistrationForm.ParentEmail"
+                            name="parentEmail">
+                    </div>
+                    <div class="col-6">
+                        <label for="Phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="Phone" [(ngModel)]="studentRegistrationForm.ParentPhoneNumber"
+                            name="parentPhone">
+                    </div>
+                    <div class="col-8">
+                        <label for="Address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="Address" [(ngModel)]="studentRegistrationForm.ParentAddress"
+                            name="parentAddress">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="City" class="form-label">City</label>
+                        <input type="text" class="form-control" id="City" [(ngModel)]="studentRegistrationForm.ParentCity" name="parentCity">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="State" class="form-label">State</label>
+                        <input type="text" class="form-control" id="State" [(ngModel)]="studentRegistrationForm.ParentState"
+                            name="parentState">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="PostalCode" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="PostalCode" [(ngModel)]="studentRegistrationForm.ParentPostalCode"
+                            name="parentPostalCode">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="Country" [(ngModel)]="studentRegistrationForm.ParentCountry"
+                            name="parentCountry">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="RelationWithStudent" class="form-label">Relation With Student</label>
+                        <input type="text" class="form-control" id="RelationWithStudent"
+                            [(ngModel)]="studentRegistrationForm.ParentRelationship" name="parentRelationWithStudent">
+                    </div>
+                </form>
+                <!-- Student Registration Form -->
+                <form *ngIf="activeIndex === 1" class="row g-3">
+                    <div class="col-md-2">
+                        <label for="Hon" class="form-label">Hon (e.g. Mr, Ms)</label>
+                        <input type="text" class="form-control" id="Hon" [(ngModel)]="studentRegistrationForm.StudentHon" name="studentHon">
+                    </div>
+                    <div class="col-md-10">
+                        <label for="FullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="FullName" [(ngModel)]="studentRegistrationForm.StudentFullName"
+                            name="studentFullName">
+                    </div>
+                    <div class="col-6">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="Email" [(ngModel)]="studentRegistrationForm.StudentEmail"
+                            name="studentEmail">
+                    </div>
+                    <div class="col-6">
+                        <label for="Phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="Phone" [(ngModel)]="studentRegistrationForm.StudentPhoneNumber"
+                            name="studentPhone">
+                    </div>
+                    <div class="col-8">
+                        <label for="Address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="Address" [(ngModel)]="studentRegistrationForm.StudentAddress"
+                            name="studentAddress">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="City" class="form-label">City</label>
+                        <input type="text" class="form-control" id="City" [(ngModel)]="studentRegistrationForm.StudentCity" name="studentCity">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="State" class="form-label">State</label>
+                        <input type="text" class="form-control" id="State" [(ngModel)]="studentRegistrationForm.StudentState"
+                            name="studentState">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="PostalCode" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="PostalCode" [(ngModel)]="studentRegistrationForm.StudentPostalCode"
+                            name="studentPostalCode">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="Country" [(ngModel)]="studentRegistrationForm.StudentCountry"
+                            name="studentCountry">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="SchoolGrade" class="form-label">School Grade</label>
+                        <input type="text" class="form-control" id="SchoolGrade" [(ngModel)]="studentRegistrationForm.StudentSchoolGrade"
+                            name="studentSchoolGrade">
+                    </div>
+                    <div class="col-md-8">
+                        <label for="SchoolGrade" class="form-label">Subjects Available</label>
+                        <p-multiSelect [options]="subjects" [name]="'studentSubjects'" [(ngModel)]="selectedSubjects" optionLabel="label"
+                            placeholder="Select Subjects" />
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group mt-2">
+                        <ng-container *ngIf="!studentRegistrationForm.StudentImgUrl">
+                            <!-- d-flex align-items-center justify-content-between -->
+                            <div class="">
+                                <label class="form-label">Student Profile image</label>
+                                <p-fileUpload name="studentProfileImageFile" accept="image/*"
+                                    (onSelect)="onFileSelected($event.files, false)"
+                                    chooseLabel="Select" [auto]="true" [previewWidth]="70"
+                                    [multiple]="false" mode="advanced">
+                                    <ng-template pTemplate="toolbar">
+                                        <div class="mt-2">Drag and drop file here</div>
+                                    </ng-template>
+                                </p-fileUpload>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="studentRegistrationForm.StudentImgUrl">
+                            <div class="position-relative d-inline-block w-100 mt-3">
+                                <img [src]="studentRegistrationForm.StudentImgUrl" class="img rounded w-100" />
+                                <!-- *ngIf="isProductAvailable" -->
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                        (click)="removeImg($event)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    </div>
+                </form>
+            </p-panel>
+        </div>
+    </div>
+</div>

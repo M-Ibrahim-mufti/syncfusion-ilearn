@@ -1,0 +1,219 @@
+/* :host ::ng-deep {
+    .drag-column {
+        padding-right: .5em;
+    }
+    
+    .drop-column {
+        border: 1px solid transparent;
+        transition: border-color .2s;
+    
+        &.p-draggable-enter {
+            border-color: var(--primary-color); 
+        }
+    }
+    
+    .product-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        width: 100%;
+        border-bottom: 1px solid var(--surface-d);
+    
+        img {
+            width: 75px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+            margin-right: 1rem;
+        }
+    
+        .product-list-detail {
+            flex: 1 1 0;
+        }
+    
+        .product-list-action {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+    
+        .product-category-icon {
+            vertical-align: middle;
+            margin-right: .5rem;
+        }
+    
+        .product-category {
+            vertical-align: middle;
+            line-height: 1;
+        }
+    }
+    
+    [pDraggable] {
+        cursor: move;
+    }
+    
+    @media screen and (max-width: 576px) {
+        .product-item {
+            flex-wrap: wrap;
+    
+            .image-container {
+                width: 100%;
+                text-align: center;
+            }
+    
+            img {
+                margin: 0 0 1rem 0;
+                width: 100px;
+            }
+        }
+    }
+}
+
+.text-block{
+    text-align: center;
+    border: 1;
+    background-color: yellow;
+    font-weight: 200;
+    font-size: small;
+}
+
+
+.align-text-left{
+    text-align: left!important;
+}
+
+.tutor-card {
+    display:flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    width: 33%;
+    padding: 0;
+    transition: all .5s linear;
+    border: 2px solid #f4f4f4;
+    border-radius: 4px;
+}
+
+.enroll-btn {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    background-color:rgba(13, 110, 253, 0.7 );
+    color:white;
+    border-radius: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.enroll-btn:hover {
+    background-color: rgb(13, 110, 253);
+    padding-top: 6px;
+    padding-bottom:6px;
+    transition: all .3s linear;
+}
+ */
+ .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 90%;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.card {
+    cursor: pointer;
+    margin: 10px 0;
+    position: relative;
+    width: 300px;
+    height: 360px;
+    border-radius: 15px;
+    overflow: hidden;
+    background: white;
+    transition: 0.4s ease-out;
+    box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+}
+
+.profile {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 2;
+    opacity: 1;
+    transition: top 0.4s ease-out, left 0.4s ease-out, transform 0.4s ease-out, flex-direction 0.4s ease-out;
+}
+
+.profile img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    opacity: 0.7;
+    transition: opacity 0.4s ease-out, width 0.4s ease-out, height 0.4s ease-out;
+}
+
+.name {
+    margin-top: 10px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    transition: margin 0.4s ease-out;
+}
+
+.background-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(8px);
+}
+
+
+.info {
+    position: absolute;
+    bottom: 20px;
+    color: white;
+    z-index: 2;
+    transition: opacity 0.4s ease-out;
+    opacity: 0;
+}
+
+.card:hover::after {
+    opacity: 1;
+}
+
+.card:hover .info {
+    opacity: 1;
+}
+
+.card:hover .profile {
+    top: 10px;
+    left: 10px;
+    transform: translate(0, 0);
+    flex-direction: row;
+}
+
+.card:hover .profile img {
+    width: 30px;
+    height: 30px;
+}
+
+.card:hover .name {
+    margin-top: 0;
+    margin-left: 10px;
+}

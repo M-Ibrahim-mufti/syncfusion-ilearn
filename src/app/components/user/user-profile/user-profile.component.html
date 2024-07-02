@@ -1,0 +1,92 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <p-panel header="Your Profile" [toggleable]="false" >
+                <ng-template pTemplate="icons">
+                    <div class="d-flex">
+                        <div>
+                            <button (click)="updateStudentData()" pButton="button" icon="fa fa-save" label="Save" class="p-button-outlined"></button>
+                        </div>
+                    </div>
+                </ng-template>
+                <div class="w-full">
+                    <form *ngIf="student">
+                        <ng-container>
+                            <div class="w-100 d-flex flex-column rounded-circle justify-content-center align-items-center">
+                                <div *ngIf="student.ImgUrl" class="position-relative">
+                                    <img *ngIf="student.ImgUrl" style="width:100px; height: 100px; object-fit: cover;" class="rounded-2" [src]="student.ImgUrl ? student.ImgUrl : '../../../../assets/user-profile.png'"/>
+                                    <p-button (click)="removeImg()" icon="fa fa-times" severity="danger" styleClass="rounded-circle" class="close-btn"></p-button>
+                                </div>
+                                <div *ngIf="!student.ImgUrl" class="input-group my-2 justify-content-center">
+                                    <p-fileUpload name="studentProfileImageFile" accept="image/*"
+                                        chooseLabel="profile image" (onSelect)="onImageSelected($event.files, false)" 
+                                        [multiple]="false" [auto]="true" mode="basic">
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div class="row my-2">
+                            <div class="col-6 mb-1">
+                                <div class="form-group">
+                                    <label for="fullName" class="form-label"><span class="text-danger">*</span>Name</label>
+                                    <input id="fullName" type="text" class="form-control" name="text" placeholder="Enter name" [(ngModel)]="student.Name" required/>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-1">
+                                <div class="form-group">
+                                    <label for="Email" class="form-label"><span class="text-danger">*</span>Email</label>
+                                    <input id="email" type="email" class="form-control" name="Email" placeholder="Enter Email" [(ngModel)]="student.Email" required/>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-1">
+                                <div class="form-group">
+                                    <label for="PhoneNumber" class="form-label">Phone Number</label>
+                                    <input id="PhoneNumber" type="tel" class="form-control" name="phoneNumber" placeholder="Enter Phone Number" [(ngModel)]="student.PhoneNumber" required/>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-1">
+                                <div class="form-group">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input id="address" type="text" class="form-control" name="address" placeholder="Enter Address" [(ngModel)]="student.Address" required/>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-1">
+                                <div class="form-group">
+                                    <label for="parentName" class="form-label">Postal Code</label>
+                                    <input id="parentName" type="email" class="form-control" name="parentName" placeholder="Enter Postal Code" [(ngModel)]="student.PostCode" required/>
+                                </div>
+                            </div>  
+                        </div>
+                        <div class="row d-flex justify-content-between align-items-end">
+                            <div class="form-group col-10 pe-0">
+                                <label for="selectedSubjects" class="form-label">Subject<span class="text-danger">*</span></label>
+                                <p-multiSelect 
+                                    [options]="subjects" name="selectedSubjects" [defaultLabel]="'selectedSubjects'" optionLabel="label" [(ngModel)]="selectedSubjects" > 
+                                </p-multiSelect>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </p-panel>
+        </div>
+        <div class="col-md-5">
+            <p-panel header="Reset Password" [toggleable]="false">
+                <ng-template pTemplate="icons">
+                    <button pButton class="p-button-outlined">Reset Password</button>
+                </ng-template>
+                <div class="form-group mb-1">
+                    <label for="password" class="form-label"><span class="text-danger">*</span>password</label>
+                    <input id="password" name="password" class="form-control" placeholder="Enter Current Password"/>
+                </div>
+                <div class="form-group mb-1">
+                    <label for="newPassword" class="form-label"><span class="text-danger">*</span>New Password</label>
+                    <input id="newPassword" name="password" class="form-control" placeholder="Enter New Password"/>
+                </div>
+                <div class="form-group mb-1">
+                    <label for="confirmNewPassword" class="form-label"><span class="text-danger">*</span>Confirm password</label>
+                    <input id="confirmNewPassword" name="password" class="form-control" placeholder="Confirm New Password"/>
+                </div>            
+            </p-panel>
+        </div>
+    </div>
+</div>

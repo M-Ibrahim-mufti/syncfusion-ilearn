@@ -1,0 +1,33 @@
+
+<ngx-spinner type="ball-scale-multiple" size="medium"></ngx-spinner>
+<!--PRIMENG GROWL NOTIFICATIONS GLOBAL-->
+<app-notifications></app-notifications>
+<p-confirmDialog #cd [style]="{width: '30vw'}" message="Are you sure you want to proceed?" header="Confirmation"
+  icon="pi pi-exclamation-triangle">
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times" label="Cancel" class="p-button-secondary p-button-outlined"
+      (click)="cd.reject()"></button>
+    <button type="button" pButton icon="pi pi-check" label="Confirm" class="p-button-danger ms-2"
+      (click)="cd.accept()"></button>
+  </ng-template>
+</p-confirmDialog>
+<ng-container *ngIf="isAuthenticated">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="position-sticky top-0">
+                <div class="d-flex flex-column flex-shrink-0 bg-light">
+                    <app-aside-bar></app-aside-bar>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <app-top-bar></app-top-bar>
+            <div class="my-2">
+                <router-outlet />
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="!isAuthenticated">
+    <router-outlet />
+</ng-container>

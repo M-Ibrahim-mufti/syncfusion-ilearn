@@ -1,51 +1,48 @@
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { ButtonModule } from '@syncfusion/ej2-angular-buttons'
-import { GridAllModule } from '@syncfusion/ej2-angular-grids'
-
-
-
-
-import { enableRipple } from '@syncfusion/ej2-base';
 import { Component } from '@angular/core';
-import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
-import { AgendaService, DayService, MonthAgendaService, MonthService, ScheduleModule, TimelineMonthService, TimelineViewsService, WeekService, WorkWeekService } from '@syncfusion/ej2-angular-schedule';
-
-// enable ripple effects
-enableRipple(true);
+import { RouterOutlet } from '@angular/router';
+import { AuthConfig, AuthService } from '../services/auth.service';
 
 @Component({
-imports: [
-      ScheduleModule,
-      CalendarModule,
-        ButtonModule,
-        GridAllModule
-    ],
-    providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService],
-
-
-standalone: true,
   selector: 'app-root',
-  template: `
-  <ejs-schedule> </ejs-schedule>
-  `
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
-  public data: Object[] = [
-    {
-      OrderID: 10248, CustomerID: 'VINET', EmployeeID: 5, OrderDate: new Date(8364186e5),
-      ShipName: 'Vins et alcools Chevalier', ShipCity: 'Reims', ShipAddress: '59 rue de l Abbaye',
-      ShipRegion: 'CJ', ShipPostalCode: '51100', ShipCountry: 'France', Freight: 32.38, Verified: !0
-    },
-    {
-      OrderID: 10249, CustomerID: 'TOMSP', EmployeeID: 6, OrderDate: new Date(836505e6),
-      ShipName: 'Toms Spezialitäten', ShipCity: 'Münster', ShipAddress: 'Luisenstr. 48',
-      ShipRegion: 'CJ', ShipPostalCode: '44087', ShipCountry: 'Germany', Freight: 11.61, Verified: !1
-    },
-    {
-      OrderID: 10250, CustomerID: 'HANAR', EmployeeID: 4, OrderDate: new Date(8367642e5),
-      ShipName: 'Hanari Carnes', ShipCity: 'Rio de Janeiro', ShipAddress: 'Rua do Paço, 67',
-      ShipRegion: 'RJ', ShipPostalCode: '05454-876', ShipCountry: 'Brazil', Freight: 65.83, Verified: !0
+  title = 'iLearn.UI';
+  isAuthenticated: boolean = false;
+  isAdministrator: boolean = false;
+  IsAdministrator: boolean = false;
+  IsStudent: boolean = false;
+  firstName: string = '';
+  UserEmail: string = '';
+  userLogoUrl: string = '';
+  memberSince: any;
+  PersonalImgUrl: string = '';
+
+  constructor(private authService: AuthService, private authConfig: AuthConfig){
+
+  }
+
+  ngOnInit(): void {
+    this.authConfig = this.authService.getAuthConfig();
+    this.isAuthenticated = this.authService.isAuthenticated();
+    this.isAdministrator = this.authService.isAdministrator();
+
+    if (this.isAuthenticated) {
+      this.authConfig = this.authService.getAuthConfig();
+      this.IsAdministrator = this.authConfig.IsAdministrator || false;
+      this.IsStudent = this.authConfig.IsStudent || false;
+
+      const currentUser = this.authService.getCurrentUser(); // Fix: Use const instead of var
+      if (currentUser) {
+        if(currentUser.FullName){
+          this.firstName = currentUser.FullName.split(' ')[0];
+        }
+        this.UserEmail = currentUser.EmailAddress;
+        this.userLogoUrl = currentUser.LogoUrl;
+        this.memberSince = currentUser.DateJoined;
+        this.PersonalImgUrl = currentUser.PersonalImgUrl;
+      }
     }
-  ];
+  }
 }

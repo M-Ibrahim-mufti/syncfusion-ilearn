@@ -1,0 +1,102 @@
+<h2>Meetings</h2>
+<p-tabView>
+    <p-tabPanel header="Upcoming">
+        <!-- <div class="d-flex justify-content-between">
+            <div class="filter">
+                <input type="text" pInputText placeholder="Start Time" [(ngModel)]="startTime">  
+                to
+                <input type="text" pInputText placeholder="End Time" [(ngModel)]="endTime">
+            </div>
+            <div class="schedule-button">
+                <button pButton type="button" icon="pi pi-plus" label="Schedule a Meeting" class="p-button-primary rounded-2 px-4"></button>
+            </div>
+        </div> -->
+        <div class="row my-5" *ngIf="todayMeetings.length > 0">
+            <div class="py-2 background-color rounded-2">Today</div>
+            <ng-container *ngFor="let meeting of todayMeetings">
+                <div class="row my-3">
+                    <div class="col-2">
+                        <div class="fw-bold fs-5">
+                            {{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}
+                        </div>
+                        <div class="text-black-50 mt-2">{{ meeting.StartTime | date: 'hh:mm a' }} Universal Time UTC</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="fw-bold fs-5">{{ meeting.Topic }}</div>
+                        <div class="text-black-50 mt-2">Meeting ID: {{ meeting.MeetingId }}</div>
+                    </div>
+                    <div class="col-7">
+                        <button *ngIf="isTeacher" class="btn btn-primary" (click)="redirectTo(meeting.StartUrl)" [disabled]="disableStartMeeting(meeting.StartTime)">Start</button>
+                        <button *ngIf="isStudent" class="btn btn-primary" (click)="redirectTo(meeting.JoinUrl)" [disabled]="disableStartMeeting(meeting.StartTime)">Join Meeting</button>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="row my-5" *ngIf="tomorrowMeetings.length > 0">
+            <div class="py-2 background-color rounded-2">Tomorrow</div>
+            <ng-container *ngFor="let meeting of tomorrowMeetings">
+                <div class="row my-3">
+                    <div class="col-2">
+                        <div class="fw-bold fs-5">
+                            {{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}
+                        </div>
+                        <div class="text-black-50 mt-2">{{ meeting.StartTime | date: 'hh:mm a' }} Universal Time UTC</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="fw-bold fs-5">{{ meeting.Topic }}</div>
+                        <div class="text-black-50 mt-2">Meeting ID: {{ meeting.MeetingId }}</div>
+                    </div>
+                    <div class="col-7">
+                        <button *ngIf="isTeacher" class="btn btn-primary" (click)="redirectTo(meeting.StartUrl)" [disabled]="disableStartMeeting(todayDate)">Start</button>
+                        <button *ngIf="isStudent" class="btn btn-primary" (click)="redirectTo(meeting.JoinUrl)" [disabled]="disableStartMeeting(meeting.StartTime)">Join Meeting</button>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="row my-5" *ngIf="futureMeetings.length > 0">
+            <div class="py-2 background-color rounded-2">Future Meetings</div>
+            <ng-container *ngFor="let meeting of futureMeetings">
+                <div class="row my-3">
+                    <div class="col-2">
+                        <div class="fw-bold fs-5">
+                            {{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}
+                        </div>
+                        <div class="text-black-50 mt-2">{{ meeting.StartTime | date: 'hh:mm a' }} Universal Time UTC</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="fw-bold fs-5">{{ meeting.Topic }}</div>
+                        <div class="text-black-50 mt-2">Meeting ID: {{ meeting.MeetingId }}</div>
+                    </div>
+                    <div class="col-7">
+                        <button *ngIf="isTeacher" class="btn btn-primary" (click)="redirectTo(meeting.StartUrl)" [disabled]="disableStartMeeting(todayDate)">Start</button>
+                        <button *ngIf="isStudent" class="btn btn-primary" (click)="redirectTo(meeting.JoinUrl)" [disabled]="disableStartMeeting(meeting.StartTime)">Join Meeting</button>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Previous">
+        <div class="row my-5" *ngIf="previousMeetings.length > 0">
+            <div class="py-2 background-color rounded-2">History</div>
+            <ng-container *ngFor="let meeting of previousMeetings">
+                <div class="row my-3">
+                    <div class="col-2">
+                        <div class="fw-bold fs-5">
+                            {{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}
+                        </div>
+                        <div class="text-black-50 mt-2">{{ meeting.StartTime | date: 'hh:mm a' }} Universal Time UTC</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="fw-bold fs-5">{{ meeting.Topic }}</div>
+                        <div class="text-black-50 mt-2">Meeting ID: {{ meeting.MeetingId }}</div>
+                    </div>
+                    <div class="col-7">
+                        <!-- <a class="btn btn-primary" href="{{meeting.JoinUrl}}" target="_blank">Join Meeting</a> -->
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </p-tabPanel>
+  </p-tabView>

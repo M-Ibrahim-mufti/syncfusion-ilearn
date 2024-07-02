@@ -1,0 +1,16 @@
+.bg-row {
+    background:#f2f4f8;
+    border-bottom: 2px;
+    border-color:#f2f4f8;
+
+}
+
+.fs-7 {
+    font-size: 16px;
+}
+
+.search-box {
+    width: 0;
+    padding:0;
+
+}

@@ -1,0 +1,232 @@
+<div class="container">
+  <div class="card">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-12">
+            <div class="toggle-container">
+              <button class="toggle-btn" [ngClass]="{'active': !showListView}" (click)="switchToListView()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                </svg> 
+                List View
+              </button>
+              <button class="toggle-btn" [ngClass]="{'active': showListView}" (click)="switchToCalendarView()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                </svg>
+                Calendar View
+              </button>
+            </div>            
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item" *ngIf="!showListView">
+        <div class="container mt-4">
+          <div class="row">
+            <div class="column column-right-border">
+              <div class="row">
+                <div class="col-10 mb-4">
+                  <h3 class="fw-medium fs-4">Weekly hours</h3>
+                </div>
+                <div class="col-1">
+                  <button class="btn btn-primary" type="button" (click)="addEditAvailability()">Save</button>
+                </div>
+              </div>
+              <div class="col-12" *ngFor="let day of availability; let dayIndex = index">
+                <div class="row my-5">
+                  <div class="col-3">
+                    <p class="fw-bold text-uppercase">
+                      <input type="checkbox" class="form-check-input me-2" binary="true" [(ngModel)]="day.available">
+                      {{day.day}}
+                    </p>
+                  </div>
+                  <div class="col-9" *ngIf="day.available">
+                    <div *ngFor="let timeRange of day.timeRanges; let rangeIndex = index">
+                      <div class="row align-items-center mb-3">
+                        <div class="col-3">
+                          <select class="form-select custom-select" [(ngModel)]="timeRange.startTime">
+                            <option *ngFor="let time of timeOptions" [value]="time">{{ time }}</option>
+                          </select>
+                        </div>
+                        -
+                        <div class="col-3">
+                          <select class="form-select custom-select" [(ngModel)]="timeRange.endTime">
+                            <option *ngFor="let time of timeOptions" [value]="time">{{ time }}</option>
+                          </select>
+                        </div>
+                        <div class="col-1">
+                          <button type="button" pButton class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove {{day.dayLabel}} interval {{rangeIndex+1}}" (click)="removeTimeRange(dayIndex, rangeIndex)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                          </button>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2" *ngIf="rangeIndex == 0">
+                          <button type="button" pButton class="btn btn-light" (click)="addTimeRange(dayIndex)" data-bs-toggle="tooltip" data-bs-placement="top" title="Add {{day.dayLabel}} interval" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="col-5" *ngIf="validateTimes(dayIndex, rangeIndex, day.timeRanges) != 'true'">
+                        <span class="text-danger">{{validateTimes(dayIndex, rangeIndex, day.timeRanges)}}</span>
+                      </div>
+                    </div>
+                    <div class="col-2" *ngIf="day.timeRanges.length == 0">
+                      <button type="button" pButton class="btn btn-light" (click)="addTimeRange(dayIndex)" data-bs-toggle="tooltip" data-bs-placement="top" title="Add {{day.dayLabel}} interval">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-9" *ngIf="!day.available">
+                    <p class="fw-lighter text-muted">Unavailable</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="col-12 mb-4">
+                <h3 class="fw-medium fs-4">Date-specific hours</h3>
+                <p class="fw-light text-black-50">Override your availability for specific dates when your hours differ from your regular weekly hours.</p>
+                <button type="button" class="btn btn-outline-dark rounded-5" (click)="togglePopup()">Add date-specific hours</button>
+              </div>
+              <div class="col-12">
+                <div class="row" *ngFor="let date of selectedDateTimes; let dateIndex = index">
+                  <div class="col-3">
+                    {{ date.date | date: 'mediumDate' }}
+                  </div>
+                  <div class="col-7" *ngFor="let time of date.timeRanges">
+                    <span>{{time.startTime}} - {{time.endTime}}</span>
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+              </div>
+              <div class="modal" [ngClass]="{'show': showPopup}" (click)="togglePopup()">
+                <div class="modal-dialog modal-static" (click)="$event.stopPropagation()">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="fw-bold fs-3">Select the date(s) you want to assign specific hours</p>
+                        </div>
+                        <div class="col-12">
+                          <div class="calendar-header mb-3">
+                            <div class="row">
+                              <div class="col-6">
+                                <h3>{{ viewDate | date: 'MMMM yyyy' }}</h3>
+                              </div>
+                              <div class="col-6">
+                                <div class="row">
+                                  <div class="col-6">
+                                    <button class="w-100 btn btn-primary" (click)="decrementMonth()">Previous</button>
+                                  </div>
+                                  <div class="col-6">
+                                    <button class="w-100 btn btn-primary" (click)="incrementMonth()">Next</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <mwl-calendar-month-view
+                            [viewDate]="viewDate"
+                            [events]="events"
+                            (dayClicked)="dateSelected($event)"
+                            class="calendar-view">
+                          </mwl-calendar-month-view>
+                        </div>
+                        <div *ngFor="let date of selectedDates; let dateIndex = index" class="col-12 mt-3">
+                          <div class="row mb-2">
+                            <div class="col-11"><b>What hours are you available? At:</b> {{ date | date: 'mediumDate' }}</div>
+                            <div class="col-1">
+                              <button type="button" class="btn btn-close" (click)="removeDate(dateIndex)"></button>
+                            </div>
+                          </div>
+                          <div class="row my-2" *ngFor="let timeRange of dateTimes[dateIndex].timeRanges; let timeIndex = index">
+                            <div class="row">
+                              <div class="col-1"></div>
+                              <div class="col-3">
+                                <select class="form-select custom-select" [(ngModel)]="timeRange.startTime">
+                                  <option *ngFor="let time of timeOptions" [value]="time">{{ time }}</option>
+                                </select>
+                              </div>
+                              <div class="col-3">
+                                <select class="form-select custom-select" [(ngModel)]="timeRange.endTime">
+                                  <option *ngFor="let time of timeOptions" [value]="time">{{ time }}</option>
+                                </select>
+                              </div>
+                              <div class="col-3 mt-2">
+                                <button type="button" class="btn btn-close" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove interval {{timeIndex+1}}" (click)="removeTimeRangeForDatePicker(dateIndex, timeIndex)"></button>
+                              </div>
+                              <div class="col-1">
+                                <button type="button"  *ngIf="timeIndex == 0" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add interval" (click)="addTimeRangeForDatePicker(dateIndex)">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="col-12" *ngIf="!validateTimes(dateIndex, timeIndex, dateTimes[dateIndex])">
+                              <span class="text-danger">Choose an end time later than the start time.</span>
+                            </div>
+                          </div>
+                          <div class="row mt-2" *ngIf="dateTimes[dateIndex].timeRanges.length == 0">
+                            <div class="col-12">
+                              <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove interval" (click)="addTimeRangeForDatePicker(dateIndex)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                          <div class="row">
+                            <div class="col-6">
+                              <button type="button" class="w-100 rounded-5 btn btn-outline-secondary" (click)="togglePopup()">Close</button>
+                            </div>
+                            <div class="col-6">
+                              <button type="button" class="w-100 rounded-5 btn btn-primary" (click)="addDateSpecificHour()">Apply</button>
+                            </div>
+                          </div>
+                        </div>                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item" *ngIf="showListView">
+        <div class="calendar-header mb-3">
+          <div class="row">
+            <div class="col-9">
+              <h3>{{ viewDate | date: 'MMMM yyyy' }}</h3>
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <div class="col-6">
+                  <button class="w-100 btn btn-primary" (click)="decrementMonth()">Previous</button>
+                </div>
+                <div class="col-6">
+                  <button class="w-100 btn btn-primary" (click)="incrementMonth()">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <mwl-calendar-month-view
+          [viewDate]="viewDate"
+          [events]="events"
+          class="calendar-view">
+        </mwl-calendar-month-view>
+      </li>
+    </ul>
+  </div>
+</div>

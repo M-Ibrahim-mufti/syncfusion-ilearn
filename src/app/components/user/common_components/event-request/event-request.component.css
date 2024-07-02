@@ -1,0 +1,110 @@
+.card{
+	background-color: #fff;
+	border:none;
+	border-radius: 10px;
+    width: 90%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+.image-container{
+	position: relative;
+}
+.thumbnail-image {
+    max-height: 350px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 10px !important;
+    object-fit: cover;
+}
+.reject{
+	background-color: red;
+	padding: 2px 8px;
+	font-size: 12px;
+    font-weight: bold;
+	border-radius: 6px;
+	color: #fff;
+}
+
+.pending{
+	background-color: rgb(255, 255, 27);
+	padding: 2px 8px;
+	font-size: 12px;
+    font-weight: bold;
+	border-radius: 6px;
+	color: #fff;
+}
+
+.approve{
+	background-color: rgb(0, 198, 0);
+	padding: 2px 8px;
+	font-size: 12px;
+    font-weight: bold;
+	border-radius: 6px;
+	color: #fff;
+}
+
+.first{
+	position: absolute;
+	width: 100%;
+    padding: 9px;
+}
+.subject-name{
+	font-size: 14px;
+	font-weight: bold;
+	width: 130px;
+}
+.subject-topic{
+	font-size: 12px;
+	width: 135px;
+}
+.label{
+	font-size: 12px;
+	font-weight: bold;
+	color: red;
+}
+.value{
+	font-size: 12px;
+}
+.voutchers{
+	background-color: #fff;
+	border:none;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	overflow: hidden;
+}
+.voutcher-divider{
+	display: flex;
+}
+.voutcher-left{
+    cursor: pointer;
+    padding: 10px;
+	width: 50%;
+    transition: all 0.3s ease;
+}
+.voutcher-left:hover{
+    width: 70%;
+}
+
+.voutcher-name{
+	font-size: 12px;
+	font-weight: bold;
+}
+.voutcher-right{
+    cursor: pointer;
+    padding: 10px;
+	width: 50%;	 
+	background-color: purple;
+	color: #fff;
+    transition: all 0.3s ease;
+}
+
+.voutcher-right:hover{
+    width: 70%;
+}
+
+.discount-percent{
+	font-size: 12px;
+	font-weight: bold;
+	position: relative;
+	top: 5px;
+}
