@@ -1,87 +1,3 @@
-<!-- <div class="container">
-    <div class="col-md-12">
-        <p-panel>
-            <ng-template pTemplate="header">
-                <div class="col-md-12 d-flex justify-content-between">
-                    <h4 class="text-muted fw-bold">Class Metadata</h4>
-                    <div class="col-md-auto">
-                        <button type="button" pButton icon="fa fa-plus" label="Add Event" class="p-button-sm p-button-outlined" (click)="toggleClassDialogueBox()" ></button>
-                    </div>
-                </div>
-            </ng-template>
-            <p-table
-                #dt1
-                dataKey="id"
-                [rows]="15"
-                [paginator]="classMetaData && classMetaData.length >15"
-                [value]="classMetaData"
-                selectionMode="single"
-                [(selection)]="classMetaData"
-                [globalFilterFields]="['Title', 'SubjectName', 'GradeLevel', 'Description' ]"
-                styleClass="p-datatable-striped"
-            >
-                <ng-template pTemplate="header">
-                        <tr class="p-0 text-center">
-                            <th class="bg-white filter-hover" pSortableColumn="Title"><p-sortIcon field="Title"/>Title</th>
-                            <th class="bg-white filter-hover" pSortableColumn="Description"><p-sortIcon field="Description" />Description</th>
-                            <th class="bg-white filter-hover" pSortableColumn="GradeLevel"><p-sortIcon field="GradeLevel" />Grade Level </th>
-                            <th class="bg-white filter-hover" pSortableColumn="SubjectName"><p-sortIcon field="SubjectName"/>Subject Name</th>
-                            <th class="bg-white">Action</th>
-                        </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-ClassData>
-                    <tr>
-                        <td class="text-center">
-                            <p class="m-0 py-2">{{ClassData.Title}}</p>
-                        </td>
-                        <td class="text-center">
-                            <p class="m-0 py-2">{{ClassData.Description}}</p>
-                        </td>
-                        <td class="text-center">
-                            <p class="m-0 py-2">{{ClassData.GradeLevel}}</p>
-                        </td>
-                        <td class="text-center">
-                            <p class="m-0 py-2">{{ClassData.SubjectName}}</p>
-                        </td>
-                        <td class="text-center">
-                            <p class="m-0 py-2">Some Action</p>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </p-panel>
-    </div>
-</div>
-<p-dialog header="Add Class Data" [(visible)]="addClassDialogueBox" [modal]="true"
-    [style]="{width: '430px'}" >
-    <form class="form-horizontal mt-2 px-3">
-        <div class="form-group mt-2">
-            <label for="title" class="form-label">Course Title <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="insertClassData.Title" placeholder="Enter Title of Course"/>
-        </div>
-        <div class="form-group mt-2">
-            <label for="description" class="form-label">Course Description</label>
-            <textarea class="form-control" id="description" name="description" rows="5" [(ngModel)]="insertClassData.Description" placeholder="Enter Course Description"></textarea>
-        </div>
-        <div class="form-group mt-2">
-            <label for="subject" class="form-label">Select Subject <span class="text-danger">*</span></label>
-            <p-dropdown 
-                [options]="Subjects" id="subject" name="tutorSubjects" [showClear]="true" defaultLabel="Select Subject" optionLabel="label" (onChange)="onSubjectChange($event.value)">
-            </p-dropdown>
-        </div>
-        <div class="form-group mt-2">
-            <label for="gradeLevel" class="form-label">Grade Level <span class="text-danger">*</span></label>
-            <p-dropdown 
-            [options]="TutorGrades" id="gradeLevel" name="gradeLevel" [showClear]="true" defaultLabel="Select Grade" optionLabel="label" (onChange)="onGradeChange($event.value)" [disabled]="!insertClassData.SubjectId">
-        </p-dropdown>
-        </div>    
-        <div class="text-center mt-4">
-            <button type="button" class="btn btn-primary w-100" (click)="saveClassMetaData()"[disabled]="!insertClassData.SubjectId || !insertClassData.Title || !insertClassData.GradeId" >Submit</button>
-        </div>
-    </form>
-</p-dialog> -->
-
-
 <div class="container">
     <div class="d-flex align-items-center justify-content-between mb-3">
         <div>
@@ -89,7 +5,7 @@
             <p class="text-muted">Manage class information here.</p>
         </div>
         <div class="col-md-auto">
-            <button ejs-button cssClass="e-primary" iconCss="fa fa-plus" (click)="toggleClassDialogueBox()">
+            <button ejs-button cssClass="e-primary" iconCss="fa fa-plus" (click)="addNewClass()">
                 Add New
             </button>
         </div>
@@ -128,14 +44,14 @@
         </div>
         <div class="form-group mt-2">
             <label for="subject" class="form-label">Select Subject <span class="text-danger">*</span></label>
-            <ejs-dropdownlist [dataSource]="Subjects" id="subject" name="tutorSubjects" [fields]="dropdownFields" [placeholder]="'Select Subject'"
+            <ejs-dropdownlist [dataSource]="Subjects" id="subject" name="tutorSubjects" [fields]="dropdownFields" [(ngModel)]="insertClassData.SubjectId" [placeholder]="'Select Subject'"
                 (change)="onSubjectChange($event.value)">
             </ejs-dropdownlist>
         </div>
         <div class="form-group mt-2">
             <label for="gradeLevel" class="form-label">Grade Level <span class="text-danger">*</span></label>
-            <ejs-dropdownlist [dataSource]="TutorGrades" id="gradeLevel" name="gradeLevel" [fields]="dropdownFields" [placeholder]="'Select Grade'"
-                [enabled]="insertClassData.SubjectId" (change)="onGradeChange($event.value)">
+            <ejs-dropdownlist [dataSource]="TutorGrades" id="gradeLevel" name="gradeLevel" [fields]="dropdownFields" [(ngModel)]="insertClassData.GradeId" [placeholder]="'Select Grade'"
+            [enabled]="insertClassData.SubjectId !== null && insertClassData.SubjectId !== ''" (change)="onGradeChange($event.value)">
             </ejs-dropdownlist>
         </div>    
         <div class="text-center mt-4">

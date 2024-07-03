@@ -33,6 +33,14 @@ export class ClassMetadataService extends ServiceBase {
   
   } 
 
+  public deleteClassMetaData(id:string): Observable<ResponseObject> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/ClassMetaData';
+    const method: string = '/delete/' + id;    
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.delete<ResponseObject>(url, httpOptions);
+  }
+
 }
 
 export class ClassMetaData {
@@ -43,7 +51,6 @@ export class ClassMetaData {
   Title!: string;
   Description!: string;
   IsActive!: boolean;
-  CourseOutline!: CourseOutline[];
 
   //helper property
   SubjectName!: string;
