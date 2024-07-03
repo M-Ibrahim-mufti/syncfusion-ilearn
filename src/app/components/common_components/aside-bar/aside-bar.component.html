@@ -1,95 +1,86 @@
-<div class="d-flex flex-column dsSideBar vh-100 border">
-<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-    <span class="fs-4 mt-1"><img src="../../../../assets/strapline/i-learn-logo-strapline-1000.png" width="70%" alt=""></span>
-</a>
-<hr>
-<ul class="nav nav-pills flex-column mb-auto">
-    <li class="nav-item" *ngIf="authConfig.IsAdministrator || authConfig.IsStudent || authConfig.IsTeacher">
-      <a 
-        [routerLink]="['/dashboard']" 
-        [ngClass]="{ 'active': isActive('/dashboard'), 'link-dark': !isActive('/dashboard') }" 
-        class="nav-link" 
-        aria-current="page">
-        <i class="pi pi-home"></i> Dashboard
-      </a>
-    </li>
-    <li *ngIf="authConfig.IsAdministrator">
-      <a 
-        [routerLink]="['/admin/view']" 
-        [ngClass]="{ 'active': isActive('/admin/view'), 'link-dark': !isActive('/admin/view') }" 
-        class="nav-link">
-        <i class="pi pi-user"></i> Student
-      </a>
-    </li>
-    <li *ngIf="authConfig.IsAdministrator">
-      <a 
-        [routerLink]="['/admin/tutor']" 
-        [ngClass]="{ 'active': isActive('/admin/tutor'), 'link-dark': !isActive('/admin/tutor') }" 
-        class="nav-link">
-        <i class="pi pi-users"></i> Tutor
-      </a>
-    </li>
-    <li *ngIf="authConfig.IsStudent">
-      <a 
-        [routerLink]="['/student/tutor-selection']" 
-        [ngClass]="{ 'active': isActive('/student/tutor-selection'), 'link-dark': !isActive('/student/tutor-selection') }" 
-        class="nav-link">
-        <i class="pi pi-users"></i> Tutor-Selection
-      </a>
-    </li>
-    <li *ngIf="authConfig.IsTeacher">
-      <a 
-        [routerLink]="['/tutor/availabilaity']" 
-        [ngClass]="{ 'active': isActive('/tutor/availabilaity'), 'link-dark': !isActive('/tutor/availabilaity') }" 
-        class="nav-link">
-        <i class="pi pi-clock"></i> Availabilaity
-      </a>
-    </li>
-    <li *ngIf="authConfig.IsStudent || authConfig.IsTeacher">
-      <a 
-        [routerLink]="['/classes']" 
-        [ngClass]="{ 'active': isActive('/classes'), 'link-dark': !isActive('/classes') }" 
-        class="nav-link">
-        <i class="pi pi-calendar"></i> Class
-      </a>
-    </li>
-    <li *ngIf="authConfig.IsTeacher">
-      <a 
-        [routerLink]="['/tutor/requests']" 
-        [ngClass]="{ 'active': isActive('/tutor/requests'), 'link-dark': !isActive('/tutor/requests') }" 
-        class="nav-link">
-        <i class="pi pi-file-import"></i> Requests
-      </a>
-    </li>
-    <!-- <li *ngIf="authConfig.IsTeacher">
-      <a 
-        [routerLink]="['/tutor/connect-zoom']" 
-        [ngClass]="{ 'active': isActive('/tutor/connect-zoom'), 'link-dark': !isActive('/tutor/connect-zoom') }" 
-        class="nav-link">
-        <i class="pi pi-link"></i> Connect With Zoom
-      </a>
-    </li> -->
-    <li *ngIf="authConfig.IsTeacher">
-      <a 
-        [routerLink]="['/tutor/class-metadata']" 
-        [ngClass]="{ 'active': isActive('/tutor/class-metadata'), 'link-dark': !isActive('/tutor/class-metadata')}" 
-        class="nav-link">
-        <i class="pi pi-th-large"></i> Class Metadata
-      </a>
-    </li>
-    <li *ngIf="authConfig.IsTeacher || authConfig.IsStudent">
-      <a 
-        [routerLink]="['/meeting']" 
-        [ngClass]="{ 'active': isActive('/meeting'), 'link-dark': !isActive('/meeting')}" 
-        class="nav-link">
-        <i class="pi pi-headphones"></i> Meeting
-      </a>
-    </li>
-</ul>
-
-<!-- <div class="dsSideMenu flex-grow-1 mt-3 ps-3">
-        <p-menu [model]="items" styleClass="border-0 w-100" expanded="true"></p-menu>
-    </div> -->
+<div class="py-4 text-center">
+  <a href="/" class="link-hover rounded-2 py-2 px-3">
+    <img src="../../../../assets/strapline/i-learn-logo-strapline-1000.png" width="70%" />  
+  </a>
 </div>
-  
-  
+<div class="d-flex flex-column py-4">
+  <div class="px-3 justify-content-around align-items-center d-flex">
+    <hr class="w-25 text-light">
+    <h2 class="mb-0 text-center fs-6 w-50 text-light"> Components </h2>
+    <hr class="w-25 text-light">
+  </div>
+  <div class="d-flex gap-2 flex-column my-3 text-start mx-3 text-light">
+    <div [routerLink]="['/dashboard']" class=" cursor-pointer py-3 px-4 link-hover" [ngClass]="{'active-link': isActive('/dashboard'), 'bg-black': !isActive('/dashboard')}">
+      <a  class="letter-spacing fs-4 text-white" aria-current="page">
+        <i class="pi pi-th-large fs-4" ></i> Dashboard
+      </a>
+    </div>
+    <div class="py-2">
+      <div class="mb-3" *ngIf="authConfig.IsStudent">
+        <span class="ms-4 fs-5 letter-spacing"> Students </span>
+        <div class="mt-2 ms-3 d-flex flex-column gap-1">
+          <div [routerLink]="['/student/tutor-selection']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link': isActive('/student/tutor-selection'), 'bg-black': !isActive('/student/tutor-selection')}">
+            <a  class="letter-spacing fs-6 text-white">
+              <i class="pi pi-users"></i> Tutor-Selection
+            </a>
+          </div>
+          <div [routerLink]="['/classes']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/classes'), 'bg-black': !isActive('/classes') }">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-calendar"></i> Class
+            </a>
+          </div>
+          <div [routerLink]="['/meeting']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/meeting'), 'bg-black': !isActive('/meeting')}">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-headphones"></i> Meeting
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3" *ngIf="authConfig.IsTeacher">
+        <span class="ms-4 mb-3 fs-5 letter-spacing"> Tutors </span>
+        <div class="mt-2 ms-3 d-flex flex-column gap-1">
+          <div [routerLink]="['/tutor/availabilaity']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/tutor/availabilaity'), 'bg-black':!isActive('/tutor/availabilaity') }">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-clock"></i> Availabilaity
+            </a>
+          </div>
+          <div [routerLink]="['/tutor/requests']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/tutor/requests'), 'bg-black': !isActive('/tutor/requests')}">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-file-import"></i> Requests
+            </a>
+          </div>
+          <div [routerLink]="['/tutor/class-metadata']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/tutor/class-metadata'), 'bg-black': !isActive('/tutor/class-metadata')}">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-th-large"></i> Class Metadata
+            </a>
+          </div>
+          <div [routerLink]="['/meeting']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/meeting'), 'bg-black': !isActive('/meeting')}">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-headphones"></i> Meeting
+            </a>
+          </div>
+          <div [routerLink]="['/classes']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/classes'),'bg-black': !isActive('/classes') }">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-calendar"></i> Class
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3" *ngIf="authConfig.IsAdministrator">
+        <span class="ms-4 mb-3 fs-5 letter-spacing"> Administrator </span>
+        <div class="mt-2 ms-3 d-flex flex-column gap-1">
+          <div [routerLink]="['/admin/view']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/admin/view'), 'bg-black': !isActive('/admin/view')}">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-user"></i> Student
+            </a>
+          </div>
+          <div [routerLink]="['/admin/tutor']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/admin/tutor'), 'bg-black': !isActive('/admin/tutor')}">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-users"></i> Tutor
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

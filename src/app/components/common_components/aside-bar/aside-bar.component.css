@@ -1,0 +1,18 @@
+.link-hover{
+    transition: all .3s linear;
+    border-radius: 8px;
+    z-index: 1;
+}
+
+.link-hover:hover {
+    background-color: #262626!important;
+    opacity: 1;
+}
+
+.letter-spacing {
+    letter-spacing: 2px;
+}
+
+.active-link {
+    background-color: #262626!important;
+}
