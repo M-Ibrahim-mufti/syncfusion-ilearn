@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
     <div class="col-md-12">
         <p-panel>
             <ng-template pTemplate="header">
@@ -74,25 +74,74 @@
             <p-dropdown 
             [options]="TutorGrades" id="gradeLevel" name="gradeLevel" [showClear]="true" defaultLabel="Select Grade" optionLabel="label" (onChange)="onGradeChange($event.value)" [disabled]="!insertClassData.SubjectId">
         </p-dropdown>
-        </div>        
-        <!-- <div class="text-end mt-3">
-            <button type="button" class="btn btn-outline-primary" (click)="addOutline()">Add Course Outline</button>
-        </div>
-        <div *ngFor="let outline of insertClassData.CourseOutline; let i = index" class="mt-3">
-            <div class="form-group">
-                <label for="sectionTitle{{i}}" class="form-label">Section Title <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="sectionTitle{{i}}" name="sectionTitle{{i}}" [(ngModel)]="outline.SectionTitle" placeholder="Enter Section Title"/>
-            </div>
-            <div class="form-group mt-2">
-                <label for="sectionDescription{{i}}" class="form-label">Section Description <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="sectionDescription{{i}}" name="sectionDescription{{i}}" rows="3" [(ngModel)]="outline.SectionDescription" placeholder="Enter Section Description"></textarea>
-            </div>
-            <div class="text-end mt-2">
-                <button type="button" class="btn btn-outline-danger" (click)="removeOutline(i)">Remove Outline</button>
-            </div>
-        </div> -->
+        </div>    
         <div class="text-center mt-4">
             <button type="button" class="btn btn-primary w-100" (click)="saveClassMetaData()"[disabled]="!insertClassData.SubjectId || !insertClassData.Title || !insertClassData.GradeId" >Submit</button>
         </div>
     </form>
-</p-dialog>
+</p-dialog> -->
+
+
+<div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h4 class="text-muted fw-bold mb-0">Class Metadata</h4>
+            <p class="text-muted">Manage class information here.</p>
+        </div>
+        <div class="col-md-auto">
+            <button ejs-button cssClass="e-primary" iconCss="fa fa-plus" (click)="toggleClassDialogueBox()">
+                Add New
+            </button>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <ejs-grid [dataSource]='classMetaData' [allowPaging]="true" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
+            <e-columns>
+                <e-column class="py-5" field='Title' headerText='Title' width='150' textAlign='Center' [allowSorting]="true"></e-column>
+                <e-column field='Description' headerText='Description' width='250' textAlign='Center' [allowSorting]="true"></e-column>
+                <e-column field='GradeLevel' headerText='Grade Level' width='120' textAlign='Center' [allowSorting]="true"></e-column>
+                <e-column field='SubjectName' headerText='Subject Name' width='150' textAlign='Center' [allowSorting]="true"></e-column>
+                <e-column headerText='Action' width='120' textAlign='Center' [template]='actionTemplate'></e-column>
+            </e-columns>
+        </ejs-grid>
+    </div>
+</div>
+
+  <ng-template #actionTemplate let-data>
+    <button ejs-button cssClass='e-primary e-icon-btn' (click)="editMetaData(data)">
+      <span class="e-btn-icon e-icons e-edit"></span>
+    </button>
+    <button ejs-button cssClass='e-danger e-icon-btn ml-2' (click)="deleteClassMetaData(data)">
+      <span class="e-btn-icon e-icons e-delete"></span>
+    </button>
+  </ng-template>
+
+  <ejs-dialog header="Add Class Data" [visible]="addClassDialogueBox" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="onDialogClose()">
+    <div class="form-horizontal mt-2 px-3">
+        <div class="form-group mt-2">
+            <label for="title" class="form-label">Course Title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="insertClassData.Title" placeholder="Enter Title of Course"/>
+        </div>
+        <div class="form-group mt-2">
+            <label for="description" class="form-label">Course Description</label>
+            <textarea class="form-control" id="description" name="description" rows="5" [(ngModel)]="insertClassData.Description" placeholder="Enter Course Description"></textarea>
+        </div>
+        <div class="form-group mt-2">
+            <label for="subject" class="form-label">Select Subject <span class="text-danger">*</span></label>
+            <ejs-dropdownlist [dataSource]="Subjects" id="subject" name="tutorSubjects" [fields]="dropdownFields" [placeholder]="'Select Subject'"
+                (change)="onSubjectChange($event.value)">
+            </ejs-dropdownlist>
+        </div>
+        <div class="form-group mt-2">
+            <label for="gradeLevel" class="form-label">Grade Level <span class="text-danger">*</span></label>
+            <ejs-dropdownlist [dataSource]="TutorGrades" id="gradeLevel" name="gradeLevel" [fields]="dropdownFields" [placeholder]="'Select Grade'"
+                [enabled]="insertClassData.SubjectId" (change)="onGradeChange($event.value)">
+            </ejs-dropdownlist>
+        </div>    
+        <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary w-100" (click)="saveClassMetaData()" [disabled]="!insertClassData.SubjectId || !insertClassData.Title || !insertClassData.GradeId">
+                Submit
+            </button>
+        </div>
+    </div>
+</ejs-dialog>

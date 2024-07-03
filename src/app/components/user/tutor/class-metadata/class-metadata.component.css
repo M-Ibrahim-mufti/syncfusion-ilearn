@@ -59,3 +59,36 @@
     background-color: #f4f4f4!important;
     transition: all .3s linear;
 } */
+
+
+.ml-2 {
+    margin-left: 0.5rem;
+}
+
+.e-icon-btn {
+    border-radius: 50%;
+}
+
+
+
+.e-primary{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+  }
+  
+  .e-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+.e-primary.e-icon-btn {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+  }
+  
+  .e-primary.e-icon-btn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }

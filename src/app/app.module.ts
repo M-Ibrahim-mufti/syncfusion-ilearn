@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule } from 'primeng/button';
+// import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { createCustomElement } from '@angular/elements';
@@ -27,7 +27,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { MenuModule } from 'primeng/menu';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, FilterService, MessageService } from 'primeng/api';
 import { RatingModule } from 'primeng/rating';
 import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -57,7 +57,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { EventComponent } from './components/user/tutor/event/event.component';
 import { CreateEventComponent } from './components/user/tutor/create-event/create-event.component';
 import { SubjectSelectionComponent } from './components/user/common_components/subject-selection/subject-selection.component';
-import { DialogModule } from 'primeng/dialog';
+// import { DialogModule } from 'primeng/dialog';
 import { EventRequestComponent } from './components/user/common_components/event-request/event-request.component';
 import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
 import { GroupByPipe } from './pipes/GroupBy.pipe';
@@ -66,6 +66,13 @@ import { TutorDetailComponent } from './components/user/tutor-detail/tutor-detai
 import { ClassMetadataComponent } from './components/user/tutor/class-metadata/class-metadata.component'
 import { MeetingComponent } from './components/user/common_components/meeting/meeting.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+//add import of synfussions
+import { EditService, GridModule, PageService, SortService } from '@syncfusion/ej2-angular-grids';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+ 
 
 
 export function getTokenFactory(injector: Injector) {
@@ -115,7 +122,7 @@ export function getTokenFactory(injector: Injector) {
     ReactiveFormsModule,
     NgxSpinnerModule,
     ConfirmDialogModule,
-    ButtonModule,
+    // ButtonModule,
     TableModule,
     InputTextModule,
     InputGroupModule,
@@ -150,10 +157,23 @@ export function getTokenFactory(injector: Injector) {
       }
     }),
     DialogModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    
+    //Syncfussion Module
+    GridModule,
+    ButtonModule,
+    DialogModule,
+    DropDownListModule
   ],
   exports: [RouterModule],
-  providers: [NgxSpinnerService, NotificationsService,ConfirmationService, JwtHelperService, MessageService, AuthConfig, AuthService, AuthGuard],
+  providers: [NgxSpinnerService, NotificationsService,ConfirmationService, JwtHelperService,
+     MessageService, AuthConfig, AuthService, AuthGuard,
+
+     //syncfussion providers
+     PageService,
+     SortService,
+     EditService
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -4,14 +4,15 @@ import { StudentService } from '../../../../../services/student.service';
 import { ClassMetadataService, ClassMetaData } from '../../../../../services/class-metadata.service';
 import { TutorService } from '../../../../../services/tutor.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { SelectItem } from 'primeng/api';
+import { FilterService, SelectItem } from 'primeng/api';
 import { NotificationTypes } from '../../../../app.enums';
+import { PageSettingsModel } from '@syncfusion/ej2-angular-grids';
 
 @Component({
   selector: 'app-class-metadata',
-  providers: [StudentService],
   templateUrl: './class-metadata.component.html',
-  styleUrls: ['./class-metadata.component.css']
+  styleUrls: ['./class-metadata.component.css'],
+  providers: [StudentService],
 })
 export class ClassMetadataComponent {
   public Subjects: SelectItem[] = [];
@@ -19,6 +20,8 @@ export class ClassMetadataComponent {
   public classMetaData: ClassMetaData[] = [];
   public addClassDialogueBox: boolean = false;
   public insertClassData: ClassMetaData = {} as ClassMetaData;
+  public pageSettings?: PageSettingsModel;
+  dropdownFields: Object = { text: 'label', value: 'value' };
 
   constructor(private studentService: StudentService,
               private tutorService: TutorService,
@@ -29,7 +32,8 @@ export class ClassMetadataComponent {
 
   ngOnInit() {
     this.viewClassMetaData();
-    this.getTutorSubjects();    
+    this.getTutorSubjects();  
+    this.pageSettings = { pageSize: 6 };  
   }
 
   public viewClassMetaData() {
@@ -49,8 +53,9 @@ export class ClassMetadataComponent {
   }
 
   private viewUserGrades(subjectId: string) {
-    this.studentService.viewUserGrades(subjectId).subscribe((response) => {
-      this.TutorGrades = response
+    this.studentService.viewUserGrades(subjectId).subscribe((response: SelectItem[]) => {
+      this.TutorGrades = response;  
+      this.insertClassData.GradeId = response.map(p => p.value)[0];    
     });
   }
 
@@ -102,6 +107,51 @@ export class ClassMetadataComponent {
 
   removeOutline(index: number) {
     this.insertClassData.CourseOutline.splice(index, 1);
+  }
+
+  public editMetaData(selectedRow: ClassMetaData){
+    console.log(selectedRow);
+    
+    this.addClassDialogueBox = true;
+    this.insertClassData = { ...selectedRow };
+    if (this.insertClassData.SubjectId) {
+      this.viewUserGrades(this.insertClassData.SubjectId);
+    }
+  }
+
+  public deleteClassMetaData(selectedData: ClassMetaData) {
+    // this.ngxSpinner.show();
+    // this.classMetaServices.deleteClassMetaData(selectedData.Id).subscribe(
+    //   (response) => {
+    //     this.ngxSpinner.hide();
+    //     if (response.Success) {
+    //       this.viewClassMetaData();
+    //       this.toastr.success(
+    //         'Success',
+    //         response.ResponseMessage
+    //       );
+    //     } else {
+    //       this.toastr.error(
+    //         'Error',
+    //         response.ResponseMessage,
+    //       );
+    //     }
+    //   },
+    //   (error) => {
+    //     console.error('Error deleting student:', error);
+    //     this.ngxSpinner.hide();
+    //     this.toastr.show(
+    //       'Error',
+    //       'An error occurred while deleting student. Please try again later.',
+    //     );
+    //   }
+    // );
+    }
+
+  onDialogClose() {
+    // Reset form data or handle any cleanup on dialog close
+    this.insertClassData = new ClassMetaData();
+    this.addClassDialogueBox = false;
   }
 
 
