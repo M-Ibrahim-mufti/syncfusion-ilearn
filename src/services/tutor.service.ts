@@ -41,14 +41,13 @@ export class TutorService extends ServiceBase {
     return this.http.get<any[]>(url, httpOptions);
   }
 
-  public getAllAvalabilities(): Observable<TutorAvailability[]> {
+  public getAllAvalabilities(tutorId: string | null = null): Observable<TutorAvailability[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Tutor';
-    const method: string = '/fetch-availabilty';
+    const method: string = '/fetch-availabilty' + '/' + tutorId;
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.get<TutorAvailability[]>(url, httpOptions);
   }
-
   public saveTutorAvailability(availabilities: SaveTutorAvailabilityRequest): Observable<ResponseObject> {
     const httpOptions = this.RequestHeaders();
     const api: string = '/Tutor';
@@ -57,6 +56,13 @@ export class TutorService extends ServiceBase {
     return this.http.post<ResponseObject>(url, availabilities, httpOptions);
   }
   
+  public tutorProfile(id:string): Observable<Tutor>{
+    const httpOptions = this.RequestHeaders();
+    const api:string = '/user/'
+    const method:string = `${id}/detail`
+    const url: string = environment.BASE_API_PATH + api + method
+    return this.http.get<Tutor>(url, httpOptions)
+  }
 
 }
 export interface SaveTutorAvailabilityRequest {
@@ -107,7 +113,7 @@ export class TutorRequest {
   Grade?: number;
   SubjectId?: string;
   Day?: string;
-  StartTime?: number;
+  StartTime?: number | null;
   Query?: string;
 }
 
@@ -117,23 +123,32 @@ export class Grade {
   GradeLevel!: number;
 }
 
-export interface Tutor {
-  Id: string;
-  FullName: string;
+export class Tutor {
+  Id!: string;
+  FullName!: string;
+  Name!:string;
   Hon?: string;
-  Address: string;
-  City: string;
-  State: string;
-  PostCode: string;
-  Country: string;
-  PhoneNumber: string;
-  Email: string;
-  Password: string;
-  Qualifications: string;
-  ImgUrl: string;
-  IsPoliceFormChecked: boolean;
+  Address!: string;
+  City!: string;
+  State!: string;
+  PostCode!: string;
+  Country!: string;
+  PhoneNumber!: string;
+  Email!: string;
+  Password!: string;
+  Qualifications!: string;
+  ImgUrl!: string;
+  IsPoliceFormChecked!: boolean;
   PoliceFormCheckDate?: Date;
   CreateEvents?:Event[];
-  TutorAvailabilities: TutorAvailability[];
-  TutorSubjects: TutorSubject[];
+  TutorAvailabilities!: TutorAvailability[];
+  TutorSubjects!: TutorSubject[];
+  TotalMeetings!: number;
+  TotalStudents!: number;
+  Description!: string;
+
+}
+
+export class ShowTutor extends Tutor {
+  isExpanded?:boolean = false;
 }

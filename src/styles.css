@@ -16,6 +16,7 @@ body {
     width: 100vw; */
   box-sizing: border-box;
   overflow-x: hidden;
+  background-color: #f2f5f7;
 }
 .p-menubar {
   background-color: transparent;
@@ -185,4 +186,16 @@ body {
   object-fit: cover;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.text-muted {
+  color: #b5b5c3!important;
+}
+
+.bg-secondary {
+  background-color: #dbdfe9!important;
+}
+
+.border-dull-white {
+  border-color:#f1f1f2!important;
 }

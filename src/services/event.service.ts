@@ -16,10 +16,10 @@ export class EventService extends ServiceBase {
     super(authService);
   }
 
-  public getEvents(): Observable<Event[]> {
+  public getEvents(tutorId: string | null = null): Observable<Event[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Event';
-    const method: string = '/fetch';    
+    const method: string = '/fetch' + '/' + tutorId;
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.get<Event[]>(url, httpOptions);
   }

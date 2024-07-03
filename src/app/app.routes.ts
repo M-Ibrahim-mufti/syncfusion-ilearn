@@ -149,7 +149,7 @@ export const routes: Routes = [
         component:UserProfileComponent
     }, 
     {
-        path: 'availabletutor/detail',
+        path: 'student/tutor-detail/:id',
         component:TutorDetailComponent
     }, 
     {

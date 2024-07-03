@@ -1,4 +1,4 @@
-import { Tutor, TutorRequest, TutorService, TutorSubject } from './../../../../../services/tutor.service';
+import { Tutor, TutorRequest, TutorService, TutorSubject, ShowTutor, TutorAvailability } from './../../../../../services/tutor.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -14,24 +14,26 @@ export class TutorSelectionComponent {
   public today = new Date();
   public currentDayIndex = this.today.getDay();
   public currentDayAbbreviation = this.getDayAbbreviation(this.currentDayIndex);
-  public availableTutor: Tutor[] = [];
+  public availableTutor: ShowTutor[] = [];
   public currentAvailableTutor: number = 0;
   public filters: TutorRequest = {};
   public isAvailable: any[] = [];
   public selectedTutorSubjects: TutorSubject[] = []
   public selectedTutor!: Tutor;
+  public tutorAvailaibility: TutorAvailability[] = []
   selectedTutors: { [key: string]: any[] } = {};
   draggedTutor: any | undefined | null;
   public showSubjectDialogue: boolean = false;
+  isExpanded: boolean = false;
   Subjects: any[] = [];
-  Grades = Array.from({ length: 12 }, (v, i) => ({ label: `Grade ${i + 1}`, value: i + 1 }));
+  Grades = Array.from({ length: 13 }, (v, i) => ( i === 0 ? {label:'Select Grade', value:null } : { label: `Grade ${i }`, value: i}));
   TimeGroup = Array.from({ length: 24 }, (v, i) => {
     const hour12 = i % 12 == 0 ? 12 : i % 12;
     const period = i < 12 ? 'AM' : 'PM';
     return { label: `${hour12.toString().padStart(2, '0')}:00 ${period}`, value: i };
-});
-
+  });
   public days: any[] = [
+    { label: 'Select Day', value: null},
     { label: 'Sunday', value: 'Sun' },
     { label: 'Monday', value: 'Mon' },
     { label: 'Tuesday', value: 'Tue' },
@@ -40,16 +42,24 @@ export class TutorSelectionComponent {
     { label: 'Friday', value: 'Fri' },
     { label: 'Saturday', value: 'Sat' }
   ];
-  
+  public selectedDay = this.days[0].value
+  public selectedSubject!: string | null
+  public selectedGrade = this.Grades[0].value
+  public selectedTimegroup!: number
+  public selectedTutorAvailibilities: any = []
+  public availabilityCont: string = ''
 
-  constructor(private ngxSpinnerService: NgxSpinnerService,
-    private messageService: MessageService,
-    private tutorService: TutorService,
-    private studentService: StudentService,
-    private router: Router) { }
+  constructor( private ngxSpinnerService:NgxSpinnerService,
+               private tutorService: TutorService,
+               private studentService: StudentService,
+               private router: Router,
+  ) { 
+    this.TimeGroup.unshift({
+      label:'Select Timegroup', value: -1
+    })
+  }
 
   ngOnInit() {
-    this.filters.StartTime = -1
     this.getSubjects()
     this.getTutors();
   }
@@ -60,36 +70,71 @@ export class TutorSelectionComponent {
       this.ngxSpinnerService.hide();
       this.availableTutor = tutors;
       this.currentAvailableTutor = tutors.length;
+      this.loadAvailabilities();
     })
+  }
+
+  public loadAvailabilities() {
+    this.tutorService.getAllAvalabilities().subscribe((response) => {
+      console.log(response)
+      this.tutorAvailaibility = response
+      console.log(this.tutorAvailaibility)
+    })
+  }
+
+  public getTutorAvailabilities(tutorId:string) {
+    this.selectedTutorAvailibilities = []
+    console.log(tutorId, this.tutorAvailaibility)
+    this.tutorAvailaibility.forEach((availibility) => {
+        if (availibility.TutorId === tutorId){
+          this.selectedTutorAvailibilities.push(availibility)
+        }
+    })
+    this.availabilityCont = tutorId
+  }
+
+  public removeAvailabilities() {
+    this.selectedTutorAvailibilities = [];
+    this.availabilityCont = ''
+
   }
 
   getSubjects(){
     this.studentService.getAllUserSubjects().subscribe(
-      (response) => this.Subjects = response
+      (response) => {
+        this.Subjects = response;
+        this.Subjects.unshift({
+          label:"Select Subjects", value:null
+        });
+        this.selectedSubject = this.Subjects[0].value;
+        this.selectedTimegroup = this.TimeGroup[0].value
+      }
     )
   }
 
   public onDayChange($event: any){
-    this.filters.Day = $event.value;
+    this.filters.Day = $event.target.value.split(': ')[1];
     this.getTutors(this.filters);
   }
 
   public onSubjectChange($event: any){
-    this.filters.SubjectId = $event.value;
+    this.filters.SubjectId = $event.target.value.split(": ")[1];
     this.getTutors(this.filters);
   }
 
   public onGradeChange($event: any){
     this.filters.Grade = 0
-    if($event.value){
-      this.filters.Grade = $event.value;
+  
+    if($event.target.value){
+      this.filters.Grade = $event.target.value.split(': ')[1];
     }
     this.getTutors(this.filters);
   }
 
   public onStartTimeChange($event: any){
-    if($event.value > -1){
-      this.filters.StartTime = $event.value;
+    this.filters.StartTime = null
+    if($event.target.value){
+      this.filters.StartTime = $event.target.value.split(': ')[1];
     }
     this.getTutors(this.filters);
   }
@@ -102,6 +147,11 @@ export class TutorSelectionComponent {
 
   public clearAllFilters($event: any) {
     this.filters = {};
+    this.selectedDay = this.days[0].value
+    this.selectedSubject = this.Subjects[0].value
+    this.selectedGrade = this.Grades[0].value
+    this.selectedTimegroup = this.TimeGroup[0].value
+
     this.getTutors(this.filters);
   }
 
@@ -109,25 +159,25 @@ export class TutorSelectionComponent {
     this.draggedTutor = tutor;
   }
 
-  drop(event: any, subject: string) {
-    if (this.draggedTutor) {
-      const teachesSubject = this.draggedTutor.Subjects.some((sub: any) => sub.SelectedSubject[0].label === subject);
-      if (teachesSubject) {
-        if (!this.selectedTutors[subject]) {
-          this.selectedTutors[subject] = [];
-        }
-        if (!this.selectedTutors[subject].includes(this.draggedTutor)) {
-          this.selectedTutors[subject].push(this.draggedTutor);
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'The tutor is selected successfully.' });
-        } else {
-          this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'You have already selected this tutor for ' + subject + '.' });
-        }
-      } else {
-        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'The tutor is not related to this subject.' });
-      }
-      this.draggedTutor = null;
-    }
-  }
+  // drop(event: any, subject: string) {
+  //   if (this.draggedTutor) {
+  //     const teachesSubject = this.draggedTutor.Subjects.some((sub: any) => sub.SelectedSubject[0].label === subject);
+  //     if (teachesSubject) {
+  //       if (!this.selectedTutors[subject]) {
+  //         this.selectedTutors[subject] = [];
+  //       }
+  //       if (!this.selectedTutors[subject].includes(this.draggedTutor)) {
+  //         this.selectedTutors[subject].push(this.draggedTutor);
+  //         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'The tutor is selected successfully.' });
+  //       } else {
+  //         this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'You have already selected this tutor for ' + subject + '.' });
+  //       }
+  //     } else {
+  //       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'The tutor is not related to this subject.' });
+  //     }
+  //     this.draggedTutor = null;
+  //   }
+  // }
 
   dragEnd() {
     this.draggedTutor = null;
@@ -252,18 +302,13 @@ export class TutorSelectionComponent {
   enrollStudentRequest(tutor: Tutor) {
     this.router.navigate(['/student/event/add'], { state: { tutor: tutor } });
   }
-  showSubjectDialogueBox(event: Event, tutor: Tutor): void {
-    console.log(this.availableTutor)
-    this.showSubjectDialogue = !this.showSubjectDialogue
-    this.selectedTutorSubjects = tutor.TutorSubjects
-    this.selectedTutor = tutor
 
-    console.log(this.selectedTutor)
-    console.log(this.selectedTutorSubjects)
-
-  }
 
   navigateTutorDetailPage(tutor:Tutor){
-    this.router.navigate(['availabletutor/detail'], {state: {availableTutor: tutor}})
+    this.router.navigate(['student/tutor-detail/' + tutor.Id])
+  }
+
+  toggleReadMore(tutorId: number) {
+    this.availableTutor[tutorId].isExpanded = !this.availableTutor[tutorId].isExpanded;
   }
 }

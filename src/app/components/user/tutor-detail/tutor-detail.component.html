@@ -1,4 +1,4 @@
-<div class="container" *ngIf="availableTutor">
+<!-- <div class="container" *ngIf="tutor">
     <div class="col-md-12">
         <div class="d-flex">
             <div class="about-cont my-2 d-flex flex-column gap-4">
@@ -7,18 +7,18 @@
                         <button class="btn-enroll bg-black text-white fs-5 fw-bolder" (click)="goBack()">Tutor Selection</button>
                     </div>
                     <div class="col-md-11 mx-auto border border-2 rounded-3">
-                        <img class="w-100 rounded-4" style="height: 150px; object-fit:contain" [ngStyle]="{'background-color': availableTutor.ImgUrl ? 'white' : '#f4f4f4'}"  [src]="availableTutor.ImgUrl ? availableTutor.ImgUrl : '../../../../assets/user-profile.png'">
+                        <img class="w-100 rounded-4" style="height: 150px; object-fit:contain" [ngStyle]="{'background-color': tutor.ImgUrl ? 'white' : '#f4f4f4'}"  [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'">
                     </div>
                     <div class="col-md-11 d-flex flex-column justify-content-center mx-auto my-2">
-                        <h5 class="m-0 text-muted fw-bolder">{{availableTutor.Hon}} {{ availableTutor.FullName }}</h5>
-                        <p class="m-0 my-2 description-color">Qualified in {{ availableTutor.Qualifications}} from some institute</p>
+                        <h5 class="m-0 text-muted fw-bolder">{{tutor.Hon}} {{ tutor.FullName }}</h5>
+                        <p class="m-0 my-2 description-color">Qualified in {{ tutor.Qualifications}} from some institute</p>
                     </div>
                 </div>
                 <div class="d-flex flex-column ms-3 py-3 px-2 border border-2 rounded-3">
-                    <h5 class="text-start ps-2 fw-bolder text-muted">About {{availableTutor.Hon}} {{ availableTutor.FullName }}</h5>
+                    <h5 class="text-start ps-2 fw-bolder text-muted">About {{tutor.Hon}} {{ tutor.FullName }}</h5>
                     <p class="ps-2 mb-3 description-color text-start ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut ratione culpa eius quaerat porro reprehenderit fugit accusantium magni! Magnam corporis ab necessitatibus sint expedita. Eius magnam libero voluptatum tenetur? Exercitationem.</p>
                     <div class='d-flex flex-row flex-wrap ps-2 gap-3'>
-                        <p *ngFor="let subject of availableTutor.TutorSubjects" ><span  class="custom-qualification-badge m-0" *ngIf="subject.SubjectName;">{{subject.SubjectName}}</span></p>
+                        <p *ngFor="let subject of tutor.TutorSubjects" ><span  class="custom-qualification-badge m-0" *ngIf="subject.SubjectName;">{{subject.SubjectName}}</span></p>
                     </div>
                 </div>
                 <div class="d-flex flex-column ms-3 py-4 px-2 border border-2 rounded-2">
@@ -26,17 +26,17 @@
                     <p class="m-0 mb-1 ps-2 description-color">Location</p>
                     <div class="ps-3 mb-2 d-inline-flex align-items-center gap-2">
                         <i class="pi pi-map-marker" style="font-size: 20px;" ></i>
-                        <p class="m-0 fw-bold">{{availableTutor.Address + ", " + availableTutor.City + ", " +availableTutor.Country}}</p>
+                        <p class="m-0 fw-bold">{{tutor.Address + ", " + tutor.City + ", " +tutor.Country}}</p>
                     </div>
                     <p class="m-0 mb-2 ps-2 description-color">Email Address</p>
                     <div class="ps-3 mb-2 d-inline-flex align-items-center gap-2">
                         <i class="pi pi-envelope" style="font-size: 20px;"></i>
-                        <p class="m-0 fw-bold"> {{availableTutor.Email}}</p>
+                        <p class="m-0 fw-bold"> {{tutor.Email}}</p>
                     </div>
                     <p class="m-0 mb-2 ps-2 description-color">Phone Number</p>
                     <div class="ps-3 mb-2 d-inline-flex align-items-center gap-2">
                         <i class="pi pi-phone" style="font-size: 20px;"></i>
-                        <p class="m-0 fw-bold"> {{availableTutor.PhoneNumber}}</p>
+                        <p class="m-0 fw-bold"> {{tutor.PhoneNumber}}</p>
                     </div>
                 </div>
             </div>
@@ -177,6 +177,71 @@
                 </p-table>
                 </p-panel>
             </div>
+        </div>
+    </div>
+</div> -->
+<div class="row g-5 mx-3 my-2 bg-white rounded-4" *ngIf="tutor">
+    <div class="d-flex my-3 mb-5">
+        <div class="col-md-2 mt-4 d-flex align-items-center justify-content-center">
+            <img style="object-fit:cover; width: 180px; height: 150px; " class="rounded-3" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
+        </div>
+        <div class="col-md-8 mt-4 d-flex flex-column gap-2">
+            <h5 class="fs-4 fw-bold">{{tutor.Name}}</h5>
+            <div class="d-flex flex-wrap gap-1">
+                <i class="fa fa-brands fa-whatsapp me-3 fs-6 text-muted fw-bold" ><span class="ms-1 fw-bold text-muted"> {{tutor.PhoneNumber}} </span></i>
+                <i class="e-icons e-location fs-6 text-muted me-3 d-flex"><span class="ms-1 fw-bold text-muted">{{tutor.Address + ", " + tutor.City + ", " + tutor.Country}}</span></i>
+                <i class="fa fa-solid fa-envelope me-3 fs-6 text-muted fw-bold" ><span class="ms-2 fw-bold text-muted">{{tutor.Email}}</span> </i>
+            </div>
+            <div class="d-flex flex-row gap-3 py-2">
+                <div class="py-2 px-2 border border-dull-white rounded-3">
+                    <i class="text-success text-opacity-50 d-flex gap-2 fa fs-4 fa-solid fa-graduation-cap"><span class="text-black fs-5 fw-bold"> {{tutor.Qualifications}}</span></i>
+                    <p class="m-0 mt-2 text-muted fw-semibold">Qualification</p>
+                </div>
+                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                    <i class="e-icons e-bookmark-fill fs-4 text-danger text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> 5 </span></i>
+                    <p class="m-0 mt-2 text-muted fw-semibold">Subjects</p>
+                </div>
+                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                    <i class="e-icons e-arrow-up fs-5 text-success text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> 10 </span> </i>
+                    <p class="m-0 mt-2 text-muted fw-semibold"> Grades </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+     
+        </div>
+    </div>
+</div>
+<div class="row g-5 mx-3 my-2 bg-white rounded-4" *ngIf="tutor">
+    <div class="py-3 mt-0 border-bottom border-1 border-dull-white">
+        <h5 class="fw-bold">Tutor Details</h5>
+    </div>
+    <div class="mx-4 d-flex flex-column gap-3">
+        <div class="d-flex justify-content-start flex-row">
+            <p class="text-muted fw-bold w-50">Name</p>
+            <p class="text-muted fw-bold w-50">{{tutor.Name}}</p>
+        </div>
+        <div class="d-flex flex-row justify-content-start">
+            <p class="text-muted fw-bold w-50">Qualifications</p>
+            <p class="text-muted fw-bold w-50">{{tutor.Qualifications}}</p>
+        </div>
+        <div class="d-flex flex-row justify-content-start">
+            <p class="text-muted fw-bold w-50" >Contact Phone</p>
+            <p class="text-muted fw-bold w-50" >{{tutor.PhoneNumber}}</p>
+        </div>
+        <div class="d-flex flex-row justify-content-start">
+            <p class="text-muted fw-bold w-50" >Country</p>
+            <p class="text-muted fw-bold w-50" >{{tutor.Country}}</p>
+        </div>
+        <div class="d-flex flex-row justify-content-start">
+            <p class="text-muted fw-bold w-50">Email</p>
+            <p class="text-muted fw-bold w-50">{{tutor.Email}}</p>
+        </div>
+        <div class="d-flex flex-row justify-content-start">
+            <p class="text-muted fw-bold w-50">Subject</p>
+            <p class="text-muted fw-bold w-50 d-flex flex-wrap gap-2">
+                <span class="bg-secondary py-1 px-4 rounded-pill" *ngFor="let subject of tutor.TutorSubjects">{{subject.SubjectName}}</span>
+            </p>
         </div>
     </div>
 </div>

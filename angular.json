@@ -32,6 +32,7 @@
               "node_modules/primeng/resources/themes/nano/theme.css",
               "primeicons/primeicons.css",
               "node_modules/angular-calendar/css/angular-calendar.css",
+              "node_modules/@syncfusion/ej2-icons/styles/material.css",
               "src/styles.css"
             ],
             "scripts": [

@@ -65,7 +65,7 @@ import { ZoomConnectionComponent } from './components/user/tutor/zoom-connection
 import { TutorDetailComponent } from './components/user/tutor-detail/tutor-detail.component';
 import { ClassMetadataComponent } from './components/user/tutor/class-metadata/class-metadata.component'
 import { MeetingComponent } from './components/user/common_components/meeting/meeting.component';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 export function getTokenFactory(injector: Injector) {
@@ -149,7 +149,8 @@ export function getTokenFactory(injector: Injector) {
         useFactory: getTokenFactory
       }
     }),
-    DialogModule
+    DialogModule,
+    FontAwesomeModule
   ],
   exports: [RouterModule],
   providers: [NgxSpinnerService, NotificationsService,ConfirmationService, JwtHelperService, MessageService, AuthConfig, AuthService, AuthGuard],
