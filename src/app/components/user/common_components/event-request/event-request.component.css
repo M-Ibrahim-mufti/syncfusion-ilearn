@@ -18,7 +18,7 @@
 }
 .reject{
 	background-color: red;
-	padding: 2px 8px;
+	padding: 4px 8px;
 	font-size: 12px;
     font-weight: bold;
 	border-radius: 6px;
@@ -27,7 +27,7 @@
 
 .pending{
 	background-color: rgb(255, 255, 27);
-	padding: 2px 8px;
+	padding: 4px 8px;
 	font-size: 12px;
     font-weight: bold;
 	border-radius: 6px;
@@ -35,8 +35,8 @@
 }
 
 .approve{
-	background-color: rgb(0, 198, 0);
-	padding: 2px 8px;
+	background-color: #DBDFDC;
+	padding: 4px 8px;
 	font-size: 12px;
     font-weight: bold;
 	border-radius: 6px;
@@ -107,4 +107,49 @@
 	font-weight: bold;
 	position: relative;
 	top: 5px;
+}
+
+.custom-card-width{
+	width: 30%;
+	flex: 0 0 auto;
+}
+
+.accept-btn {
+	background-color: #009ef7;
+	border:none;
+	outline: none;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	color: white;
+	transition: all .3s linear;
+}
+
+
+.reject-btn{
+	background-color: white;
+	border:none;
+	outline: none;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	color: black;
+	transition: all .3s linear;
+}
+
+.reject-btn:hover {
+    background-color: #009ef7;
+    color: white;
+}
+
+.reject-btn:hover + .accept-btn {
+    background-color: white;
+    color: black;
+}
+
+.badge-container {
+	top: 10px;
+	right: 15px;
 }

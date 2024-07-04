@@ -72,6 +72,7 @@ import { EditService, GridModule, PageService, SortService } from '@syncfusion/e
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
  
 
 
@@ -163,7 +164,8 @@ export function getTokenFactory(injector: Injector) {
     GridModule,
     ButtonModule,
     DialogModule,
-    DropDownListModule
+    DropDownListModule,
+    ScheduleModule 
   ],
   exports: [RouterModule],
   providers: [NgxSpinnerService, NotificationsService,ConfirmationService, JwtHelperService,

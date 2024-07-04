@@ -1,18 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
-import { RequestBooking, SlotBookingService } from '../../../../../services/slot-booking.service';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Table } from 'primeng/table';
 import { AuthConfig, AuthService } from '../../../../../services/auth.service';
-import { NotificationTypes } from '../../../../app.enums';
-import { NotificationsService } from '../../../../../services/Shared/notifications.service';
+import { RequestBooking, SlotBookingService } from '../../../../../services/slot-booking.service';
 
 @Component({
   selector: 'app-event-request',
   templateUrl: './event-request.component.html',
-  styleUrl: './event-request.component.css'
+  styleUrls:['./event-request.component.css']
 })
-export class EventRequestComponent {
-  @ViewChild('dt1') dt1: Table | undefined;
+export class EventRequestComponent implements OnInit{
   
   public authConfig!: AuthConfig;
   public isSlotBookingDialogVisible: boolean = false;
@@ -34,8 +30,8 @@ export class EventRequestComponent {
   constructor(
     private authService: AuthService,
     private ngxSpinnerService: NgxSpinnerService,
-    private notificationsService: NotificationsService,
-    private slotBookingService: SlotBookingService
+    private slotBookingService: SlotBookingService, 
+    private cdr: ChangeDetectorRef
   ){}
   
   ngOnInit(){
@@ -49,6 +45,7 @@ export class EventRequestComponent {
       this.bookingRequests = response;
       this.totalStudentRequest = response.length;
       this.ngxSpinnerService.hide();
+      this.cdr.detectChanges()
     })
   }
 
@@ -64,7 +61,6 @@ export class EventRequestComponent {
   }
 
   public approveBookingRequest(bookingRequestId:string){
-    console.log(bookingRequestId);
     
     this.ngxSpinnerService.show();
     this.slotBookingService.acceptBookingRequest(bookingRequestId).subscribe(resposne => {
@@ -72,37 +68,27 @@ export class EventRequestComponent {
       if (resposne.Success) {
         this.joinUrl = resposne.join_url;
         this.isSlotBookingDialogVisible = false;
-        this.notificationsService.showNotification(
-          'Success',
-          resposne.Message,
-          NotificationTypes.Success
-        );
+        // this.toastr.success(
+        //   'Success',
+        //   resposne.Message
+        // );
       } else {
-        this.notificationsService.showNotification(
-          'Error',
-          resposne.Message,
-          NotificationTypes.Error
-        );
+        // this.toastr.error(
+        //   'Error',
+        //   resposne.Message
+        // );
       }
     })
   }
 
   public rejectBookingRequest(bookingRequestId:string){
     this.slotBookingService.rejectBookingRequest(bookingRequestId).subscribe(async response => {
-      this.notificationsService.showNotification(
-        'Success',
-        await response.ResponseMessage,
-        NotificationTypes.Success
-      );
+      // this.toastr.success(
+      //   'Success',
+      //   await response.ResponseMessage
+      // );
       this.getAllSlotBookingRequests()
     })
-  }
-
-  onInput(event: any): void {
-    const value = event.target.value;
-    if (this.dt1) {
-      this.dt1.filterGlobal(value, 'contains');
-    }
   }
 
   public getDayLabel(dayValue: string): string {

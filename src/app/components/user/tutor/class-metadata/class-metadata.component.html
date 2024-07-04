@@ -5,7 +5,7 @@
             <p class="text-muted">Manage class information here.</p>
         </div>
         <div class="col-md-auto">
-            <button ejs-button cssClass="e-primary" iconCss="fa fa-plus" (click)="addNewClass()">
+            <button ejs-button cssClass="e-info" iconCss="fa fa-plus" (click)="addNewClass()">
                 Add New
             </button>
         </div>
@@ -24,7 +24,7 @@
 </div>
 
   <ng-template #actionTemplate let-data>
-    <button ejs-button cssClass='e-primary e-icon-btn' (click)="editMetaData(data)">
+    <button ejs-button cssClass='e-info e-icon-btn' (click)="editMetaData(data)">
       <span class="e-btn-icon e-icons e-edit"></span>
     </button>
     <button ejs-button cssClass='e-danger e-icon-btn ml-2' (click)="deleteClassMetaData(data)">
@@ -55,7 +55,7 @@
             </ejs-dropdownlist>
         </div>    
         <div class="text-center mt-4">
-            <button type="button" class="btn btn-primary w-100" (click)="saveClassMetaData()" [disabled]="!insertClassData.SubjectId || !insertClassData.Title || !insertClassData.GradeId">
+            <button ejs-button cssClass="e-info w-100" (click)="saveClassMetaData()" [disabled]="!insertClassData.SubjectId || !insertClassData.Title || !insertClassData.GradeId">
                 Submit
             </button>
         </div>

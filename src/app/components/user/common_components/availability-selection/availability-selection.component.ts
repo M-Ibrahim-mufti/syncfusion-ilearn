@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SaveTutorAvailabilityRequest, TutorAvailability, TutorService } from '../../../../../services/tutor.service';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { addMonths, startOfDay } from 'date-fns';
 import { NotificationsService } from '../../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../../app.enums';
+import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View } from '@syncfusion/ej2-angular-schedule';
+import { ButtonComponent } from '@syncfusion/ej2-angular-buttons';
 
 @Component({
   selector: 'app-availability-selection',
   templateUrl: './availability-selection.component.html',
   styleUrls: ['./availability-selection.component.css'],
-  providers: [TutorService]
+  providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService,TutorService]
 })
 export class AvailabilitySelectionComponent implements OnInit {
   public view: CalendarView = CalendarView.Month;
@@ -38,6 +40,28 @@ export class AvailabilitySelectionComponent implements OnInit {
     available: false,
     timeRanges: [{ startTime: '', endTime: '' }]
   }));
+
+  @ViewChild("scheduleObj")
+  public scheduleObj?: ScheduleComponent;
+  @ViewChild("addButton")
+  public addButton?: ButtonComponent;
+  public selectedDate: Date = new Date(2018, 1, 15);
+  public scheduleViews: View[] = ['Day', 'Week', 'WorkWeek', 'Month'];
+  public eventSettings: EventSettingsModel = {
+      dataSource: [{
+          Id: 1,
+          Subject: 'Testing',
+          StartTime: new Date(2018, 1, 11, 9, 0),
+          EndTime: new Date(2018, 1, 11, 10, 0),
+          IsAllDay: false
+      }, {
+          Id: 2,
+          Subject: 'Vacation',
+          StartTime: new Date(2018, 1, 13, 9, 0),
+          EndTime: new Date(2018, 1, 13, 10, 0),
+          IsAllDay: false
+      }]
+  }
 
   constructor(private tutorService:TutorService, private notificationsService: NotificationsService) {}
   
