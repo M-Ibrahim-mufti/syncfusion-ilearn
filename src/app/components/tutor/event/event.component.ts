@@ -7,7 +7,9 @@ import { ClassMetaData, ClassMetadataService } from '../../../../services/class-
 import { TutorAvailability, TutorService } from '../../../../services/tutor.service';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
 import { Event,GroupedAvailabilities, EventService } from '../../../../services/event.service';
-// import { ToastrService } from 'ngx-toastr';
+import { NotificationsService } from '../../../../services/Shared/notifications.service';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
+import { NotificationTypes } from '../../../app.enums';
 
 @Component({
   selector: 'app-event',
@@ -61,8 +63,8 @@ export class EventComponent implements OnInit {
     private route: ActivatedRoute,
     private cdr:ChangeDetectorRef,
     private datePipe: DatePipe,
-    // private toastr: ToastrService
-
+    private notificationsService: NotificationsService,
+    private ngxSpinner: SpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -125,7 +127,7 @@ export class EventComponent implements OnInit {
   }
 
   public createEvent() {
-    this.ngxSpinnerService.show();
+    this.ngxSpinner.show();
 
     const filteredAvailability = this.tutorAvailabilities.find(x => x.Id == this.selectedEvent.AvailabilityId);
     const gapMinutes = this.getTimeGap(
@@ -139,11 +141,10 @@ export class EventComponent implements OnInit {
     const selectedDateUTC = this.convertToUTCDate(this.today, dateIn24Hours);
     this.selectedEvent.EventStartTime = selectedDateUTC;
     if (this.selectedEvent.Duration > gapMinutes) {
-      this.ngxSpinnerService.hide();
+      this.ngxSpinner.hide();
       return;
     }
     this.eventService.saveEvent(this.selectedEvent).subscribe(response => {
-      this.ngxSpinnerService.hide();
       if (response.Success) {
         this.selectedEvent = new Event();
         this.eventTitle = this.classMetaData.map(p => ({
@@ -152,11 +153,21 @@ export class EventComponent implements OnInit {
         }));
         this.selectedSubject = '';
         this.selectedEvent.AvailabilityId = "-1";
-        // this.toastr.success("Success", response.ResponseMessage);
+        this.notificationsService.showNotification(
+          'Success',
+          response.ResponseMessage,
+          NotificationTypes.Success
+        );
+        this.ngxSpinner.hide();
         this.getTutorEvents();
         
       } else {
-        // this.toastr.error('Error',response.ResponseMessage);
+        this.notificationsService.showNotification(
+          'Error',
+          response.ResponseMessage,
+          NotificationTypes.Error
+        );
+        this.ngxSpinner.hide();
       }
     });
   }
@@ -177,30 +188,35 @@ export class EventComponent implements OnInit {
   }
 
   public deleteClass(selectedClass: Event) {
-  this.ngxSpinnerService.show();
+  this.ngxSpinner.show();
   this.eventService.deleteEvent(selectedClass.Id!).subscribe(
     (response) => {
-      this.ngxSpinnerService.hide();
       if (response.Success) {
         this.getTutorEvents();
-        // this.toastr.success(
-        //   'Success',
-        //   response.ResponseMessage
-        // );
+        this.notificationsService.showNotification(
+          'Success',
+          response.ResponseMessage,
+          NotificationTypes.Success
+        );
+        this.ngxSpinner.hide();
       } else {
-        // this.toastr.error(
-        //   'Error',
-        //   response.ResponseMessage,
-        // );
+        this.notificationsService.showNotification(
+          'Error',
+          response.ResponseMessage,
+          NotificationTypes.Error
+        );
+        this.ngxSpinner.hide();
       }
     },
     (error) => {
       console.error('Error deleting student:', error);
       this.ngxSpinnerService.hide();
-      // this.toastr.show(
-      //   'Error',
-      //   'An error occurred while deleting student. Please try again later.',
-      // );
+      this.notificationsService.showNotification(
+        'Error',
+        "Error Happenes",
+        NotificationTypes.Error
+      );
+      this.ngxSpinner.hide();
     }
   );
   }
@@ -235,7 +251,7 @@ export class EventComponent implements OnInit {
   public formatTimeTo12Hours(hours: number, minutes: number): string {
     const period = hours >= 12 ? 'pm' : 'am';
     let formattedHours = hours % 12;
-    formattedHours = formattedHours ? formattedHours : 12; // the hour '0' should be '12'
+    formattedHours = formattedHours ? formattedHours : 12;
     const formattedMinutes = minutes.toString().padStart(2, '0');
     return `${formattedHours}:${formattedMinutes}${period}`;
   }
@@ -243,7 +259,6 @@ export class EventComponent implements OnInit {
   convertToUTCDate(localDate: Date, time24HourFormat: string): Date {
     const [hours, minutes] = time24HourFormat.split(':').map(Number);
 
-    // Create a new Date object based on the localDate
     const localDateTime = new Date(localDate);
     localDateTime.setHours(hours, minutes, 0, 0);
 
@@ -310,7 +325,7 @@ export class EventComponent implements OnInit {
     this.selectedEvent.Duration = -1;
     this.selectedEvent.EventStartTime = new Date();
     const times = [];
-    const disabledTimes: string[] = []; // Array to keep track of disabled times
+    const disabledTimes: string[] = [];
     const start = new Date();
     let availability = this.tutorAvailabilities.find(x => x.Id == availabilityId);
     start.setHours(availability!.OpenTimeHours, availability!.OpenTimeMinutes, 0, 0);
@@ -443,12 +458,11 @@ export class EventComponent implements OnInit {
   }
 
   public formateDateTo12Hours(value: any): string | null {
-    console.log('Original value:', value);
     if (value) {
-      const time = new Date(`1970-01-01T${value}`); // Create a Date object with time (assuming value is in HH:mm format)
-      return this.datePipe.transform(time, 'hh:mm a'); // Format to 12-hour time with AM/PM
+      const time = new Date(`1970-01-01T${value}`);
+      return this.datePipe.transform(time, 'hh:mm a');
     }
-    return null; // Return null or empty string if value is invalid
+    return null;
   }
 
   
