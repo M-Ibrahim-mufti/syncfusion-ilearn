@@ -73,7 +73,6 @@ import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 import { SubjectSelectionComponent } from './components/common_components/subject-selection/subject-selection.component';
- 
 
 
 export function getTokenFactory(injector: Injector) {
@@ -165,7 +164,8 @@ export function getTokenFactory(injector: Injector) {
     ButtonModule,
     DialogModule,
     DropDownListModule,
-    ScheduleModule 
+    ScheduleModule,
+    
   ],
   exports: [RouterModule],
   providers: [NgxSpinnerService, NotificationsService,ConfirmationService, JwtHelperService,

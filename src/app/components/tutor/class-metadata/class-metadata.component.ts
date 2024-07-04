@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FilterService, SelectItem } from 'primeng/api';
 import { NotificationTypes } from '../../../app.enums';
 import { PageSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
 @Component({
   selector: 'app-class-metadata',
@@ -27,7 +28,7 @@ export class ClassMetadataComponent {
     private tutorService: TutorService,
     private classMetaServices: ClassMetadataService,
     private notificationsService: NotificationsService,
-    private ngxSpinner: NgxSpinnerService
+    private ngxSpinner: SpinnerService
   ) {
     this.insertClassData = new ClassMetaData();
   }
@@ -80,7 +81,7 @@ export class ClassMetadataComponent {
   }
 
   public saveClassMetaData() {
-    console.log(this.insertClassData)
+    this.ngxSpinner.show();
     this.classMetaServices.saveClassMetaData(this.insertClassData).subscribe((response) => {
       if (response.Success) {
         this.notificationsService.showNotification(
@@ -88,6 +89,7 @@ export class ClassMetadataComponent {
           response.ResponseMessage,
           NotificationTypes.Success
         );
+        this.ngxSpinner.hide();
         this.addClassDialogueBox = false;
         this.insertClassData = new ClassMetaData();
       }
@@ -97,6 +99,7 @@ export class ClassMetadataComponent {
           response.ResponseMessage,
           NotificationTypes.Error
         );
+        this.ngxSpinner.hide();
       }
     })
   }
