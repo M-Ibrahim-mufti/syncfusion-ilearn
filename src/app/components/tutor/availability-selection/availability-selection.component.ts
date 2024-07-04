@@ -4,8 +4,10 @@ import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { addMonths, startOfDay } from 'date-fns';
 import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../app.enums';
-import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View } from '@syncfusion/ej2-angular-schedule';
+import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View, ActionEventArgs } from '@syncfusion/ej2-angular-schedule';
 import { ButtonComponent } from '@syncfusion/ej2-angular-buttons';
+import { DataManager,UrlAdaptor, ODataV4Adaptor, Query } from '@syncfusion/ej2-data';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-availability-selection',
@@ -14,7 +16,10 @@ import { ButtonComponent } from '@syncfusion/ej2-angular-buttons';
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService,TutorService]
 })
 export class AvailabilitySelectionComponent implements OnInit {
+  @ViewChild('scheduleObj') scheduleObj?: ScheduleComponent;
   public view: CalendarView = CalendarView.Month;
+  private dataManager!: DataManager;
+  public eventSettings!: EventSettingsModel;
   public viewDate: Date = new Date();
   public events: CalendarEvent[] = [];
   public allDays: any[] = [
@@ -41,38 +46,76 @@ export class AvailabilitySelectionComponent implements OnInit {
     timeRanges: [{ startTime: '', endTime: '' }]
   }));
 
-  @ViewChild("scheduleObj")
-  public scheduleObj?: ScheduleComponent;
   @ViewChild("addButton")
   public addButton?: ButtonComponent;
-  public selectedDate: Date = new Date(2018, 1, 15);
-  public scheduleViews: View[] = ['Day', 'Week', 'WorkWeek', 'Month'];
-  public eventSettings: EventSettingsModel = {
-      dataSource: [{
-          Id: 1,
-          Subject: 'Testing',
-          StartTime: new Date(2018, 1, 11, 9, 0),
-          EndTime: new Date(2018, 1, 11, 10, 0),
-          IsAllDay: false
-      }, {
-          Id: 2,
-          Subject: 'Vacation',
-          StartTime: new Date(2018, 1, 13, 9, 0),
-          EndTime: new Date(2018, 1, 13, 10, 0),
-          IsAllDay: false
-      }]
-  }
+  public selectedDate: Date = new Date(2024, 6, 15);
+  public scheduleViews: View[] = ['Month'];
+  // public eventSettings: EventSettingsModel = {
+  //     dataSource: [{
+  //         Id: "string1",
+  //         Subject: 'Testing',
+  //         Description: 'Testing Description',
+  //         StartTime: new Date(2024, 6, 14, 9, 0),
+  //         EndTime: new Date(2024, 6, 14, 10, 0),
+  //         IsAllDay: true
+  //     }, {
+  //         Id: "string2",
+  //         Subject: 'Vacation',
+  //         Description: 'Testing Description',
+  //         StartTime: new Date(2024, 6, 15, 0, 0),
+  //         EndTime: new Date(2024, 6, 15, 23, 59),
+  //         IsAllDay: false
+  //     }]
+  // }
 
-  constructor(private tutorService:TutorService, private notificationsService: NotificationsService) {}
+  constructor(private tutorService:TutorService, private notificationsService: NotificationsService) {  }
   
   ngOnInit(): void {
+    this.initializeDataManager();
     this.generateTimeOptions();
     this.loadAvalabilites();
+  }
+
+  private initializeDataManager() {
+    const headers = this.tutorService.getRequestHeaders();
+
+    this.dataManager = new DataManager({
+      headers: Object.keys(headers).map(key => ({ [key]: headers[key] })),
+      url: `${environment.BASE_API_PATH}/Tutor/fetch-availabilty-schedule`,
+      crudUrl: `${environment.BASE_API_PATH}/Tutor/save-schedule`,
+      //batchUrl: `${environment.BASE_API_PATH}/Tutor/save-schedule`,
+      // crudUrl: `${environment.BASE_API_PATH}/Tutor/fetch-availabilty-schedule`,
+      //url: 'https://services.syncfusion.com/angular/production/api/Schedule',
+      adaptor: new UrlAdaptor(),
+      timeZoneHandling: true,
+      crossDomain: true
+    });
+
+    this.eventSettings = { dataSource: this.dataManager }
   }
 
   public loadAvalabilites(){
     this.tutorService.getAllAvalabilities().subscribe( response => {
       this.selectedAvailability = response;
+      // let events: any[] = [];
+      // let i =0;
+      // this.allDays.forEach(day => {
+      //   const availabilities = this.selectedAvailability.filter(x => x.Day === day.value);
+      //   availabilities.forEach(availability => {
+      //     events.push({
+      //       Id: availability.Id,
+      //       Subject: `${availability.Day} Meeting`,
+      //       StartTime: new Date(2024, 6, i, availability.OpenTimeHours, availability.OpenTimeMinutes),
+      //       EndTime: new Date(2024, 6, i, availability.CloseTimeHours, availability.CloseTimeMinutes),
+      //       IsAllDay: false,
+      //       IsRepeat: true
+      //     });
+      //   });
+        
+      //   i++;
+      // });
+
+      // this.eventSettings.dataSource = events;
       this.selectedAvailability.forEach( value => {
         this.availability.forEach( (aval) => {
           if(aval.day == value.Day || aval.dayLabel == value.Day){
@@ -306,4 +349,41 @@ export class AvailabilitySelectionComponent implements OnInit {
   removeTimeRangeForDatePicker(dateIndex: number, timeIndex: number) {
     this.dateTimes[dateIndex].timeRanges.splice(timeIndex, 1);
   }
+
+  public onActionComplete(args: ActionEventArgs): void {
+    if (args.requestType === 'eventCreated' || args.requestType === 'eventChanged' || args.requestType === 'eventRemoved') {
+      this.saveSchedule();
+    }
+  }
+
+  public saveSchedule(): void {
+    const scheduleData = this.scheduleObj!.getEvents();
+    console.log(scheduleData)
+    const formattedData = scheduleData.map(event => ({
+      Id: event['Id'],
+      TutorId: 'your-tutor-id', // Replace with actual tutor ID if available
+      Subject: event['Subject'],
+      StartDate: event['StartTime'],
+      EndDate: event['EndTime'],
+      Day: event['StartTime'].getDay().toString(),
+      CloseTimeHours: event['EndTime'].getHours(),
+      CloseTimeMinutes: event['EndTime'].getMinutes(),
+      OpenTimeHours: event['StartTime'].getHours(),
+      OpenTimeMinutes: event['StartTime'].getMinutes()
+    }));
+    console.log(formattedData);
+    // this.tutorService.saveTutorSchedule(formattedData).subscribe(
+    //   response => {
+    //     if (response.success) {
+    //       this.toastr.success('Schedule saved successfully');
+    //     } else {
+    //       this.toastr.error(response.responseMessage);
+    //     }
+    //   },
+    //   error => {
+    //     this.toastr.error('An error occurred while saving the schedule');
+    //   }
+    // );
+  }
+
 }

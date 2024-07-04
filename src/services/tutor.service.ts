@@ -64,6 +64,15 @@ export class TutorService extends ServiceBase {
     return this.http.get<Tutor>(url, httpOptions)
   }
 
+  public getRequestHeaders(): { [key: string]: string } {
+    const headers = this.RequestHeaders().headers;
+    const headerObj: { [key: string]: string } = {};
+    headers.keys().forEach(key => {
+      headerObj[key] = headers.get(key)!;
+    });
+    return headerObj;
+  }
+
 }
 export interface SaveTutorAvailabilityRequest {
   Availabilities: TutorAvailability[];
