@@ -1,23 +1,22 @@
 import { Routes } from '@angular/router';
 import { AuthComponent } from './components/common_components/auth/auth.component';
-import { StudentComponent } from './components/registaration/student/student.component';
+import { StudentRegistrationComponent } from './components/registaration/student_registration/student-registration.component';
 import { DashboardComponent } from './components/common_components/dashboard/dashboard.component';
 import { AdminStudentComponent } from './components/admin/student/student.component';
 import { AuthGuard } from './authGuard';
-import { TutorComponent } from './components/registaration/tutor/tutor.component';
-import { TutorSelectionComponent } from './components/user/student/tutor-selection/tutor-selection.component';
+import { TutorRegistrationComponent } from './components/registaration/tutor_registration/tutor-registration.component';
+import { TutorSelectionComponent } from './components/student/tutor-selection/tutor-selection.component';
 import { AdminTutorComponent } from './components/admin/tutor/tutor.component';
-import { AvailabilitySelectionComponent } from './components/user/common_components/availability-selection/availability-selection.component';
-import { EventComponent } from './components/user/tutor/event/event.component';
-import { CreateEventComponent } from './components/user/tutor/create-event/create-event.component';
+import { AvailabilitySelectionComponent } from './components/tutor/availability-selection/availability-selection.component';
+import { EventComponent } from './components/tutor/event/event.component';
+import { CreateEventComponent } from './components/tutor/create-event/create-event.component';
 import { ZoomMeetingComponent } from './components/common_components/zoom-meeting/zoom-meeting.component';
-import { EventRequestComponent } from './components/user/common_components/event-request/event-request.component';
-import { ZoomConnectionComponent } from './components/user/tutor/zoom-connection/zoom-connection.component';
-import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
-import { TutorDetailComponent } from './components/user/tutor-detail/tutor-detail.component';
-import { ClassMetadataComponent } from './components/user/tutor/class-metadata/class-metadata.component';
-import { MeetingComponent } from './components/user/common_components/meeting/meeting.component';
-
+import { EventRequestComponent } from './components/common_components/event-request/event-request.component';
+import { ZoomConnectionComponent } from './components/tutor/zoom-connection/zoom-connection.component';
+import { UserProfileComponent } from './components/common_components/user-profile/user-profile.component';
+import { TutorDetailComponent } from './components/student/tutor-detail/tutor-detail.component';
+import { ClassMetadataComponent } from './components/tutor/class-metadata/class-metadata.component';
+import { MeetingComponent } from './components/common_components/meeting/meeting.component';
 
 
 
@@ -33,11 +32,11 @@ export const routes: Routes = [
     },
     { 
         path: 'register/student',
-        component: StudentComponent 
+        component: StudentRegistrationComponent 
     },
     { 
         path: 'register/tutor',
-        component: TutorComponent 
+        component: TutorRegistrationComponent 
     },
     {
         path: 'dashboard',
@@ -92,14 +91,6 @@ export const routes: Routes = [
         path: 'tutor/connect-zoom',
         component: ZoomConnectionComponent,
         canActivate: [AuthGuard]
-    },
-    { 
-        path: 'register/student', 
-        component: StudentComponent
-    },
-    { 
-        path: 'register/tutor', 
-        component: TutorComponent
     },
     { 
         path: 'dashboard', 

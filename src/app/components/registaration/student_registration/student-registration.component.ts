@@ -16,12 +16,12 @@ interface Subject {
 }
 
 @Component({
-  selector: 'app-student',
-  templateUrl: './student.component.html',
-  styleUrl: './student.component.css',
+  selector: 'app-student-registration',
+  templateUrl: './student-registration.component.html',
+  styleUrl: './student-registration.component.css',
   providers: [CloudinaryImageService, StudentService]
 })
-export class StudentComponent {
+export class StudentRegistrationComponent {
   public activeIndex: number = 0;
   public enableCropper: boolean = true;
   public currentSelectedImage?: File;  //this is the image that will be displayed on the image cropper

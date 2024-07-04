@@ -1,11 +1,11 @@
-import { NotificationsService } from './../../../../../services/Shared/notifications.service';
+import { NotificationsService } from './../../../../services/Shared/notifications.service';
 import { Component } from '@angular/core';
-import { StudentService } from '../../../../../services/student.service';
-import { ClassMetadataService, ClassMetaData } from '../../../../../services/class-metadata.service';
-import { TutorService } from '../../../../../services/tutor.service';
+import { StudentService } from '../../../../services/student.service';
+import { ClassMetadataService, ClassMetaData } from '../../../../services/class-metadata.service';
+import { TutorService } from '../../../../services/tutor.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FilterService, SelectItem } from 'primeng/api';
-import { NotificationTypes } from '../../../../app.enums';
+import { NotificationTypes } from '../../../app.enums';
 import { PageSettingsModel } from '@syncfusion/ej2-angular-grids';
 
 @Component({

@@ -7,12 +7,12 @@ import { SaveTutorRequest, TutorService, TutorSubject } from '../../../../servic
 import { CloudinaryImageService } from '../../../../services/cloudinary-image.service';
 
 @Component({
-  selector: 'app-tutor',
-  templateUrl: './tutor.component.html',
-  styleUrl: './tutor.component.css',
+  selector: 'app-tutor-registration',
+  templateUrl: './tutor-registration.component.html',
+  styleUrl: './tutor-registration.component.css',
   providers: [TutorService]
 })
-export class TutorComponent {
+export class TutorRegistrationComponent {
   tutor: SaveTutorRequest = {} as SaveTutorRequest;
   activeIndex: number = 0;
   currentSelectedImage?: File;

@@ -1,16 +1,16 @@
 import { InputTextModule } from 'primeng/inputtext';
-import { ClassMetadataService, ClassMetaData } from './../../../../../services/class-metadata.service';
+import { ClassMetadataService, ClassMetaData } from './../../../../services/class-metadata.service';
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Event, EventService, GroupedAvailabilities } from '../../../../../services/event.service';
-import { TutorAvailability, TutorService } from '../../../../../services/tutor.service';
+import { Event, EventService, GroupedAvailabilities } from '../../../../services/event.service';
+import { TutorAvailability, TutorService } from '../../../../services/tutor.service';
 import { SelectItem } from 'primeng/api';
-import { AuthConfig, AuthService } from '../../../../../services/auth.service';
-import { NotificationsService } from '../../../../../services/Shared/notifications.service';
-import { NotificationTypes } from '../../../../app.enums';
-import { StudentService } from '../../../../../services/student.service';
+import { AuthConfig, AuthService } from '../../../../services/auth.service';
+import { NotificationsService } from '../../../../services/Shared/notifications.service';
+import { NotificationTypes } from '../../../app.enums';
+import { StudentService } from '../../../../services/student.service';
 import { ActivatedRoute } from '@angular/router';
-import { GroupByPipe } from '../../../../pipes/GroupBy.pipe';
+import { GroupByPipe } from '../../../pipes/GroupBy.pipe';
 
 @Component({
   selector: 'app-create-event',

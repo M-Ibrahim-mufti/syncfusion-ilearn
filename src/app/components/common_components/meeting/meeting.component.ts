@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'angular-calendar';
-import { ZoomMeetingService, ZoomMeetingDetail, StudentMeeting } from '../../../../../services/zoom-meeting.service';
-import { AuthService } from '../../../../../services/auth.service';
+import { ZoomMeetingService, ZoomMeetingDetail, StudentMeeting } from '../../../../services/zoom-meeting.service';
+import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

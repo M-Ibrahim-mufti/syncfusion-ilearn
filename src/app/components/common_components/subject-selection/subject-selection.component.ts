@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SelectItem } from 'primeng/api';
-import { TutorService } from '../../../../../services/tutor.service';
+import { TutorService } from '../../../../services/tutor.service';
 
 
 @Component({

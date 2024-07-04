@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
-import { AuthConfig, AuthService } from '../../../../../services/auth.service';
-import { ZoomMeetingService } from '../../../../../services/zoom-meeting.service';
+import { AuthConfig, AuthService } from '../../../../services/auth.service';
+import { ZoomMeetingService } from '../../../../services/zoom-meeting.service';
 
 @Component({
   selector: 'app-zoom-connection',

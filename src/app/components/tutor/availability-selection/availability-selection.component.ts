@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SaveTutorAvailabilityRequest, TutorAvailability, TutorService } from '../../../../../services/tutor.service';
+import { SaveTutorAvailabilityRequest, TutorAvailability, TutorService } from '../../../../services/tutor.service';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { addMonths, startOfDay } from 'date-fns';
-import { NotificationsService } from '../../../../../services/Shared/notifications.service';
-import { NotificationTypes } from '../../../../app.enums';
+import { NotificationsService } from '../../../../services/Shared/notifications.service';
+import { NotificationTypes } from '../../../app.enums';
 import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View } from '@syncfusion/ej2-angular-schedule';
 import { ButtonComponent } from '@syncfusion/ej2-angular-buttons';
 

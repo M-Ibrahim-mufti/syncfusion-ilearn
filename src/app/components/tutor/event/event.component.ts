@@ -1,15 +1,15 @@
 import { ConfirmationService } from 'primeng/api';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { EventService } from '../../../../../services/event.service';
-import { Event } from '../../../../../services/event.service';
+import { EventService } from '../../../../services/event.service';
+import { Event } from '../../../../services/event.service';
 import { Table } from 'primeng/table';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NotificationsService } from '../../../../../services/Shared/notifications.service';
-import { NotificationTypes } from '../../../../app.enums';
-import { AuthConfig, AuthService } from '../../../../../services/auth.service';
-import { ZoomMeetingService } from '../../../../../services/zoom-meeting.service';
-import { RequestBooking, SlotBookingService } from '../../../../../services/slot-booking.service';
+import { NotificationsService } from '../../../../services/Shared/notifications.service';
+import { NotificationTypes } from '../../../app.enums';
+import { AuthConfig, AuthService } from '../../../../services/auth.service';
+import { ZoomMeetingService } from '../../../../services/zoom-meeting.service';
+import { RequestBooking, SlotBookingService } from '../../../../services/slot-booking.service';
 
 @Component({
   selector: 'app-event',

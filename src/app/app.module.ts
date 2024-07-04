@@ -18,7 +18,7 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { AuthConfig, AuthService } from '../services/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { StudentComponent } from './components/registaration/student/student.component';
+import { StudentRegistrationComponent } from './components/registaration/student_registration/student-registration.component';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -45,26 +45,25 @@ import { TabViewModule } from 'primeng/tabview';
 import { AuthGuard } from './authGuard';
 import { DragDropModule } from 'primeng/dragdrop';
 import { RippleModule } from 'primeng/ripple';
-import { TutorComponent } from './components/registaration/tutor/tutor.component';
+import { TutorRegistrationComponent } from './components/registaration/tutor_registration/tutor-registration.component';
 
-import { AvailabilitySelectionComponent } from './components/user/common_components/availability-selection/availability-selection.component';
-import { TutorSelectionComponent } from './components/user/student/tutor-selection/tutor-selection.component';
+import { AvailabilitySelectionComponent } from './components/tutor/availability-selection/availability-selection.component';
+import { TutorSelectionComponent } from './components/student/tutor-selection/tutor-selection.component';
 import { AdminTutorComponent } from './components/admin/tutor/tutor.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { EventComponent } from './components/user/tutor/event/event.component';
-import { CreateEventComponent } from './components/user/tutor/create-event/create-event.component';
-import { SubjectSelectionComponent } from './components/user/common_components/subject-selection/subject-selection.component';
+import { EventComponent } from './components/tutor/event/event.component';
+import { CreateEventComponent } from './components/tutor/create-event/create-event.component';
 // import { DialogModule } from 'primeng/dialog';
-import { EventRequestComponent } from './components/user/common_components/event-request/event-request.component';
-import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
+import { EventRequestComponent } from './components/common_components/event-request/event-request.component';
+import { UserProfileComponent } from './components/common_components/user-profile/user-profile.component';
 import { GroupByPipe } from './pipes/GroupBy.pipe';
-import { ZoomConnectionComponent } from './components/user/tutor/zoom-connection/zoom-connection.component';
-import { TutorDetailComponent } from './components/user/tutor-detail/tutor-detail.component';
-import { ClassMetadataComponent } from './components/user/tutor/class-metadata/class-metadata.component'
-import { MeetingComponent } from './components/user/common_components/meeting/meeting.component';
+import { ZoomConnectionComponent } from './components/tutor/zoom-connection/zoom-connection.component';
+import { TutorDetailComponent } from './components/student/tutor-detail/tutor-detail.component';
+import { ClassMetadataComponent } from './components/tutor/class-metadata/class-metadata.component';
+import { MeetingComponent } from './components/common_components/meeting/meeting.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 //add import of synfussions
@@ -73,6 +72,7 @@ import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
+import { SubjectSelectionComponent } from './components/common_components/subject-selection/subject-selection.component';
  
 
 
@@ -94,12 +94,11 @@ export function getTokenFactory(injector: Injector) {
     AsideBarComponent,
     AppComponent,
     AuthComponent,
-    StudentComponent,
+    StudentRegistrationComponent,
     DashboardComponent,
     AdminStudentComponent,
     AdminTutorComponent,
-    TutorComponent,
-    SubjectSelectionComponent,
+    TutorRegistrationComponent,
     AvailabilitySelectionComponent,
     TutorSelectionComponent,
     NotificationsComponent,
@@ -111,7 +110,8 @@ export function getTokenFactory(injector: Injector) {
     GroupByPipe,
     TutorDetailComponent,
     ClassMetadataComponent,
-    MeetingComponent
+    MeetingComponent,
+    SubjectSelectionComponent
   ],
   imports: [
     BrowserModule,

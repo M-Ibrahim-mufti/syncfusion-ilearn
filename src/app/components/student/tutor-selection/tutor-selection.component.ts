@@ -1,9 +1,9 @@
-import { Tutor, TutorRequest, TutorService, TutorSubject, ShowTutor, TutorAvailability } from './../../../../../services/tutor.service';
+import { Tutor, TutorRequest, TutorService, TutorSubject, ShowTutor, TutorAvailability } from './../../../../services/tutor.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService, SelectItem } from 'primeng/api';
-import { StudentService } from '../../../../../services/student.service';
+import { StudentService } from '../../../../services/student.service';
 @Component({
   selector: 'app-tutor-selection',
   templateUrl: './tutor-selection.component.html',

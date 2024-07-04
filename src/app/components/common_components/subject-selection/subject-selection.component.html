@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-md-12">
+      <button type="button" pButton icon="fa fa-plus" label="Add Subject" class="ms-2 p-button-outlined" (click)="addSubject()"></button>
+    </div>
+    <div class="col-md-4 my-3" *ngFor="let subject of selectedSubjects; let i = index">
+      <div class="card">
+        <div class="card-header">
+          <p-button icon="pi pi-times" [outlined]="true" severity="danger" (click)="removeSubject(i)" />
+        </div>
+        <div class="card-body">
+          <div class="col-12">
+            <label for="subjectDropdown{{i}}">Select Subject</label>
+            <p-dropdown [options]="subjects" [(ngModel)]="subject.selectedSubject" optionLabel="Name" placeholder="Select a Subject" [ngModelOptions]="{standalone: true}" (onChange)="updateSelectedSubjects()"></p-dropdown>
+          </div>
+          <div class="col-12 my-3" *ngIf="subject.selectedSubject">
+            <label for="gradeMultiSelect{{i}}">Select Grade(s)</label>
+            <p-multiSelect [options]="getGrades(subject.selectedSubject)" [(ngModel)]="subject.selectedGrades" optionLabel="GradeLevel" placeholder="Select Grade(s)" [ngModelOptions]="{standalone: true}" (onChange)="updateSelectedSubjects()"></p-multiSelect>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AuthConfig, AuthService } from '../../../../../services/auth.service';
-import { RequestBooking, SlotBookingService } from '../../../../../services/slot-booking.service';
+import { AuthConfig, AuthService } from '../../../../services/auth.service';
+import { RequestBooking, SlotBookingService } from '../../../../services/slot-booking.service';
 
 @Component({
   selector: 'app-event-request',
