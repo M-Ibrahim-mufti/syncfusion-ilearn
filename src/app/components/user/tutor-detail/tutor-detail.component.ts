@@ -29,7 +29,6 @@ export class TutorDetailComponent {
   public Subjects!: SelectItem[];
   public events: Event[] = [];
   public tutorId!: string;
-  public tutorAvailabilities: TutorAvailability[] = [];
   public groupedAvailabilities: GroupedAvailabilities = [];
   public tutorGrades:any[] = []
   public totalGrade:any[] = []

@@ -245,3 +245,30 @@
         </div>
     </div>
 </div>
+<div *ngIf="tutor" class="row g-5 mx-3 my-2 rounded-4">
+    <div class="ps-0 d-flex col-md-12 gap-4">
+        <div class="rounded-4 col-md-4 bg-white">
+            <div class="py-3 mt-0 border-bottom border-1 border-dull-white">
+                <h5 class="fw-bold mx-3"> {{tutor.Name}} Availabilities </h5>
+            </div>
+            <div class="card-body pt-2">
+                <div class="d-flex align-items-center pt-2 mb-3" *ngFor="let availability of sortedAvailabilities">
+                    <span class="bullet bullet-vertical h-40px bg-primary"></span>
+                    <div class="flex-grow-1 ms-3">
+                        <span class="text-muted text-hover-primary fw-bolder fs-6">
+                            {{availability.Day + (availability.Day === 'Wed' ? "enesday" : availability.Day === 'Thu' ?  "rsday" : availability.Day === 'Tue' ? "sday"  : availability.Day === 'Sat' ? 'urday' : "day"  ) }}
+                        </span>
+                        <span class="text-muted fw-semibold d-block">
+                            Time frame starts from {{availability.OpenTimeHours}}:{{availability.OpenTimeMinutes < 10 ? '0' + availability.OpenTimeMinutes : availability.OpenTimeMinutes}} — {{availability.CloseTimeHours}}:{{availability.CloseTimeMinutes < 10 ? '0' + availability.CloseTimeMinutes : availability.CloseTimeMinutes}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rounded-4 col-md-8 bg-white">
+            <div class="py-3 mt-0 border-bottom border-1 border-dull-white">
+                <h5 class="fw-bold mx-3"> {{tutor.Name}} Classes </h5>
+            </div>
+        </div>  
+    </div>
+</div>
