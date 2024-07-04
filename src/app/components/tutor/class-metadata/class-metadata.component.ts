@@ -8,6 +8,7 @@ import { FilterService, SelectItem } from 'primeng/api';
 import { NotificationTypes } from '../../../app.enums';
 import { PageSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
+import { DialogComponent, DialogUtility } from '@syncfusion/ej2-angular-popups';
 
 @Component({
   selector: 'app-class-metadata',
@@ -23,6 +24,7 @@ export class ClassMetadataComponent {
   public insertClassData: ClassMetaData;
   public pageSettings?: PageSettingsModel;
   public dropdownFields: Object = { text: 'label', value: 'value' };
+  public dialogInstance: any;
 
   constructor(private studentService: StudentService,
     private tutorService: TutorService,
@@ -112,6 +114,18 @@ export class ClassMetadataComponent {
   }
 
   public deleteClassMetaData(selectedData: ClassMetaData) {
+    this.dialogInstance = DialogUtility.confirm({
+      title: 'Delete Confirmation',
+      content: `Are you sure you want to delete this class metadata with Title ${selectedData.Title}?`,
+      okButton: { text: 'Yes', click: this.confirmDelete.bind(this, selectedData) },
+      cancelButton: { text: 'No' },
+      showCloseIcon: true,
+      closeOnEscape: true,
+      animationSettings: { effect: 'Zoom' }
+    });
+  } 
+  
+  private confirmDelete(selectedData: ClassMetaData): void {
     this.ngxSpinner.show();
     this.classMetaServices.deleteClassMetaData(selectedData.Id).subscribe(
       (response) => {
@@ -130,19 +144,21 @@ export class ClassMetadataComponent {
             NotificationTypes.Error
           );
         }
+        this.dialogInstance.hide();
       },
       (error) => {
-        console.error('Error deleting student:', error);
+        console.error('Error deleting class metadata:', error);
         this.ngxSpinner.hide();
         this.notificationsService.showNotification(
           'Error',
-          'An error occurred while deleting student. Please try again later.',
+          'An error occurred while deleting class metadata. Please try again later.',
           NotificationTypes.Error
         );
+        this.dialogInstance.hide();
       }
     );
   }
-
+  
   onDialogClose() {
     this.addClassDialogueBox = false;
     this.insertClassData.SubjectId = '';
