@@ -56,7 +56,7 @@ export class TutorDetailComponent {
       const data: any[] = [];
       this.events!.forEach(x => {
         const eventdate = new Date(x.EventStartTime)
-        if (eventdate > todayDateTime) {
+        if (eventdate < todayDateTime) {
           data.push(x)
         }
       })

@@ -268,31 +268,64 @@
         <div class="rounded-4 col-md-8 bg-white">
             <div class="py-3 mt-0 border-bottom border-1 border-dull-white">
               <h5 class="fw-bold mx-3">{{ tutor.Name }} Classes</h5>
-              <ejs-grid [dataSource]="events" allowPaging="true" height="400">
-                <e-columns>
-                  <e-column field="Name" headerText="Event" width="200"></e-column>
-                  <e-column field="SubjectId" headerText="Subject" width="120" [template]="subjectTemplate"></e-column>
-                  <e-column field="Duration" headerText="Duration" width="140"></e-column>
-                  <e-column field="EventStartTime" headerText="Start Time" width="140" [template]="startTimeTemplate"></e-column>
-                  <e-column headerText="Action" width="100" [template]="actionTemplate"></e-column>
-                </e-columns>
-                  <ng-template #subjectTemplate let-data>
-                    <div class="p-0 text-start text-muted fw-bold">{{ getEventSubject(data.SubjectId) }}</div>
-                  </ng-template>
-                  <ng-template #startTimeTemplate let-data>
-                    <div class="p-0 text-start text-muted fw-bolder fs-6 pe-0">{{ data.EventStartTime | date: 'yyyy/MM/dd HH:mm' }}</div>
-                  </ng-template>
-                  <ng-template #actionTemplate let-data>
+              <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='events' [allowPaging]="events.length > 10 ? true : false" [pageSettings]="{ pageSize: 10 }" [allowSorting]="true">
+                    <e-columns >
+                        <e-column field='Name' headerText='Name' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate"  >
+                            <ng-template #cellTemplate let-data let-column>
+                                <span class="fw-bold text-muted-dark py-3">{{ data.Name }}</span>
+                            </ng-template>
+                        </e-column>
+                        <e-column field='SubjectId' headerText='Subject Name' width='250' textAlign='left' [headerTemplate]='headerTemplate' [template]="subjectNameTemplate">
+                            <ng-template #subjectNameTemplate let-data let-column>
+                                <span class="fw-bold text-muted py-3">{{ getEventSubject(data.SubjectId) }}</span>
+                            </ng-template>
+                        </e-column>
+                        <e-column field='Duration' headerText='Duration' width='120' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
+                            <ng-template #cellTemplate2 let-data let-column>
+                                <span class="fw-bold text-muted py-3">{{ data.Duration }}</span>
+                            </ng-template>
+                        </e-column>
+                        <e-column field='EventStartTime' headerText='Start Time' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
+                            <ng-template #cellTemplate2 let-data let-column>
+                                <span class="fw-bold text-muted py-3">{{ data.EventStartTime | date: 'yyyy/MM/dd HH:mm' }}</span>
+                            </ng-template>
+                        </e-column>
+                        <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]="headerTemplate" [template]="cellTemplate" [template]='actionTemplate'></e-column>
+                    </e-columns>
+                </ejs-grid>
+                <div *ngIf="events.length === 0" class="text-center">
+                    <p class="text-muted fs-5">No classes available.</p>
+                </div>
+                <ng-template #headerTemplate let-column>
+                    <span class="text-muted fw-bolder fs-6">{{column.headerText}}</span>
+                </ng-template>
+                <ng-template #actionTemplate let-data>
                     <button ejs-button cssClass="e-info text-white" (click)="enRollClass(data)">
                         Enroll
                       </button>
                   </ng-template>
-              </ejs-grid>
-              <div *ngIf="events.length === 0" class="text-center">
-                <p class="text-muted fs-5">No classes available.</p>
-              </div>
             </div>
-          </div>
-          
+        </div>
+        
     </div>
 </div>
+<!-- <ejs-grid [dataSource]="events" allowPaging="true" height="400">
+  <e-columns>
+    <e-column field="Name" headerText="Event" width="200"></e-column>
+    <e-column field="SubjectId" headerText="Subject" width="120" [template]="subjectTemplate"></e-column>
+    <e-column field="Duration" headerText="Duration" width="140"></e-column>
+    <e-column field="EventStartTime" headerText="Start Time" width="140" [template]="startTimeTemplate"></e-column>
+    <e-column headerText="Action" width="100" [template]="actionTemplate"></e-column>
+  </e-columns>
+    <ng-template #subjectTemplate let-data>
+      <div class="p-0 text-start text-muted fw-bold">{{ getEventSubject(data.SubjectId) }}</div>
+    </ng-template>
+    <ng-template #startTimeTemplate let-data>
+      <div class="p-0 text-start text-muted fw-bolder fs-6 pe-0">{{ data.EventStartTime | date: 'yyyy/MM/dd HH:mm' }}</div>
+    </ng-template>
+    <ng-template #actionTemplate let-data>
+      <button ejs-button cssClass="e-info text-white" (click)="enRollClass(data)">
+          Enroll
+        </button>
+    </ng-template>
+</ejs-grid> -->

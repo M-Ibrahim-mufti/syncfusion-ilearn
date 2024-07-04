@@ -192,6 +192,10 @@ body {
   color: #b5b5c3!important;
 }
 
+.text-muted-dark {
+  color: #999999!important;
+}
+
 .bg-secondary {
   background-color: #dbdfe9!important;
 }

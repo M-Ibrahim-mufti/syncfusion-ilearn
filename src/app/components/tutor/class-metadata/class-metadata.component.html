@@ -1,25 +1,41 @@
-<div class="container">
-    <div class="d-flex align-items-center justify-content-between mb-3">
+<div *ngIf="classMetaData.length > 0" class="row g-5 mx-3 my-4 my-2 bg-white rounded-3 ">
+    <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
         <div>
-            <h4 class="text-muted fw-bold mb-0">Class Metadata</h4>
-            <p class="text-muted">Manage class information here.</p>
+            <h4 class="text-dark fw-bold mb-0">Class Metadata</h4>
         </div>
         <div class="col-md-auto">
-            <button ejs-button cssClass="e-info" iconCss="fa fa-plus" (click)="addNewClass()">
-                Add New
-            </button>
+            <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="addNewClass()">  Add New </button>
         </div>
     </div>
-    <div class="col-md-12">
-        <ejs-grid [dataSource]='classMetaData' [allowPaging]="true" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
-            <e-columns>
-                <e-column class="py-5" field='Title' headerText='Title' width='150' textAlign='Center' [allowSorting]="true"></e-column>
-                <e-column field='Description' headerText='Description' width='250' textAlign='Center' [allowSorting]="true"></e-column>
-                <e-column field='GradeLevel' headerText='Grade Level' width='120' textAlign='Center' [allowSorting]="true"></e-column>
-                <e-column field='SubjectName' headerText='Subject Name' width='150' textAlign='Center' [allowSorting]="true"></e-column>
-                <e-column headerText='Action' width='120' textAlign='Center' [template]='actionTemplate'></e-column>
+    <div class="col-md-12 mt-2 p-0">
+        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='classMetaData' [allowPaging]="classMetaData.length > 10" [pageSettings]="{ pageSize: 10 }" [allowSorting]="true">
+            <e-columns >
+                <e-column field='title' headerText='Title' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate"  >
+                    <ng-template #cellTemplate let-data let-column>
+                        <span class="fw-bold text-muted-dark py-3">{{ data.Title }}</span>
+                    </ng-template>
+                </e-column>
+                <e-column field='description' headerText='Description' width='250' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
+                    <ng-template #cellTemplate2 let-data let-column>
+                        <span class="fw-bold text-muted py-3">{{ data.Description }}</span>
+                    </ng-template>
+                </e-column>
+                <e-column field='gradeLevel' headerText='Grade Level' width='120' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
+                    <ng-template #cellTemplate2 let-data let-column>
+                        <span class="fw-bold text-muted py-3">{{ data.GradeLevel }}</span>
+                    </ng-template>
+                </e-column>
+                <e-column field='subjectName' headerText='Subject Name' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
+                    <ng-template #cellTemplate2 let-data let-column>
+                        <span class="fw-bold text-muted py-3">{{ data.SubjectName }}</span>
+                    </ng-template>
+                </e-column>
+                <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]="headerTemplate" [template]="cellTemplate" [template]='actionTemplate'></e-column>
             </e-columns>
         </ejs-grid>
+        <ng-template #headerTemplate let-column>
+            <span class="text-muted fw-bolder fs-6">{{column.headerText}}</span>
+        </ng-template>
     </div>
 </div>
 

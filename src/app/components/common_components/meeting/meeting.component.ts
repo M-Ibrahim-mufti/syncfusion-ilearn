@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CalendarModule } from 'angular-calendar';
 import { ZoomMeetingService, ZoomMeetingDetail, StudentMeeting } from '../../../../services/zoom-meeting.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -8,9 +7,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-meeting',
   templateUrl: './meeting.component.html',
-  styleUrls: ['./meeting.component.css'],
+  styleUrls: ['./meeting.component.scss'],
 })
-export class MeetingComponent implements OnInit {
+export class MeetingsComponent implements OnInit {
   todayDate = new Date();
   startTime?: string;
   isTeacher: boolean = false;
@@ -21,9 +20,10 @@ export class MeetingComponent implements OnInit {
   tomorrowMeetings: ZoomMeetingDetail[] = [];
   futureMeetings: ZoomMeetingDetail[] = [];
   previousMeetings: ZoomMeetingDetail[] = [];
+  public activateBtn: boolean = false
   studentMeetings:any;
 
-  constructor(private router: Router,private zoomService: ZoomMeetingService, private authService: AuthService) {
+  constructor(private router: Router,private zoomService: ZoomMeetingService, private authService: AuthService, private cdr: ChangeDetectorRef) {
     this.isTeacher = this.authService.isTeacher()
     this.isStudent = this.authService.isStudent()
   }
@@ -36,7 +36,8 @@ export class MeetingComponent implements OnInit {
     this.zoomService.getMeetings().subscribe(response => {      
       this.meetings = response;
       this.filterMeetingsForUpcoming();
-      this.filterMeetingsForPrevious()
+      this.filterMeetingsForPrevious(); 
+      this.cdr.detectChanges();
     });
   }
 
@@ -105,4 +106,16 @@ export class MeetingComponent implements OnInit {
       return true
     return false
   }
+
+  toggleContentPreview() {
+    this.activateBtn = !this.activateBtn
+  }
+
 }
+
+
+
+
+
+
+
