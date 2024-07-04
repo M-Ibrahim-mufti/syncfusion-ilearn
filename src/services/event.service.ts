@@ -40,12 +40,12 @@ export class EventService extends ServiceBase {
     return this.http.post<ResponseObject>(url, model, httpOptions);
   }
 
-  public removeEvent(id:string): Observable<ResponseObject> {
+  public deleteEvent(id:string): Observable<ResponseObject> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Event';
-    const method: string = '/delete';    
+    const method: string = '/delete/' + id;    
     const url: string = environment.BASE_API_PATH + api + method;
-    return this.http.delete<ResponseObject>(url+`?Id=${id}`, httpOptions);
+    return this.http.delete<ResponseObject>(url, httpOptions);
   }
 
 }
