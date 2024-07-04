@@ -164,4 +164,9 @@ export class ClassMetadataComponent {
     this.insertClassData.SubjectId = '';
     this.insertClassData = new ClassMetaData();
   }
+
+  checkData(data:any) {
+    console.log(data);
+  }
 }
+

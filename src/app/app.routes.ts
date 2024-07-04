@@ -16,7 +16,7 @@ import { ZoomConnectionComponent } from './components/tutor/zoom-connection/zoom
 import { UserProfileComponent } from './components/common_components/user-profile/user-profile.component';
 import { TutorDetailComponent } from './components/student/tutor-detail/tutor-detail.component';
 import { ClassMetadataComponent } from './components/tutor/class-metadata/class-metadata.component';
-import { MeetingComponent } from './components/common_components/meeting/meeting.component';
+import { MeetingsComponent } from './components/common_components/meeting/meeting.component';
 
 
 
@@ -149,6 +149,6 @@ export const routes: Routes = [
     },
     {
         path: 'meeting',
-        component:MeetingComponent
+        component:MeetingsComponent
     }
 ];

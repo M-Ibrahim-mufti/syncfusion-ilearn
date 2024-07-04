@@ -63,7 +63,7 @@ import { GroupByPipe } from './pipes/GroupBy.pipe';
 import { ZoomConnectionComponent } from './components/tutor/zoom-connection/zoom-connection.component';
 import { TutorDetailComponent } from './components/student/tutor-detail/tutor-detail.component';
 import { ClassMetadataComponent } from './components/tutor/class-metadata/class-metadata.component';
-import { MeetingComponent } from './components/common_components/meeting/meeting.component';
+import { MeetingsComponent } from './components/common_components/meeting/meeting.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 //add import of synfussions
@@ -109,7 +109,7 @@ export function getTokenFactory(injector: Injector) {
     GroupByPipe,
     TutorDetailComponent,
     ClassMetadataComponent,
-    MeetingComponent,
+    MeetingsComponent,
     SubjectSelectionComponent
   ],
   imports: [
