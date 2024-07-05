@@ -1,10 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { Table } from 'primeng/table';
 import { Student, StudentRegistrationModel, StudentService } from '../../../../services/student.service';
-import { ConfirmationService } from 'primeng/api';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../app.enums';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
+import { DialogUtility } from '@syncfusion/ej2-angular-popups';
 
 @Component({
   selector: 'app-student',
@@ -13,26 +12,24 @@ import { NotificationTypes } from '../../../app.enums';
   providers: [StudentService]
 })
 export class AdminStudentComponent {
-  @ViewChild('dt1') dt1: Table | undefined;
-
   students!: Student[];
   studentDialogue:boolean = false
   studentSubject:any[] = []
+  dialogInstance!: any;
 
   constructor(private studentService: StudentService,
-    private confirmationService: ConfirmationService,
     private notificationsService: NotificationsService,
-    private ngxSpinnerService: NgxSpinnerService) { }
+    private spinnerService: SpinnerService) { }
 
   ngOnInit() {
     this.getStudentList();
   }
 
   public getStudentList() {
-    this.ngxSpinnerService.show();
+    this.spinnerService.show();
     this.studentService.getStudent().subscribe({
       next: (response: any[]) => {
-        this.ngxSpinnerService.hide();
+        this.spinnerService.hide();
         this.students = response;
         console.log(this.students)
       },
@@ -46,15 +43,22 @@ export class AdminStudentComponent {
   }
 
   public blockStudent(selectedStudent: Student) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete student?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.ngxSpinnerService.show();
+    this.dialogInstance = DialogUtility.confirm({
+      title: 'Delete Confirmation',
+      content: `Are you sure you want to delete ${selectedStudent.FullName}?`,
+      okButton: { text: 'Yes', click: this.confirmDelete.bind(this, selectedStudent) },
+      cancelButton: { text: 'No' },
+      showCloseIcon: true,
+      closeOnEscape: true,
+      animationSettings: { effect: 'Zoom' }
+    });
+  } 
+
+  public confirmDelete(selectedStudent: Student) {
+    this.spinnerService.show();
         this.studentService.blockStudent(selectedStudent.Id).subscribe(
           (response) => {
-            this.ngxSpinnerService.hide();
+            this.spinnerService.hide();
             if (response.Success) {
               this.notificationsService.showNotification(
                 'Success',
@@ -73,7 +77,7 @@ export class AdminStudentComponent {
           },
           (error) => {
             console.error('Error deleting student:', error);
-            this.ngxSpinnerService.hide();
+            this.spinnerService.hide();
             this.notificationsService.showNotification(
               'Error',
               'An error occurred while deleting student. Please try again later.',
@@ -82,22 +86,10 @@ export class AdminStudentComponent {
           }
         );
       }
-    });
-  }
-
-
-  onInput(event: any): void {
-    const value = event.target.value;
-    if (this.dt1) {
-      this.dt1.filterGlobal(value, 'contains');
-    }
-  }
-
+  
   public viewSubjectBox(subjects:any){
     this.studentDialogue = true;
     this.studentSubject = subjects;
-    console.log(this.studentSubject);
-    
+    console.log(this.studentSubject);    
   }
-
 }

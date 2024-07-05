@@ -253,7 +253,7 @@ export class EventComponent implements OnInit {
     const period = hours >= 12 ? 'pm' : 'am';
     let formattedHours = hours % 12;
     formattedHours = formattedHours ? formattedHours : 12;
-    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedMinutes = minutes?.toString().padStart(2, '0');
     return `${formattedHours}:${formattedMinutes}${period}`;
   }
 
