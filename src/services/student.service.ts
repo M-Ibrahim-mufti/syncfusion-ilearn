@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { AuthService, ResponseObject } from './auth.service';
-import { SelectItem } from 'primeng/api';
+import { SelectItem } from './event.service';
 
 @Injectable({
   providedIn: 'root'

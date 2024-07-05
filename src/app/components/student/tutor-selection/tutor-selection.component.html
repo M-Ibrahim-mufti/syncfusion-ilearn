@@ -1,6 +1,6 @@
 <div class="row g-5 mx-1 my-2 bg-white rounded-2">
     <div class="m-0 d-flex justify-content-between py-2 align-items-center">
-        <h2 class="d-inline-flex align-items-center gap-3 my-3 fw-bold text-dark d-block fs-1 ">Available Tutors <span *ngIf="availableTutor.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{availableTutor.length}}</span></h2>
+        <h2 class="d-inline-flex align-items-center gap-3 my-3 fw-bold text-dark d-block fs-4 ">Available Tutors <span *ngIf="availableTutor.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{availableTutor.length}}</span></h2>
     </div>
 </div>
 <div class="row g-5 mx-1 my-2 bg-white rounded-2">
@@ -39,7 +39,9 @@
             </select>
         </div>
         <div class="col-md-1 filter-shadows rounded-5" style="border-radius: 8px;">
-            <button (click)="clearAllFilters($event)" class="h-100 w-100 text-center btn btn-close-white border border-dull-white">Clear</button>
+            <button (click)="clearAllFilters($event)" class="h-100 w-100 text-center btn btn-close-white border border-dull-white">
+                <i class="fa fa-filter"></i>
+                 Clear</button>
         </div>
     </div>
 </div>

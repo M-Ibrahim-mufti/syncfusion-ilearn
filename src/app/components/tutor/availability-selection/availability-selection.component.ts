@@ -124,7 +124,7 @@ export class AvailabilitySelectionComponent implements OnInit {
             if(aval.timeRanges[0].startTime == ''){
               aval.timeRanges.shift();
             }
-            aval.timeRanges.push({ startTime: this.formatTimeTo12Hours(value.OpenTimeHours, value.OpenTimeMinutes), endTime: this.formatTimeTo12Hours(value.CloseTimeHours,value.CloseTimeMinutes) });
+            aval.timeRanges.push({ id: value.Id, startTime: this.formatTimeTo12Hours(value.OpenTimeHours, value.OpenTimeMinutes), endTime: this.formatTimeTo12Hours(value.CloseTimeHours,value.CloseTimeMinutes) });
           }
         })
       })
@@ -250,14 +250,14 @@ export class AvailabilitySelectionComponent implements OnInit {
     let formattedAvailabilities:TutorAvailability[] = []
 
     ava.forEach(value => {
-      value.timeRanges.forEach((timeRange: { startTime: string; endTime: string; }) => {
+      value.timeRanges.forEach((timeRange: { id:string; startTime: string; endTime: string; }) => {
         formattedAvailabilities.push({
           Day: value.day.toString(),
           OpenTimeHours: this.extractHour(timeRange.startTime),
           OpenTimeMinutes: this.extractMinutes(timeRange.startTime),
           CloseTimeHours: this.extractHour(timeRange.endTime),
           CloseTimeMinutes: this.extractMinutes(timeRange.endTime),
-          Id: ''
+          Id: timeRange.id ? timeRange.id : ''
         });
       });
     });

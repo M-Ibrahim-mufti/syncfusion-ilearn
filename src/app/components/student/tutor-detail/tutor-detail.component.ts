@@ -1,15 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TutorService, Tutor, TutorAvailability } from '../../../../services/tutor.service';
 import { ActivatedRoute } from '@angular/router';
-import { Event,GroupedAvailabilities,EventService } from '../../../../services/event.service';
+import { Event,GroupedAvailabilities,EventService, SelectItem } from '../../../../services/event.service';
 import { StudentService } from '../../../../services/student.service';
-import { SelectItem } from 'primeng/api';
-import { Table } from 'primeng/table';
 import { RequestBooking, SlotBookingService } from '../../../../services/slot-booking.service';
 import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../app.enums';
-import { Location } from '@angular/common';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
 
 @Component({
@@ -19,9 +16,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrl: './tutor-detail.component.css'
 })
 export class TutorDetailComponent {
-  @ViewChild('dt1') dt1: Table | undefined
-  @ViewChild('dt2') dt2: Table | undefined
-
   public tutor!: Tutor
   public totalSubjects?: number
   public sortedAvailabilities: TutorAvailability[] = []
@@ -38,7 +32,8 @@ export class TutorDetailComponent {
     private eventService: EventService,
     private router: ActivatedRoute,
     private studentService: StudentService,
-    private ngxSpinnerService: NgxSpinnerService,
+    private spinnerService: SpinnerService,
+    private notificationsService: NotificationsService,
     private slotBookingService: SlotBookingService,
     // private toastr: ToastrService,
   ) { }
@@ -77,11 +72,11 @@ export class TutorDetailComponent {
   }
 
   public getTutorDetail() {
-    this.ngxSpinnerService.show();
-    this.tutorService.tutorProfile(this.tutorId).subscribe(async (response) => {
-      this.ngxSpinnerService.hide();
+    this.spinnerService.show();
+    this.tutorService.tutorProfile(this.tutorId).subscribe(async (response) => {      
       this.tutor = await response;
       this.getTutorEvents(this.tutorId);
+      this.spinnerService.hide();
     })
   }
 
@@ -105,16 +100,24 @@ export class TutorDetailComponent {
     }
   }
   public enRollClass(event: Event) {
-    this.ngxSpinnerService.show();
+    this.spinnerService.show();
     const model: RequestBooking = new RequestBooking(event.TutorId!, event.EventStartTime)
     this.slotBookingService.slotBookingRequest(model).subscribe(response => {
       if (response.Success) {
-        this.ngxSpinnerService.hide();
-        // this.toastr.success('Student enroll this class successfully')
+        this.spinnerService.hide();
+        this.notificationsService.showNotification(
+          'Success',
+          'Student enroll this class successfully',
+          NotificationTypes.Success
+        );
       }
       else {
-        // this.toastr.error(response.ResponseMessage);
-        // this.ngxSpinnerService.hide();
+        this.notificationsService.showNotification(
+          'Error',
+          response.ResponseMessage,
+          NotificationTypes.Error
+        );
+       this.spinnerService.hide();
       }
     })
   }

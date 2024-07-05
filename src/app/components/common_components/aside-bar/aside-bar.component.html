@@ -12,7 +12,7 @@
   <div class="d-flex gap-2 flex-column my-3 text-start mx-3 text-light">
     <div [routerLink]="['/dashboard']" class=" cursor-pointer py-3 px-4 link-hover" [ngClass]="{'active-link': isActive('/dashboard'), 'bg-black': !isActive('/dashboard')}">
       <a  class="letter-spacing fs-4 text-white" aria-current="page">
-        <i class="pi pi-th-large fs-4" ></i> Dashboard
+        <i class="pi pi-th-large fs-5" ></i> Dashboard
       </a>
     </div>
     <div class="py-2">
@@ -21,14 +21,14 @@
         <div class="mt-2 ms-3 d-flex flex-column gap-1">
           <div [routerLink]="['/student/tutor-selection']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link': isActive('/student/tutor-selection'), 'bg-black': !isActive('/student/tutor-selection')}">
             <a  class="letter-spacing fs-6 text-white">
-              <i class="pi pi-users"></i> Tutor-Selection
+              <i class="pi pi-users"></i> View Tutor
             </a>
           </div>
-          <div [routerLink]="['/classes']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/classes'), 'bg-black': !isActive('/classes') }">
+          <!-- <div [routerLink]="['/classes']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/classes'), 'bg-black': !isActive('/classes') }">
             <a class="letter-spacing fs-6 text-white">
               <i class="pi pi-calendar"></i> Class
             </a>
-          </div>
+          </div> -->
           <div [routerLink]="['/meeting']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/meeting'), 'bg-black': !isActive('/meeting')}">
             <a class="letter-spacing fs-6 text-white">
               <i class="pi pi-headphones"></i> Meeting
@@ -42,6 +42,11 @@
           <div [routerLink]="['/tutor/availabilaity']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/tutor/availabilaity'), 'bg-black':!isActive('/tutor/availabilaity') }">
             <a class="letter-spacing fs-6 text-white">
               <i class="pi pi-clock"></i> Availabilaity
+            </a>
+          </div>
+          <div [routerLink]="['/classes']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/classes'),'bg-black': !isActive('/classes') }">
+            <a class="letter-spacing fs-6 text-white">
+              <i class="pi pi-calendar"></i> Class
             </a>
           </div>
           <div [routerLink]="['/tutor/requests']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/tutor/requests'), 'bg-black': !isActive('/tutor/requests')}">
@@ -58,12 +63,7 @@
             <a class="letter-spacing fs-6 text-white">
               <i class="pi pi-headphones"></i> Meeting
             </a>
-          </div>
-          <div [routerLink]="['/classes']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/classes'),'bg-black': !isActive('/classes') }">
-            <a class="letter-spacing fs-6 text-white">
-              <i class="pi pi-calendar"></i> Class
-            </a>
-          </div>
+          </div>          
         </div>
       </div>
       <div class="mb-3" *ngIf="authConfig.IsAdministrator">

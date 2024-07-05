@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService, SelectItem } from 'primeng/api';
 import { StudentService } from '../../../../services/student.service';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 @Component({
   selector: 'app-tutor-selection',
   templateUrl: './tutor-selection.component.html',
@@ -49,7 +50,7 @@ export class TutorSelectionComponent {
   public selectedTutorAvailibilities: any = []
   public availabilityCont: string = ''
 
-  constructor( private ngxSpinnerService:NgxSpinnerService,
+  constructor( private spinnerService:SpinnerService,
                private tutorService: TutorService,
                private studentService: StudentService,
                private router: Router,
@@ -65,9 +66,9 @@ export class TutorSelectionComponent {
   }
 
   private getTutors(filters: TutorRequest ={}) {
-    this.ngxSpinnerService.show();
+    this.spinnerService.show();
     this.tutorService.getTutor(filters).subscribe(tutors => {
-      this.ngxSpinnerService.hide();
+      this.spinnerService.hide();
       this.availableTutor = tutors;
       this.currentAvailableTutor = tutors.length;
       this.loadAvailabilities();

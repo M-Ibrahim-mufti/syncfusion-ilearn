@@ -107,3 +107,107 @@
         </div>
     </div>
 </ejs-dialog>
+
+
+<!-- <div *ngIf="events.length > 0" class="row g-5 mx-3 my-4 my-2 bg-white rounded-3">
+    <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
+        <div>
+            <h4 class="text-dark fw-bold mb-0">Classes
+                <span *ngIf="events.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{events.length}}</span>
+                <div class="text-muted me-5 mt-2">
+                    Manage class information here.
+                </div>
+            </h4>
+        </div>
+        <div class="col-md-auto">
+            <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="openClassModal()">Add New</button>
+        </div>
+    </div>
+    <div class="col-md-12 mt-2 p-0">
+        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='events' [allowPaging]="events.length > 15" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
+            <e-columns>
+                <e-column field='Name' headerText='Class Name' width='150' textAlign='center' [headerTemplate]='headerTemplate'></e-column>
+                <e-column field='SubjectName' headerText='Subject' width='150' textAlign='center' [headerTemplate]='headerTemplate'></e-column>
+                <e-column field='Duration' headerText='Duration (minutes)' width='150' textAlign='center' [headerTemplate]='headerTemplate'></e-column>
+                <e-column field='EventStartTime' headerText='Start Time' width='150' textAlign='center' [headerTemplate]='headerTemplate' format="{type: 'date', format: 'h:mm a'}"></e-column>
+                <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]='headerTemplate' [template]='actionTemplate'></e-column>
+            </e-columns>
+        </ejs-grid>
+        <ng-template #headerTemplate let-column>
+            <span class="text-muted fw-bolder fs-6">{{column.headerText}}</span>
+        </ng-template>
+    </div>
+</div>
+
+<ng-template #actionTemplate let-data>
+    <button ejs-button cssClass='e-info e-icon-btn me-2' (click)="editClass(data)">
+        <span class="e-btn-icon e-icons e-edit"></span>
+    </button>
+    <button ejs-button cssClass='e-danger e-icon-btn' (click)="deleteClass(data)">
+        <span class="e-btn-icon e-icons e-delete"></span>
+    </button>
+</ng-template>
+
+<ejs-dialog header="Add Class Data" [visible]="addClassDialogueBox" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="onDialogClose()">
+    <div class="form-horizontal mt-2 px-3">
+        <div class="form-group mt-2">
+            <label for="className" class="form-label">Class Name</label>
+            <select name="className" (change)="onEventChange($event)" class="form-select">
+                <option [selected]="!selectedEvent.Name" disabled class="text-muted">Select event name</option>
+                <option [selected]="selectedEvent.Name === event.label" *ngFor="let event of eventTitle" [value]="event.value">{{event.label}}</option>
+            </select>
+        </div>
+        <div class="form-group mt-2">
+            <label for="subjectName" class="form-label">Subject Name</label>
+            <input name="subjectName" type="text" class="form-control" id="Subject" [(ngModel)]="selectedEvent.SubjectName" disabled>
+        </div>
+        <div class="form-group mt-2">
+            <label for="availability" class="form-label">Availability</label>
+            <select name="availability" class="form-select" (change)="generateTimeOptions(selectedEvent.AvailabilityId)" [(ngModel)]="selectedEvent.AvailabilityId">
+                <option selected value="-1" disabled>Select Availability</option>
+                <ng-container *ngFor="let dayGroup of groupedAvailabilities">
+                    <optgroup class="text-muted" [label]="getDayLabel(dayGroup.key)">
+                        <ng-container *ngFor="let availability of dayGroup.value">
+                            <option [selected]="selectedEvent.AvailabilityId === availability.Id" class="text-start" [value]="availability.Id" [disabled]="disabledTimeOptions.includes(timeOptions)">
+                                {{ formatTimeTo12Hours(availability.OpenTimeHours, availability.OpenTimeMinutes) }} - {{ formatTimeTo12Hours(availability.CloseTimeHours, availability.CloseTimeMinutes) }}
+                            </option>
+                        </ng-container>
+                    </optgroup>
+                </ng-container>
+            </select>
+        </div>
+        <ng-container *ngIf="selectedEvent.AvailabilityId !== '-1'">
+            <div class="form-group mt-2">
+                <label for="StartTime" class="form-label">Start Time</label>
+                <select name="StartTime" class="form-select" [(ngModel)]="selectedTime" (change)="startTimeCheck()">
+                    <option value="-1" disabled selected>Select Start Time</option>
+                    <option *ngFor="let timeOption of timeOptions" [value]="timeOption" [disabled]="disabledTimeOptions.includes(timeOption)">
+                        {{ timeOption }}
+                        <span *ngIf="disabledTimeOptions.includes(timeOption)"> Booked</span>
+                    </option>
+                </select>
+                <div *ngIf="errorMessageForStartTime != 'true'" class="text-danger">{{ errorMessageForStartTime }}</div>
+            </div>
+            <div class="form-group mt-2">
+                <label for="duration" class="form-label">Duration</label>
+                <select name="duration" (change)="durationCheck()" [(ngModel)]="selectedEvent.Duration" class="form-select">
+                    <option value="-1" disabled selected>Select Duration</option>
+                    <option *ngFor="let duration of durations" [selected]="selectedEvent.Duration === duration" [value]="duration">{{duration}} minutes</option>
+                </select>
+                <div *ngIf="errorMessageForDuration != 'true'" class="text-danger">{{ errorMessageForDuration }}</div>
+            </div>
+            <div class="form-group mt-2 d-flex">
+                <input name="isOneOnOne" class="form-check-input" [(ngModel)]="selectedEvent.IsOneOnOne" type="checkbox">
+                <label class="form-label mt-1 ms-1" for="isOneonOne">Meeting will be One to One if checked otherwise it will be of Group</label>
+            </div>
+            <div class="form-group mt-2 d-flex">
+                <input name="repeatable" [(ngModel)]="selectedEvent.IsOneTime" type="checkbox" class="form-check-input">
+                <label for="repeatable" class="form-label ms-1">Check if you want to repeat the class on a weekly basis</label>
+            </div>
+        </ng-container>
+        <div class="text-center mt-4">
+            <button ejs-button cssClass="e-info w-100" (click)="createEvent()" [disabled]="!selectedEvent.SubjectId || !selectedEvent.Duration || !selectedTime">Submit</button>
+        </div>
+    </div>
+</ejs-dialog> -->
+
