@@ -3,12 +3,11 @@ import { Component } from '@angular/core';
 import { StudentService } from '../../../../services/student.service';
 import { ClassMetadataService, ClassMetaData } from '../../../../services/class-metadata.service';
 import { TutorService } from '../../../../services/tutor.service';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { FilterService, SelectItem } from 'primeng/api';
 import { NotificationTypes } from '../../../app.enums';
 import { PageSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { DialogComponent, DialogUtility } from '@syncfusion/ej2-angular-popups';
+import { SelectItem } from '../../../../services/event.service';
 
 @Component({
   selector: 'app-class-metadata',
@@ -60,7 +59,7 @@ export class ClassMetadataComponent {
   private viewUserGrades(subjectId: string) {
     this.studentService.viewUserGrades(subjectId).subscribe((response: SelectItem[]) => {
       this.TutorGrades = response;
-      this.insertClassData.GradeId = response.map(p => p.value)[0];
+      this.insertClassData.GradeId = response.map(p => p.value)[0]!;
     });
   }
 

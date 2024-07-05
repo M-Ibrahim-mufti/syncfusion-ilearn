@@ -1,8 +1,6 @@
 import { Tutor, TutorRequest, TutorService, TutorSubject, ShowTutor, TutorAvailability } from './../../../../services/tutor.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { MessageService, SelectItem } from 'primeng/api';
 import { StudentService } from '../../../../services/student.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 @Component({

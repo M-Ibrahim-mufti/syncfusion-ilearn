@@ -1,12 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute } from '@angular/router';
-import { SelectItem } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { ClassMetaData, ClassMetadataService } from '../../../../services/class-metadata.service';
 import { TutorAvailability, TutorService } from '../../../../services/tutor.service';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
-import { Event,GroupedAvailabilities, EventService } from '../../../../services/event.service';
+import { Event,GroupedAvailabilities, EventService, SelectItem } from '../../../../services/event.service';
 import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { NotificationTypes } from '../../../app.enums';
@@ -56,7 +54,7 @@ export class EventComponent implements OnInit {
   public eventTitle: SelectItem[] = [];
 
   constructor(
-    private ngxSpinnerService: NgxSpinnerService,
+    private spinnerService: SpinnerService,
     private eventService: EventService, private authService: AuthService,
     private tutorService: TutorService,
     private classMetaServices: ClassMetadataService,
@@ -211,7 +209,7 @@ export class EventComponent implements OnInit {
     },
     (error) => {
       console.error('Error deleting student:', error);
-      this.ngxSpinnerService.hide();
+      this.spinnerService.hide();
       this.notificationsService.showNotification(
         'Error',
         "Error Happenes",

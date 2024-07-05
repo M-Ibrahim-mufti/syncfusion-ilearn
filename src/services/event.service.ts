@@ -66,8 +66,8 @@ export class Event{
 }
 
 export class SelectItem{
-  label!: string;
-  value!: string;
+  label?: string;
+  value?: string;
 }
 
 export type GroupedAvailabilities = { key: string, value: TutorAvailability[] }[];

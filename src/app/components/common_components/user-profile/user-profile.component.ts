@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
 import { ApplicationViewStudent } from '../../../../services/student.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { StudentService } from '../../../../services/student.service';
-import { SelectItem } from 'primeng/api';
 import { CloudinaryImageService } from '../../../../services/cloudinary-image.service';
 import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../app.enums';
 import { AuthService } from '../../../../services/auth.service';
+import { SelectItem } from '../../../../services/event.service';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,7 +24,7 @@ export class UserProfileComponent {
   isTeacher: boolean = false;
 
   constructor(private UserService: UsersService,
-    private NgxSpinner: NgxSpinnerService,
+    private spinner: SpinnerService,
     private studentService: StudentService,
     private notificationsService: NotificationsService,
     private uploadingService: CloudinaryImageService,
@@ -41,13 +41,13 @@ export class UserProfileComponent {
   
 
   public getStudentDetail(){
-    this.NgxSpinner.show();
+    this.spinner.show();
     this.UserService.getStudentDetail().subscribe(res =>{
       if(res){
         this.student = res;
         this.populateSelectedSubjects();    
       }
-      this.NgxSpinner.hide();       
+      this.spinner.hide();       
     })
   }
 
@@ -87,9 +87,9 @@ export class UserProfileComponent {
         this.student.TutorSubjects.push(subject.value)
       })
     }
-    this.NgxSpinner.show();
+    this.spinner.show();
     this.UserService.updateStudent(this.student).subscribe((response) => {
-      this.NgxSpinner.hide();
+      this.spinner.hide();
       if(response.Success){
         this.notificationsService.showNotification(
           'Success',

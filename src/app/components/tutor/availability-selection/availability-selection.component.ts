@@ -8,6 +8,7 @@ import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, 
 import { ButtonComponent } from '@syncfusion/ej2-angular-buttons';
 import { DataManager,UrlAdaptor, ODataV4Adaptor, Query } from '@syncfusion/ej2-data';
 import { environment } from '../../../../environments/environment';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
 @Component({
   selector: 'app-availability-selection',
@@ -68,7 +69,10 @@ export class AvailabilitySelectionComponent implements OnInit {
   //     }]
   // }
 
-  constructor(private tutorService:TutorService, private notificationsService: NotificationsService) {  }
+  constructor(private tutorService:TutorService,
+     private notificationsService: NotificationsService,
+     private ngxSpinner: SpinnerService
+    ) {  }
   
   ngOnInit(): void {
     this.initializeDataManager();
@@ -96,8 +100,10 @@ export class AvailabilitySelectionComponent implements OnInit {
   }
 
   public loadAvalabilites(){
+    this.ngxSpinner.show();
     this.tutorService.getAllAvalabilities().subscribe( response => {
       this.selectedAvailability = response;
+      this.ngxSpinner.hide();
       // let events: any[] = [];
       // let i =0;
       // this.allDays.forEach(day => {
@@ -266,14 +272,16 @@ export class AvailabilitySelectionComponent implements OnInit {
     const request: SaveTutorAvailabilityRequest = {
       Availabilities: formattedAvailabilities
     };
-
+    this.ngxSpinner.show();
     this.tutorService.saveTutorAvailability(request).subscribe(response => {
       if (response.Success) {
+        this.ngxSpinner.hide();
         this.notificationsService.showNotification(
           'Success',
           response.ResponseMessage,
           NotificationTypes.Success
         );
+        this.loadAvalabilites();
       } else {
         this.notificationsService.showNotification(
           'Error',

@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationTypes } from '../../../app.enums';
 import { AuthService } from '../../../../services/auth.service';
 import { NotificationsService } from '../../../../services/Shared/notifications.service';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
 @Component({
   selector: 'app-auth',
@@ -27,18 +27,18 @@ export class AuthComponent implements OnInit {
   }
 
   constructor(private router: Router,
-    private ngxSpinnerService: NgxSpinnerService,
+    private spinnerService: SpinnerService,
     private notificationsService: NotificationsService,
     private authService: AuthService,
   ) { }
 
   public login(): void {
-    this.ngxSpinnerService.show();
+    this.spinnerService.show();
     this.authService.login(this.loginModel).subscribe(
       (response) => {
         console.log(response);
 
-        this.ngxSpinnerService.hide();
+        this.spinnerService.hide();
         if (response.Success) {
           window.location.reload();
           return;
@@ -47,7 +47,7 @@ export class AuthComponent implements OnInit {
       },
       (error) => {
         console.error(error);
-        this.ngxSpinnerService.hide();
+        this.spinnerService.hide();
       }
     );
   }

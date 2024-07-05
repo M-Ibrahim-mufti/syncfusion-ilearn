@@ -3,6 +3,7 @@ import { CalendarModule } from 'angular-calendar';
 import { ZoomMeetingService, ZoomMeetingDetail, StudentMeeting } from '../../../../services/zoom-meeting.service';
 import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
 @Component({
   selector: 'app-meeting',
@@ -21,9 +22,13 @@ export class MeetingsComponent implements OnInit {
   futureMeetings: ZoomMeetingDetail[] = [];
   previousMeetings: ZoomMeetingDetail[] = [];
   public activateBtn: boolean = false
-  studentMeetings:any;
+  studentMeetings: any;
 
-  constructor(private router: Router,private zoomService: ZoomMeetingService, private authService: AuthService, private cdr: ChangeDetectorRef) {
+  constructor(private router: Router,
+    private spinnerService: SpinnerService,
+    private zoomService: ZoomMeetingService,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef) {
     this.isTeacher = this.authService.isTeacher()
     this.isStudent = this.authService.isStudent()
   }
@@ -33,28 +38,30 @@ export class MeetingsComponent implements OnInit {
   }
 
   loadMeetings(): void {
-    this.zoomService.getMeetings().subscribe(response => {      
+    this.spinnerService.show();
+    this.zoomService.getMeetings().subscribe(response => {
       this.meetings = response;
+      this.spinnerService.hide();
       this.filterMeetingsForUpcoming();
-      this.filterMeetingsForPrevious(); 
+      this.filterMeetingsForPrevious();
       this.cdr.detectChanges();
     });
   }
 
   filterMeetingsForUpcoming(): void {
-    const todayDate = new Date();   
-    
-    this.meetings.forEach(meeting => {      
+    const todayDate = new Date();
+
+    this.meetings.forEach(meeting => {
       const meetingDate = new Date(meeting.StartTime);
       const meetingEndTime = this.meetingEndTime(meetingDate, meeting.Duration)
       if (this.isSameDay(meetingDate, todayDate)) {
-        if(meetingEndTime >= todayDate)
+        if (meetingEndTime >= todayDate)
           this.todayMeetings.push(meeting);
       } else if (this.isTomorrow(meetingDate, todayDate)) {
-        if(meetingEndTime >= todayDate)
+        if (meetingEndTime >= todayDate)
           this.tomorrowMeetings.push(meeting);
       } else if (meetingDate > todayDate) {
-          this.futureMeetings.push(meeting);
+        this.futureMeetings.push(meeting);
       }
     });
   }
@@ -63,9 +70,9 @@ export class MeetingsComponent implements OnInit {
     const todayDate = new Date();
     this.meetings.forEach(meeting => {
       const meetingDate = new Date(meeting.StartTime);
-      if(meetingDate < todayDate){
+      if (meetingDate < todayDate) {
         const upcomingmeeting = this.futureMeetings.filter(x => x.Id == meeting.Id)
-        if(upcomingmeeting.length == 0)
+        if (upcomingmeeting.length == 0)
           this.previousMeetings.push(meeting);
       }
     });
@@ -95,14 +102,14 @@ export class MeetingsComponent implements OnInit {
     return endTime;
   }
 
-  redirectTo(url:string){
+  redirectTo(url: string) {
     window.open(url, '_blank');
   }
 
-  disableStartMeeting(meetingTiming:any):boolean{
+  disableStartMeeting(meetingTiming: any): boolean {
     const meetingTime = new Date(meetingTiming)
-    
-    if(this.todayDate < meetingTime)
+
+    if (this.todayDate < meetingTime)
       return true
     return false
   }
@@ -112,10 +119,3 @@ export class MeetingsComponent implements OnInit {
   }
 
 }
-
-
-
-
-
-
-

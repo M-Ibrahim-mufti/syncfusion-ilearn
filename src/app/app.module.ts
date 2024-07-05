@@ -11,25 +11,20 @@ import { JWT_OPTIONS, JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { AuthConfig, AuthService } from '../services/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { StudentRegistrationComponent } from './components/registaration/student_registration/student-registration.component';
 import { DashboardComponent } from './components/common_components/dashboard/dashboard.component';
 import { TopBarComponent } from './components/common_components/top-bar/top-bar.component';
 import { AsideBarComponent } from './components/common_components/aside-bar/aside-bar.component';
 import { AdminStudentComponent } from './components/admin/student/student.component';
 import { AuthGuard } from './authGuard';
-import { TutorRegistrationComponent } from './components/registaration/tutor_registration/tutor-registration.component';
 import { AvailabilitySelectionComponent } from './components/tutor/availability-selection/availability-selection.component';
 import { TutorSelectionComponent } from './components/student/tutor-selection/tutor-selection.component';
 import { AdminTutorComponent } from './components/admin/tutor/tutor.component';
-import { NotificationsComponent } from './components/notifications/notifications.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { EventComponent } from './components/tutor/event/event.component';
-import { CreateEventComponent } from './components/tutor/create-event/create-event.component';
 import { EventRequestComponent } from './components/common_components/event-request/event-request.component';
 import { UserProfileComponent } from './components/common_components/user-profile/user-profile.component';
 import { GroupByPipe } from './pipes/GroupBy.pipe';
-import { ZoomConnectionComponent } from './components/tutor/zoom-connection/zoom-connection.component';
 import { TutorDetailComponent } from './components/student/tutor-detail/tutor-detail.component';
 import { ClassMetadataComponent } from './components/tutor/class-metadata/class-metadata.component';
 import { MeetingsComponent } from './components/common_components/meeting/meeting.component';
@@ -62,18 +57,13 @@ export function getTokenFactory(injector: Injector) {
     AsideBarComponent,
     AppComponent,
     AuthComponent,
-    StudentRegistrationComponent,
     DashboardComponent,
     AdminStudentComponent,
     AdminTutorComponent,
-    TutorRegistrationComponent,
     AvailabilitySelectionComponent,
     TutorSelectionComponent,
-    NotificationsComponent,
     EventComponent,
-    CreateEventComponent,
     EventRequestComponent,
-    ZoomConnectionComponent,
     UserProfileComponent,
     GroupByPipe,
     TutorDetailComponent,

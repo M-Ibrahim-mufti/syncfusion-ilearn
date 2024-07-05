@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -18,7 +18,7 @@ export class TopBarComponent implements OnInit {
   public authConfig!: AuthConfig;
   public ImgUrl!: string;
   
-  constructor(private spinnerService: NgxSpinnerService,
+  constructor(private spinnerService: SpinnerService,
     private authService: AuthService,
     private router: Router
   ) { }

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { SelectItem } from 'primeng/api';
 import { TutorService } from '../../../../services/tutor.service';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
 
 @Component({
@@ -16,7 +15,7 @@ export class SubjectSelectionComponent {
 
   public selectedSubjects: any[] = [];
 
-  constructor(private ngxSpinnerService: NgxSpinnerService, private tutorService: TutorService){
+  constructor(private spinnerService: SpinnerService, private tutorService: TutorService){
     this.getAllSubjects();
   }
 
@@ -41,10 +40,10 @@ export class SubjectSelectionComponent {
   }
 
   private getAllSubjects() {
-    this.ngxSpinnerService.show();
+    this.spinnerService.show();
     this.tutorService.getAllSubjects().subscribe((subject: any[]) => {
       this.subjects = subject;
-      this.ngxSpinnerService.hide();
-    }, (error) => { this.ngxSpinnerService.hide(); });
+      this.spinnerService.hide();
+    }, (error) => { this.spinnerService.hide(); });
   }
 }
