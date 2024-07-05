@@ -106,99 +106,93 @@
                   <div class="col-2"></div>
                 </div>
               </div>
-              <div class="modal" [ngClass]="{'show': showPopup}" (click)="togglePopup()">
-                <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
-                  <div class="modal-content">
-                    <div class="modal-body">
+              <ejs-dialog [visible]="showPopup" [width]="700" [showCloseIcon]="true" isModal="true" (close)="showPopup = false" >
+                <ng-template #header>
+                  <span class="fw-bold">Select the date(s) you want to assign specific hours</span>
+                </ng-template>
+                <div class="row mt-2">
+                  <div class="col-12 ">
+                    <div class="calendar-header mb-3">
                       <div class="row">
-                        <div class="col-12">
-                          <p class="fw-bold fs-3">Select the date(s) you want to assign specific hours</p>
+                        <div class="col-6">
+                          <h3>{{ viewDate | date: 'MMMM yyyy' }}</h3>
                         </div>
-                        <div class="col-12">
-                          <div class="calendar-header mb-3">
-                            <div class="row">
-                              <div class="col-6">
-                                <h3>{{ viewDate | date: 'MMMM yyyy' }}</h3>
-                              </div>
-                              <div class="col-6">
-                                <div class="row">
-                                  <div class="col-6">
-                                    <button class="w-100 btn btn-primary" (click)="decrementMonth()">Previous</button>
-                                  </div>
-                                  <div class="col-6">
-                                    <button class="w-100 btn btn-primary" (click)="incrementMonth()">Next</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <mwl-calendar-month-view
-                            [viewDate]="viewDate"
-                            [events]="events"
-                            (dayClicked)="dateSelected($event)"
-                            class="calendar-view">
-                          </mwl-calendar-month-view>
-                        </div>
-                        <div *ngFor="let date of selectedDates; let dateIndex = index" class="col-12 mt-3">
-                          <div class="row mb-2">
-                            <div class="col-11"><b>What hours are you available? At:</b> {{ date | date: 'mediumDate' }}</div>
-                            <div class="col-1">
-                              <button type="button" class="btn btn-close" (click)="removeDate(dateIndex)"></button>
-                            </div>
-                          </div>
-                          <div class="row my-2" *ngFor="let timeRange of dateTimes[dateIndex].timeRanges; let timeIndex = index">
-                            <div class="row">
-                              <div class="col-1"></div>
-                              <div class="col-3">
-                                <select class="form-select custom-select" [(ngModel)]="timeRange.startTime">
-                                  <option *ngFor="let time of timeOptions" [value]="time">{{ time }}</option>
-                                </select>
-                              </div>
-                              <div class="col-3">
-                                <select class="form-select custom-select" [(ngModel)]="timeRange.endTime">
-                                  <option *ngFor="let time of timeOptions" [value]="time">{{ time }}</option>
-                                </select>
-                              </div>
-                              <div class="col-3 mt-2">
-                                <button type="button" class="btn btn-close" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove interval {{timeIndex+1}}" (click)="removeTimeRangeForDatePicker(dateIndex, timeIndex)"></button>
-                              </div>
-                              <div class="col-1">
-                                <button type="button"  *ngIf="timeIndex == 0" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add interval" (click)="addTimeRangeForDatePicker(dateIndex)">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                  </svg>
-                                </button>
-                              </div>
-                            </div>
-                            <div class="col-12" *ngIf="!validateTimes(dateIndex, timeIndex, dateTimes[dateIndex])">
-                              <span class="text-danger">Choose an end time later than the start time.</span>
-                            </div>
-                          </div>
-                          <div class="row mt-2" *ngIf="dateTimes[dateIndex].timeRanges.length == 0">
-                            <div class="col-12">
-                              <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove interval" (click)="addTimeRangeForDatePicker(dateIndex)">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-12 mt-4">
+                        <div class="col-6">
                           <div class="row">
                             <div class="col-6">
-                              <button type="button" class="w-100 rounded-5 btn btn-outline-secondary" (click)="togglePopup()">Close</button>
+                              <button class="w-100 btn btn-primary" (click)="decrementMonth()">Previous</button>
                             </div>
                             <div class="col-6">
-                              <button type="button" class="w-100 rounded-5 btn btn-primary" (click)="addDateSpecificHour()">Apply</button>
+                              <button class="w-100 btn btn-primary" (click)="incrementMonth()">Next</button>
                             </div>
                           </div>
-                        </div>                        
+                        </div>
+                      </div>
+                    </div>
+                    <mwl-calendar-month-view
+                      [viewDate]="viewDate"
+                      [events]="events"
+                      (dayClicked)="dateSelected($event)"
+                      class="calendar-view">
+                    </mwl-calendar-month-view>
+                  </div>
+                  <div *ngFor="let date of selectedDates; let dateIndex = index" class="col-12 mt-3">
+                    <div class="row mb-2">
+                      <div class="col-11"><b>What hours are you available? At:</b> {{ date | date: 'mediumDate' }}</div>
+                      <div class="col-1">
+                        <button type="button" class="btn btn-close" (click)="removeDate(dateIndex)"></button>
+                      </div>
+                    </div>
+                    <div class="row my-2" *ngFor="let timeRange of dateTimes[dateIndex].timeRanges; let timeIndex = index">
+                      <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-3">
+                          <select class="form-select custom-select" [(ngModel)]="timeRange.startTime">
+                            <option *ngFor="let time of timeOptions" [value]="time">{{ time }}</option>
+                          </select>
+                        </div>
+                        <div class="col-3">
+                          <select class="form-select custom-select" [(ngModel)]="timeRange.endTime">
+                            <option *ngFor="let time of timeOptions" [value]="time">{{ time }}</option>
+                          </select>
+                        </div>
+                        <div class="col-3 mt-2">
+                          <button type="button" class="btn btn-close" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove interval {{timeIndex+1}}" (click)="removeTimeRangeForDatePicker(dateIndex, timeIndex)"></button>
+                        </div>
+                        <div class="col-1">
+                          <button type="button"  *ngIf="timeIndex == 0" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Add interval" (click)="addTimeRangeForDatePicker(dateIndex)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="col-12" *ngIf="!validateTimes(dateIndex, timeIndex, dateTimes[dateIndex])">
+                        <span class="text-danger">Choose an end time later than the start time.</span>
+                      </div>
+                    </div>
+                    <div class="row mt-2" *ngIf="dateTimes[dateIndex].timeRanges.length == 0">
+                      <div class="col-12">
+                        <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove interval" (click)="addTimeRangeForDatePicker(dateIndex)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                          </svg>
+                        </button>
                       </div>
                     </div>
                   </div>
+                  <div class="col-12 mt-4">
+                    <div class="row">
+                      <div class="col-6">
+                        <button type="button" class="w-100 rounded-5 btn btn-outline-secondary" (click)="togglePopup()">Close</button>
+                      </div>
+                      <div class="col-6">
+                        <button type="button" class="w-100 rounded-5 btn btn-primary" (click)="addDateSpecificHour()">Apply</button>
+                      </div>
+                    </div>
+                  </div>                        
                 </div>
-              </div>
+              </ejs-dialog>
             </div>
           </div>
         </div>
@@ -206,7 +200,7 @@
       <li class="list-group-item" *ngIf="showListView">
         <!-- <div class="calendar-header mb-3">
           <div class="row">
-            <div class="col-9">
+            <div class="col-9"> 
               <h3>{{ viewDate | date: 'MMMM yyyy' }}</h3>
             </div>
           </div>
