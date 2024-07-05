@@ -1,33 +1,28 @@
-<nav class="navbar justify-content-between">
-    <span class="text-bold">You're logged-in as {{firstName}}</span>
-    <div class="dropdown me-4">
-        <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-user-circle-o fa-lg" *ngIf="ImgUrl == null"></i>
-              <img [src]="ImgUrl" *ngIf="ImgUrl != null"
-                          height="30" width="30" class="rounded-circle" />           
-        </a>
-        <ul class="dropdown-menu text-small shadow dropdown-menu-end" aria-labelledby="dropdownUser2" style="width: 300px;">
-            <div class="row p-2">
-                <div class="col-3">
-                  <li class="dropdown-item">
+<nav class="navbar position-sticky top-0 z-3 pt-2 pb-3 justify-content-between bg-white shadow px-0">
+  <span class="fw-bold fs-5 ps-3">Welcome Back {{firstName}}</span>
+  <div class="dropdown me-4">
+      <a href="#" class="d-flex align-items-center link-dark text-decoration-none" id="dropdownUser2" (click)="toggleDropdown($event)" aria-expanded="false">
+          <i class="fa fa-user-circle-o fa-lg" *ngIf="ImgUrl == null"></i>
+          <img [src]="ImgUrl" *ngIf="ImgUrl != null" height="50" width="50" class="rounded-3" />           
+      </a>
+      <ul class="dropdown-menu text-small shadow dropdown-menu-left py-0" aria-labelledby="dropdownUser2" style="width: 300px;">
+        <div class="row p-2 align-items-center gap-2 mt-2">
+            <div class="col-3">
+                <li class="dropdown-item">
                     <a href="javascript:void(0);" routerLink="/" class="text-center py-2">
-                      <img [src]="ImgUrl ? ImgUrl : '../../../../../../assets/user-profile.png'"
-                        height="60" width="60" class="rounded-circle" />
+                        <img [src]="ImgUrl ? ImgUrl : '../../../../../../assets/user-profile.png'"
+                              height="60" width="60" class="rounded-circle" />
                     </a>
-                  </li>
-                </div>
-                <div class="col-9">
-                  <div class="fw-bolder fs-5">{{ firstName }}</div>
-                  <div>{{ UserEmail }}</div>
-                </div>
-              </div>
-            <li><a routerLink="/profile" class="dropdown-item">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" (click)="logout($event)">Sign out</a></li>
-        </ul>
-    </div>
-
+                </li>
+            </div>
+            <div class="col-8">
+                <div class="fw-bolder fs-5">{{ firstName }}</div>
+                <div>{{ UserEmail }}</div>
+            </div>
+        </div>
+        <li><a routerLink="/profile" class="cursor-pointer py-2 dropdown-item">Profile</a></li>
+        <li><hr class="dropdown-divider my-0"></li>
+        <li><a class="cursor-pointer dropdown-item pt-2 pb-3 rounded-bottom-2" (click)="logout($event)">Sign out</a></li>
+      </ul>
+  </div>
 </nav>
-
-
-

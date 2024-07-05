@@ -1,0 +1,8 @@
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu-left {
+    right: 0;
+    left:auto;
+}

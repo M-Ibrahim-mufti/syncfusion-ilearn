@@ -39,7 +39,12 @@ export class TopBarComponent implements OnInit {
       }
     }
   }
-
+  
+  toggleDropdown(event: Event): void {
+    event.preventDefault();
+    const dropdownMenu = (event.currentTarget as HTMLElement).nextElementSibling as HTMLElement;
+    dropdownMenu.classList.toggle('show');
+  }
   public logout($event: any) {
     this.authService.logout().subscribe(async (res) => {
       await this.router.navigate(['/'])
