@@ -93,6 +93,7 @@ export class ClassMetadataComponent {
         this.ngxSpinner.hide();
         this.addClassDialogueBox = false;
         this.insertClassData = new ClassMetaData();
+        this.viewClassMetaData();
       }
       else {
         this.notificationsService.showNotification(

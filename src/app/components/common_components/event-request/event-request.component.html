@@ -1,6 +1,6 @@
 <div class="rounded-3 col-md-12 py-2 bg-white">
     <div class="my-2 border-bottom">
-        <h5 class="fs-3 pb-3 fw-bolder px-3"> Event Requests </h5>
+        <h6 class="fs-3 pb-3 fw-bolder px-3"> Event Requests</h6>
     </div>
     <div class="my-2">
         <div class="d-flex flex-wrap px-3 gap-3 mx-3" *ngIf="bookingRequests && bookingRequests.length > 0">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="button-group">
-                        <button ejs-button cssClass="reject-btn w-50" (click)="rejectBookingRequest(bookingRequest.Id)" >Reject</button>
+                        <button ejs-button cssClass="reject-btn w-50" (click)="rejectBookingRequest(bookingRequest.Id)" [disabled]="bookingRequest.IsApproved">Reject</button>
                         <button ejs-button cssClass="accept-btn w-50 " [class]="{'opacity-50' :bookingRequest.IsApproved}" [disabled]="bookingRequest.IsApproved"  (click)="approveBookingRequest(bookingRequest.Id)" >Accept</button>
                     </div>
                     <div *ngIf="bookingRequest" class="position-absolute badge-container">
