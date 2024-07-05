@@ -82,13 +82,14 @@ export class AvailabilitySelectionComponent implements OnInit {
     this.dataManager = new DataManager({
       headers: Object.keys(headers).map(key => ({ [key]: headers[key] })),
       url: `${environment.BASE_API_PATH}/Tutor/fetch-availabilty-schedule`,
+      
       crudUrl: `${environment.BASE_API_PATH}/Tutor/save-schedule`,
       //batchUrl: `${environment.BASE_API_PATH}/Tutor/save-schedule`,
       // crudUrl: `${environment.BASE_API_PATH}/Tutor/fetch-availabilty-schedule`,
       //url: 'https://services.syncfusion.com/angular/production/api/Schedule',
       adaptor: new UrlAdaptor(),
       timeZoneHandling: true,
-      crossDomain: true
+      crossDomain: true,
     });
 
     this.eventSettings = { dataSource: this.dataManager }

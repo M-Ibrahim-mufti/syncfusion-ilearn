@@ -159,6 +159,7 @@ export class EventComponent implements OnInit {
           NotificationTypes.Success
         );
         this.ngxSpinner.hide();
+        this.onDialogClose();
         this.getTutorEvents();
         
       } else {
