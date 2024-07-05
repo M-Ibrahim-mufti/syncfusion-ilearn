@@ -12,7 +12,7 @@
             <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="openClassModal()">Add New</button>
         </div>
     </div>
-    <div class="col-md-12 mt-2 p-0">
+    <div *ngIf="events.length > 0" class="col-md-12 mt-2 p-0">
         <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='events' [allowPaging]="events.length > 15" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
             <e-columns>
                 <e-column field='Name' headerText='Class Name' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTitleTemplate">

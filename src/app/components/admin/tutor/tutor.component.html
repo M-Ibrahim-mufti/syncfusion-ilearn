@@ -1,14 +1,14 @@
 <div *ngIf="tutors" class="row g-5 mx-3 my-4 my-2 bg-white rounded-3">
     <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
         <div class="d-flex align-items-center gap-2">
-            <h4 class="text-dark fw-bold mb-0">Students</h4>
+            <h4 class="text-dark fw-bold mb-0">Tutors</h4>
             <span class="fs-6 text-muted badge rounded-circle bg-secondary">{{tutors.length}}</span>
         </div>
     </div>
     <div class="col-md-12 mt-2 p-0">
         <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='tutors' [allowPaging]="tutors.length > 15" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
             <e-columns>
-                <e-column field="FullName" headerText='Student Info' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTitleTemplate">
+                <e-column field="FullName" headerText='Student Info' width='120' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTitleTemplate">
                     <ng-template #cellTitleTemplate let-data>
                         <div class="d-flex flex-row align-items-center gap-2">
                             <img class="tableImg" [src]="data.ImgUrl ? data.ImgUrl : '../../../../assets/user-profile.png'"/>
@@ -20,7 +20,7 @@
                         </div>
                     </ng-template>
                 </e-column>
-                <e-column field="Country" headerText='Location' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellLocationTemplate">
+                <e-column field="Country" headerText='Location' width='250' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellLocationTemplate">
                     <ng-template #cellLocationTemplate let-data let-column>
                         <div class="d-flex flex-column">
                             <span class="hover-primary text-dark fw-bold">{{data.Country}}</span>
@@ -29,10 +29,10 @@
                         </div>
                     </ng-template>
                 </e-column>
-                <e-column field="null" headerText='Subjects' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellSubjectTemplate">
+                <e-column field="null" headerText='Subjects' width='120' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellSubjectTemplate">
                     <ng-template #cellSubjectTemplate let-data let-column>
                         <div class="d-flex align-items-center">
-                            <a class="fw-semibold cursor-pointer hover-primary text-dark"> View Subjects </a>
+                            <a (click)="showSubjectDialogueBox(data)" class="fw-semibold cursor-pointer hover-primary text-dark"> View Subjects </a>
                         </div>
                     </ng-template>
                 </e-column>
@@ -53,6 +53,14 @@
     </button>
 </ng-template>
 
-<ejs-dialog cssClass="rounded-dialog" header="Student Subjects" [visible]="false" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="false"  >
-
+<ejs-dialog cssClass="rounded-dialog" header="Tutor Subjects" [visible]="showSubjectDialogue" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="showSubjectDialogue = false"  >
+    <div class="w-full d-flex flex-col border-bottom border-top border-1">
+        <h5 *ngIf="selectedTutor" class="px-3 py-2 text-muted-dark my-2">List of All subjects {{selectedTutor.FullName}} teaches </h5>
+    </div>
+    <div  class="mx-3 mt-3 d-flex flex-row flex-wrap gap-3">
+        <span class="px-3 py-1 rounded-pill bg-secondary" *ngFor="let subject of selectedTutorSubjects">{{subject.SubjectName}}</span>
+    </div>
+    <div *ngIf="selectedTutorSubjects.length <= 0" class="mx-3 mt-3 d-flex flex-row flex-wrap gap-3">
+        <span class="px-3 text-center">No Subject Found</span>
+    </div>
 </ejs-dialog>

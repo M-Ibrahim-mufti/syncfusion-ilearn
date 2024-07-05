@@ -1,6 +1,6 @@
 <nav class="navbar position-sticky top-0 z-3 pt-2 pb-3 justify-content-between bg-white shadow px-0">
   <span class="fw-bold fs-5 ps-3">Welcome Back {{firstName}}</span>
-  <div class="dropdown me-4">
+  <div class="dropdown me-4 pe-3">
       <a href="#" class="d-flex align-items-center link-dark text-decoration-none" id="dropdownUser2" (click)="toggleDropdown($event)" aria-expanded="false">
           <i class="fa fa-user-circle-o fa-lg" *ngIf="ImgUrl == null"></i>
           <img [src]="ImgUrl" *ngIf="ImgUrl != null" height="50" width="50" class="rounded-3" />           

@@ -39,7 +39,7 @@ export class AdminTutorComponent {
   }
 
 
-  showSubjectDialogueBox(event:Event, tutor: Tutor):void {
+  showSubjectDialogueBox(tutor: Tutor):void {
     console.log(this.tutors)
     this.showSubjectDialogue = !this.showSubjectDialogue  
     this.selectedTutorSubjects = tutor.TutorSubjects
