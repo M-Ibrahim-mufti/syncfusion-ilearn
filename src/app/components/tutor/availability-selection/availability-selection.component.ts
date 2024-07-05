@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { SaveTutorAvailabilityRequest, TutorAvailability, TutorService } from '../../../../services/tutor.service';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { addMonths, startOfDay } from 'date-fns';
-import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../app.enums';
 import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View, ActionEventArgs } from '@syncfusion/ej2-angular-schedule';
 import { ButtonComponent } from '@syncfusion/ej2-angular-buttons';
 import { DataManager,UrlAdaptor, ODataV4Adaptor, Query } from '@syncfusion/ej2-data';
 import { environment } from '../../../../environments/environment';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-availability-selection',
@@ -70,7 +70,7 @@ export class AvailabilitySelectionComponent implements OnInit {
   // }
 
   constructor(private tutorService:TutorService,
-     private notificationsService: NotificationsService,
+     private toastr: ToastrService,
      private ngxSpinner: SpinnerService
     ) {  }
   
@@ -276,17 +276,15 @@ export class AvailabilitySelectionComponent implements OnInit {
     this.tutorService.saveTutorAvailability(request).subscribe(response => {
       if (response.Success) {
         this.ngxSpinner.hide();
-        this.notificationsService.showNotification(
+        this.toastr.success(
           'Success',
-          response.ResponseMessage,
-          NotificationTypes.Success
+          response.ResponseMessage
         );
-        this.loadAvalabilites();
+        // this.loadAvalabilites();
       } else {
-        this.notificationsService.showNotification(
+        this.toastr.error(
           'Error',
-          response.ResponseMessage,
-          NotificationTypes.Error
+          response.ResponseMessage
         );
       }
     });

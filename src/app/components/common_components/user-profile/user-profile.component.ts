@@ -3,11 +3,11 @@ import { UsersService } from '../../../../services/users.service';
 import { ApplicationViewStudent } from '../../../../services/student.service';
 import { StudentService } from '../../../../services/student.service';
 import { CloudinaryImageService } from '../../../../services/cloudinary-image.service';
-import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../app.enums';
 import { AuthService } from '../../../../services/auth.service';
 import { SelectItem } from '../../../../services/event.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-profile',
@@ -26,7 +26,7 @@ export class UserProfileComponent {
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
     private studentService: StudentService,
-    private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private uploadingService: CloudinaryImageService,
     private authService: AuthService
   ) { 
@@ -91,10 +91,9 @@ export class UserProfileComponent {
     this.UserService.updateStudent(this.student).subscribe((response) => {
       this.spinner.hide();
       if(response.Success){
-        this.notificationsService.showNotification(
+        this.toastr.success(
           'Success',
-          response.ResponseMessage,
-          NotificationTypes.Success
+          response.ResponseMessage
         );
       }
     })

@@ -1,4 +1,3 @@
-import { NotificationsService } from './../../../../services/Shared/notifications.service';
 import { Component } from '@angular/core';
 import { StudentService } from '../../../../services/student.service';
 import { ClassMetadataService, ClassMetaData } from '../../../../services/class-metadata.service';
@@ -8,6 +7,7 @@ import { PageSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { DialogComponent, DialogUtility } from '@syncfusion/ej2-angular-popups';
 import { SelectItem } from '../../../../services/event.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-class-metadata',
@@ -28,7 +28,7 @@ export class ClassMetadataComponent {
   constructor(private studentService: StudentService,
     private tutorService: TutorService,
     private classMetaServices: ClassMetadataService,
-    private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private ngxSpinner: SpinnerService
   ) {
     this.insertClassData = new ClassMetaData();
@@ -85,10 +85,9 @@ export class ClassMetadataComponent {
     this.ngxSpinner.show();
     this.classMetaServices.saveClassMetaData(this.insertClassData).subscribe((response) => {
       if (response.Success) {
-        this.notificationsService.showNotification(
+        this.toastr.success(
           'Success',
-          response.ResponseMessage,
-          NotificationTypes.Success
+          response.ResponseMessage
         );
         this.ngxSpinner.hide();
         this.addClassDialogueBox = false;
@@ -96,10 +95,9 @@ export class ClassMetadataComponent {
         this.viewClassMetaData();
       }
       else {
-        this.notificationsService.showNotification(
+        this.toastr.error(
           'Error',
-          response.ResponseMessage,
-          NotificationTypes.Error
+          response.ResponseMessage
         );
         this.ngxSpinner.hide();
       }
@@ -132,16 +130,14 @@ export class ClassMetadataComponent {
         this.ngxSpinner.hide();
         if (response.Success) {
           this.viewClassMetaData();
-          this.notificationsService.showNotification(
+          this.toastr.success(
             'Success',
-            response.ResponseMessage,
-            NotificationTypes.Success
+            response.ResponseMessage
           );
         } else {
-          this.notificationsService.showNotification(
+          this.toastr.error(
             'Error',
-            response.ResponseMessage,
-            NotificationTypes.Error
+            response.ResponseMessage
           );
         }
         this.dialogInstance.hide();
@@ -149,10 +145,8 @@ export class ClassMetadataComponent {
       (error) => {
         console.error('Error deleting class metadata:', error);
         this.ngxSpinner.hide();
-        this.notificationsService.showNotification(
+        this.toastr.error(
           'Error',
-          'An error occurred while deleting class metadata. Please try again later.',
-          NotificationTypes.Error
         );
         this.dialogInstance.hide();
       }

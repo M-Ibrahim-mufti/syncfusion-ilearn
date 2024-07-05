@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center align-items-center h-screen ">
   <div class="col-md-12 d-flex mx-auto">
     <div class="col-md-6 bg-white d-flex align-items-center justify-content-center">
-      <div class="col-md-8 mx-auto border border-1 shadow rounded-3 py-4">
+      <div class="col-md-7 mx-auto border border-1 shadow rounded-3 py-4">
         <form class="d-flex flex-column gap-3" #loginForm="ngForm">
           <div class="mx-auto w-50">
             <img style="width: 100%; height: 120px;" src="../../../../assets/strapline/i-learn-logo-strapline-600.png"/>
@@ -15,12 +15,12 @@
               <label for="password" class="form-label">Password</label>
               <input type="password" id="password" [(ngModel)]="loginModel.Password" placeholder="Enter password" name="password" class="form-control py-2" required />
             </div>
-            <div class="mt-2 d-flex justify-content-end ">
-              <a href="javascript:void(0)" (click)="onForgotPasswordDialog()" class="m-0 fp-text-hover">Forgot Password</a>
-            </div>
           </div>
           <div class="w-75 d-flex justify-content-center mx-auto mt-2">
             <button ejs-button cssClass="e-danger w-100 rounded-3 py-2 fw-bold" [disabled]="!loginModel.Username || !loginModel.Password" (click)="login()" >Login</button>
+          </div>
+          <div class="form-group text-center mt-2">
+            <a href="javascript:void(0)" (click)="onForgotPasswordDialog()">Forgot Password</a>
           </div>
           <div class="form-group text-center mt-2">
             <a [routerLink]="['/register/student']">Don't have an account? Sign up now!</a>
@@ -28,8 +28,16 @@
         </form>
       </div>
     </div>
-    <div class="col-md-6 background-set">
-        
+    <div class="col-md-6 background-set d-flex align-items-center justify-content-center position-relative">
+      <div class="col-md-6 background-set d-flex align-items-center justify-content-center position-relative">
+        <div class="text-center text-overlay">
+          <h1 class="text-white fw-bold">Welcome to I-Learn</h1>
+          <p class="text-white">Your journey to knowledge starts here</p>
+          <p class="text-white">Explore a variety of courses and start learning today.</p>
+          <p class="text-white">Already a member? Log in to continue.</p>
+          <button class="btn btn-outline-light mt-3">Register Now</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

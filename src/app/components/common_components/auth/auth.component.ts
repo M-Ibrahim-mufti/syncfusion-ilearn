@@ -3,8 +3,8 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationTypes } from '../../../app.enums';
 import { AuthService } from '../../../../services/auth.service';
-import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -28,7 +28,7 @@ export class AuthComponent implements OnInit {
 
   constructor(private router: Router,
     private spinnerService: SpinnerService,
-    private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private authService: AuthService,
   ) { }
 
@@ -43,7 +43,7 @@ export class AuthComponent implements OnInit {
           window.location.reload();
           return;
         }
-        this.notificationsService.showNotification('Error', response.ResponseMessage, NotificationTypes.Error);
+        this.toastr.error('Error', response.ResponseMessage);
       },
       (error) => {
         console.error(error);

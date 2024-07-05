@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
 import { AuthComponent } from './components/common_components/auth/auth.component';
-import { NotificationsService } from '../services/Shared/notifications.service';
 import { JWT_OPTIONS, JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { AuthConfig, AuthService } from '../services/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,6 +36,7 @@ import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 import { SubjectSelectionComponent } from './components/common_components/subject-selection/subject-selection.component';
+import { ToastrModule } from 'ngx-toastr';
 
 export function getTokenFactory(injector: Injector) {
   return {
@@ -91,6 +91,11 @@ export function getTokenFactory(injector: Injector) {
     }),
     DialogModule,
     FontAwesomeModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
     
     //Syncfussion Module
     GridModule,
@@ -101,7 +106,7 @@ export function getTokenFactory(injector: Injector) {
     
   ],
   exports: [RouterModule],
-  providers: [NotificationsService, JwtHelperService,
+  providers: [JwtHelperService,
       AuthConfig, AuthService, AuthGuard,
 
      //syncfussion providers

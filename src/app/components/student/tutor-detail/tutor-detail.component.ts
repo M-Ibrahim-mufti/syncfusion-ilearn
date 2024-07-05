@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Event,GroupedAvailabilities,EventService, SelectItem } from '../../../../services/event.service';
 import { StudentService } from '../../../../services/student.service';
 import { RequestBooking, SlotBookingService } from '../../../../services/slot-booking.service';
-import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../app.enums';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -33,7 +33,7 @@ export class TutorDetailComponent {
     private router: ActivatedRoute,
     private studentService: StudentService,
     private spinnerService: SpinnerService,
-    private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private slotBookingService: SlotBookingService,
     // private toastr: ToastrService,
   ) { }
@@ -47,11 +47,13 @@ export class TutorDetailComponent {
   public getTutorEvents(tutorId: string) {
     this.eventService.getEvents(tutorId).subscribe(response => {
       this.events = response;
+      console.log(this.events);
+      
       const todayDateTime = new Date();
       const data: any[] = [];
       this.events!.forEach(x => {
         const eventdate = new Date(x.EventStartTime)
-        if (eventdate < todayDateTime) {
+        if (eventdate > todayDateTime) {
           data.push(x)
         }
       })
@@ -105,17 +107,15 @@ export class TutorDetailComponent {
     this.slotBookingService.slotBookingRequest(model).subscribe(response => {
       if (response.Success) {
         this.spinnerService.hide();
-        this.notificationsService.showNotification(
+        this.toastr.success(
           'Success',
-          'Student enroll this class successfully',
-          NotificationTypes.Success
+          'Student enroll this class successfully'
         );
       }
       else {
-        this.notificationsService.showNotification(
+        this.toastr.error(
           'Error',
-          response.ResponseMessage,
-          NotificationTypes.Error
+          response.ResponseMessage
         );
        this.spinnerService.hide();
       }

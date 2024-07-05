@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { Student, StudentRegistrationModel, StudentService } from '../../../../services/student.service';
-import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { NotificationTypes } from '../../../app.enums';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { DialogUtility } from '@syncfusion/ej2-angular-popups';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-student',
@@ -18,7 +18,7 @@ export class AdminStudentComponent {
   dialogInstance!: any;
 
   constructor(private studentService: StudentService,
-    private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private spinnerService: SpinnerService) { }
 
   ngOnInit() {
@@ -60,28 +60,25 @@ export class AdminStudentComponent {
           (response) => {
             this.spinnerService.hide();
             if (response.Success) {
-              this.notificationsService.showNotification(
+              this.toastr.success(
                 'Success',
-                response.ResponseMessage,
-                NotificationTypes.Success
+                response.ResponseMessage
               );
               var index = this.students.findIndex(p => p.Id == selectedStudent.Id);
               this.students.splice(index, 1);
             } else {
-              this.notificationsService.showNotification(
+              this.toastr.error(
                 'Error',
-                response.ResponseMessage,
-                NotificationTypes.Error
+                response.ResponseMessage
               );
             }
           },
           (error) => {
             console.error('Error deleting student:', error);
             this.spinnerService.hide();
-            this.notificationsService.showNotification(
+            this.toastr.error(
               'Error',
               'An error occurred while deleting student. Please try again later.',
-              NotificationTypes.Error
             );
           }
         );

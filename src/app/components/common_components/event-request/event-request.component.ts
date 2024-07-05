@@ -1,9 +1,9 @@
+import { ToastrService } from 'ngx-toastr';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
 import { RequestBooking, SlotBookingService } from '../../../../services/slot-booking.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { NotificationTypes } from '../../../app.enums';
-import { NotificationsService } from '../../../../services/Shared/notifications.service';
 
 @Component({
   selector: 'app-event-request',
@@ -32,7 +32,7 @@ export class EventRequestComponent implements OnInit{
   constructor(
     private authService: AuthService,
     private spinnerService: SpinnerService,
-    private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private slotBookingService: SlotBookingService, 
     private cdr: ChangeDetectorRef
   ){}
@@ -70,16 +70,15 @@ export class EventRequestComponent implements OnInit{
       if (resposne.Success) {
         this.joinUrl = resposne.join_url;
         this.isSlotBookingDialogVisible = false;
-        this.notificationsService.showNotification(
+        this.toastr.success(
           'Success',
-          resposne.ResponseMessage,
-          NotificationTypes.Success
+          resposne.ResponseMessage
         );
+        // this.getAllSlotBookingRequests();
       } else {
-        this.notificationsService.showNotification(
+        this.toastr.error(
           'Error',
-          resposne.ResponseMessage,
-          NotificationTypes.Error
+          resposne.ResponseMessage
         );
       }
     })
@@ -87,11 +86,10 @@ export class EventRequestComponent implements OnInit{
 
   public rejectBookingRequest(bookingRequestId:string){
     this.slotBookingService.rejectBookingRequest(bookingRequestId).subscribe(async response => {
-      this.notificationsService.showNotification(
-        'Success',
-        response.ResponseMessage,
-        NotificationTypes.Success
-      );
+       this.toastr.success(
+          'Success',
+          response.ResponseMessage
+        );
       this.getAllSlotBookingRequests()
     })
   }

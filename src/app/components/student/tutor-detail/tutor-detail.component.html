@@ -103,8 +103,8 @@
                                 <span class="fw-bold text-muted py-3">{{ data.Duration }}</span>
                             </ng-template>
                         </e-column>
-                        <e-column field='EventStartTime' headerText='Start Time' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
-                            <ng-template #cellTemplate2 let-data let-column>
+                        <e-column field='EventStartTime' headerText='Start Time' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate3">
+                            <ng-template #cellTemplate3 let-data let-column>
                                 <span class="fw-bold text-muted py-3">{{ data.EventStartTime | date: 'yyyy/MM/dd HH:mm' }}</span>
                             </ng-template>
                         </e-column>

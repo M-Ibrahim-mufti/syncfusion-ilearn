@@ -75,15 +75,12 @@ export class TutorSelectionComponent {
 
   public loadAvailabilities() {
     this.tutorService.getAllAvalabilities().subscribe((response) => {
-      console.log(response)
-      this.tutorAvailaibility = response
-      console.log(this.tutorAvailaibility)
+      this.tutorAvailaibility = response;
     })
   }
 
   public getTutorAvailabilities(tutorId:string) {
     this.selectedTutorAvailibilities = []
-    console.log(tutorId, this.tutorAvailaibility)
     this.tutorAvailaibility.forEach((availibility) => {
         if (availibility.TutorId === tutorId){
           this.selectedTutorAvailibilities.push(availibility)

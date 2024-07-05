@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 

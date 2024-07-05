@@ -1,6 +1,11 @@
 <div class="rounded-3 col-md-12 py-2 bg-white">
     <div class="my-2 border-bottom">
-        <h6 class="fs-3 pb-3 fw-bolder px-3"> Event Requests</h6>
+        <h4 class="fs-3 pb-3 fw-bolder px-3"> Event Requests
+            <span *ngIf="bookingRequests.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{bookingRequests.length}}</span>
+                <div class="text-muted me-5 mt-2">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, fugit nobis. Consectetur, placeat omnis! Doloribus voluptatibus, repellendus et repudiandae cumque, possimus perferendis excepturi reiciendis praesentium corporis est quod quam sit!
+                </div>
+        </h4>
     </div>
     <div class="my-2">
         <div class="d-flex flex-wrap px-3 gap-3 mx-3" *ngIf="bookingRequests && bookingRequests.length > 0">

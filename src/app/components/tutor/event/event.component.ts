@@ -5,9 +5,9 @@ import { ClassMetaData, ClassMetadataService } from '../../../../services/class-
 import { TutorAvailability, TutorService } from '../../../../services/tutor.service';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
 import { Event,GroupedAvailabilities, EventService, SelectItem } from '../../../../services/event.service';
-import { NotificationsService } from '../../../../services/Shared/notifications.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { NotificationTypes } from '../../../app.enums';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-event',
@@ -61,7 +61,7 @@ export class EventComponent implements OnInit {
     private route: ActivatedRoute,
     private cdr:ChangeDetectorRef,
     private datePipe: DatePipe,
-    private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private ngxSpinner: SpinnerService
   ) { }
 
@@ -85,10 +85,9 @@ export class EventComponent implements OnInit {
   }
 
   public getTutorEvents() {
-    this.eventService.getEvents().subscribe(response => {
-      this.events = response
+    this.eventService.getEvents().subscribe(async response => {
+      this.events = await response
       this.loadAvalabilites();
-      this.cdr.detectChanges();
     })
   }
 
@@ -151,20 +150,18 @@ export class EventComponent implements OnInit {
         }));
         this.selectedSubject = '';
         this.selectedEvent.AvailabilityId = "-1";
-        this.notificationsService.showNotification(
+        this.toastr.success(
           'Success',
-          response.ResponseMessage,
-          NotificationTypes.Success
+          response.ResponseMessage
         );
         this.ngxSpinner.hide();
         this.onDialogClose();
         this.getTutorEvents();
         
       } else {
-        this.notificationsService.showNotification(
+        this.toastr.error(
           'Error',
-          response.ResponseMessage,
-          NotificationTypes.Error
+          response.ResponseMessage
         );
         this.ngxSpinner.hide();
       }
@@ -192,17 +189,15 @@ export class EventComponent implements OnInit {
     (response) => {
       if (response.Success) {
         this.getTutorEvents();
-        this.notificationsService.showNotification(
+        this.toastr.success(
           'Success',
-          response.ResponseMessage,
-          NotificationTypes.Success
+          response.ResponseMessage
         );
         this.ngxSpinner.hide();
       } else {
-        this.notificationsService.showNotification(
+        this.toastr.error(
           'Error',
-          response.ResponseMessage,
-          NotificationTypes.Error
+          response.ResponseMessage
         );
         this.ngxSpinner.hide();
       }
@@ -210,10 +205,9 @@ export class EventComponent implements OnInit {
     (error) => {
       console.error('Error deleting student:', error);
       this.spinnerService.hide();
-      this.notificationsService.showNotification(
+      this.toastr.error(
         'Error',
-        "Error Happenes",
-        NotificationTypes.Error
+        'Error Happen'
       );
       this.ngxSpinner.hide();
     }
