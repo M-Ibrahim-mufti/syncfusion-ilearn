@@ -216,7 +216,7 @@
           [events]="events"
           class="calendar-view">
         </mwl-calendar-month-view> -->
-        <ejs-schedule #scheduleObj width='100%' height='520px' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [views]="scheduleViews" (actionBegin)="onActionComplete($event)"></ejs-schedule>
+        <ejs-schedule #scheduleObj width='100%' height='520px' [selectedDate]="selectedDate" [eventSettings]="eventSettings" [views]="scheduleViews" timezone="UTC"></ejs-schedule>
       </li>
     </ul>
   </div>
