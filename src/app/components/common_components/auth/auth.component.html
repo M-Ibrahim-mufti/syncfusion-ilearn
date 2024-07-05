@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center align-items-center h-100">
+<!-- <div class="d-flex justify-content-center align-items-center h-screen ">
     <div class="login-container">
       <form #loginForm="ngForm">
         <img src="../../../assets/strapline/i-learn-logo-strapline-600.png" style="width: 100%;" />
@@ -13,21 +13,58 @@
           <input type="password" id="password" [(ngModel)]="loginModel.Password" placeholder="Enter password"
             name="password" class="form-control" required />
         </div>
-        <!-- Submit button section -->
+        Submit button section
         <div class="form-group text-center mt-2">
           <div class="card flex justify-content-center">
             <button pButton type="button" class="p-button-default p-button-outlined" label="Login"
               [disabled]="!loginModel.Username || !loginModel.Password" (click)="login()"></button>
           </div>
         </div>
-         <!-- Forgot Password button -->
+         Forgot Password button
          <div class="form-group text-center mt-2">
           <a href="javascript:void(0)" (click)="onForgotPasswordDialog()">Forgot Password</a>
         </div>
-        <!-- Signup link section -->
+        Signup link section
         <div class="form-group text-center mt-2">
           <a [routerLink]="['/register/student']">Don't have an account? Sign up now!</a>
         </div>
       </form>
     </div>
+  </div> -->
+
+
+<div class="d-flex justify-content-center align-items-center h-screen ">
+  <div class="col-md-12 d-flex mx-auto">
+    <div class="col-md-6 bg-white d-flex align-items-center justify-content-center">
+      <div class="col-md-8 mx-auto border border-1 shadow rounded-3 py-4">
+        <form class="d-flex flex-column gap-3" #loginForm="ngForm">
+          <div class="mx-auto w-50">
+            <img style="width: 100%; height: 120px;" src="../../../../assets/strapline/i-learn-logo-strapline-600.png"/>
+          </div>
+          <div class="w-75 mx-auto">
+            <div class="form-group mt-2">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" id="username" [(ngModel)]="loginModel.Username" placeholder="Enter email or username"  name="username" class="form-control py-2" required />
+            </div>
+            <div class="w-form-group mx-auto mt-2">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" [(ngModel)]="loginModel.Password" placeholder="Enter password" name="password" class="form-control py-2" required />
+            </div>
+            <div class="mt-2 d-flex justify-content-end ">
+              <a href="javascript:void(0)" (click)="onForgotPasswordDialog()" class="m-0 fp-text-hover">Forgot Password</a>
+            </div>
+          </div>
+          <div class="w-75 d-flex justify-content-center mx-auto mt-2">
+            <button ejs-button cssClass="e-danger w-100 rounded-3 py-2 fw-bold" [disabled]="!loginModel.Username || !loginModel.Password" (click)="login()" >Login</button>
+          </div>
+          <div class="form-group text-center mt-2">
+            <a [routerLink]="['/register/student']">Don't have an account? Sign up now!</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-6 background-set">
+        
+    </div>
   </div>
+</div>

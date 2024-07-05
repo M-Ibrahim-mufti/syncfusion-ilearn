@@ -3,34 +3,34 @@
         <h5 class="fs-3 pb-3 fw-bolder px-3"> Event Requests </h5>
     </div>
     <div class="my-2">
-        <div class="d-flex flex-wrap px-3 gap-5 mx-3" *ngIf="bookingRequests && bookingRequests.length > 0">
+        <div class="d-flex flex-wrap px-3 gap-3 mx-3" *ngIf="bookingRequests && bookingRequests.length > 0">
             <ng-container *ngFor="let bookingRequest of bookingRequests">
-                <div class="shadow-sm border border-1 py-5 px-4 rounded-3 custom-card-width position-relative">
-                    <div class="gap-2 d-flex">
-                        <div class="col-md-2 d-flex justify-content-end">
-                            <img class="rounded-circle" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover;" />
+                <div class="shadow-sm border border-1 py-2 px-2 prounded-3 custom-card-width position-relative">
+                    <div class="d-flex">
+                        <div class="col-md-3 d-flex me-2 justify-content-end">
+                            <img class="rounded-circle" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover    ;" />
                         </div>
-                        <div class="col-md-10 mb-2 d-flex">
+                        <div class="col-md-9 mb-2 d-flex">
                             <div class="w-100">
                                 <div class="mb-1">
                                     <h5 class="m-0">{{bookingRequest.StudentName}}</h5>
                                     <span class="fw-bold text-muted">{{bookingRequest.SubjectName}}</span>
                                 </div>
-                                <p class="m-0 mb-1">Topic of Class: <span class="fw-bold">{{bookingRequest.SubjectTopic}}</span></p>
-                                <p class="m-0 mb-1">Duration of Class: <span class="fw-bold">{{bookingRequest.Duration}} minutes</span></p>
-                                <p class="m-0 mb-1">Class Timing: <span class="fw-bold">{{getDayLabel(bookingRequest.Day)}} <span class="fw-bold">{{bookingRequest.StartTime | date: 'yyyy/MM/dd HH:mm' }}</span> </span></p>
+                                <p class="m-0 mb-1">Topic of Class: <span class="fs-6 fw-bold">{{bookingRequest.SubjectTopic}}</span></p>
+                                <p class="m-0 mb-1">Duration of Class: <span class="fs-6 fw-bold">{{bookingRequest.Duration}} minutes</span></p>
+                                <p class="m-0 mb-1">Class Timing: <span class="fs-6 fw-bold">{{getDayLabel(bookingRequest.Day)}} <span class="fw-bold">{{bookingRequest.StartTime | date: 'yyyy/MM/dd HH:mm' }}</span> </span></p>
                             </div>
                         </div>
                     </div>
                     <div class="button-group">
-                        <button class="reject-btn w-50" (click)="rejectBookingRequest(bookingRequest.Id)" >Reject</button>
-                        <button class="accept-btn w-50" (click)="approveBookingRequest(bookingRequest.Id)" >Accept</button>
+                        <button ejs-button cssClass="reject-btn w-50" (click)="rejectBookingRequest(bookingRequest.Id)" >Reject</button>
+                        <button ejs-button cssClass="accept-btn w-50 " [class]="{'opacity-50' :bookingRequest.IsApproved}" [disabled]="bookingRequest.IsApproved"  (click)="approveBookingRequest(bookingRequest.Id)" >Accept</button>
                     </div>
                     <div *ngIf="bookingRequest" class="position-absolute badge-container">
                         <span class="reject" *ngIf="!bookingRequest.IsApproved && bookingRequest.IsRejected" >Reject</span>
                         <span class="approve" *ngIf="bookingRequest.IsApproved && !bookingRequest.IsRejected" >Approve</span>
                         <span class="pending" *ngIf="!bookingRequest.IsApproved && !bookingRequest.IsRejected" >Pending</span>
-                    </div>
+                    </div> 
                 </div>
             </ng-container>
         </div>

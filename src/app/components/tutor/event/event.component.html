@@ -1,5 +1,5 @@
-<div class="container">
-    <div class="d-flex align-items-center justify-content-between mb-3">
+<!-- <div class="row g-5 mx-3 my-4 bg-white rounded-3">
+    <div class="d-flex align-items-center justify-content-between">
         <div>
             <h4 class="text-muted fw-bold mb-0">Classes</h4>
             <p class="text-muted">Manage class information here.</p>
@@ -10,7 +10,7 @@
             </button>
         </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12 mt-2">
         <ejs-grid [dataSource]='events' [allowPaging]="true" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
             <e-columns>
                 <e-column class="py-5" field='Name' headerText='Class Name' width='150' textAlign='Center' [allowSorting]="true"></e-column>
@@ -22,6 +22,9 @@
                 <e-column headerText='Action' width='120' textAlign='Center' [template]='actionTemplate'></e-column>
             </e-columns>
         </ejs-grid>
+        <div>
+
+        </div>
     </div>
 </div>
 
@@ -107,9 +110,9 @@
         </div>
     </div>
 </ejs-dialog>
+ -->
 
-
-<!-- <div *ngIf="events.length > 0" class="row g-5 mx-3 my-4 my-2 bg-white rounded-3">
+<div *ngIf="events.length > 0" class="row g-5 mx-3 my-4 my-2 bg-white rounded-3">
     <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
         <div>
             <h4 class="text-dark fw-bold mb-0">Classes
@@ -126,15 +129,31 @@
     <div class="col-md-12 mt-2 p-0">
         <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='events' [allowPaging]="events.length > 15" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
             <e-columns>
-                <e-column field='Name' headerText='Class Name' width='150' textAlign='center' [headerTemplate]='headerTemplate'></e-column>
-                <e-column field='SubjectName' headerText='Subject' width='150' textAlign='center' [headerTemplate]='headerTemplate'></e-column>
-                <e-column field='Duration' headerText='Duration (minutes)' width='150' textAlign='center' [headerTemplate]='headerTemplate'></e-column>
-                <e-column field='EventStartTime' headerText='Start Time' width='150' textAlign='center' [headerTemplate]='headerTemplate' format="{type: 'date', format: 'h:mm a'}"></e-column>
+                <e-column field='Name' headerText='Class Name' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTitleTemplate">
+                    <ng-template #cellTitleTemplate let-data>
+                        <span class="text-muted-dark fw-bold">{{data.Name}}</span>
+                    </ng-template>
+                </e-column>
+                <e-column field='SubjectName' headerText='Subject' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTemplate">
+                    <ng-template #cellTemplate let-data let-column>
+                        <span class="text-muted fw-bold">{{data.SubjectName}}</span>
+                    </ng-template>
+                </e-column>
+                <e-column field='Duration' headerText='Duration (minutes)' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTemplate2">
+                    <ng-template #cellTemplate2 let-data let-column>
+                        <span class="text-muted fw-bold">{{data.Duration  }}</span>
+                    </ng-template>
+                </e-column>
+                <e-column field='EventStartTime' headerText='Start Time' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTemplate3">
+                    <ng-template #cellTemplate3 let-data let-column>
+                        <span class="text-muted fw-bold">{{data.EventStartTime | date: 'yyyy/MM/dd hh:mm aa' }}</span>
+                    </ng-template>
+                </e-column>
                 <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]='headerTemplate' [template]='actionTemplate'></e-column>
             </e-columns>
         </ejs-grid>
         <ng-template #headerTemplate let-column>
-            <span class="text-muted fw-bolder fs-6">{{column.headerText}}</span>
+            <span class="text-muted-dark fw-bolder fs-6">{{column.headerText}}</span>
         </ng-template>
     </div>
 </div>
@@ -209,5 +228,5 @@
             <button ejs-button cssClass="e-info w-100" (click)="createEvent()" [disabled]="!selectedEvent.SubjectId || !selectedEvent.Duration || !selectedTime">Submit</button>
         </div>
     </div>
-</ejs-dialog> -->
+</ejs-dialog>
 

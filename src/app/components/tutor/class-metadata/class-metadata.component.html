@@ -25,13 +25,13 @@
                         <span class="fw-bold text-muted py-3">{{ data.Description }}</span>
                     </ng-template>
                 </e-column>
-                <e-column field='gradeLevel' headerText='Grade Level' width='120' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
-                    <ng-template #cellTemplate2 let-data let-column>
+                <e-column field='gradeLevel' headerText='Grade Level' width='120' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate3">
+                    <ng-template #cellTemplate3 let-data let-column>
                         <span class="fw-bold text-muted py-3">{{ data.GradeLevel }}</span>
                     </ng-template>
                 </e-column>
-                <e-column field='subjectName' headerText='Subject Name' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
-                    <ng-template #cellTemplate2 let-data let-column>
+                <e-column field='subjectName' headerText='Subject Name' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate4">
+                    <ng-template #cellTemplate4 let-data let-column>
                         <span class="fw-bold text-muted py-3">{{ data.SubjectName }}</span>
                     </ng-template>
                 </e-column>
@@ -39,7 +39,7 @@
             </e-columns>
         </ejs-grid>
         <ng-template #headerTemplate let-column>
-            <span class="text-muted fw-bolder fs-6">{{column.headerText}}</span>
+            <span class="text-muted-dark fw-bolder fs-6">{{column.headerText}}</span>
         </ng-template>
     </div>
 </div>

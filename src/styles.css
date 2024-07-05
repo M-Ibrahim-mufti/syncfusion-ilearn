@@ -10,6 +10,11 @@ label {
 html {
   font-size: 14px;
 }
+
+.h-screen {
+  height: 100vh;
+}
+
 body {
   position: relative;
   /* height: 100vh;
