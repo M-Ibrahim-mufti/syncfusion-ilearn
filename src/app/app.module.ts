@@ -83,7 +83,7 @@ export function getTokenFactory(injector: Injector) {
       return token;
     },
     skipWhenExpired: true,
-    allowedDomains: ['localhost:44303']
+    // allowedDomains: ['localhost:44303']
   }
 }
 

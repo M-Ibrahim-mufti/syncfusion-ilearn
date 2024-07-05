@@ -1,4 +1,4 @@
-<div class="position-relative container">
+<!-- <div class="position-relative container">
     <div class="row">
         <div class="col-md-6">
             <h2 class="fw-normal">Tutors Data</h2>
@@ -34,9 +34,7 @@
                                     />
                                 </div>
                             </div>
-                            <!-- <div class="col-md-auto">
-                                <button type="button" pButton icon="fa fa-save" label="Add New" class="p-button-sm p-button-outlined"></button>
-                            </div> -->
+
                         </div>                        
                     </ng-template>
                     <ng-template pTemplate="header">
@@ -90,8 +88,7 @@
             </div>
         </div>
     </div>
-</div>
-
+</div> -->
 
 <!-- <p-dialog header="Subjects" [modal]="true" [(visible)]="showSubjectDialogue" [style]="{width:'600px'}">  
     <div class="text-center " *ngIf="selectedTutor">
@@ -114,3 +111,62 @@
     </div>
 </p-dialog> -->
 
+
+<div *ngIf="tutors" class="row g-5 mx-3 my-4 my-2 bg-white rounded-3">
+    <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
+        <div class="d-flex align-items-center gap-2">
+            <h4 class="text-dark fw-bold mb-0">Students</h4>
+            <span class="fs-6 text-muted badge rounded-circle bg-secondary">{{tutors.length}}</span>
+        </div>
+    </div>
+    <div class="col-md-12 mt-2 p-0">
+        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='tutors' [allowPaging]="tutors.length > 15" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
+            <e-columns>
+                <e-column field="FullName" headerText='Student Info' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTitleTemplate">
+                    <ng-template #cellTitleTemplate let-data>
+                        <div class="d-flex flex-row align-items-center gap-2">
+                            <img class="tableImg" [src]="data.ImgUrl ? data.ImgUrl : '../../../../assets/user-profile.png'"/>
+                            <div class="d-flex flex-column">
+                                <span class="hover-primary text-dark fw-bold">{{data.FullName}}</span>
+                                <span class="text-muted fw-bold">{{data.Email}}</span>
+                                <span class="text-muted fw-bold"> {{data.PhoneNumber}} </span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </e-column>
+                <e-column field="Country" headerText='Location' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellLocationTemplate">
+                    <ng-template #cellLocationTemplate let-data let-column>
+                        <div class="d-flex flex-column">
+                            <span class="hover-primary text-dark fw-bold">{{data.Country}}</span>
+                            <span class="text-muted fw-bold">{{data.City}}</span>
+                            <span class="text-muted fw-bold"> {{data.Address}} </span>
+                        </div>
+                    </ng-template>
+                </e-column>
+                <e-column field="null" headerText='Subjects' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellSubjectTemplate">
+                    <ng-template #cellSubjectTemplate let-data let-column>
+                        <div class="d-flex align-items-center">
+                            <a class="fw-semibold cursor-pointer hover-primary text-dark"> View Subjects </a>
+                        </div>
+                    </ng-template>
+                </e-column>
+                <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]='headerTemplate' [template]='actionTemplate'></e-column>
+            </e-columns>
+        </ejs-grid>
+        <ng-template #headerTemplate let-column>
+            <span class="text-muted-dark fw-bolder fs-6">{{column.headerText}}</span>
+        </ng-template>
+    </div>
+</div>
+<ng-template #actionTemplate let-data>
+    <button ejs-button cssClass='e-info e-icon-btn me-2 rounded-circle'>
+        <span class="e-btn-icon e-icons e-edit"></span>
+    </button>
+    <button ejs-button cssClass='e-danger e-icon-btn rounded-circle'>
+        <span class="e-btn-icon e-icons e-delete"></span>
+    </button>
+</ng-template>
+
+<ejs-dialog cssClass="rounded-dialog" header="Student Subjects" [visible]="false" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="false"  >
+
+</ejs-dialog>

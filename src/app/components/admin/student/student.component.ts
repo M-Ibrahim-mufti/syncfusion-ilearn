@@ -16,6 +16,8 @@ export class AdminStudentComponent {
   @ViewChild('dt1') dt1: Table | undefined;
 
   students!: Student[];
+  studentDialogue:boolean = false
+  studentSubject:any[] = []
 
   constructor(private studentService: StudentService,
     private confirmationService: ConfirmationService,
@@ -32,6 +34,7 @@ export class AdminStudentComponent {
       next: (response: any[]) => {
         this.ngxSpinnerService.hide();
         this.students = response;
+        console.log(this.students)
       },
       error: (err) => {
         console.error('Error fetching student list', err);
@@ -88,6 +91,13 @@ export class AdminStudentComponent {
     if (this.dt1) {
       this.dt1.filterGlobal(value, 'contains');
     }
+  }
+
+  public viewSubjectBox(subjects:any){
+    this.studentDialogue = true;
+    this.studentSubject = subjects;
+    console.log(this.studentSubject);
+    
   }
 
 }
