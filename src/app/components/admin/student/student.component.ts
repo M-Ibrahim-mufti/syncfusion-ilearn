@@ -72,6 +72,7 @@ export class AdminStudentComponent {
                 response.ResponseMessage
               );
             }
+            this.dialogInstance.hide();
           },
           (error) => {
             console.error('Error deleting student:', error);
@@ -82,6 +83,7 @@ export class AdminStudentComponent {
             );
           }
         );
+        this.dialogInstance.hide();
       }
   
   public viewSubjectBox(subjects:any){

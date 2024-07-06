@@ -8,6 +8,7 @@ import { Event,GroupedAvailabilities, EventService, SelectItem } from '../../../
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { NotificationTypes } from '../../../app.enums';
 import { ToastrService } from 'ngx-toastr';
+import { DialogUtility } from '@syncfusion/ej2-angular-popups';
 
 @Component({
   selector: 'app-event',
@@ -52,6 +53,7 @@ export class EventComponent implements OnInit {
   public classMetaData: ClassMetaData[] = [];
   public selectedSubject: string = '';
   public eventTitle: SelectItem[] = [];
+  public dialogInstance: any;
 
   constructor(
     private spinnerService: SpinnerService,
@@ -184,6 +186,18 @@ export class EventComponent implements OnInit {
   }
 
   public deleteClass(selectedClass: Event) {
+    this.dialogInstance = DialogUtility.confirm({
+      title: 'Delete Confirmation',
+      content: `Are you sure you want to delete this class ${selectedClass.Name}?`,
+      okButton: { text: 'Yes', click: this.confirmDelete.bind(this, selectedClass) },
+      cancelButton: { text: 'No' },
+      showCloseIcon: true,
+      closeOnEscape: true,
+      animationSettings: { effect: 'Zoom' }
+    });
+  } 
+
+  public confirmDelete(selectedClass: Event) {
   this.ngxSpinner.show();
   this.eventService.deleteEvent(selectedClass.Id!).subscribe(
     (response) => {
@@ -201,6 +215,7 @@ export class EventComponent implements OnInit {
         );
         this.ngxSpinner.hide();
       }
+      this.dialogInstance.hide();
     },
     (error) => {
       console.error('Error deleting student:', error);
@@ -210,6 +225,7 @@ export class EventComponent implements OnInit {
         'Error Happen'
       );
       this.ngxSpinner.hide();
+      this.dialogInstance.hide();
     }
   );
   }
