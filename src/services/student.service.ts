@@ -48,6 +48,14 @@ export class StudentService extends ServiceBase{
     return this.http.get<SelectItem[]>(url, httpOptions);
   }
 
+  public fetchStudentDropdownData(): Observable<SelectItem[]> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Student';
+    const method: string = '/dropdown';
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<SelectItem[]>(url, httpOptions);
+  }
+
   public getStudent(): Observable<Student[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Student';

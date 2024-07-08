@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { AuthService, ResponseObject } from './auth.service';
 import { StudentRegistrationModel } from './student.service';
-import { Event } from './event.service';
+import { Event, SelectItem } from './event.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,14 @@ export class TutorService extends ServiceBase {
     const method: string = '/fetch';    
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.post<Tutor[]>(url, filters, httpOptions);
+  }
+
+  public fetchTutorDropdownData(): Observable<SelectItem[]> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Tutor';
+    const method: string = '/dropdown';
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<SelectItem[]>(url, httpOptions);
   }
 
   public saveTutor(model: SaveTutorRequest): Observable<ResponseObject> {

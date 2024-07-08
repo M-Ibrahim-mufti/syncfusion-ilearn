@@ -98,6 +98,64 @@ export class AuthService {
     }
   }
 
+  public switchAccount(Id: string): Observable<ResponseObject> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.getAccessToken()
+      }),
+      withCredentials: true,  //this is important to pass the refresh-token cookie in the request headers
+      //observe: 'response'   //if we don't observe the response, it would mean response would only contain body, not headers but we need headers to store the cookie returned as "set-cookie" header in the response
+    };
+
+    var api: string = '/Auth';
+    var method: string = '/switch/' + Id;
+    var url: string = environment.BASE_API_PATH + api + method;
+    var postObservable = this.http.post<ResponseObject>(url, {}, httpOptions);
+
+    const subject = new ReplaySubject<ResponseObject>(1);
+    subject.subscribe((response: ResponseObject) => {
+      if (response.Success && response.ResponseData) {
+        var tokenResponse: TokenResponse = response.ResponseData;
+        //set the access token in localStorage so we can pass it on to the server plus check for the expiry/login status
+        this.setAccessToken(tokenResponse.AccessToken);
+        //also set the current user in localStorage so we can retrive it back later
+        if (tokenResponse.AuthUser) {
+          this.setCurrentUser(tokenResponse.AuthUser);
+        }
+      }
+    }, (error) => { console.error(error); this.handleAuthenticationError(error); });
+    postObservable.subscribe(subject);
+    return subject;
+  }
+
+  public exitAccount(): Observable<ResponseObject> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.getAccessToken()
+      })
+    };
+
+    var api: string = '/Auth';
+    var method: string = '/exit-view';
+    var url: string = environment.BASE_API_PATH + api + method;
+    var postObservable = this.http.post<ResponseObject>(url, {}, httpOptions);
+
+    const subject = new ReplaySubject<ResponseObject>(1);
+    subject.subscribe((response: ResponseObject) => {
+      if (response.Success && response.ResponseData) {
+        var tokenResponse: TokenResponse = response.ResponseData;
+        //set the access token in localStorage so we can pass it on to the server plus check for the expiry/login status
+        this.setAccessToken(tokenResponse.AccessToken);
+        //also set the current user in localStorage so we can retrive it back later
+        this.setCurrentUser(tokenResponse.AuthUser);
+      }
+    }, (error) => { console.error(error); this.handleAuthenticationError(error); });
+    postObservable.subscribe(subject);
+    return subject;
+  }
+
   public logout(): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -234,6 +292,11 @@ export class AuthService {
 
   public getAuthConfig(): AuthConfig {
     return { IsAdministrator: this.isAdministrator(), IsStudent: this.isStudent(), IsTeacher: this.isTeacher(), IsParent: this.isParent() };
+  }
+
+  public isViewingAsAdministrator(): boolean {
+    var decodedToken = this.getDecodedToken();
+    return (decodedToken?.IsViewingAsAdministrator == 'True');
   }
 
   public isInAnyRole(allowedRoles: UserRoles[]): boolean {
