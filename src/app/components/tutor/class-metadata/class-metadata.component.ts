@@ -24,6 +24,8 @@ export class ClassMetadataComponent {
   public pageSettings?: PageSettingsModel;
   public dropdownFields: Object = { text: 'label', value: 'value' };
   public dialogInstance: any;
+  public filterClasses!: ClassMetaData[];
+
 
   constructor(private studentService: StudentService,
     private tutorService: TutorService,
@@ -45,6 +47,7 @@ export class ClassMetadataComponent {
     this.classMetaServices.viewClassMetaData().subscribe((response) => {
       this.ngxSpinner.hide();
       this.classMetaData = response;
+      this.filterClasses = this.classMetaData;
     });
   }
 
@@ -161,6 +164,20 @@ export class ClassMetadataComponent {
 
   checkData(data:any) {
     console.log(data);
+  }
+
+  public filterSearch(event:Event) {
+    this.filterClasses = this.classMetaData
+    const inputElement = event.target as HTMLInputElement
+    const inputValue = inputElement.value
+    this.filterClasses = this.classMetaData.filter((data) => {
+      if (data.Title.includes(inputValue) || data.Description.includes(inputValue) || data.SubjectName.includes(inputValue)) {
+        return data
+      }
+      else {
+        return undefined
+      }
+    })
   }
 }
 

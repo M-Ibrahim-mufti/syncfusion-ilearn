@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthConfig, AuthService, ResponseObject } from '../../../../services/auth.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
@@ -34,6 +34,10 @@ export class TopBarComponent implements OnInit {
   public isDropdownOpen: boolean = false;
   public viewingRoleAsAdmin: boolean = false;
   
+  public Sidebar:boolean = true
+
+  @Output() SidebarToggle: EventEmitter<boolean> = new EventEmitter<boolean>()
+
   constructor(private spinnerService: SpinnerService,
     private authService: AuthService,
     private tutorService: TutorService,
@@ -149,5 +153,10 @@ export class TopBarComponent implements OnInit {
         this.spinnerService.hide();
       }
     );
+  }
+  
+  public toggleSidebar () {
+    this.Sidebar = !this.Sidebar
+    this.SidebarToggle.emit(this.Sidebar)
   }
 }

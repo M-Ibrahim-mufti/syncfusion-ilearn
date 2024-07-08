@@ -126,3 +126,13 @@
 .e-rowcell{
     padding: 16px;
 }
+
+.e-btn {
+    box-shadow: none!important;
+}
+
+.rounded-search{
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+

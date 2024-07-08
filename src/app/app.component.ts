@@ -18,6 +18,7 @@ export class AppComponent {
   userLogoUrl: string = '';
   memberSince: any;
   PersonalImgUrl: string = '';
+  public Sidebar: boolean = true
 
   constructor(private authService: AuthService, private authConfig: AuthConfig){
 
@@ -44,5 +45,8 @@ export class AppComponent {
         this.PersonalImgUrl = currentUser.PersonalImgUrl;
       }
     }
+  }
+  public SideBarToggles(eventData: boolean){
+    this.Sidebar = eventData;
   }
 }

@@ -227,3 +227,7 @@ body {
   backdrop-filter: blur(1px);
   z-index: 999;
 }
+
+.bg-search-logo{
+  background-color: #f2f5f7;
+}

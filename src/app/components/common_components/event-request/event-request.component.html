@@ -1,16 +1,23 @@
-<div class="rounded-3 col-md-12 py-2 bg-white">
-    <div class="my-2 border-bottom">
-        <h4 class="fs-3 pb-3 fw-bolder px-3"> Event Requests
-            <span *ngIf="bookingRequests.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{bookingRequests.length}}</span>
-                <div class="text-muted me-5 mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, fugit nobis. Consectetur, placeat omnis! Doloribus voluptatibus, repellendus et repudiandae cumque, possimus perferendis excepturi reiciendis praesentium corporis est quod quam sit!
-                </div>
-        </h4>
+<div class="row g-5 mx-3 my-4 my-2 bg-white rounded-3">
+    <div class="d-flex flex-column my-2">
+        <div class="my-3">
+            <h2 class="d-inline-flex align-items-center gap-3 my-3 fw-bold text-dark d-block fs-4 ">Event Requests  <span *ngIf="bookingRequests" class="fs-6 text-muted badge rounded-pill bg-secondary">{{bookingRequests.length}}</span></h2>
+            <div class="text-muted me-5">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, fugit nobis. Consectetur, placeat omnis! Doloribus voluptatibus, repellendus et repudiandae cumque, possimus perferendis excepturi reiciendis praesentium corporis est quod quam sit!
+            </div>
+        </div>
+        <div class="col-md-3 gap-3 d-flex justify-content-between align-items-center">
+            <select (change)="filterStatus()"  [(ngModel)]="selectedStatus" class="col-md-9 cursor-pointer border-dull-white h-100 form-select btn-shadow form-select-solid form-select-lg bg-white text-center">
+                <option *ngFor="let status of Status" [ngValue]="status.value" [disabled]="status.value === -1" [selected]="status.value === -1" >{{status.label}}</option>
+            </select>
+            <button (click)="clearFilter()" class="h-100 col-md-3 text-center btn border border-dull-white btn-shadow">Clear</button>
+        </div>
     </div>
+
     <div class="my-2">
-        <div class="d-flex flex-wrap px-3 gap-3 mx-3" *ngIf="bookingRequests && bookingRequests.length > 0">
-            <ng-container *ngFor="let bookingRequest of bookingRequests">
-                <div class="shadow-sm border border-1 py-2 px-2 prounded-3 custom-card-width position-relative">
+        <div class="d-flex flex-wrap gap-5" *ngIf="bookingRequests && bookingRequests.length > 0">
+            <ng-container *ngFor="let bookingRequest of filterRequests">
+                <div class="shadow-sm border border-1 py-2 px-2 prounded-3 custom-card-width rounded-2 position-relative">
                     <div class="d-flex">
                         <div class="col-md-3 d-flex me-2 justify-content-end">
                             <img class="rounded-circle" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover    ;" />
@@ -28,9 +35,9 @@
                         </div>
                     </div>
                     <div class="button-group">
-                        <button ejs-button cssClass="reject-btn w-50" (click)="rejectBookingRequest(bookingRequest.Id)" [disabled]="bookingRequest.IsApproved">Reject</button>
-                        <button ejs-button cssClass="accept-btn w-50 " [class]="{'opacity-50' :bookingRequest.IsApproved}" [disabled]="bookingRequest.IsApproved"  (click)="approveBookingRequest(bookingRequest.Id)" >Accept</button>
-                    </div>
+                        <button ejs-button [ngClass]="{'reject-btn w-50': true}" (click)="rejectBookingRequest(bookingRequest.Id)" [disabled]="bookingRequest.IsApproved">Reject</button>
+                        <button ejs-button [ngClass]="{'accept-btn w-50': true, 'opacity-50': bookingRequest.IsApproved}" [disabled]="bookingRequest.IsApproved" (click)="approveBookingRequest(bookingRequest.Id)">Accept</button>
+                    </div>                      
                     <div *ngIf="bookingRequest" class="position-absolute badge-container">
                         <span class="reject" *ngIf="!bookingRequest.IsApproved && bookingRequest.IsRejected" >Reject</span>
                         <span class="approve" *ngIf="bookingRequest.IsApproved && !bookingRequest.IsRejected" >Approve</span>

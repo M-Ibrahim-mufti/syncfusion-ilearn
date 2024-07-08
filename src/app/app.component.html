@@ -1,14 +1,14 @@
 <ng-container *ngIf="isAuthenticated">
-    <div class="row">
-        <div class="col-md-2 px-0">
-            <div style="height: 100vh" class="position-sticky top-0 bg-black">
+    <div class="d-flex">
+        <div class="px-0" [ngClass]="{'col-md-2':Sidebar, 'sidebar-closed':!Sidebar  }">
+            <div #sidebar style="height: 100vh" class="position-sticky top-0 bg-black">
                 <div class="d-flex flex-column flex-shrink-0 ">
-                    <app-aside-bar></app-aside-bar>
+                    <app-aside-bar [isSideBar]="Sidebar" ></app-aside-bar>
                 </div>
             </div>
         </div>
-        <div class="col-md-10 px-0">
-            <app-top-bar></app-top-bar>
+        <div class="px-0" [ngClass]="{'col-md-10': Sidebar, 'main-content-sidebar-closed': !Sidebar}">
+            <app-top-bar (SidebarToggle)="SideBarToggles($event)"></app-top-bar>
             <div class="my-2">
                 <router-outlet />
             </div>

@@ -4,7 +4,7 @@ import { DatePipe } from '@angular/common';
 import { ClassMetaData, ClassMetadataService } from '../../../../services/class-metadata.service';
 import { TutorAvailability, TutorService } from '../../../../services/tutor.service';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
-import { Event,GroupedAvailabilities, EventService, SelectItem } from '../../../../services/event.service';
+import { Event as TutorEvents ,GroupedAvailabilities, EventService, SelectItem } from '../../../../services/event.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { NotificationTypes } from '../../../app.enums';
 import { ToastrService } from 'ngx-toastr';
@@ -26,7 +26,7 @@ export class EventComponent implements OnInit {
   public firstName!: string;
   public userImgUrl!: string;
   public isAuthenticated!: boolean;
-  public selectedEvent: Event = {} as Event;
+  public selectedEvent: TutorEvents = {} as TutorEvents;
   public tutorAvailabilities: TutorAvailability[] = [];
   public subjects: SelectItem[] = [];
   public timeOptions: string[] = [];
@@ -34,7 +34,7 @@ export class EventComponent implements OnInit {
   public errorMessageForStartTime: string = '';
   public eventStartTime: string = '';
   public errorMessageForDuration: string = '';
-  public events: Event[] = [];
+  public events: TutorEvents[] = [];
   isEdit:boolean = false;
   public addClassDialogueBox: boolean = false;
   public allDays: any[] = [
@@ -54,6 +54,7 @@ export class EventComponent implements OnInit {
   public selectedSubject: string = '';
   public eventTitle: SelectItem[] = [];
   public dialogInstance: any;
+  public filterEvents!: TutorEvents[];
 
   constructor(
     private spinnerService: SpinnerService,
@@ -65,6 +66,7 @@ export class EventComponent implements OnInit {
     private datePipe: DatePipe,
     private toastr: ToastrService,
     private ngxSpinner: SpinnerService
+    
   ) { }
 
   ngOnInit(): void {
@@ -88,7 +90,8 @@ export class EventComponent implements OnInit {
 
   public getTutorEvents() {
     this.eventService.getEvents().subscribe(async response => {
-      this.events = await response
+      this.events = response
+      this.filterEvents = this.events
       this.loadAvalabilites();
     })
   }
@@ -145,7 +148,7 @@ export class EventComponent implements OnInit {
     }
     this.eventService.saveEvent(this.selectedEvent).subscribe(response => {
       if (response.Success) {
-        this.selectedEvent = new Event();
+        this.selectedEvent = new TutorEvents();
         this.eventTitle = this.classMetaData.map(p => ({
           label: '',
           value: ''
@@ -170,7 +173,7 @@ export class EventComponent implements OnInit {
     });
   }
   
-  public editClass(selectedClass: Event) {
+  public editClass(selectedClass: TutorEvents) {
     this.addClassDialogueBox = true;
     this.selectedEvent = { ...selectedClass }; 
     const selectedEventData = this.events.find(p => p.Id === selectedClass.Id);
@@ -185,7 +188,7 @@ export class EventComponent implements OnInit {
     this.selectedEvent.Duration = selectedClass.Duration
   }
 
-  public deleteClass(selectedClass: Event) {
+  public deleteClass(selectedClass: TutorEvents) {
     this.dialogInstance = DialogUtility.confirm({
       title: 'Delete Confirmation',
       content: `Are you sure you want to delete this class ${selectedClass.Name}?`,
@@ -197,7 +200,7 @@ export class EventComponent implements OnInit {
     });
   } 
 
-  public confirmDelete(selectedClass: Event) {
+  public confirmDelete(selectedClass: TutorEvents) {
   this.ngxSpinner.show();
   this.eventService.deleteEvent(selectedClass.Id!).subscribe(
     (response) => {
@@ -456,7 +459,7 @@ export class EventComponent implements OnInit {
 
   onDialogClose(){
     this.addClassDialogueBox = false;
-    this.selectedEvent = new Event();
+    this.selectedEvent = new TutorEvents();
     this.selectedSubject = "-1";
     this.selectedEvent.AvailabilityId = "-1";
     this.isEdit = false;
@@ -474,5 +477,18 @@ export class EventComponent implements OnInit {
     return null;
   }
 
+  public filterSearch(event: Event) {
+    this.filterEvents = this.events
+    const inputElement = event.target as HTMLInputElement
+    const inputValue = inputElement.value
+    this.filterEvents = this.events.filter((event) => {
+      if (event.Name.includes(inputValue) || event.Duration.toLocaleString().includes(inputValue) || event.SubjectName?.includes(inputValue)) {
+        return event
+      }
+      else {
+        return undefined
+      }
+    })
+  }
   
 }

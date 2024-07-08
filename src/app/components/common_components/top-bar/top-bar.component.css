@@ -6,3 +6,14 @@
     right: 0;
     left:auto;
 }
+
+.positioning{
+    left: -20px;
+    top:10px
+}
+
+.btn-style {
+    padding-top: 12px;
+    padding-bottom:12px;
+    background-color: #262626 !important;
+}

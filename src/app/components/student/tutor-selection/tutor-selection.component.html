@@ -33,7 +33,7 @@
             <select
                 (change)="onStartTimeChange($event)"
                 class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center"
-                [(ngModel)]="selectedTimegroup"   >
+                [(ngModel)]="selectedTimegroup">
             
                 <option class="py-1 cursor-pointer" *ngFor="let timeGroup of TimeGroup" [ngValue]="timeGroup.value" [disabled]="timeGroup.value === -1" [selected]="timeGroup.value === -1">{{ timeGroup.label }}</option>
             </select>

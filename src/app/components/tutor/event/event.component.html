@@ -1,19 +1,25 @@
 <div class="row g-5 mx-3 my-4 my-2 bg-white rounded-3">
+    <h4 class="text-dark fw-bold mb-0">Classes
+        <span *ngIf="events.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{filterEvents.length}}</span>
+        <div class="text-muted me-5 mt-2">
+            Manage class information here.
+        </div>
+    </h4>
     <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
-        <div>
-            <h4 class="text-dark fw-bold mb-0">Classes
-                <span *ngIf="events.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{events.length}}</span>
-                <div class="text-muted me-5 mt-2">
-                    Manage class information here.
-                </div>
-            </h4>
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="d-flex align-items-center px-4 bg-search-logo rounded-start-3">
+                    <span class="e-btn-icon e-icons e-search text-muted"></span>
+                </span>
+                <input (input)="filterSearch($event)" placeholder="Search..." class="form-control form-control-lg py-2"/>
+            </div>
         </div>
         <div class="col-md-auto">
             <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="openClassModal()">Add New</button>
         </div>
     </div>
     <div *ngIf="events.length > 0" class="col-md-12 mt-2 p-0">
-        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='events' [allowPaging]="events.length > 15" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
+        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='filterEvents' [allowPaging]="filterEvents.length > 15" [pageSettings]="{ pageSize: 15 }" [allowSorting]="true">
             <e-columns>
                 <e-column field='Name' headerText='Class Name' width='150' textAlign='left' [headerTemplate]='headerTemplate ' [template]="cellTitleTemplate">
                     <ng-template #cellTitleTemplate let-data>

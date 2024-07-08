@@ -1,19 +1,25 @@
 <div class="row g-5 mx-3 my-4 my-2 bg-white rounded-3 ">
-    <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
-        <div>
-            <h4 class="text-dark fw-bold mb-0">Class Metadata
-                <span *ngIf="classMetaData.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{classMetaData.length}}</span>
-                <div class="text-muted me-5 mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, fugit nobis. Consectetur, placeat omnis! Doloribus voluptatibus, repellendus et repudiandae cumque, possimus perferendis excepturi reiciendis praesentium corporis est quod quam sit!
-                </div>
-            </h4>
+    <h4 class="text-dark fw-bold mb-0">Class Metadata
+        <span *ngIf="classMetaData.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{filterClasses.length}}</span>
+        <div class="text-muted me-5 mt-2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, fugit nobis. Consectetur, placeat omnis! Doloribus voluptatibus, repellendus et repudiandae cumque, possimus perferendis excepturi reiciendis praesentium corporis est quod quam sit!
         </div>
-        <div class="col-md-auto">
+    </h4>
+    <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="d-flex align-items-center px-4 bg-search-logo rounded-start-3">
+                    <span class="e-btn-icon e-icons e-search text-muted"></span>
+                </span>
+                <input (input)="filterSearch($event)" placeholder="Search..." class="form-control form-control-lg py-2"/>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex gap-4 justify-content-end">
             <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="addNewClass()">  Add New </button>
         </div>
     </div>
     <div *ngIf="classMetaData.length > 0" class="col-md-12 mt-2 p-0">
-        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='classMetaData' [allowPaging]="classMetaData.length > 10" [pageSettings]="{ pageSize: 10 }" [allowSorting]="true">
+        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='filterClasses' [allowPaging]="filterClasses.length > 10" [pageSettings]="{ pageSize: 10 }" [allowSorting]="true">
             <e-columns >
                 <e-column field='title' headerText='Title' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate">
                     <ng-template #cellTemplate let-data let-column>
