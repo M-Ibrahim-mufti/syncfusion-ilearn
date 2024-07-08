@@ -8,7 +8,7 @@
               <button class="toggle-btn" [ngClass]="{'active': !showListView}" (click)="switchToListView()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-                </svg> 
+                </svg>
                 List View
               </button>
               <button class="toggle-btn" [ngClass]="{'active': showListView}" (click)="switchToCalendarView()">
@@ -17,7 +17,7 @@
                 </svg>
                 Calendar View
               </button>
-            </div>            
+            </div>
           </div>
         </div>
       </li>
@@ -190,7 +190,7 @@
                         <button type="button" class="w-100 rounded-5 btn btn-primary" (click)="addDateSpecificHour()">Apply</button>
                       </div>
                     </div>
-                  </div>                        
+                  </div>
                 </div>
               </ejs-dialog>
             </div>
@@ -200,7 +200,7 @@
       <li class="list-group-item" *ngIf="showListView">
         <!-- <div class="calendar-header mb-3">
           <div class="row">
-            <div class="col-9"> 
+            <div class="col-9">
               <h3>{{ viewDate | date: 'MMMM yyyy' }}</h3>
             </div>
           </div>

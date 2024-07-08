@@ -32,7 +32,7 @@ export class AvailabilitySelectionComponent implements OnInit {
     { label: 'Friday', value: 'Fri' },
     { label: 'Saturday', value: 'Sat' }
   ];
-  
+
   public timeOptions: string[] = [];
   public selectedAvailability: TutorAvailability[] = [];
   public showPopup: boolean = false;
@@ -68,12 +68,11 @@ export class AvailabilitySelectionComponent implements OnInit {
   //         IsAllDay: false
   //     }]
   // }
-
   constructor(private tutorService:TutorService,
      private toastr: ToastrService,
      private ngxSpinner: SpinnerService
     ) {  }
-  
+
   ngOnInit(): void {
     this.initializeDataManager();
     this.generateTimeOptions();
@@ -86,7 +85,7 @@ export class AvailabilitySelectionComponent implements OnInit {
     this.dataManager = new DataManager({
       headers: Object.keys(headers).map(key => ({ [key]: headers[key] })),
       url: `${environment.BASE_API_PATH}/Tutor/fetch-availabilty-schedule`,
-      
+
       crudUrl: `${environment.BASE_API_PATH}/Tutor/save-schedule`,
       //batchUrl: `${environment.BASE_API_PATH}/Tutor/save-schedule`,
       // crudUrl: `${environment.BASE_API_PATH}/Tutor/fetch-availabilty-schedule`,
@@ -96,7 +95,9 @@ export class AvailabilitySelectionComponent implements OnInit {
       crossDomain: true,
     });
 
-    this.eventSettings = { dataSource: this.dataManager }
+    this.eventSettings = {
+      dataSource: this.dataManager
+     }
   }
 
   public loadAvalabilites(){
@@ -118,7 +119,7 @@ export class AvailabilitySelectionComponent implements OnInit {
       //       IsRepeat: true
       //     });
       //   });
-        
+
       //   i++;
       // });
 
@@ -149,7 +150,7 @@ export class AvailabilitySelectionComponent implements OnInit {
   switchToListView() {
     this.showListView = false;
   }
-  
+
   switchToCalendarView() {
     this.showListView = true;
   }
@@ -239,7 +240,7 @@ export class AvailabilitySelectionComponent implements OnInit {
     }
     return hour;
   }
-    
+
   extractMinutes(timeString: string): number {
     const twelveHourFormat = /^([0-9]{1,2}):([0-9]{2})(am|pm)$/i;
     const match = timeString.match(twelveHourFormat);
@@ -251,7 +252,7 @@ export class AvailabilitySelectionComponent implements OnInit {
     const [, hours, minutes] = match;
     return parseInt(minutes, 10);
   }
-  
+
   public addEditAvailability() {
     let ava = this.availability.filter(x => x.available == true);
     let formattedAvailabilities:TutorAvailability[] = []
@@ -268,7 +269,7 @@ export class AvailabilitySelectionComponent implements OnInit {
         });
       });
     });
-    
+
     const request: SaveTutorAvailabilityRequest = {
       Availabilities: formattedAvailabilities
     };
