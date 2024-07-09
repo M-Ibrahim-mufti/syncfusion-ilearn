@@ -3,29 +3,29 @@
         <button *ngIf="Sidebar" (click)="toggleSidebar()" class="btn btn-style text-white d-flex align-items-center"><span class="e-icons e-chevron-left-double" ></span></button>
         <button *ngIf="!Sidebar" (click)="toggleSidebar()" class="btn btn-style text-white d-flex align-items-center"><span class="e-icons e-chevron-right-double" ></span></button>
     </div>
-    <span class="fw-bold fs-5 ps-3">Welcome Back {{firstName}}</span>
-    <div class="d-flex align-items-center" *ngIf="isAdministrator">
-        <span class="me-2">Switch Account</span>
-        <select  placeholder="- Select Account type -" class="p-1" (change)="onselectRole($event)">
-            <option class="py-1 cursor-pointer" *ngFor="let tutor of roles" [value]="tutor.value">{{ tutor.label }}</option>
-          </select>
-          
-        <select *ngIf="isDropdownOpen" (change)="onselectedId($event)"
-            class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center"
-            placeholder="- Select Account type -">
-            <option class="py-1 cursor-pointer" *ngFor="let tutor of tutorDropDownData" [value]="tutor.value">{{
-                tutor.label }}</option>
-        </select>
+    <span class="fw-bold fs-5 ps-4">Welcome Back {{firstName}}</span>
+    <div class="d-flex w-50 gap-4 align-items-center" *ngIf="isAdministrator">
+        <div class="col-md-2">
+            <span class="me-2 text-muted-dark fw-semibold">Switch Account</span>
+        </div>
+        <div class="col-md-3">
+            <select  class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center" (change)="onselectRole($event)">
+                <option class="py-1 cursor-pointer" [disabled]="role.value === '-1'" [selected]="role.value === '-1'"  *ngFor="let role of roles" [value]="role.value">{{ role.label }}</option>
+            </select>  
+        </div>
+        <div class="col-md-5">
+            <select *ngIf="isDropdownOpen" (change)="onselectedId($event)" class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center">
+                <option class="py-1 cursor-pointer" [disabled]="user.value === '-1'" [selected]="user.value === '-1'" *ngFor="let user of userDropDownData" [value]="user.value">{{user.label }}</option>
+            </select>
+        </div>
     </div>
     <div class="flex align-items-center" *ngIf="viewingRoleAsAdmin">
-        <button (click)="exitRoleView($event)" ejs-button cssClass="reject-btn w-50" >Switch back as administrator</button>
-        
+        <button (click)="exitRoleView($event)" ejs-button >Switch back as administrator</button>
     </div>
     <div class="dropdown me-4 pe-3">
         <a href="#" class="d-flex align-items-center link-dark text-decoration-none" id="dropdownUser2"
             (click)="toggleDropdown($event)" aria-expanded="false">
-            <i class="fa fa-user-circle-o fa-lg" *ngIf="ImgUrl == null"></i>
-            <img [src]="ImgUrl" *ngIf="ImgUrl != null" height="50" width="50" class="rounded-3" />
+            <img [src]="ImgUrl ? ImgUrl : '../../../../../../assets/user-profile.png'" height="50" width="50" class="rounded-3" />
         </a>
         <ul class="dropdown-menu text-small shadow dropdown-menu-left py-0" aria-labelledby="dropdownUser2"
             style="width: 300px;">

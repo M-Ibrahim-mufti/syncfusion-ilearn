@@ -1,92 +1,174 @@
-<!-- <div class="container">
-    <div class="row">
-        <div class="col-md-7">
-            <p-panel header="Your Profile" [toggleable]="false" >
-                <ng-template pTemplate="icons">
-                    <div class="d-flex">
-                        <div>
-                            <button (click)="updateStudentData()" pButton="button" icon="fa fa-save" label="Save" class="p-button-outlined"></button>
-                        </div>
+<div class="row g-5 mx-3 my-4 bg-white rounded-3">
+    <div class="my-3">
+        <h5 class="fw-bold m-0">User Profile</h5>
+    </div>
+</div>
+<div *ngIf="user" class="row gap-4 g-5 mx-3 my-1">
+    <div class="my-2 col-md-7 px-0 bg-white rounded-3">
+        <div class="d-flex flex-column">    
+            <div class="d-flex flex-column gap-3 align-items-center px-3 py-3 border-bottom border-dull-white">
+                <div class="position-relative">
+                    <img  style="width: 100px; height: 100px; object-fit: cover; border-radius: 6px;" [src]="user.ImgUrl ? user.ImgUrl : '../../../../../../assets/user-profile.png'"/>
+                    <button *ngIf="user.ImgUrl !== null" (click)="removeImg()" class="remove-btn">
+                        <span class="position-relative fs-6 text-white" style="top: -3px; right: -0.5px;"> x </span>
+                    </button>
+                </div>
+                <label for="ImageInput" *ngIf="user.ImgUrl === null" class="z-2 cursor-pointer rounded-3 text-white gap-2 image-btn d-flex justify-content-center align-items-center">
+                    <span class="cursor-pointer e-icons e-plus"></span>
+                    <label class="cursor-pointer fw-bold w-full"  >Image</label>
+                    <input (change)="onImageSelected($event)" id="ImageInput" type="file" accept="Image/*" hidden />
+                </label>
+            </div>
+            <div class="my-3">
+                <div class="border-bottom border-dull-white d-flex justify-content-between align-items-center gap-3">
+                    <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Personal Information </h5>
+                    <button (click)="openEditProfileDialog()" ejs-button class="e-info mx-3 mb-3 px-4 py-2 rounded-3 ">Edit</button>
+                </div>
+                <div class="d-flex flex-column gap-4 fw-bold mt-2 px-3">
+                    <div class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Name</p>
+                        <p class="col-md-6" >{{user.Hon ? user.Hon + " " : ''}} {{user.Name}}</p>
                     </div>
-                </ng-template>
-                <div class="w-full">
-                    <form *ngIf="student">
-                        <ng-container>
-                            <div class="w-100 d-flex flex-column rounded-circle justify-content-center align-items-center">
-                                <div *ngIf="student.ImgUrl" class="position-relative">
-                                    <img *ngIf="student.ImgUrl" style="width:100px; height: 100px; object-fit: cover;" class="rounded-2" [src]="student.ImgUrl ? student.ImgUrl : '../../../../assets/user-profile.png'"/>
-                                    <p-button (click)="removeImg()" icon="fa fa-times" severity="danger" styleClass="rounded-circle" class="close-btn"></p-button>
-                                </div>
-                                <div *ngIf="!student.ImgUrl" class="input-group my-2 justify-content-center">
-                                    <p-fileUpload name="studentProfileImageFile" accept="image/*"
-                                        chooseLabel="profile image" (onSelect)="onImageSelected($event.files, false)" 
-                                        [multiple]="false" [auto]="true" mode="basic">
-                                    </p-fileUpload>
-                                </div>
-                            </div>
-                        </ng-container>
-                        <div class="row my-2">
-                            <div class="col-6 mb-1">
-                                <div class="form-group">
-                                    <label for="fullName" class="form-label"><span class="text-danger">*</span>Name</label>
-                                    <input id="fullName" type="text" class="form-control" name="text" placeholder="Enter name" [(ngModel)]="student.Name" required/>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-1">
-                                <div class="form-group">
-                                    <label for="Email" class="form-label"><span class="text-danger">*</span>Email</label>
-                                    <input id="email" type="email" class="form-control" name="Email" placeholder="Enter Email" [(ngModel)]="student.Email" required/>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-1">
-                                <div class="form-group">
-                                    <label for="PhoneNumber" class="form-label">Phone Number</label>
-                                    <input id="PhoneNumber" type="tel" class="form-control" name="phoneNumber" placeholder="Enter Phone Number" [(ngModel)]="student.PhoneNumber" required/>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-1">
-                                <div class="form-group">
-                                    <label for="address" class="form-label">Address</label>
-                                    <input id="address" type="text" class="form-control" name="address" placeholder="Enter Address" [(ngModel)]="student.Address" required/>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-1">
-                                <div class="form-group">
-                                    <label for="parentName" class="form-label">Postal Code</label>
-                                    <input id="parentName" type="email" class="form-control" name="parentName" placeholder="Enter Postal Code" [(ngModel)]="student.PostCode" required/>
-                                </div>
-                            </div>  
+                    <div *ngIf="isStudent" class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Grade</p>
+                        <p class="col-md-6" >{{user.SchoolGrade}}</p>
+                    </div>
+                    <div *ngIf="isTeacher" class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Qualification</p>
+                        <p class="col-md-6" >{{user.Qualifications}}</p>
+                    </div>
+                    <div class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Email</p>
+                        <p class="col-md-6" >{{user.Email}}</p>
+                    </div>
+                    <div class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Phone Number </p>
+                        <p class="col-md-6" >{{user.PhoneNumber}}</p>
+                    </div>
+                    <div class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Address</p>
+                        <p class="col-md-6" >{{user.Address}}</p>
+                    </div>
+                    <div class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Country</p>
+                        <p class="col-md-6" >{{user.Country}}</p>
+                    </div>
+                    <div class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >City</p>
+                        <p class="col-md-6" >{{user.City}}</p>
+                    </div>
+                    <div class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Postal Code</p>
+                        <p class="col-md-6" >{{user.PostCode}}</p>
+                    </div>  
+                    <div class="text-start text-muted d-flex justify-content-between">
+                        <p class="col-md-6" >Subjects</p>
+                        <div class="col-md-6 d-flex flex-wrap gap-4 align-items-center" >
+                            <span *ngFor="let subject of selectedSubjects" class="px-4 rounded-pill py-1 bg-secondary text-muted-dark" >{{subject.label}}</span>
                         </div>
-                        <div class="row d-flex justify-content-between align-items-end">
-                            <div class="form-group col-10 pe-0">
-                                <label for="selectedSubjects" class="form-label">Subject<span class="text-danger">*</span></label>
-                                <p-multiSelect 
-                                    [options]="subjects" name="selectedSubjects" [defaultLabel]="'selectedSubjects'" optionLabel="label" [(ngModel)]="selectedSubjects" > 
-                                </p-multiSelect>
-                            </div>
-                        </div>
-                    </form>
+                    </div>  
                 </div>
-            </p-panel>
-        </div>
-        <div class="col-md-5">
-            <p-panel header="Reset Password" [toggleable]="false">
-                <ng-template pTemplate="icons">
-                    <button pButton class="p-button-outlined">Reset Password</button>
-                </ng-template>
-                <div class="form-group mb-1">
-                    <label for="password" class="form-label"><span class="text-danger">*</span>password</label>
-                    <input id="password" name="password" class="form-control" placeholder="Enter Current Password"/>
-                </div>
-                <div class="form-group mb-1">
-                    <label for="newPassword" class="form-label"><span class="text-danger">*</span>New Password</label>
-                    <input id="newPassword" name="password" class="form-control" placeholder="Enter New Password"/>
-                </div>
-                <div class="form-group mb-1">
-                    <label for="confirmNewPassword" class="form-label"><span class="text-danger">*</span>Confirm password</label>
-                    <input id="confirmNewPassword" name="password" class="form-control" placeholder="Confirm New Password"/>
-                </div>            
-            </p-panel>
+            </div>
         </div>
     </div>
-</div> -->
+    <div class="right-col-width d-flex flex-column gap-3 px-0 my-2">
+        <div class="bg-white px-0 py-2 bg-white rounded-3">
+            <div class="border-bottom border-dull-white d-flex py-2 align-items-center gap-3">
+                <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Change Password </h5>
+            </div>
+            <div class="px-3 d-flex gap-4 flex-column">
+                <div class="form-group">
+                    <label class="form-label col-form-label-lg">Current Password</label>
+                    <input placeholder="Enter Current Password"  type="password" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label col-form-label-lg">New Password</label>
+                    <input placeholder="Enter New Password" type="password" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label col-form-label-lg">Re-Enter Password</label>
+                    <input placeholder="Re Enter New Password" type="password" class="form-control"/>
+                </div>
+                <div>
+                    <button ejs-button class="e-info fs-6 w-100 mb-2 py-2 rounded-3">Change Password</button>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white px-0 py-2 bg-white rounded-3" >
+            <div class="border-bottom border-dull-white d-flex py-2 gap-3">
+                <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Previously Held Meetings </h5>
+            </div>
+            <div class="px-3 d-flex gap-4 py-3 flex-column handle-meeting-scroll">
+               <div class="d-flex flex-column" *ngFor="let meeting of meetings">
+                    <div class="d-flex justify-content-between">
+                        <p class="text-start  form-label mb-0 col-md-6">Title</p>
+                        <p class="text-start text-muted-dark mb-0 fw-semibold col-md-6">{{meeting.Topic}}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="text-start form-label mb-0 col-md-6">Start Time</p>
+                        <p class="text-start text-muted-dark mb-0 fw-semibold col-md-6">{{meeting.StartTime}}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="text-start form-label mb-0 col-md-6">Meeting ID</p>
+                        <p class="text-start text-muted-dark mb-0 fw-semibold col-md-6">{{meeting.MeetingId}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ejs-dialog *ngIf="user" [header]='headerTemplate' [width]="700" [visible]="UserEditProfileDialog" [showCloseIcon]="true" (close)="this.UserEditProfileDialog = false" [isModal]="true" > 
+    <ng-template #headerTemplate>
+        <h5 class="fw-bold text-muted-dark mb-2">Edit Profile</h5>
+    </ng-template>
+    <div class="row col-md-12 py-3 justify-content-between">
+        <div class="mb-2 col-md-6 form-group">
+            <label class="form-label">Name</label>
+            <input [(ngModel)]="user.Name" class="form-control"/>
+        </div>
+        <div *ngIf="isTeacher" class="mb-2 col-md-6 form-group">
+            <label class="form-label">Qualification</label>
+            <input [(ngModel)]="user.Qualifications" class="form-control"/>
+        </div>
+        <div *ngIf="isStudent" class="mb-2 col-md-6 form-group">
+            <label class="form-label">Grade</label>
+            <input [(ngModel)]="user.SchoolGrade" class="form-control"/>
+        </div>
+        <div class="mb-2 col-md-6 form-group">
+            <label class="form-label">Email</label>
+            <input [(ngModel)]="user.Email" class="form-control"/>
+        </div>
+        <div class="mb-2 col-md-6 form-group">
+            <label class="form-label">Phone Number</label>
+            <input [(ngModel)]="user.PhoneNumber" class="form-control"/>
+        </div>
+        <div class="mb-2 form-group">
+            <label class="form-label">Address</label>
+            <input [(ngModel)]="user.Address" class="form-control"/>
+        </div>
+        <div class="mb-2 col-md-6 form-group">
+            <label class="form-label">Country</label>
+            <input [(ngModel)]="user.Country" class="form-control"/>
+        </div>
+        <div class="mb-2 col-md-6 form-group">
+            <label class="form-label">State</label>
+            <input [(ngModel)]="user.State" class="form-control"/>
+        </div>
+        <div class="mb-2 col-md-6 form-group">
+            <label class="form-label">City</label>
+            <input [(ngModel)]="user.City" class="form-control"/>
+        </div>
+        <div class="mb-2 col-md-6 form-group">
+            <label class="form-label">Postal Code</label>
+            <input [(ngModel)]="user.PostCode" class="form-control"/>
+        </div>
+        <div class="mb-2 form-group">
+            <label class="form-label">Subjects</label>
+            <ejs-multiselect id="multiSubjectSelect" [(value)]="selectedSubjects" [allowObjectBinding]="true" [dataSource]="subjects" [fields]="{text:'label', value:'value'}" ></ejs-multiselect>
+        </div>
+    </div>
+    <ng-template #footerTemplate>
+        <button ejs-button class="e-info py-2 rounded-3" (click)="updateUserData()"> Update Profile </button>
+    </ng-template>
+</ejs-dialog>

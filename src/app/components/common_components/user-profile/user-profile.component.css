@@ -1,16 +1,44 @@
-.close-btn {
-    position: absolute;
-    top: -10px;
-    left: 90%;
+.remove-btn {
+    border: none;
     background-color: red;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    vertical-align: top;
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
+    padding: 0;
     justify-content: center;
-    line-height: 1;
-    border: none;
-    color: white;
+    border-radius: 50%;
+
+}
+
+.right-col-width {
+    width: 40%;
+    flex:0 0 auto;
+}
+
+.handle-meeting-scroll{
+    max-height: 100%;
+    height: 300px;
+    scrollbar-width: thin;
+    scrollbar-color: #f1f1f1 white;
+    overflow-y: scroll;
+}
+
+.e-dlg-header-content{
+    border-bottom: 2px solid #f1f1f2;
+}
+
+.e-dlg-content{
+    border-bottom: 2px solid #f1f1f2;
+    scrollbar-width: thin;
+    scrollbar-color: #f1f1f1 white;
+}
+
+.image-btn {
+    width: 150px;
+    background-color: #0378d5;
+    height: 30px;
 }

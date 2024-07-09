@@ -19,9 +19,13 @@ export class TopBarComponent implements OnInit {
   public userLogoUrl!: string;
   public authConfig!: AuthConfig;
   public ImgUrl!: string;
-  public tutorDropDownData: SelectItem[] = [];
+  public userDropDownData: SelectItem[] = [];
   public selectedRole: string | undefined;
   public roles: SelectItem[] = [
+    {
+      label:"Select Account Type",
+      value:"-1"
+    },
     {
       label: 'As an Tutor',
       value: 'Tutor',
@@ -79,7 +83,11 @@ export class TopBarComponent implements OnInit {
   private getAllTutors() {
     this.spinnerService.show();
     this.tutorService.fetchTutorDropdownData().subscribe((tutors: SelectItem[]) => {
-      this.tutorDropDownData = tutors;
+      this.userDropDownData = tutors;
+      this.userDropDownData.unshift({
+        label:'Select Account',
+        value:'-1'
+      })
       this.spinnerService.hide();
     }, (error) => { });
   }
@@ -87,7 +95,11 @@ export class TopBarComponent implements OnInit {
   private getAllStudent() {
     this.spinnerService.show();
     this.studentService.fetchStudentDropdownData().subscribe((tutors: SelectItem[]) => {
-      this.tutorDropDownData = tutors;
+      this.userDropDownData = tutors;
+      this.userDropDownData.unshift({
+        label:'Select Account',
+        value:'-1'
+      })
       this.spinnerService.hide();
     }, (error) => { });
   }
@@ -154,7 +166,8 @@ export class TopBarComponent implements OnInit {
       }
     );
   }
-  
+
+
   public toggleSidebar () {
     this.Sidebar = !this.Sidebar
     this.SidebarToggle.emit(this.Sidebar)

@@ -15,7 +15,7 @@ export class UsersService extends ServiceBase {
         authService: AuthService) {
         super(authService);
     }
-    public getStudentDetail():Observable<ApplicationViewStudent> {
+    public getUserDetail():Observable<ApplicationViewStudent> {
         var httpOptions = this.RequestHeaders();
         const api: string = '/user';
         const method: string = '/profile';

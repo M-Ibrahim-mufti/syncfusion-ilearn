@@ -33,7 +33,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EditService, GridModule, PageService, SortService } from '@syncfusion/ej2-angular-grids';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
-import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { DropDownListModule, MultiSelect, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 import { SubjectSelectionComponent } from './components/common_components/subject-selection/subject-selection.component';
 import { ToastrModule } from 'ngx-toastr';
@@ -105,6 +105,9 @@ export function getTokenFactory(injector: Injector) {
     DialogModule,
     DropDownListModule,
     ScheduleModule,
+    MultiSelectModule
+
+    
     
   ],
   exports: [RouterModule],
