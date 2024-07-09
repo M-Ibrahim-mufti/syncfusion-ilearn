@@ -11,7 +11,7 @@
                 <span class="d-flex align-items-center px-4 bg-search-logo rounded-start-3">
                     <span class="e-btn-icon e-icons e-search text-muted"></span>
                 </span>
-                <input placeholder="Search..." class="form-control form-control-lg py-2"/>
+                <input (input)="filterSearch($event)" placeholder="Search..." class="form-control form-control-lg py-2"/>
             </div>
         </div>
         <div class="col-md-6 d-flex gap-4 justify-content-end">

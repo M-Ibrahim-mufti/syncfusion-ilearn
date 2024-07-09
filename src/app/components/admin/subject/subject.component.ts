@@ -20,6 +20,7 @@ export class SubjectComponent {
   public insertSubjectData!:Subject; 
   public pageSettings?: PageSettingsModel;
   public dialogInstance: any;
+  public filterSubject!: Subject[];
 
 
   constructor(private subjectService: SubjectService,
@@ -135,17 +136,18 @@ export class SubjectComponent {
   //   console.log(data);
   // }
 
-  // public filterSearch(event: Event) {
-  //   this.filterClasses = this.classMetaData
-  //   const inputElement = event.target as HTMLInputElement
-  //   const inputValue = inputElement.value
-  //   this.filterClasses = this.classMetaData.filter((data) => {
-  //     if (data.Title.includes(inputValue) || data.Description.includes(inputValue) || data.SubjectName.includes(inputValue)) {
-  //       return data
-  //     }
-  //     else {
-  //       return undefined
-  //     }
-  //   })
-  // }
+  public filterSearch(event: Event) {
+    this.filterSubject = this.Subjects;
+    const inputElement = event.target as HTMLInputElement
+    const inputValue = inputElement.value;
+    
+    this.filterSubject = this.Subjects.filter((data) => {      
+      if (data.Name.includes(inputValue) || data.Description.includes(inputValue)) {
+        return data
+      }
+      else {
+        return undefined
+      }
+    })
+  }
 }
