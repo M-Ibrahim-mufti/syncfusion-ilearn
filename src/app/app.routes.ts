@@ -15,6 +15,7 @@ import { ClassMetadataComponent } from './components/tutor/class-metadata/class-
 import { MeetingsComponent } from './components/common_components/meeting/meeting.component';
 import { SubjectComponent } from './components/admin/subject/subject.component';
 import { StudentRegistrationComponent } from './components/registaration/student_registration/student-registration.component'
+import { TutorRegistrationComponent } from './components/registaration/tutor_registration/tutor-registration.component'
 
 
 
@@ -32,10 +33,10 @@ export const routes: Routes = [
         path: 'register/student',
         component: StudentRegistrationComponent
     },
-    // {
-    //     path: 'register/tutor',
-    //     component: TutorRegistrationComponent
-    // },
+    {
+        path: 'register/tutor',
+        component: TutorRegistrationComponent
+    },
     {
         path: 'dashboard',
         component: DashboardComponent,

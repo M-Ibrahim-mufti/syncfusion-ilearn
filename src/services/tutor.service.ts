@@ -20,7 +20,7 @@ export class TutorService extends ServiceBase {
   public getTutor(filters: TutorRequest = {}): Observable<Tutor[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Tutor';
-    const method: string = '/fetch';    
+    const method: string = '/fetch';
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.post<Tutor[]>(url, filters, httpOptions);
   }
@@ -36,7 +36,7 @@ export class TutorService extends ServiceBase {
   public saveTutor(model: SaveTutorRequest): Observable<ResponseObject> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Tutor';
-    const method: string = '/save';    
+    const method: string = '/save';
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.post<ResponseObject>(url, model, httpOptions);
   }
@@ -44,7 +44,7 @@ export class TutorService extends ServiceBase {
   public getAllSubjects(): Observable<any[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Subject';
-    const method: string = '/GetAllSubjectsWithGrades';
+    const method: string = '/view-subjects-with-grads';
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.get<any[]>(url, httpOptions);
   }
@@ -63,7 +63,7 @@ export class TutorService extends ServiceBase {
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.post<ResponseObject>(url, availabilities, httpOptions);
   }
-  
+
   public tutorProfile(id:string): Observable<Tutor>{
     const httpOptions = this.RequestHeaders();
     const api:string = '/user/'

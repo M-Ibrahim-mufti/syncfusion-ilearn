@@ -33,6 +33,7 @@ import { AsideBarComponent } from './components/common_components/aside-bar/asid
 import { AdminStudentComponent } from './components/admin/student/student.component';
 import { AuthComponent } from './components/common_components/auth/auth.component';
 import { StudentRegistrationComponent } from './components/registaration/student_registration/student-registration.component'
+import { TutorRegistrationComponent } from './components/registaration/tutor_registration/tutor-registration.component'
 
 //services import
 import { AuthConfig, AuthService } from '../services/auth.service';
@@ -81,7 +82,8 @@ export function getTokenFactory(injector: Injector) {
     MeetingsComponent,
     SubjectSelectionComponent,
     SubjectComponent,
-    StudentRegistrationComponent
+    StudentRegistrationComponent,
+    TutorRegistrationComponent
   ],
   imports: [
     BrowserModule,

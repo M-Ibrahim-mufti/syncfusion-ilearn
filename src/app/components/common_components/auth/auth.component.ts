@@ -52,6 +52,14 @@ export class AuthComponent implements OnInit {
     );
   }
 
+  togalToStudentRegister(){
+    this.router.navigate(['/register/student']);
+  }
+
+  togalToTutorRegister(){
+    this.router.navigate(['/register/tutor']);
+  }
+
   public onForgotPasswordDialog() {
     this.showForgotPasswordDialog = true;
   }
@@ -68,7 +76,7 @@ export class AuthComponent implements OnInit {
         //this.SendForgotPasswordMail();
         return;
       }
-      this.login();      
+      this.login();
     }
   }
 }

@@ -1,0 +1,279 @@
+<div class="row g-5 mx-3 my-4 bg-white rounded-3">
+    <h5 class="m-0 my-4">Tutor Registration</h5>
+</div>
+<div class="row g-5 mx-3 my-2 bg-white rounded-3 ">
+    <div class="defaultStepper" >
+      <ejs-stepper (stepChanged)="stepChanged($event)">
+        <e-steps>
+            <e-step label="Personl Detail"></e-step>
+            <e-step label="Policy Check"></e-step>
+            <e-step label="Subjects & Availability"></e-step>
+        </e-steps>
+      </ejs-stepper>
+    </div>
+    <!--Tutor Personal Details-->
+    <form *ngIf="activeIndex === 0" class="row g-3">
+        <div class="col-md-2">
+            <label for="Hon" class="form-label">Hon (e.g. Mr, Ms)</label>
+            <input type="text" class="form-control" id="Hon" [(ngModel)]="tutor.Hon"
+                name="Hon">
+        </div>
+        <div class="col-md-10">
+            <label for="FullName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="FullName" [(ngModel)]="tutor.FullName"
+                name="FullName">
+        </div>
+        <div class="col-6">
+            <label for="Email" class="form-label">Email</label>
+            <input type="text" class="form-control" id="Email" [(ngModel)]="tutor.Email"
+                name="parentEmail">
+        </div>
+        <div class="col-6">
+            <label for="Phone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="Phone" [(ngModel)]="tutor.PhoneNumber"
+                name="parentPhone">
+        </div>
+        <div class="col-8">
+            <label for="Address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="Address" [(ngModel)]="tutor.Address"
+                name="parentAddress">
+        </div>
+        <div class="col-md-4">
+            <label for="City" class="form-label">City</label>
+            <input type="text" class="form-control" id="City" name="parentCity" [(ngModel)]="tutor.City">
+        </div>
+        <div class="col-md-4">
+            <label for="State" class="form-label">State</label>
+            <input type="text" class="form-control" id="State" [(ngModel)]="tutor.State"
+                name="parentState">
+        </div>
+        <div class="col-md-2">
+            <label for="PostalCode" class="form-label">Postal Code</label>
+            <input type="text" class="form-control" id="PostalCode" [(ngModel)]="tutor.PostCode"
+                name="parentPostalCode">
+        </div>
+        <div class="col-md-6">
+            <label for="Country" class="form-label">Country</label>
+            <input type="text" class="form-control" id="Country" [(ngModel)]="tutor.Country"
+                name="parentCountry">
+        </div>
+        <div class="col-md-12">
+            <label for="Qualifications" class="form-label">Qualifications</label>
+            <input type="text" class="form-control" id="Qualifications" [(ngModel)]="tutor.Qualifications"
+                name="Qualifications">
+        </div>
+        <div class="col-md-1">
+            <div class="form-group mt-2">
+              <ng-container>
+                  <div class="">
+                      <label class="form-label">Tutor Profile image</label>
+                      <div class="position-relative">
+                          <img style="width: 100px; height: 100px; object-fit: cover; border-radius: 6px;" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../../../assets/user-profile.png'"/>
+                          <button *ngIf="tutor.ImgUrl !== null" (click)="removeImg($event)" class="remove-btn">
+                              <span class="position-relative fs-6 text-white" style="top: -3px; right: -0.5px;"> x </span>
+                          </button>
+                      </div>
+                      <label for="ImageInput" *ngIf="tutor.ImgUrl === null" class="z-2 cursor-pointer rounded-3 text-white gap-2 image-btn d-flex justify-content-center align-items-center">
+                          <span class="cursor-pointer e-icons e-plus"></span>
+                          <label class="cursor-pointer fw-bold w-full">Image</label>
+                          <input (change)="onImageSelected($event)" id="ImageInput" type="file" accept="Image/*" hidden />
+                      </label>
+                  </div>
+              </ng-container>
+              <!-- <ng-container *ngIf="!tutor.ImgUrl">
+                  <div class="">
+                      <label class="form-label">Tutor Profile image</label>
+                      <p-fileUpload name="studentProfileImageFile" accept="image/*"
+                          (onSelect)="onFileSelected($event.files, false)"
+                          chooseLabel="Select" [auto]="true" [previewWidth]="70"
+                          [multiple]="false" mode="advanced">
+                          <ng-template pTemplate="toolbar">
+                              <div class="mt-2">Drag and drop file here</div>
+                          </ng-template>
+                      </p-fileUpload>
+                  </div>
+              </ng-container>
+              <ng-container *ngIf="tutor.ImgUrl">
+                  <div class="position-relative d-inline-block w-100 mt-3">
+                      <img [src]="tutor.ImgUrl" class="img rounded w-100" />
+                      <div class="position-absolute top-0 end-0 m-2">
+                          <button type="button" class="btn btn-sm btn-danger"
+                              (click)="removeImg($event)">
+                              <i class="fa fa-times"></i>
+                          </button>
+                      </div>
+                  </div>
+              </ng-container> -->
+            </div>
+          </div>
+          <div class="col-md-12">
+            <button ejs-button *ngIf="activeIndex !== stepValues.length - 1" type="button"
+                class="e-info mx-3 mb-3 px-4 py-2 rounded-3" [disabled]="!tutor.Email || !tutor.FullName || !tutor.Address || !tutor.PhoneNumber" (click)="next()">Next</button>
+          </div>
+    </form>
+    <!--Tutor Police Check-->
+    <form *ngIf="activeIndex === 1" class="row g-3">
+        <div class="col-12">
+          <h3>Terms and Conditions</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet, sapien sit amet interdum ultrices, ipsum enim tincidunt ipsum, eget interdum nunc augue vel libero. Sed bibendum, odio ut ullamcorper placerat, ipsum nisi malesuada odio, quis malesuada nisi felis nec sapien. In hac habitasse platea dictumst.
+          </p>
+          <p>
+            Vestibulum id odio nec nibh posuere lacinia. Integer consectetur tincidunt lorem, eu molestie magna tempor a. Nullam sed lacinia eros, vel suscipit nunc. Vivamus placerat pharetra nunc, id vestibulum ligula suscipit id. Sed fringilla risus at augue commodo, nec bibendum odio lobortis.
+          </p>
+        </div>
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="agreeCheckbox" name="agreeCheckbox"[(ngModel)]="tutor.IsPoliceFormChecked" >
+            <label class="form-check-label" for="agreeCheckbox">
+              I agree to the Terms and Conditions
+            </label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <button ejs-button *ngIf="activeIndex > 0" type="button"
+              label="Back" class="e-primary mx-3 mb-3 px-4 py-2 rounded-3" (click)="back()">Back</button>
+          <button ejs-button *ngIf="activeIndex !== stepValues.length - 1" type="button"
+              class="e-info mx-3 mb-3 px-4 py-2 rounded-3" (click)="next()">Next</button>
+        </div>
+    </form>
+    <!--Tutor Subject Selection-->
+    <form *ngIf="activeIndex === 2" class="row g-3">
+      <h2>Select Subject</h2>
+      <app-subject-selection (selectedSubjectsChange)="handleSelectedSubjectsChange($event)"></app-subject-selection>
+      <div class="col-md-12">
+        <button ejs-button *ngIf="activeIndex > 0" type="button"
+            label="Back" class="e-primary mx-3 mb-3 px-4 py-2 rounded-3" (click)="back()">Back</button>
+        <button ejs-button *ngIf="activeIndex === stepValues.length - 1" type="button"
+            label="Register" class="e-info mx-3 mb-3 px-4 py-2 rounded-3" (click)="register()">Register</button>
+      </div>
+    </form>
+</div>
+
+<!-- <div class="container">
+    <div class="row my-2">
+        <div class="col-md-12">
+            <img src="../../../assets/strapline/i-learn-logo-strapline-600.png" width="80px" />
+        </div>
+    </div>
+    <p-steps [model]="stepValues" [(activeIndex)]="activeIndex"></p-steps>
+    <div class="d-flex justify-content-center align-items-center my-4">
+        <div class="col-md-8">
+            <p-panel class="row">
+                <ng-template pTemplate="header">
+                    <span>Registration</span>
+                </ng-template>
+                <ng-template pTemplate="icons">
+                    <button *ngIf="activeIndex > 0" type="button" pButton icon="fa fa-arrow-left"
+                        label="Back" class="ms-2 p-button-outlined" (click)="back()"></button>
+                    <button *ngIf="activeIndex !== stepValues.length - 1" type="button" pButton icon="fa fa-arrow-right"
+                        label="Next" class="ms-2 p-button-outlined" [disabled]="!tutor.Email || !tutor.FullName || !tutor.Address || !tutor.PhoneNumber" (click)="next()"></button>
+                    <button *ngIf="activeIndex === stepValues.length - 1" type="button" pButton icon="fa fa-save"
+                        label="Register" class="ms-2 p-button-outlined" (click)="register()"></button>
+                </ng-template>
+                <form *ngIf="activeIndex === 0" class="row g-3">
+                    <div class="col-md-2">
+                        <label for="Hon" class="form-label">Hon (e.g. Mr, Ms)</label>
+                        <input type="text" class="form-control" id="Hon" [(ngModel)]="tutor.Hon"
+                            name="Hon">
+                    </div>
+                    <div class="col-md-10">
+                        <label for="FullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="FullName" [(ngModel)]="tutor.FullName"
+                            name="FullName">
+                    </div>
+                    <div class="col-6">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="Email" [(ngModel)]="tutor.Email"
+                            name="parentEmail">
+                    </div>
+                    <div class="col-6">
+                        <label for="Phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="Phone" [(ngModel)]="tutor.PhoneNumber"
+                            name="parentPhone">
+                    </div>
+                    <div class="col-8">
+                        <label for="Address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="Address" [(ngModel)]="tutor.Address"
+                            name="parentAddress">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="City" class="form-label">City</label>
+                        <input type="text" class="form-control" id="City" name="parentCity" [(ngModel)]="tutor.City">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="State" class="form-label">State</label>
+                        <input type="text" class="form-control" id="State" [(ngModel)]="tutor.State"
+                            name="parentState">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="PostalCode" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="PostalCode" [(ngModel)]="tutor.PostCode"
+                            name="parentPostalCode">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="Country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="Country" [(ngModel)]="tutor.Country"
+                            name="parentCountry">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="Qualifications" class="form-label">Qualifications</label>
+                        <input type="text" class="form-control" id="Qualifications" [(ngModel)]="tutor.Qualifications"
+                            name="Qualifications">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group mt-2">
+                          <ng-container *ngIf="!tutor.ImgUrl">
+                              <div class="">
+                                  <label class="form-label">Tutor Profile image</label>
+                                  <p-fileUpload name="studentProfileImageFile" accept="image/*"
+                                      (onSelect)="onFileSelected($event.files, false)"
+                                      chooseLabel="Select" [auto]="true" [previewWidth]="70"
+                                      [multiple]="false" mode="advanced">
+                                      <ng-template pTemplate="toolbar">
+                                          <div class="mt-2">Drag and drop file here</div>
+                                      </ng-template>
+                                  </p-fileUpload>
+                              </div>
+                          </ng-container>
+                          <ng-container *ngIf="tutor.ImgUrl">
+                              <div class="position-relative d-inline-block w-100 mt-3">
+                                  <img [src]="tutor.ImgUrl" class="img rounded w-100" />
+                                  <div class="position-absolute top-0 end-0 m-2">
+                                      <button type="button" class="btn btn-sm btn-danger"
+                                          (click)="removeImg($event)">
+                                          <i class="fa fa-times"></i>
+                                      </button>
+                                  </div>
+                              </div>
+                          </ng-container>
+                      </div>
+                      </div>
+                </form>
+                <form *ngIf="activeIndex === 1" class="row g-3">
+                    <div class="col-12">
+                      <h3>Terms and Conditions</h3>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet, sapien sit amet interdum ultrices, ipsum enim tincidunt ipsum, eget interdum nunc augue vel libero. Sed bibendum, odio ut ullamcorper placerat, ipsum nisi malesuada odio, quis malesuada nisi felis nec sapien. In hac habitasse platea dictumst.
+                      </p>
+                      <p>
+                        Vestibulum id odio nec nibh posuere lacinia. Integer consectetur tincidunt lorem, eu molestie magna tempor a. Nullam sed lacinia eros, vel suscipit nunc. Vivamus placerat pharetra nunc, id vestibulum ligula suscipit id. Sed fringilla risus at augue commodo, nec bibendum odio lobortis.
+                      </p>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="agreeCheckbox" name="agreeCheckbox"[(ngModel)]="tutor.IsPoliceFormChecked" >
+                        <label class="form-check-label" for="agreeCheckbox">
+                          I agree to the Terms and Conditions
+                        </label>
+                      </div>
+                    </div>
+                </form>
+                <form *ngIf="activeIndex === 2" class="row g-3">
+                  <h2>Select Subject</h2>
+                  <app-subject-selection (selectedSubjectsChange)="handleSelectedSubjectsChange($event)"></app-subject-selection>
+                </form>
+            </p-panel>
+        </div>
+    </div>
+</div> -->

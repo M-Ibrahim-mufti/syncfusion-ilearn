@@ -1,104 +1,108 @@
-// import { Component } from '@angular/core';
-// import { NgxSpinnerService } from 'ngx-spinner';
+import { Component } from '@angular/core';
+import { SpinnerService } from '../../../../services/Shared/spinner.service';
 // import { NotificationsService } from '../../../../services/Shared/notifications.service';
-// import { StudentService } from '../../../../services/student.service';
-// import { NotificationTypes } from '../../../app.enums';
-// import { SaveTutorRequest, TutorService, TutorSubject } from '../../../../services/tutor.service';
-// import { CloudinaryImageService } from '../../../../services/cloudinary-image.service';
+import { StudentService } from '../../../../services/student.service';
+import { NotificationTypes } from '../../../app.enums';
+import { SaveTutorRequest, TutorService, TutorSubject } from '../../../../services/tutor.service';
+import { CloudinaryImageService } from '../../../../services/cloudinary-image.service';
+import { StepperChangedEventArgs } from "@syncfusion/ej2-navigations";
 
-// @Component({
-//   selector: 'app-tutor-registration',
-//   templateUrl: './tutor-registration.component.html',
-//   styleUrl: './tutor-registration.component.css',
-//   providers: [TutorService]
-// })
-// export class TutorRegistrationComponent {
-//   tutor: SaveTutorRequest = {} as SaveTutorRequest;
-//   activeIndex: number = 0;
-//   currentSelectedImage?: File;
-//   selectedSubjects: any[] = [];
+@Component({
+  selector: 'app-tutor-registration',
+  templateUrl: './tutor-registration.component.html',
+  styleUrl: './tutor-registration.component.css',
+  providers: [TutorService]
+})
+export class TutorRegistrationComponent {
+  tutor: SaveTutorRequest = {} as SaveTutorRequest;
+  activeIndex: number = 0;
+  currentSelectedImage?: File;
+  selectedSubjects: any[] = [];
 
-//   stepValues = [
-//     { label: 'Personl Detail' },
-//     { label: 'Policy Check' },
-//     { label: 'Subjects & Availability' },
-//   ];
+  stepValues = [
+    { label: 'Personl Detail' },
+    { label: 'Policy Check' },
+    { label: 'Subjects & Availability' },
+  ];
 
-//   constructor(private ngxSpinnerService: NgxSpinnerService,
-//     private notificationsService: NotificationsService,
-//     private uploadService: CloudinaryImageService,
-//     private tutorService: TutorService) { }
+  constructor(private spinnerService: SpinnerService,
+    // private notificationsService: NotificationsService,
+    private uploadService: CloudinaryImageService,
+    private tutorService: TutorService) { }
 
-//   handleSelectedSubjectsChange(selectedSubjects: any[]) {
-//     this.selectedSubjects = selectedSubjects;
-//   }
+  public stepChanged(args: StepperChangedEventArgs): void {
+    this.activeIndex = args.activeStep;
+  }
 
-//   public next() {
-//     if (this.activeIndex < this.stepValues.length - 1) {
-//       this.activeIndex++;
-//     }
-//   }
+  handleSelectedSubjectsChange(selectedSubjects: any[]) {
+    this.selectedSubjects = selectedSubjects;
+  }
 
-//   public back() {
-//     this.activeIndex--;
-//   }
+  public next() {
+    if (this.activeIndex < this.stepValues.length - 1) {
+      this.activeIndex++;
+    }
+  }
 
-//   private updateTutorSubjects() {
-//     this.tutor.TutorSubjects = this.selectedSubjects.map((selectedSubject, index) => {
-//       return {
-//         Id: null, // or appropriate value
-//         TutorId: null, // or appropriate value
-//         SubjectId: selectedSubject.selectedSubject ? selectedSubject.selectedSubject.Id : null,
-//         Grades: selectedSubject.selectedGrades
-//       } as unknown as TutorSubject;
-//     });
-//   }
+  public back() {
+    this.activeIndex--;
+  }
 
-//   public register() {
-//     this.updateTutorSubjects()
-//     // let selectedSubjects = this.selectedSubjects
-//     // this.tutor.TutorSubjects[0].SubjectId = selectedSubjects[0].value;
+  private updateTutorSubjects() {
+    this.tutor.TutorSubjects = this.selectedSubjects.map((selectedSubject, index) => {
+      return {
+        Id: null, // or appropriate value
+        TutorId: null, // or appropriate value
+        SubjectId: selectedSubject.selectedSubject ? selectedSubject.selectedSubject.Id : null,
+        Grades: selectedSubject.selectedGrades
+      } as unknown as TutorSubject;
+    });
+  }
 
-//     this.ngxSpinnerService.show();
-//     this.tutorService.saveTutor(this.tutor).subscribe(
-//       (response) => {
-//         this.ngxSpinnerService.hide();
-//         if (response.Success) {
-//           this.notificationsService.showNotification(
-//             'Success',
-//             response.ResponseMessage,
-//             NotificationTypes.Success
-//           );
-//         } else {
-//           this.notificationsService.showNotification(
-//             'Error',
-//             response.ResponseMessage,
-//             NotificationTypes.Error
-//           );
-//         }
-//       },
-//       (error) => {
-//         this.ngxSpinnerService.hide();
-//       }
-//     );
-//   }
+  public register() {
+    this.updateTutorSubjects()
+    // let selectedSubjects = this.selectedSubjects
+    // this.tutor.TutorSubjects[0].SubjectId = selectedSubjects[0].value;
 
-//   public onFileSelected(files: File[], isAdditionalImage: boolean) {
-//     if (files.length > 0) {
-//       this.currentSelectedImage = files[0];
-//       const isImage: boolean = this.currentSelectedImage['type'].includes('image');
-//       const formData = new FormData();
-//       formData.append('ImageFile', this.currentSelectedImage);
-//       if (isImage) {
-//         this.uploadService.uploadImage(formData).subscribe((imgUrl) => {
-//           this.tutor.ImgUrl = imgUrl;
-//         })
-//       }
-//     }
-//   }
+    this.spinnerService.show();
+    this.tutorService.saveTutor(this.tutor).subscribe(
+      (response) => {
+        this.spinnerService.hide();
+        if (response.Success) {
+          // this.notificationsService.showNotification(
+          //   'Success',
+          //   response.ResponseMessage,
+          //   NotificationTypes.Success
+          // );
+        } else {
+          // this.notificationsService.showNotification(
+          //   'Error',
+          //   response.ResponseMessage,
+          //   NotificationTypes.Error
+          // );
+        }
+      },
+      (error) => {
+        this.spinnerService.hide();
+      }
+    );
+  }
+  
+  public onImageSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("ImageFile", file)
+      this.uploadService.uploadImage(formData).subscribe((response) => {
+        this.tutor.ImgUrl = response
+      })
 
-//   public removeImg($event: any) {
-//     this.tutor.ImgUrl = null!;
-//   }
+    }
+  }
 
-// }
+  public removeImg($event: any) {
+    this.tutor.ImgUrl = null!;
+  }
+
+}

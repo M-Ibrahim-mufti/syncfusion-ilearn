@@ -2,7 +2,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { TutorService } from '../../../../services/tutor.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
-
 @Component({
   selector: 'app-subject-selection',
   templateUrl: './subject-selection.component.html',
@@ -12,10 +11,9 @@ export class SubjectSelectionComponent {
   @Output() selectedSubjectsChange = new EventEmitter<any[]>();
 
   public subjects: any[] = [];
-
   public selectedSubjects: any[] = [];
 
-  constructor(private spinnerService: SpinnerService, private tutorService: TutorService){
+  constructor(private spinnerService: SpinnerService, private tutorService: TutorService) {
     this.getAllSubjects();
   }
 
@@ -32,18 +30,22 @@ export class SubjectSelectionComponent {
   }
 
   public updateSelectedSubjects() {
+    console.log(this.selectedSubjects);
     this.selectedSubjectsChange.emit(this.selectedSubjects);
   }
 
-  getGrades(selectedSubject: any) {
+  public getGrades(selectedSubject: any) {
     return selectedSubject ? selectedSubject.Grades : [];
   }
 
   private getAllSubjects() {
     this.spinnerService.show();
-    this.tutorService.getAllSubjects().subscribe((subject: any[]) => {
-      this.subjects = subject;
+    this.tutorService.getAllSubjects().subscribe((subjects: any[]) => {
+      this.subjects = subjects;
       this.spinnerService.hide();
-    }, (error) => { this.spinnerService.hide(); });
+    }, (error) => {
+      this.spinnerService.hide();
+      console.error('Error fetching subjects:', error);
+    });
   }
 }
