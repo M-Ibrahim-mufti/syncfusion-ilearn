@@ -20,7 +20,7 @@ export class SubjectComponent {
   public insertSubjectData!:Subject; 
   public pageSettings?: PageSettingsModel;
   public dialogInstance: any;
-  public filterSubject!: Subject[];
+  public filterSubjects: Subject[] = [];
 
 
   constructor(private subjectService: SubjectService,
@@ -41,6 +41,7 @@ export class SubjectComponent {
     this.subjectService.getAllSubjectsOnAdminSide().subscribe((response) => {
       this.ngxSpinner.hide();
       this.Subjects = response;
+      this.filterSubjects = this.Subjects
     });
   }
 
@@ -137,15 +138,25 @@ export class SubjectComponent {
   // }
 
   public filterSearch(event: Event) {
-    this.filterSubject = this.Subjects;
+    this.filterSubjects = this.Subjects;
     const inputElement = event.target as HTMLInputElement
     const inputValue = inputElement.value;
     
-    this.filterSubject = this.Subjects.filter((data) => {      
-      if (data.Name.includes(inputValue) || data.Description.includes(inputValue)) {
+    this.filterSubjects = this.Subjects.filter((data) => {   
+      if (data.Name.includes(inputValue)) {
+        if(data.Description !== null) {
+          if(data.Description.includes(inputValue)){
+            return data
+          }
+        }
         return data
       }
       else {
+        if(data.Description !== null) {
+          if (data.Description.includes(inputValue)){
+            return data
+          }
+        }
         return undefined
       }
     })
