@@ -14,26 +14,27 @@ import { TutorDetailComponent } from './components/student/tutor-detail/tutor-de
 import { ClassMetadataComponent } from './components/tutor/class-metadata/class-metadata.component';
 import { MeetingsComponent } from './components/common_components/meeting/meeting.component';
 import { SubjectComponent } from './components/admin/subject/subject.component';
+import { StudentRegistrationComponent } from './components/registaration/student_registration/student-registration.component'
 
 
 
 export const routes: Routes = [
-    { 
+    {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full' 
+        pathMatch: 'full'
     },
-    { 
-        path: 'login', 
-        component: AuthComponent 
+    {
+        path: 'login',
+        component: AuthComponent
      },
-    // { 
-    //     path: 'register/student',
-    //     component: StudentRegistrationComponent 
-    // },
-    // { 
+    {
+        path: 'register/student',
+        component: StudentRegistrationComponent
+    },
+    // {
     //     path: 'register/tutor',
-    //     component: TutorRegistrationComponent 
+    //     component: TutorRegistrationComponent
     // },
     {
         path: 'dashboard',
@@ -89,49 +90,49 @@ export const routes: Routes = [
         path: 'connect-with-zoom',
         component: ZoomMeetingComponent
     },
-    { 
-        path: 'dashboard', 
-        component: DashboardComponent, 
+    {
+        path: 'dashboard',
+        component: DashboardComponent,
         canActivate: [AuthGuard]
     },
-    { 
-        path: 'admin/view', 
-        component: AdminStudentComponent, 
+    {
+        path: 'admin/view',
+        component: AdminStudentComponent,
         canActivate: [AuthGuard]
     },
-    { 
-        path: 'admin/tutor', 
+    {
+        path: 'admin/tutor',
         component: AdminTutorComponent,
         canActivate: [AuthGuard]
     },
-    { 
-        path: 'tutor/availabilaity', 
+    {
+        path: 'tutor/availabilaity',
         component: AvailabilitySelectionComponent
     },
-    { 
-        path: 'classes', 
+    {
+        path: 'classes',
         component: EventComponent
     },
-    { 
-        path: 'student/tutor-selection', 
+    {
+        path: 'student/tutor-selection',
         component: TutorSelectionComponent
     },
-    { 
-        path: 'tutor/requests', 
+    {
+        path: 'tutor/requests',
         component: EventRequestComponent
     },
-    { 
+    {
         path: 'connect-with-zoom',
         component: ZoomMeetingComponent
     },
-    { 
-        path: 'profile', 
+    {
+        path: 'profile',
         component:UserProfileComponent
-    }, 
+    },
     {
         path: 'student/tutor-detail/:id',
         component:TutorDetailComponent
-    }, 
+    },
     {
         path: 'tutor/class-metadata',
         component:ClassMetadataComponent

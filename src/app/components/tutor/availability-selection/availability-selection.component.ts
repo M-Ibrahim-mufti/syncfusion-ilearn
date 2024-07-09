@@ -40,12 +40,7 @@ export class AvailabilitySelectionComponent implements OnInit {
   public selectedDates: Date[] = [];
   public dateTimes: { date: Date, timeRanges: { startTime: string, endTime: string }[] }[] = [];
   public selectedDateTimes: { date: Date, timeRanges: { startTime: string, endTime: string }[] }[] = [];
-  public availability: any[] = this.allDays.map(day => ({
-    dayLabel: day.label,
-    day: day.value,
-    available: false,
-    timeRanges: [{ startTime: '', endTime: '' }]
-  }));
+  public availability: any[] = [];
 
   @ViewChild("addButton")
   public addButton?: ButtonComponent;
@@ -79,6 +74,13 @@ export class AvailabilitySelectionComponent implements OnInit {
   }
 
   public loadAvalabilites(){
+    this.selectedAvailability = []
+    this.availability = this.allDays.map(day => ({
+      dayLabel: day.label,
+      day: day.value,
+      available: false,
+      timeRanges: [{ startTime: '', endTime: '' }]
+    }));
     this.ngxSpinner.show();
     this.tutorService.getAllAvalabilities().subscribe( response => {
       this.selectedAvailability = response;
@@ -108,6 +110,7 @@ export class AvailabilitySelectionComponent implements OnInit {
 
   switchToListView() {
     this.showListView = false;
+    this.loadAvalabilites();
   }
 
   switchToCalendarView() {

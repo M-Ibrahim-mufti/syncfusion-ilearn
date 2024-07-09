@@ -6,6 +6,7 @@ import { SpinnerService } from '../../../../services/Shared/spinner.service';
 // import { NotificationsService } from '../../../../services/Shared/shared.utility.service'
 import { NotificationTypes } from '../../../app.enums';
 import { SelectItem } from '../../../../services/event.service';
+import { StepperChangedEventArgs } from "@syncfusion/ej2-navigations";
 
 interface UploadEvent {
   originalEvent: Event;
@@ -61,12 +62,15 @@ export class StudentRegistrationComponent {
     return this.activeIndex === 0 ? 'Parent Registration' : 'Student Registration';
   }
 
+  public stepChanged(args: StepperChangedEventArgs): void {
+    this.activeIndex = args.activeStep;
+  }
   public next() {
     if (this.activeIndex < this.stepValues.length - 1) {
       this.activeIndex++;
     }
   }
-  
+
   public back() {
     this.activeIndex--;
   }
@@ -76,11 +80,11 @@ export class StudentRegistrationComponent {
     this.studentService.getAllSubjects().subscribe((subject: SelectItem[]) => {
       this.subjects = subject;
       console.log(this.subjects);
-      
+
       this.spinnerService.hide();
     }, (error) => { this.spinnerService.hide(); });
   }
-   
+
   public register() {
     this.spinnerService.show();
     this.studentRegistrationForm.StudentSubjectIds = this.selectedSubjects.map(p => p.value);
@@ -119,6 +123,18 @@ export class StudentRegistrationComponent {
           this.studentRegistrationForm.StudentImgUrl = imgUrl;
         })
       }
+    }
+  }
+  public onImageSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("ImageFile", file)
+      this.uploadService.uploadImage(formData).subscribe((response) => {
+        this.studentRegistrationForm.StudentImgUrl = response
+      })
+
     }
   }
 
