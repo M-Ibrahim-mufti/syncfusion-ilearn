@@ -37,6 +37,7 @@ import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 import { SubjectSelectionComponent } from './components/common_components/subject-selection/subject-selection.component';
 import { ToastrModule } from 'ngx-toastr';
+import { SubjectComponent } from './components/admin/subject/subject.component';
 
 export function getTokenFactory(injector: Injector) {
   return {
@@ -68,7 +69,8 @@ export function getTokenFactory(injector: Injector) {
     TutorDetailComponent,
     ClassMetadataComponent,
     MeetingsComponent,
-    SubjectSelectionComponent
+    SubjectSelectionComponent,
+    SubjectComponent
   ],
   imports: [
     BrowserModule,

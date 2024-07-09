@@ -13,6 +13,7 @@ import { UserProfileComponent } from './components/common_components/user-profil
 import { TutorDetailComponent } from './components/student/tutor-detail/tutor-detail.component';
 import { ClassMetadataComponent } from './components/tutor/class-metadata/class-metadata.component';
 import { MeetingsComponent } from './components/common_components/meeting/meeting.component';
+import { SubjectComponent } from './components/admin/subject/subject.component';
 
 
 
@@ -47,6 +48,11 @@ export const routes: Routes = [
     {
         path: 'admin/tutor',
         component: AdminTutorComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'admin/subject',
+        component: SubjectComponent,
         canActivate: [AuthGuard]
     },
     {
