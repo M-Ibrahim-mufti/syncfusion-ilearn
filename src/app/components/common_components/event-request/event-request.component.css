@@ -26,7 +26,7 @@
 }
 
 .pending{
-	background-color: rgb(255, 255, 27);
+	background-color: rgb(86, 191, 232);
 	padding: 4px 8px;
 	font-size: 12px;
     font-weight: bold;
@@ -35,7 +35,7 @@
 }
 
 .approve{
-	background-color: #DBDFDC;
+	background-color: #7abe8b;
 	padding: 4px 8px;
 	font-size: 12px;
     font-weight: bold;
