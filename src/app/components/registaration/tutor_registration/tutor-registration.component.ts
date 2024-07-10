@@ -36,6 +36,7 @@ export class TutorRegistrationComponent {
 
   handleSelectedSubjectsChange(selectedSubjects: any[]) {
     this.selectedSubjects = selectedSubjects;
+    console.log(this.selectedSubjects)
   }
 
   public next() {

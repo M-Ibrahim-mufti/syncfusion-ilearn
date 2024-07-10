@@ -22,7 +22,7 @@
   }
 
   .right-col-width {
-      width: 40%;
+      width: 49%;
       flex:0 0 auto;
   }
 
@@ -49,3 +49,10 @@
       background-color: #0378d5;
       height: 30px;
   }
+
+  .stepper-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}

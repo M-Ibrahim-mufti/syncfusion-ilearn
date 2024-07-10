@@ -1,37 +1,35 @@
-<div class="row">
-  <div class="col-md-12">
-    <button type="button" ejs-button label="Add Subject" class="e-info mx-3 mb-3 px-4 py-2 rounded-3" (click)="addSubject()">+</button>
+<div class="d-flex flex-column">
+  <div class="col-md-12 border-bottom border-dull-white px-0">
+    <button type="button" [disabled]="!subjectSelection" ejs-button label="Add Subject" class="e-info mb-3 mx-4 px-4 py-2 rounded-3" (click)="addSubject()">+ Add Subjects</button>
   </div>
-  <div class="col-md-4 my-3" *ngFor="let subject of selectedSubjects; let i = index">
-    <div class="card">
-      <div class="card-header">
-        <button ejs-button type="button" class="e-danger mx-3 mb-3 px-4 py-2 rounded-3" (click)="removeSubject(i)">x</button>
+  <div class="d-flex px-2 col-md-12 flex-wrap">
+    <div class="subject-selection-width px-4 py-2 my-3 border-bottom border-dull-white" [ngClass]="{'ms-3': i % 2 !== 0 }" *ngFor="let subject of selectedSubjects; let i = index">
+      <div class="text-end">
+        <button ejs-button type="button" class="e-danger mx-3 mb-3 mt-2 px-4 py-2 rounded-3" (click)="removeSubject(i)">x</button>
       </div>
-      <div class="card-body">
-        <div class="col-12">
-          <label for="subjectDropdown{{i}}">Select Subject</label>
-          <ejs-dropdownlist
-            id="multiSubjectSelect{{i}}"
-            [(ngModel)]="subject.selectedSubject"
-            [allowObjectBinding]="true"
-            [dataSource]="subjects"
-            [fields]="{ text: 'Name', value: 'Id' }"
-            (change)="updateSelectedSubjects()"
-            placeholder="Select a Subject"
-          ></ejs-dropdownlist>
-        </div>
-        <div class="col-12 my-3" *ngIf="subject.selectedSubject">
-          <label for="gradeMultiSelect{{i}}">Select Grade(s)</label>
-          <ejs-multiselect
-            id="multiGradeSelect{{i}}"
-            [(ngModel)]="subject.selectedGrades"
-            [allowObjectBinding]="true"
-            [dataSource]="getGrades(subject.selectedSubject)"
-            [fields]="{ text: 'GradeLevel', value: 'Id' }"
-            (change)="updateSelectedSubjects()"
-            placeholder="Select Grade(s)"
-          ></ejs-multiselect>
-        </div>
+      <div class="col-md-12">
+        <label for="subjectDropdown{{i}}">Select Subject</label>
+        <ejs-dropdownlist
+          id="multiSubjectSelect{{i}}"
+          [(ngModel)]="subject.selectedSubject"
+          [allowObjectBinding]="true"
+          [dataSource]="subjects"
+          [fields]="{ text: 'Name', value: 'Id' }"
+          (change)="updateSelectedSubjects()"
+          placeholder="Select a Subject"
+        ></ejs-dropdownlist>
+      </div>
+      <div class="col-12 my-3" *ngIf="subject.selectedSubject">
+        <label for="gradeMultiSelect{{i}}">Select Grade(s)</label>
+        <ejs-multiselect
+          id="multiGradeSelect{{i}}"
+          [(ngModel)]="subject.selectedGrades"
+          [allowObjectBinding]="true"
+          [dataSource]="getGrades(subject.selectedSubject)"
+          [fields]="{ text: 'GradeLevel', value: 'Id' }"
+          (change)="updateSelectedGrades()"
+          placeholder="Select Grade(s)"
+        ></ejs-multiselect>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TutorService } from '../../../../services/tutor.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 
@@ -9,9 +9,9 @@ import { SpinnerService } from '../../../../services/Shared/spinner.service';
 })
 export class SubjectSelectionComponent {
   @Output() selectedSubjectsChange = new EventEmitter<any[]>();
-
   public subjects: any[] = [];
   public selectedSubjects: any[] = [];
+  public subjectSelection:boolean = true;
 
   constructor(private spinnerService: SpinnerService, private tutorService: TutorService) {
     this.getAllSubjects();
@@ -20,17 +20,25 @@ export class SubjectSelectionComponent {
   public addSubject() {
     if (this.selectedSubjects.length < this.subjects.length) {
       this.selectedSubjects.push({ selectedSubject: null, selectedGrades: [] });
-      this.selectedSubjectsChange.emit(this.selectedSubjects);
+      // this.selectedSubjectsChange.emit(this.selectedSubjects);
+      this.subjectSelection = false;
     }
   }
 
   public removeSubject(index: number) {
     this.selectedSubjects.splice(index, 1);
+    this.subjectSelection = true
     this.selectedSubjectsChange.emit(this.selectedSubjects);
   }
 
   public updateSelectedSubjects() {
     console.log(this.selectedSubjects);
+    // this.selectedSubjectsChange.emit(this.selectedSubjects);
+  }
+  
+  public updateSelectedGrades() {
+    this.subjectSelection = true
+    console.log(this.selectedSubjects)
     this.selectedSubjectsChange.emit(this.selectedSubjects);
   }
 

@@ -21,7 +21,6 @@ interface Subject {
   selector: 'app-student-registration',
   templateUrl: './student-registration.component.html',
   styleUrl: './student-registration.component.css',
-  providers: [CloudinaryImageService, StudentService]
 })
 export class StudentRegistrationComponent {
   public activeIndex: number = 0;
@@ -88,6 +87,7 @@ export class StudentRegistrationComponent {
   public register() {
     this.spinnerService.show();
     this.studentRegistrationForm.StudentSubjectIds = this.selectedSubjects.map(p => p.value);
+    console.log(this.studentRegistrationForm)
     this.studentService.saveStudent(this.studentRegistrationForm).subscribe(
       (response) => {
         this.spinnerService.hide();
