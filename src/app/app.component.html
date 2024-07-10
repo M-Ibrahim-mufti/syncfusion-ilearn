@@ -1,6 +1,6 @@
 <ng-container *ngIf="isAuthenticated">
     <div class="d-flex">
-        <div class="px-0" [ngClass]="{'col-md-2':Sidebar, 'sidebar-closed':!Sidebar  }">
+        <div class="px-0 content-width-transition" [ngClass]="{'col-md-2':Sidebar, 'sidebar-closed':!Sidebar  }">
             <div #sidebar style="height: 100vh" class="position-sticky top-0 bg-black">
                 <div class="d-flex flex-column flex-shrink-0 ">
                     <app-aside-bar [isSideBar]="Sidebar" ></app-aside-bar>

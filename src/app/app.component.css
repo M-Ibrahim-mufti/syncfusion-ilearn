@@ -1,8 +1,16 @@
 .sidebar-closed {
     width: 5%;
     flex: 0 0 auto;
+
 }
 .main-content-sidebar-closed {
     width: 95%;
     flex: 0 0 auto;
+
 }
+
+.content-width-transition {
+    transition: all .27s linear;
+}
+
+

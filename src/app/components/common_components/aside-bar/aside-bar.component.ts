@@ -15,7 +15,6 @@ export class AsideBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.authConfig = this.authService.getAuthConfig();
-    console.log(this.isSideBar)
   }
 
   isActive(url: string): boolean {

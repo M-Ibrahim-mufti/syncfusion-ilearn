@@ -18,6 +18,10 @@
     width: 40%;
     flex:0 0 auto;
 }
+.left-col-width {
+    width: 58%;
+    flex: 0 0 auto;
+}
 
 .handle-meeting-scroll{
     max-height: 100%;
