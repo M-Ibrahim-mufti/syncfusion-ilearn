@@ -48,6 +48,7 @@ import { StepperModule, StepperAllModule } from '@syncfusion/ej2-angular-navigat
 
 //thirdparty imports
 import { ToastrModule } from 'ngx-toastr';
+import {SchedulerComponent} from "./components/tutor/scheduler/scheduler.component";
 
 
 export function getTokenFactory(injector: Injector) {
@@ -85,45 +86,46 @@ export function getTokenFactory(injector: Injector) {
     StudentRegistrationComponent,
     TutorRegistrationComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    RouterModule.forRoot(routes),
-    ReactiveFormsModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
-    JwtModule.forRoot({
-      jwtOptionsProvider: {
-        provide: JWT_OPTIONS,
-        deps: [Injector],
-        useFactory: getTokenFactory
-      }
-    }),
-    DialogModule,
-    FontAwesomeModule,
-    ToastrModule.forRoot({
-      timeOut: 3000,
-      positionClass: 'toast-top-right',
-      preventDuplicates: true,
-    }),
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        RouterModule.forRoot(routes),
+        ReactiveFormsModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
+        JwtModule.forRoot({
+            jwtOptionsProvider: {
+                provide: JWT_OPTIONS,
+                deps: [Injector],
+                useFactory: getTokenFactory
+            }
+        }),
+        DialogModule,
+        FontAwesomeModule,
+        ToastrModule.forRoot({
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+            preventDuplicates: true,
+        }),
 
-    //Syncfussion Module
-    GridModule,
-    ButtonModule,
-    DialogModule,
-    DropDownListModule,
-    ScheduleModule,
-    MultiSelectModule,
-    StepperAllModule,
-    StepperModule
+        //Syncfussion Module
+        GridModule,
+        ButtonModule,
+        DialogModule,
+        DropDownListModule,
+        ScheduleModule,
+        MultiSelectModule,
+        StepperAllModule,
+        StepperModule,
+        SchedulerComponent
 
 
-  ],
+    ],
   exports: [RouterModule],
   providers: [JwtHelperService,
       AuthConfig, AuthService, AuthGuard,

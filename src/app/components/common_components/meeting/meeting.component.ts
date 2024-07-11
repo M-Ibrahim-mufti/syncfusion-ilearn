@@ -11,6 +11,7 @@ import { SpinnerService } from '../../../../services/Shared/spinner.service';
   styleUrls: ['./meeting.component.scss'],
 })
 export class MeetingsComponent implements OnInit {
+  public showListView:boolean = true;
   todayDate = new Date();
   startTime?: string;
   isTeacher: boolean = false;
@@ -39,10 +40,23 @@ export class MeetingsComponent implements OnInit {
     this.loadMeetings();
   }
 
+  //Switch Views::Start
+  switchToListView() {
+    this.showListView = false;
+    this.loadMeetings();
+    console.log()
+  }
+
+  switchToCalendarView() {
+    this.showListView = true;
+  }
+  //Switch Views::End
+
   loadMeetings(): void {
     this.spinnerService.show();
     this.zoomService.getMeetings().subscribe(response => {      
       this.meetings = response;
+      console.log(this.meetings)
       this.spinnerService.hide();
       this.filterMeetingsForUpcoming();
       this.filterMeetingsForPrevious(); 
