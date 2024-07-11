@@ -198,7 +198,7 @@
         </div>
       </li>
       <li class="list-group-item" *ngIf="showListView">
-        <ejs-schedule #scheduleObj width='100%' height='520px' [eventSettings]="eventSettings" [views]="scheduleViews" timezone="UTC"></ejs-schedule>
+        <ejs-schedule #scheduleObj width='100%' height='520px' [eventSettings]="eventSettings" (popupOpen)="onPopupOpen($event)" [views]="scheduleViews" timezone="UTC">x</ejs-schedule>
       </li>
     </ul>
   </div>

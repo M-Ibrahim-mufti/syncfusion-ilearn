@@ -3,13 +3,16 @@ import { SaveTutorAvailabilityRequest, TutorAvailability, TutorService } from '.
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { addMonths, startOfDay } from 'date-fns';
 import { NotificationTypes } from '../../../app.enums';
-import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View, ActionEventArgs } from '@syncfusion/ej2-angular-schedule';
-import { ButtonComponent } from '@syncfusion/ej2-angular-buttons';
+import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View, ActionEventArgs, PopupOpenEventArgs } from '@syncfusion/ej2-angular-schedule';
+import { ButtonComponent, classNames } from '@syncfusion/ej2-angular-buttons';
 import { DataManager, UrlAdaptor, ODataV4Adaptor, Query } from '@syncfusion/ej2-data';
 import { environment } from '../../../../environments/environment';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { ToastrService } from 'ngx-toastr';
+import { createCustomElement } from '@angular/elements';
+import { createElement } from '@syncfusion/ej2-base';
 
+import { DropDownList } from '@syncfusion/ej2-angular-dropdowns';
 @Component({
   selector: 'app-availability-selection',
   templateUrl: './availability-selection.component.html',
@@ -20,7 +23,6 @@ export class AvailabilitySelectionComponent implements OnInit {
   @ViewChild('scheduleObj') scheduleObj?: ScheduleComponent;
   public view: CalendarView = CalendarView.Month;
   private dataManager!: DataManager;
-  public eventSettings!: EventSettingsModel;
   public viewDate: Date = new Date();
   public events: CalendarEvent[] = [];
   public allDays: any[] = [
@@ -32,7 +34,7 @@ export class AvailabilitySelectionComponent implements OnInit {
     { label: 'Friday', value: 'Fri' },
     { label: 'Saturday', value: 'Sat' }
   ];
-
+  
   public timeOptions: string[] = [];
   public selectedAvailability: TutorAvailability[] = [];
   public showPopup: boolean = false;
@@ -41,21 +43,24 @@ export class AvailabilitySelectionComponent implements OnInit {
   public dateTimes: { date: Date, timeRanges: { startTime: string, endTime: string }[] }[] = [];
   public selectedDateTimes: { date: Date, timeRanges: { startTime: string, endTime: string }[] }[] = [];
   public availability: any[] = [];
+  public eventSettings!: EventSettingsModel
 
   @ViewChild("addButton")
   public addButton?: ButtonComponent;
   public scheduleViews: View[] = ['Month'];
   constructor(private tutorService:TutorService,
      private toastr: ToastrService,
-     private ngxSpinner: SpinnerService
+     private ngxSpinner: SpinnerService,
+  
     ) {  }
+
 
   ngOnInit(): void {
     this.initializeDataManager();
     this.generateTimeOptions();
     this.loadAvalabilites();
   }
-
+  // Start of Scheduler data
   private initializeDataManager() {
     const headers = this.tutorService.getRequestHeaders();
 
@@ -69,9 +74,93 @@ export class AvailabilitySelectionComponent implements OnInit {
     });
 
     this.eventSettings = {
-      dataSource: this.dataManager
+      dataSource: this.dataManager,
+      fields: {
+        id:'Id',
+        subject: { name:'Subject', title:'Class Title' },
+        description: {name:'Description', title: 'Class Description'}
+      }
      }
   }
+
+  public getClassData () {
+  
+  }
+
+  //  public fieldAddition(args: PopupOpenEventArgs) {
+  //   if (args.type === 'Editor'){
+  //     let row = document.createElement('div') 
+  //     row.classList.add('col-md-12', 'form-group');
+  //     let formElement: HTMLElement = args.element.querySelector('.e-schedule-form') as HTMLElement;
+  //     formElement.firstChild?.insertBefore(row, args.element.querySelector('.e-start-end-row'));
+  //     let cont1 = document.createElement('div')
+  //     row.appendChild(cont1)
+  //     let dropdownSubject:DropDownList = new DropDownList({
+  //       dataSource: [
+  //         { text: 'Public Event', value: 'public-event' },
+  //         { text: 'Maintenance', value: 'maintenance' },
+  //         { text: 'Commercial Event', value: 'commercial-event' },
+  //         { text: 'Family Event', value: 'family-event' }
+  //     ],
+  //     fields: { text: 'text', value: 'value' },
+  //     value: (<{ [key: string]: Object; }>(args.data))['EventType'] as string,
+  //     floatLabelType: 'Always', placeholder: 'Event Type',
+  //     cssClass:'col-md-6 w-50'
+      
+  //    });
+  //    dropdownSubject.appendTo(cont1)
+  //   }
+  // }
+
+  onPopupOpen(args: PopupOpenEventArgs): void {
+    if (args.type === 'Editor') {
+        if (!args.element.querySelector('.custom-field-row')) {
+            let row: HTMLElement = createElement('div', { className: 'e-control' });
+            let formElement: HTMLElement = args.element.querySelector('.e-schedule-form') as HTMLElement;
+            formElement.firstChild?.insertBefore(row, args.element.querySelector('.e-start-end-row'));
+            let container: HTMLElement = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
+            let inputEle: HTMLInputElement = createElement('input', {
+                className: 'e-field', attrs: { name: 'Subject' }
+            }) as HTMLInputElement;
+            container.appendChild(inputEle);
+            row.appendChild(container);
+            let dropDownList: DropDownList = new DropDownList({
+                dataSource: [
+                    { text: 'Public Event', value: 'public-event' },
+                    { text: 'Maintenance', value: 'maintenance' },
+                    { text: 'Commercial Event', value: 'commercial-event' },
+                    { text: 'Family Event', value: 'family-event' }
+                ],
+                fields: { text: 'text', value: 'value' },
+                value: (<{ [key: string]: Object; }>(args.data))['Subject'] as string,
+                floatLabelType: 'Always', placeholder: 'Select Subject',
+
+            });
+            dropDownList.appendTo(inputEle);
+            inputEle.setAttribute('name', 'Subject');
+
+            container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
+            inputEle = createElement('input', {
+                className: 'e-field', attrs: { name: 'Grade' }
+            }) as HTMLInputElement;
+            container.appendChild(inputEle);
+            row.appendChild(container);
+            dropDownList = new DropDownList({
+                dataSource: [
+                    { text: 'Public Event', value: 'public-event' },
+                    { text: 'Maintenance', value: 'maintenance' },
+                    { text: 'Commercial Event', value: 'commercial-event' },
+                    { text: 'Family Event', value: 'family-event' }
+                ],
+                fields: { text: 'text', value: 'value' },
+                value: (<{ [key: string]: Object; }>(args.data))['Grades'] as string,
+                floatLabelType: 'Always', placeholder: 'Select Grade',
+            });
+            dropDownList.appendTo(inputEle);
+            inputEle.setAttribute('name', 'Grades');    
+        }
+    }
+}
 
   public loadAvalabilites(){
     this.selectedAvailability = []

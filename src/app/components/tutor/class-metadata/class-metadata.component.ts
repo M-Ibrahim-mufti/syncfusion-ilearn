@@ -39,6 +39,7 @@ export class ClassMetadataComponent {
   ngOnInit() {
     this.viewClassMetaData();
     this.getTutorSubjects();
+
     this.pageSettings = { pageSize: 6 };
   }
 
@@ -48,6 +49,7 @@ export class ClassMetadataComponent {
       this.ngxSpinner.hide();
       this.classMetaData = response;
       this.filterClasses = this.classMetaData;
+      console.log(this.classMetaData)
     });
   }
 
@@ -56,6 +58,8 @@ export class ClassMetadataComponent {
     this.studentService.getAllUserSubjects().subscribe((response) => {
       this.ngxSpinner.hide();
       this.Subjects = response;
+      console.log(response);
+      
     });
   }
 
