@@ -46,3 +46,8 @@
     background-color: #0378d5;
     height: 30px;
 }
+
+.text-hover:hover {
+    color: #0378d5 !important;
+    transition: all .3s linear;
+}

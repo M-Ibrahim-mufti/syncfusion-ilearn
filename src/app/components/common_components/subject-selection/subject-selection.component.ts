@@ -18,6 +18,7 @@ export class SubjectSelectionComponent {
   }
 
   public addSubject() {
+    console.log(this.selectedSubjects)
     if (this.selectedSubjects.length < this.subjects.length) {
       this.selectedSubjects.push({ selectedSubject: null, selectedGrades: [] });
       // this.selectedSubjectsChange.emit(this.selectedSubjects);
@@ -27,6 +28,7 @@ export class SubjectSelectionComponent {
 
   public removeSubject(index: number) {
     this.selectedSubjects.splice(index, 1);
+    // console.log(this.selectedSubjects)
     this.subjectSelection = true
     this.selectedSubjectsChange.emit(this.selectedSubjects);
   }

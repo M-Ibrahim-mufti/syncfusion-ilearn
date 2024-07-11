@@ -17,26 +17,31 @@ export class TutorRegistrationComponent {
   tutor: SaveTutorRequest = {} as SaveTutorRequest;
   activeIndex: number = 0;
   currentSelectedImage?: File;
-  selectedSubjects: any[] = [];
+  selectedSubjects: any[] = [ ];
 
   stepValues = [
     { label: 'Personl Detail' },
     { label: 'Policy Check' },
-    { label: 'Subjects & Availability' },
   ];
 
   constructor(private spinnerService: SpinnerService,
     // private notificationsService: NotificationsService,
     private uploadService: CloudinaryImageService,
-    private tutorService: TutorService) { }
+    private tutorService: TutorService) { 
+      console.log(this.selectedSubjects)
+    }
 
   public stepChanged(args: StepperChangedEventArgs): void {
     this.activeIndex = args.activeStep;
   }
 
   handleSelectedSubjectsChange(selectedSubjects: any[]) {
-    this.selectedSubjects = selectedSubjects;
-    console.log(this.selectedSubjects)
+   if(selectedSubjects.length >= 1) {
+     this.selectedSubjects = selectedSubjects;
+   }
+   else {
+    this.selectedSubjects = [];
+   }
   }
 
   public next() {

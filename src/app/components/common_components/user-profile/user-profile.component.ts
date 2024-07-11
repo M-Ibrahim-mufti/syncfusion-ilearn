@@ -25,6 +25,7 @@ export class UserProfileComponent {
   public UserEditProfileDialog = false
   isStudent: boolean = false;
   isTeacher: boolean = false;
+  public StudentInfo: boolean = true 
 
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
@@ -39,7 +40,7 @@ export class UserProfileComponent {
   }
 
   async ngOnInit():Promise<void> {
-    await this.getAllSubjects();
+    this.getAllSubjects();
     this.getUserDetail()
     this.getPreviousMeetings()
   }
@@ -99,6 +100,7 @@ export class UserProfileComponent {
     this.spinner.show();
     this.UserService.updateStudent(this.user).subscribe((response) => {
       this.spinner.hide();
+      this.UserEditProfileDialog = false
       if(response.Success){
         this.toastr.success(
           'Success',

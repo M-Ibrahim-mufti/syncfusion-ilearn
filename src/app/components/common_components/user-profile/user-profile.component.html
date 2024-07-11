@@ -10,7 +10,7 @@
                 <div class="position-relative">
                     <img  style="width: 100px; height: 100px; object-fit: cover; border-radius: 6px;" [src]="user.ImgUrl ? user.ImgUrl : '../../../../../../assets/user-profile.png'"/>
                     <button *ngIf="user.ImgUrl !== null" (click)="removeImg()" class="remove-btn">
-                        <span class="position-relative fs-6 text-white" style="top: -3px; right: -0.5px;"> x </span>
+                        <span class="position-relative fs-6 text-white" style="top: -2.5px; right: 0px;"> x </span>
                     </button>
                 </div>
                 <label for="ImageInput" *ngIf="user.ImgUrl === null" class="z-2 cursor-pointer rounded-3 text-white gap-2 image-btn d-flex justify-content-center align-items-center">
@@ -21,15 +21,16 @@
             </div>
             <div class="my-3">
                 <div class="border-bottom border-dull-white d-flex justify-content-between align-items-center gap-3">
-                    <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Personal Information </h5>
+                    <h5 *ngIf="isTeacher" class="px-3 fw-bolder text-muted-dark mb-3"> Personal Information  </h5>
+                    <h5 *ngIf="isStudent" class="px-3 fw-bolder text-muted-dark mb-2"> <a class="cursor-pointer" [ngClass]="{'text-primary': StudentInfo, 'text-hover': !StudentInfo }" (click)="StudentInfo = true" >Personal</a> | <a [ngClass]="{'text-primary': !StudentInfo, 'text-hover':StudentInfo }" (click)="StudentInfo = false" class="cursor-pointer">Parental</a> Information </h5>
                     <button (click)="openEditProfileDialog()" ejs-button class="e-info mx-3 mb-3 px-4 py-2 rounded-3 ">Edit</button>
                 </div>
                 <div class="d-flex flex-column gap-4 fw-bold mt-2 px-3">
                     <div class="text-start text-muted d-flex justify-content-between">
-                        <p class="col-md-6" >Name</p>
+                        <p class="col-md-6" >{{!StudentInfo ? 'Parent ' : ''}}Name</p>
                         <p class="col-md-6" >{{user.Hon ? user.Hon + " " : ''}} {{user.Name}}</p>
                     </div>
-                    <div *ngIf="isStudent" class="text-start text-muted d-flex justify-content-between">
+                    <div *ngIf="isStudent && StudentInfo" class="text-start text-muted d-flex justify-content-between">
                         <p class="col-md-6" >Grade</p>
                         <p class="col-md-6" >{{user.SchoolGrade}}</p>
                     </div>
@@ -38,30 +39,30 @@
                         <p class="col-md-6" >{{user.Qualifications}}</p>
                     </div>
                     <div class="text-start text-muted d-flex justify-content-between">
-                        <p class="col-md-6" >Email</p>
+                        <p class="col-md-6" > {{!StudentInfo ? 'Parent' : ''}} Email</p>
                         <p class="col-md-6" >{{user.Email}}</p>
                     </div>
                     <div class="text-start text-muted d-flex justify-content-between">
-                        <p class="col-md-6" >Phone Number </p>
+                        <p class="col-md-6" > {{!StudentInfo ? 'Parent' : ''}}  Phone Number </p>
                         <p class="col-md-6" >{{user.PhoneNumber}}</p>
                     </div>
                     <div class="text-start text-muted d-flex justify-content-between">
-                        <p class="col-md-6" >Address</p>
+                        <p class="col-md-6" >{{!StudentInfo ? 'Parent' : ''}} Address</p>
                         <p class="col-md-6" >{{user.Address}}</p>
                     </div>
                     <div class="text-start text-muted d-flex justify-content-between">
-                        <p class="col-md-6" >Country</p>
+                        <p class="col-md-6" >{{!StudentInfo ? 'Parent' : ''}} Country</p>
                         <p class="col-md-6" >{{user.Country}}</p>
                     </div>
                     <div class="text-start text-muted d-flex justify-content-between">
-                        <p class="col-md-6" >City</p>
+                        <p class="col-md-6" >{{!StudentInfo ? 'Parent' : ''}} City</p>
                         <p class="col-md-6" >{{user.City}}</p>
                     </div>
                     <div class="text-start text-muted d-flex justify-content-between">
-                        <p class="col-md-6" >Postal Code</p>
+                        <p class="col-md-6" >{{!StudentInfo ? 'Parent' : ''}} Postal Code</p>
                         <p class="col-md-6" >{{user.PostCode}}</p>
                     </div>  
-                    <div class="text-start text-muted d-flex justify-content-between">
+                    <div *ngIf="StudentInfo" class="text-start text-muted d-flex justify-content-between">
                         <p class="col-md-6" >Subjects</p>
                         <div class="col-md-6 d-flex flex-wrap gap-4 align-items-center" >
                             <span *ngFor="let subject of selectedSubjects" class="px-4 rounded-pill py-1 bg-secondary text-muted-dark" >{{subject.label}}</span>
@@ -106,7 +107,7 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <p class="text-start form-label mb-0 col-md-6">Start Time</p>
-                        <p class="text-start text-muted-dark mb-0 fw-semibold col-md-6">{{meeting.StartTime}}</p>
+                        <p class="text-start text-muted-dark mb-0 fw-semibold col-md-6">{{meeting.StartTime | date: 'yyyy/MM/dd HH:mm' }}</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p class="text-start form-label mb-0 col-md-6">Meeting ID</p>
@@ -123,47 +124,60 @@
         <h5 class="fw-bold text-muted-dark mb-2">Edit Profile</h5>
     </ng-template>
     <div class="row col-md-12 py-3 justify-content-between">
-        <div class="mb-2 col-md-6 form-group">
-            <label class="form-label">Name</label>
-            <input [(ngModel)]="user.Name" class="form-control"/>
+        <div class="mb-2 col-md-4 form-group" [ngClass]="{'col-md-6': !StudentInfo}"  >
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Hon (Mr, Ms, Sir)</label>
+            <input *ngIf="StudentInfo || isTeacher" class="form-control" [(ngModel)]="user.Hon" />
+            <input *ngIf="!StudentInfo" class="form-control" [(ngModel)]="user.Parent" />
         </div>
-        <div *ngIf="isTeacher" class="mb-2 col-md-6 form-group">
+        <div class="mb-2 col-md-4 form-group" [ngClass]="{'col-md-6': !StudentInfo}">
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Name</label>
+            <input *ngIf="StudentInfo || isTeacher"  [(ngModel)]="user.Name" class="form-control"/>
+            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
+        </div>
+        <div *ngIf="isTeacher" class="mb-2 col-md-4 form-group">
             <label class="form-label">Qualification</label>
-            <input [(ngModel)]="user.Qualifications" class="form-control"/>
+            <input *ngIf="!StudentInfo"  [(ngModel)]="user.Qualifications" class="form-control"/>
         </div>
-        <div *ngIf="isStudent" class="mb-2 col-md-6 form-group">
+        <div *ngIf="isStudent && StudentInfo" class="mb-2 col-md-4 form-group">
             <label class="form-label">Grade</label>
             <input [(ngModel)]="user.SchoolGrade" class="form-control"/>
         </div>
         <div class="mb-2 col-md-6 form-group">
-            <label class="form-label">Email</label>
-            <input [(ngModel)]="user.Email" class="form-control"/>
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Email</label>
+            <input *ngIf="StudentInfo || isTeacher"  [(ngModel)]="user.Email" class="form-control"/>
+            <input *ngIf="!StudentInfo"  [(ngModel)]="user.Parent" class="form-control"/>
         </div>
         <div class="mb-2 col-md-6 form-group">
-            <label class="form-label">Phone Number</label>
-            <input [(ngModel)]="user.PhoneNumber" class="form-control"/>
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Phone Number</label>
+            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.PhoneNumber" class="form-control"/>
+            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
         </div>
         <div class="mb-2 form-group">
-            <label class="form-label">Address</label>
-            <input [(ngModel)]="user.Address" class="form-control"/>
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Address</label>
+            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.Address" class="form-control"/>
+            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
         </div>
         <div class="mb-2 col-md-6 form-group">
-            <label class="form-label">Country</label>
-            <input [(ngModel)]="user.Country" class="form-control"/>
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Country</label>
+            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.Country" class="form-control"/>
+            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
         </div>
         <div class="mb-2 col-md-6 form-group">
-            <label class="form-label">State</label>
-            <input [(ngModel)]="user.State" class="form-control"/>
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} State</label>
+            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.State" class="form-control"/>
+            <input *ngIf="!StudentInfo"  [(ngModel)]="user.Parent" class="form-control"/>
         </div>
         <div class="mb-2 col-md-6 form-group">
-            <label class="form-label">City</label>
-            <input [(ngModel)]="user.City" class="form-control"/>
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} City</label>
+            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.City" class="form-control"/>
+            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
         </div>
         <div class="mb-2 col-md-6 form-group">
-            <label class="form-label">Postal Code</label>
-            <input [(ngModel)]="user.PostCode" class="form-control"/>
+            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Postal Code</label>
+            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.PostCode" class="form-control"/>
+            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
         </div>
-        <div class="mb-2 form-group">
+        <div *ngIf="StudentInfo || isTeacher" class="mb-2 form-group">
             <label class="form-label">Subjects</label>
             <ejs-multiselect id="multiSubjectSelect" [(value)]="selectedSubjects" [allowObjectBinding]="true" [dataSource]="subjects" [fields]="{text:'label', value:'value'}" ></ejs-multiselect>
         </div>

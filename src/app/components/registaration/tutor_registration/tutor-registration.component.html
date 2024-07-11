@@ -6,7 +6,7 @@
       <ejs-stepper (stepChanged)="stepChanged($event)">
         <e-steps>
             <e-step label="Personal Detail"></e-step>
-            <e-step [disabled]="!tutor.FullName || !tutor.Email || !tutor.PhoneNumber || !tutor.Address || !tutor.Qualifications || selectedSubjects.length < 1 " label="Policy Check"></e-step>
+            <e-step [disabled]="!tutor.FullName || !tutor.Email || !tutor.PhoneNumber || !tutor.Address || !tutor.Qualifications || selectedSubjects.length < 1" label="Policy Check"></e-step>
         </e-steps>
       </ejs-stepper>
     </div>
@@ -15,7 +15,7 @@
     <div class="col-md-8 py-3 mt-0 px-0 bg-white rounded-3">
         <div class="d-flex px-3 border-bottom border-dull-white justify-content-between col-md-12">
             <h5 class="mb-0 fw-bold">Registration Form</h5>
-            <button ejs-button *ngIf="activeIndex !== stepValues.length - 1" type="button" class="e-info mb-3 px-4 py-2 rounded-3" [disabled]="!tutor.Email || !tutor.FullName || !tutor.Address || !tutor.PhoneNumber || !tutor.Qualifications || selectedSubjects.length < 1" (click)="next()">Next</button>
+            <button ejs-button *ngIf="activeIndex !== stepValues.length - 1" type="button" class="e-info mb-3 px-4 py-2 rounded-3" [disabled]="!tutor.Email || !tutor.FullName || !tutor.Address || !tutor.PhoneNumber || !tutor.Qualifications || selectedSubjects.length < 1 " (click)="next()">Next</button>
         </div>
         <form *ngIf="activeIndex === 0" class="row mx-3 my-2 g-3">
             <div class="col-md-3">

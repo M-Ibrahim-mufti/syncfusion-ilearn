@@ -12,13 +12,13 @@
   <div class="d-flex gap-2 flex-column my-3 text-start mx-3 text-light">
     <div [routerLink]="['/dashboard']" class="d-flex align-items-center gap-3 py-3 cursor-pointer link-hover" [ngClass]="{'active-link': isActive('/dashboard'), 'bg-black': !isActive('/dashboard'), 'px-4 justify-content-center':!isSideBar, 'justify-content-start px-4':isSideBar }">
       <span class="e-icons e-grid-view fs-4"></span> 
-      <a *ngIf="isSideBar"  class="letter-spacing fs-4 text-white" aria-current="page">Dashboard</a>
+      <a *ngIf="isSideBar" class="letter-spacing fs-4 text-white" aria-current="page">Dashboard</a>
     </div>
     <div class="py-2">
       <div class="mb-3" *ngIf="authConfig.IsStudent">
         <span *ngIf="isSideBar" class="ms-4 fs-5 letter-spacing"> Students </span>
-        <div class="mt-2 ms-3 d-flex flex-column gap-1">
-          <div [routerLink]="['/student/tutor-selection']" class="d-flex align-items-center gap-3 cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link': isActive('/student/tutor-selection'), 'bg-black': !isActive('/student/tutor-selection')}">
+        <div class="mt-2 d-flex flex-column" [ngClass]="{'ms-3 gap-1':isSideBar, 'ms-0 gap-2':!isSideBar}">
+          <div [routerLink]="['/student/tutor-selection']" class="d-flex align-items-center gap-3 cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link': isActive('/student/tutor-selection'), 'bg-black': !isActive('/student/tutor-selection'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar}">
             <span class="e-icons fs-5 e-people"></span>
             <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> View Tutor</a>
           </div>
@@ -27,7 +27,7 @@
               <i class="pi pi-calendar"></i> Class
             </a>
           </div> -->
-          <div [routerLink]="['/meeting']" class="d-flex align-items-center gap-3 cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/meeting'), 'bg-black': !isActive('/meeting')}">
+          <div [routerLink]="['/meeting']" class="d-flex align-items-center gap-3 cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/meeting'), 'bg-black': !isActive('/meeting'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar }">
             <span class="e-icons e-agenda-date-range"></span>
             <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> Meeting </a>
           </div>
