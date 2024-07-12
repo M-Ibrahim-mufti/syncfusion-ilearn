@@ -44,7 +44,6 @@ export class MeetingsComponent implements OnInit {
   switchToListView() {
     this.showListView = false;
     this.loadMeetings();
-    console.log()
   }
 
   switchToCalendarView() {
@@ -56,7 +55,6 @@ export class MeetingsComponent implements OnInit {
     this.spinnerService.show();
     this.zoomService.getMeetings().subscribe(response => {      
       this.meetings = response;
-      console.log(this.meetings)
       this.spinnerService.hide();
       this.filterMeetingsForUpcoming();
       this.filterMeetingsForPrevious(); 

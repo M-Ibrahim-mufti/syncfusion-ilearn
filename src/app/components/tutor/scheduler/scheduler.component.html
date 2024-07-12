@@ -1,3 +1,4 @@
 <div class="container">
-    <ejs-schedule #scheduleObj width='100%' height='520px' [eventSettings]="eventSettings" [views]="scheduleViews" timezone="UTC"></ejs-schedule>
+    <ejs-schedule #scheduleObj width='100%' height='520px' [eventSettings]='eventSettings' [views]="scheduleViews" timezone="UTC" (popupOpen)='onPopupOpen($event)'></ejs-schedule>
+
 </div>

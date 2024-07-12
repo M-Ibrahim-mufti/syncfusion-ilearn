@@ -1,15 +1,15 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import {
   AgendaService,
   DayService,
   EventSettingsModel, MonthAgendaService, MonthService,
   ScheduleComponent,
   ScheduleModule, TimelineMonthService, TimelineViewsService,
-  View, WeekService, WorkWeekService
+  View, WeekService, WorkWeekService, PopupOpenEventArgs
 } from "@syncfusion/ej2-angular-schedule";
-import {DataManager, UrlAdaptor} from "@syncfusion/ej2-data";
-import {environment} from "../../../../environments/environment";
-import {TutorService} from "../../../../services/tutor.service";
+import { TutorService } from "../../../../services/tutor.service";
+// import {DataManager} from "@syncfusion/ej2-data";
+import {AuthService} from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-scheduler',
@@ -18,48 +18,97 @@ import {TutorService} from "../../../../services/tutor.service";
     ScheduleModule
   ],
   templateUrl: './scheduler.component.html',
-  styleUrl: './scheduler.component.css',
+  styleUrls: ['./scheduler.component.css'],
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, TutorService]
 })
-export class SchedulerComponent implements OnInit{
+export class SchedulerComponent implements OnInit, OnChanges {
+  @Input('meetings') meetings: any;
   @ViewChild('scheduleObj') scheduleObj?: ScheduleComponent;
-  private dataManager!: DataManager;
+  // private dataManager!: DataManager;
   public eventSettings!: EventSettingsModel;
   public scheduleViews: View[] = ['Month'];
-  data: any = [
-    {
-      Id: "abc",
-      Subject: "Test Subject",
-      Description: "Test",
-      StartTime: new Date(),
-      EndTime: new Date()
+  data: any = [];
+  isTeacher: boolean = false;
+  isStudent: boolean = false;
+
+  constructor(
+      private tutorService: TutorService,
+      private authService: AuthService,
+  ) {
+    this.isTeacher = this.authService.isTeacher()
+    this.isStudent = this.authService.isStudent()
+  }
+
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['meetings'] && changes['meetings'].currentValue) {
+      this.initializeDataManager();
     }
-  ];
-  constructor(private tutorService:TutorService){
+  }
 
-  }
-  ngOnInit(): void {
-    this.initializeDataManager();
-  }
   private initializeDataManager() {
-    const headers = this.tutorService.getRequestHeaders();
+    // const headers = this.tutorService.getRequestHeaders();
 
-    // this.dataManager = new DataManager({
-    //   headers: Object.keys(headers).map(key => ({ [key]: headers[key] })),
-    //   url: `${environment.BASE_API_PATH}/Tutor/fetch-availabilty-schedule`,
-    //   crudUrl: `${environment.BASE_API_PATH}/Tutor/save-schedule`,
-    //   adaptor: new UrlAdaptor(),
-    //   timeZoneHandling: true,
-    //   crossDomain: true,
-    // });
+    this.data = this.meetings.map((meeting: any) => {
+      return {
+        Id: meeting.Id,
+        Subject: meeting.Topic,
+        StartTime: new Date(meeting.StartTime),
+        EndTime: new Date(new Date(meeting.StartTime).getTime() + meeting.Duration * 60000),
+        Description: `Start Meeting: ${meeting.StartUrl}`,
+        StartUrl: meeting.StartUrl
+      };
+    });
 
     this.eventSettings = {
-      // dataSource: this.dataManager
-      dataSource: this.data,
+      dataSource: this.meetings.map((meeting: any) => ({
+        Id: meeting.Id,
+        Subject: meeting.Topic,
+        StartTime: new Date(meeting.StartTime),
+        EndTime: new Date(new Date(meeting.StartTime).getTime() + meeting.Duration * 60000),
+        Description: `Start Meeting: ${meeting.StartUrl}`,
+        StartUrl: meeting.StartUrl,
+        JoinUrl: meeting.JoinUrl,
+        Duration: meeting.Duration,
+        Timezone: meeting.Timezone,
+        CreatedAt: meeting.CreatedAt,
+        MeetingId: meeting.MeetingId
+      })),
       allowAdding: false,
       allowEditing: false,
       allowDeleting: false
-    }
+    };
   }
 
+  onPopupOpen(args: PopupOpenEventArgs): void {
+    if (args.type === 'QuickInfo') {
+      const meeting = args.data as any;
+      const currentTime = new Date();
+
+      const isWithinMeetingTime = currentTime >= new Date(meeting.StartTime)
+          && currentTime <= new Date(new Date(meeting.StartTime).getTime() + meeting.Duration * 60000);
+
+      const startUrlLink = this.isTeacher && isWithinMeetingTime
+          ? `<p><b>Start URL:</b> <a href="${meeting.StartUrl}" target="_blank">Start Meeting</a></p>`
+          : '';
+
+      const joinUrlLink = this.isStudent && isWithinMeetingTime
+          ? `<p><b>Join URL:</b> <a href="${meeting.JoinUrl}" target="_blank">Join Meeting</a></p>`
+          : '';
+
+      args.element.querySelector('.e-popup-content')!.innerHTML = `
+      <div>
+        <!--<h5>${meeting.Subject}</h5>-->
+        <p><b>Start Time:</b> ${new Date(meeting.StartTime).toLocaleString()}</p>
+        <p><b>End Time:</b> ${new Date(new Date(meeting.StartTime).getTime() + meeting.Duration * 60000).toLocaleString()}</p>
+        <p><b>Duration:</b> ${meeting.Duration} minutes</p>
+        <!--<p><b>Timezone:</b> ${meeting.Timezone}</p>-->
+        <!--<p><b>Created At:</b> ${new Date(meeting.CreatedAt).toLocaleString()}</p>-->
+        ${startUrlLink}
+        ${joinUrlLink}
+      </div>
+    `;
+    }
+  }
 }
