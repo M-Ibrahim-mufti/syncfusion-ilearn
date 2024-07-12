@@ -3,7 +3,7 @@ import { SaveTutorAvailabilityRequest, TutorAvailability, TutorService } from '.
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { addMonths, startOfDay } from 'date-fns';
 import { NotificationTypes } from '../../../app.enums';
-import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View, ActionEventArgs, PopupOpenEventArgs } from '@syncfusion/ej2-angular-schedule';
+import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View, ActionEventArgs, PopupOpenEventArgs, PopupCloseEventArgs } from '@syncfusion/ej2-angular-schedule';
 import { ButtonComponent, classNames } from '@syncfusion/ej2-angular-buttons';
 import { DataManager, UrlAdaptor, ODataV4Adaptor, Query } from '@syncfusion/ej2-data';
 import { environment } from '../../../../environments/environment';
@@ -12,7 +12,8 @@ import { ToastrService } from 'ngx-toastr';
 import { createCustomElement } from '@angular/elements';
 import { createElement } from '@syncfusion/ej2-base';
 
-import { DropDownList } from '@syncfusion/ej2-angular-dropdowns';
+import { ChangeEventArgs, DropDownList } from '@syncfusion/ej2-angular-dropdowns';
+import { StudentService } from '../../../../services/student.service';
 @Component({
   selector: 'app-availability-selection',
   templateUrl: './availability-selection.component.html',
@@ -44,6 +45,13 @@ export class AvailabilitySelectionComponent implements OnInit {
   public selectedDateTimes: { date: Date, timeRanges: { startTime: string, endTime: string }[] }[] = [];
   public availability: any[] = [];
   public eventSettings!: EventSettingsModel
+  public tutorSubjects: any[] = []
+  public tutorGrades: any[] = []
+  public gradeDropDownList!:DropDownList
+  public IsOneOnOne:any[] = [
+    {label:'One On One', value: true },
+    {label:"On Group", value: false }
+  ]
 
   @ViewChild("addButton")
   public addButton?: ButtonComponent;
@@ -51,6 +59,7 @@ export class AvailabilitySelectionComponent implements OnInit {
   constructor(private tutorService:TutorService,
      private toastr: ToastrService,
      private ngxSpinner: SpinnerService,
+     private studentService:StudentService
   
     ) {  }
 
@@ -59,6 +68,7 @@ export class AvailabilitySelectionComponent implements OnInit {
     this.initializeDataManager();
     this.generateTimeOptions();
     this.loadAvalabilites();
+    this.getTutorSubjects()
   }
   // Start of Scheduler data
   private initializeDataManager() {
@@ -78,41 +88,43 @@ export class AvailabilitySelectionComponent implements OnInit {
       fields: {
         id:'Id',
         subject: { name:'Subject', title:'Class Title' },
-        description: {name:'Description', title: 'Class Description'}
+        description: {name:'Description', title: 'Class Description'},
+        classSubject: {name:'SubjectId'},
+        classGrade: {name:'GradeId'},
       }
      }
   }
 
-  public getClassData () {
-  
+  public getSubjectGrades(subjectId:string) {
+    this.studentService.viewUserGrades(subjectId).subscribe((response) => {
+      this.tutorGrades = response
+      console.log(this.tutorGrades);
+      this.gradeDropDownList.dataSource = this.tutorGrades;
+      this.gradeDropDownList.refresh();
+    })
   }
 
-  //  public fieldAddition(args: PopupOpenEventArgs) {
-  //   if (args.type === 'Editor'){
-  //     let row = document.createElement('div') 
-  //     row.classList.add('col-md-12', 'form-group');
-  //     let formElement: HTMLElement = args.element.querySelector('.e-schedule-form') as HTMLElement;
-  //     formElement.firstChild?.insertBefore(row, args.element.querySelector('.e-start-end-row'));
-  //     let cont1 = document.createElement('div')
-  //     row.appendChild(cont1)
-  //     let dropdownSubject:DropDownList = new DropDownList({
-  //       dataSource: [
-  //         { text: 'Public Event', value: 'public-event' },
-  //         { text: 'Maintenance', value: 'maintenance' },
-  //         { text: 'Commercial Event', value: 'commercial-event' },
-  //         { text: 'Family Event', value: 'family-event' }
-  //     ],
-  //     fields: { text: 'text', value: 'value' },
-  //     value: (<{ [key: string]: Object; }>(args.data))['EventType'] as string,
-  //     floatLabelType: 'Always', placeholder: 'Event Type',
-  //     cssClass:'col-md-6 w-50'
-      
-  //    });
-  //    dropdownSubject.appendTo(cont1)
-  //   }
-  // }
+  public getTutorSubjects () {
+    this.studentService.getAllUserSubjects().subscribe((response) => {
+      this.tutorSubjects = response
+    })
+  }
+  public onChangeSubject(data: ChangeEventArgs) {
+    const subjectId:string = data.itemData.value ? data.itemData.value : '';
+    this.getSubjectGrades(subjectId);
+    this.gradeDropDownList.enabled = true
+  }
 
-  onPopupOpen(args: PopupOpenEventArgs): void {
+  public removeFields() {
+    let container = document.querySelectorAll('.custom-field-container')
+    if(container) {
+      container.forEach((cont) => {
+        cont.remove();
+      })
+    }
+  }
+
+  public onPopupOpen(args: PopupOpenEventArgs): void {
     if (args.type === 'Editor') {
         if (!args.element.querySelector('.custom-field-row')) {
             let row: HTMLElement = createElement('div', { className: 'e-control' });
@@ -120,47 +132,62 @@ export class AvailabilitySelectionComponent implements OnInit {
             formElement.firstChild?.insertBefore(row, args.element.querySelector('.e-start-end-row'));
             let container: HTMLElement = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
             let inputEle: HTMLInputElement = createElement('input', {
-                className: 'e-field', attrs: { name: 'Subject' }
+                className: 'e-field', attrs: { name: 'SubjectId' }
             }) as HTMLInputElement;
             container.appendChild(inputEle);
             row.appendChild(container);
             let dropDownList: DropDownList = new DropDownList({
-                dataSource: [
-                    { text: 'Public Event', value: 'public-event' },
-                    { text: 'Maintenance', value: 'maintenance' },
-                    { text: 'Commercial Event', value: 'commercial-event' },
-                    { text: 'Family Event', value: 'family-event' }
-                ],
-                fields: { text: 'text', value: 'value' },
-                value: (<{ [key: string]: Object; }>(args.data))['Subject'] as string,
+                dataSource:this.tutorSubjects,
+                fields: { text: 'label', value: 'value' },
+                value: (<{ [key: string]: Object; }>(args.data))['SubjectId'] as string,
                 floatLabelType: 'Always', placeholder: 'Select Subject',
+                change:this.onChangeSubject.bind(this)
 
             });
             dropDownList.appendTo(inputEle);
-            inputEle.setAttribute('name', 'Subject');
+            inputEle.setAttribute('name', 'SubjectId');
 
             container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
             inputEle = createElement('input', {
-                className: 'e-field', attrs: { name: 'Grade' }
+                className: 'e-field', attrs: { name: 'GradeId'  }
             }) as HTMLInputElement;
             container.appendChild(inputEle);
             row.appendChild(container);
-            dropDownList = new DropDownList({
-                dataSource: [
-                    { text: 'Public Event', value: 'public-event' },
-                    { text: 'Maintenance', value: 'maintenance' },
-                    { text: 'Commercial Event', value: 'commercial-event' },
-                    { text: 'Family Event', value: 'family-event' }
-                ],
-                fields: { text: 'text', value: 'value' },
-                value: (<{ [key: string]: Object; }>(args.data))['Grades'] as string,
+            this.gradeDropDownList = new DropDownList({
+                enabled: false,
+                dataSource: this.tutorGrades,
+                fields: { text: 'label', value: 'value' },
+                value: (<{ [key: string]: Object; }>(args.data))['GradeId'] as string,
                 floatLabelType: 'Always', placeholder: 'Select Grade',
             });
-            dropDownList.appendTo(inputEle);
-            inputEle.setAttribute('name', 'Grades');    
-        }
-    }
-}
+            this.gradeDropDownList.appendTo(inputEle);
+            inputEle.setAttribute('name', 'GradeId'); 
+            
+            container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
+            inputEle = createElement('input', {
+              className: 'e-field', attrs: { name: 'IsOneOnOne'  }
+            }) as HTMLInputElement;
+            container.appendChild(inputEle);
+            row.appendChild(container);
+            const MeetingTypeDropDownList = new DropDownList({
+                enabled: true,
+                dataSource: this.IsOneOnOne,
+                fields: { text: 'label', value: 'value' },
+                value: (<{ [key: string]: Object; }>(args.data))['isOneOnOne'] as string,
+                floatLabelType: 'Always', placeholder: 'Select Meeting type',
+                change:this.onChangeMeetingType.bind(this)
+
+            });
+            MeetingTypeDropDownList.appendTo(inputEle);
+            inputEle.setAttribute('name', 'IsOneOnOne');          
+
+          }
+      }
+  }
+
+  public onChangeMeetingType(data: ChangeEventArgs) {
+    console.log(data)
+  }
 
   public loadAvalabilites(){
     this.selectedAvailability = []
