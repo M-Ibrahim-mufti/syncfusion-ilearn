@@ -31,7 +31,7 @@
                         <p class="col-md-6" >{{user.Hon ? user.Hon + " " : ''}} {{user.Name}}</p>
                     </div>
                     <div *ngIf="isStudent && StudentInfo" class="text-start text-muted d-flex justify-content-between">
-                        <p class="col-md-6" >Grade</p>
+                        <p class="col-md-6" >School Grade</p>
                         <p class="col-md-6" >{{user.SchoolGrade}}</p>
                     </div>
                     <div *ngIf="isTeacher" class="text-start text-muted d-flex justify-content-between">
@@ -139,7 +139,7 @@
             <input *ngIf="!StudentInfo"  [(ngModel)]="user.Qualifications" class="form-control"/>
         </div>
         <div *ngIf="isStudent && StudentInfo" class="mb-2 col-md-4 form-group">
-            <label class="form-label">Grade</label>
+            <label class="form-label">School Grade</label>
             <input [(ngModel)]="user.SchoolGrade" class="form-control"/>
         </div>
         <div class="mb-2 col-md-6 form-group">

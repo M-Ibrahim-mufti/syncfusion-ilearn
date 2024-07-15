@@ -49,6 +49,7 @@ import { StepperModule, StepperAllModule } from '@syncfusion/ej2-angular-navigat
 //thirdparty imports
 import { ToastrModule } from 'ngx-toastr';
 import {SchedulerComponent} from "./components/tutor/scheduler/scheduler.component";
+import { ViewChildrenComponent } from './components/Parrent/view-children/view-children.component';
 
 
 export function getTokenFactory(injector: Injector) {
@@ -84,7 +85,8 @@ export function getTokenFactory(injector: Injector) {
     SubjectSelectionComponent,
     SubjectComponent,
     StudentRegistrationComponent,
-    TutorRegistrationComponent
+    TutorRegistrationComponent,
+    ViewChildrenComponent
   ],
     imports: [
         BrowserModule,

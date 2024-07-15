@@ -83,16 +83,16 @@ export class AvailabilitySelectionComponent implements OnInit {
       crossDomain: true,
     });
 
-    this.eventSettings = {
-      dataSource: this.dataManager,
-      fields: {
-        id:'Id',
-        subject: { name:'Subject', title:'Class Title' },
-        description: {name:'Description', title: 'Class Description'},
-        classSubject: {name:'SubjectId'},
-        classGrade: {name:'GradeId'},
-      }
-     }
+    // this.eventSettings = {
+    //   dataSource: this.dataManager,
+    //   fields: {
+    //     id:'Id',
+    //     subject: { name:'Subject', title:'Class Title' },
+    //     description: {name:'Description', title: 'Class Description'},
+    //     classSubject: {name:'SubjectId'},
+    //     classGrade: {name:'GradeId'},
+    //   }
+    //  }
   }
 
   public getSubjectGrades(subjectId:string) {

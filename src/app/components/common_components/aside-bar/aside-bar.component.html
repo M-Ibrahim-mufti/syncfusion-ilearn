@@ -33,6 +33,24 @@
           </div>
         </div>
       </div>
+
+      <div class="mb-3" *ngIf="authConfig.IsParent">
+        <span *ngIf="isSideBar" class="ms-4 fs-5 letter-spacing"> Parrent </span>
+        <div class="mt-2 d-flex flex-column" [ngClass]="{'ms-3 gap-1':isSideBar, 'ms-0 gap-2':!isSideBar}">
+          <div [routerLink]="['/student/tutor-selection']" class="d-flex align-items-center gap-3 cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link': isActive('/student/tutor-selection'), 'bg-black': !isActive('/student/tutor-selection'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar}">
+            <span class="e-icons fs-5 e-people"></span>
+            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> View Tutor</a>
+          </div>
+          <div [routerLink]="['/parrent/view-children']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/parrent/view-children'), 'bg-black': !isActive('/parrent/view-children') }">
+            <span class="e-icons fs-5 e-people"></span>
+            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> View Children</a>
+          </div>
+          <div [routerLink]="['/meeting']" class="d-flex align-items-center gap-3 cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/meeting'), 'bg-black': !isActive('/meeting'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar }">
+            <span class="e-icons e-agenda-date-range"></span>
+            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> Meeting </a>
+          </div>
+        </div>
+      </div>
       <div class="mb-3" *ngIf="authConfig.IsTeacher">
         <span *ngIf="isSideBar" class="ms-4 mb-3 fs-5 letter-spacing"> Tutors </span>
         <div class="mt-2 d-flex flex-column" [ngClass]="{'ms-3 gap-1':isSideBar, 'ms-0 gap-2':!isSideBar}" >

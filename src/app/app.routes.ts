@@ -16,6 +16,7 @@ import { MeetingsComponent } from './components/common_components/meeting/meetin
 import { SubjectComponent } from './components/admin/subject/subject.component';
 import { StudentRegistrationComponent } from './components/registaration/student_registration/student-registration.component'
 import { TutorRegistrationComponent } from './components/registaration/tutor_registration/tutor-registration.component'
+import { ViewChildrenComponent } from './components/Parrent/view-children/view-children.component';
 
 
 
@@ -133,6 +134,11 @@ export const routes: Routes = [
     {
         path: 'student/tutor-detail/:id',
         component:TutorDetailComponent
+    },
+    {
+        path: 'parrent/view-children',
+        component:ViewChildrenComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'tutor/class-metadata',
