@@ -401,7 +401,6 @@ export class TutorDetailComponent {
                 if (slotExists) {
                   formattedTime += ' Booked';
                   for(let j = 0; j <= duration/30;j++ ){
-
                     this.consultancyTimeFrames.push({ value: i + 1, label: formattedTime });
                     startTime.setMinutes(startTime.getMinutes() + 30);
                     i++;
