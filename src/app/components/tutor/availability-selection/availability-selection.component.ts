@@ -198,6 +198,11 @@ export class AvailabilitySelectionComponent implements OnInit {
             container.appendChild(inputEle);
 
             if (args.type === 'Editor') {
+                const locationInput: HTMLInputElement = args.element.querySelector('#Location') as HTMLInputElement;
+                if (locationInput) {
+                    locationInput.value = 'Zoom'; // Set default value
+                    locationInput.disabled = true; // Disable the field
+                }
                 // (<any>this.scheduleObj!.eventWindow).recurrenceEditor.frequencies = ['never', 'daily', 'weekly'];
                 const recurrenceEditor = (<any>this.scheduleObj!.eventWindow).recurrenceEditor;
                 // recurrenceEditor.frequencies = ['never', 'daily', 'weekly'];
