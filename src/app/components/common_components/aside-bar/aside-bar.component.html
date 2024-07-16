@@ -58,17 +58,17 @@
             <span class="e-icons pt-1 e-clock"></span>
             <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> Availability</a>
           </div>
-          <div [routerLink]="['/classes']" class="d-flex align-items-center gap-3 cursor-pointer link-hover" [ngClass]="{'active-link':isActive('/classes'),'bg-black': !isActive('/classes'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar }">
-            <span class="e-icons e-bookmark"></span>
-            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> Class </a>
-          </div>
+<!--          <div [routerLink]="['/classes']" class="d-flex align-items-center gap-3 cursor-pointer link-hover" [ngClass]="{'active-link':isActive('/classes'),'bg-black': !isActive('/classes'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar }">-->
+<!--            <span class="e-icons e-bookmark"></span>-->
+<!--            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> Class </a>-->
+<!--          </div>-->
           <div [routerLink]="['/tutor/requests']" class="d-flex align-items-center gap-3 cursor-pointer link-hover" [ngClass]="{'active-link':isActive('/tutor/requests'), 'bg-black': !isActive('/tutor/requests'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar}">
             <span class="e-icons e-expand"></span>
             <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white">Requests</a>
           </div>
-          <div [routerLink]="['/tutor/class-metadata']" class="d-flex align-items-center gap-3 cursor-pointer link-hover" [ngClass]="{'active-link':isActive('/tutor/class-metadata'), 'bg-black': !isActive('/tutor/class-metadata'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar}">
+          <div [routerLink]="['/tutor/class']" class="d-flex align-items-center gap-3 cursor-pointer link-hover" [ngClass]="{'active-link':isActive('/tutor/class-metadata'), 'bg-black': !isActive('/tutor/class-metadata'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar}">
             <span class="pt-1 e-icons e-level-4 fs-4"></span>
-            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> Class Metadata</a>
+            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> Class</a>
           </div>
           <div [routerLink]="['/meeting']" class="d-flex align-items-center gap-3 cursor-pointer link-hover" [ngClass]="{'active-link':isActive('/meeting'), 'bg-black': !isActive('/meeting'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar}">
             <span class="e-icons e-agenda-date-range"></span>

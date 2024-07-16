@@ -83,16 +83,16 @@ export class AvailabilitySelectionComponent implements OnInit {
       crossDomain: true,
     });
 
-    // this.eventSettings = {
-    //   dataSource: this.dataManager,
-    //   fields: {
-    //     id:'Id',
-    //     subject: { name:'Subject', title:'Class Title' },
-    //     description: {name:'Description', title: 'Class Description'},
-    //     classSubject: {name:'SubjectId'},
-    //     classGrade: {name:'GradeId'},
-    //   }
-    //  }
+    this.eventSettings = {
+      dataSource: this.dataManager,
+      fields: {
+        id:'Id',
+        subject: { name:'Subject', title:'Class Title' },
+        description: {name:'Description', title: 'Class Description'},
+        classSubject: {name:'SubjectId'},
+        classGrade: {name:'GradeId'},
+      }
+     }
   }
 
   public getSubjectGrades(subjectId:string) {
@@ -125,6 +125,7 @@ export class AvailabilitySelectionComponent implements OnInit {
   }
 
   public onPopupOpen(args: PopupOpenEventArgs): void {
+      console.log(this.scheduleObj?.eventWindow)
     if (args.type === 'Editor') {
         if (!args.element.querySelector('.custom-field-row')) {
             let row: HTMLElement = createElement('div', { className: 'e-control' });
@@ -225,12 +226,12 @@ export class AvailabilitySelectionComponent implements OnInit {
   }
 
   switchToListView() {
-    this.showListView = false;
+    this.showListView = true;
     this.loadAvalabilites();
   }
 
   switchToCalendarView() {
-    this.showListView = true;
+    this.showListView = false;
   }
 
   public addTimeRange(dayIndex: number) {

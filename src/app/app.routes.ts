@@ -141,7 +141,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: 'tutor/class-metadata',
+        path: 'tutor/class',
         component:ClassMetadataComponent
     },
     {
