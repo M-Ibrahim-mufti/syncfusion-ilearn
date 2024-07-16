@@ -15,8 +15,8 @@
             </div>
         </div>
     </div>
-    <div class="d-flex flex-column px-0 mt-0" *ngIf="groupRequests.length > 0">
-        <div class="py-2 px-3 bg-white rounded-3 mb-1">
+    <div class="d-flex flex-column px-0 mt-0">
+        <div class="py-2 px-3 bg-white rounded-3 mb-1" *ngIf="groupRequests.length > 0">
             <div class=" my-2 d-flex flex-wrap gap-2">
                 <ng-container *ngFor="let bookingRequest of groupRequests">
                     <div class="shadow-sm border border-1 py-2 px-2 prounded-3 custom-card-width rounded-2 position-relative">
@@ -113,7 +113,5 @@
                 </div>
             </div>
         </ng-container>
-
-
     </div>
 </div>

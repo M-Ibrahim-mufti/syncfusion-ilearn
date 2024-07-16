@@ -97,6 +97,7 @@ export class EventRequestComponent implements OnInit{
       if (resposne.Success) {
         this.joinUrl = resposne.join_url;
         this.isSlotBookingDialogVisible = false;
+        this.getAllSlotBookingRequests();
         this.toastr.success(
           'Success',
           resposne.ResponseMessage
@@ -130,34 +131,34 @@ export class EventRequestComponent implements OnInit{
     this.groupRequests = this.bookingRequests.filter((request) => {
       if (this.selectedStatus !== undefined && this.selectedStatus !== null) {
         if (this.selectedStatus === 'app') {
-         return request.IsApproved === true;
+         return (request.IsOneOnOne == false && request.IsApproved === true);
         }
         else if (this.selectedStatus === 'rej') {
-          return request.IsRejected === true;
-        } 
+          return (request.IsOneOnOne == false && request.IsRejected === true);
+        }
         else {
-          return(request.IsApproved === false && request.IsRejected === false);
+          return(request.IsOneOnOne == false && request.IsApproved === false && request.IsRejected === false);
         }
       } else {
         // Handle case when selectedStatus is undefined or null
-          return(request.IsApproved === false || request.IsRejected === false);
+          return(request.IsOneOnOne == false && request.IsApproved === false || request.IsRejected === false);
       }
     });
 
     this.consultancyRequests = this.bookingRequests.filter((request) => {
       if (this.selectedStatus !== undefined && this.selectedStatus !== null) {
         if (this.selectedStatus === 'app') {
-          return request.IsApproved === true;
+          return (request.IsOneOnOne == true && request.IsApproved === true);
         }
         else if (this.selectedStatus === 'rej') {
-          return request.IsRejected === true;
+          return (request.IsOneOnOne == true && request.IsRejected === true);
         }
         else {
-          return(request.IsApproved === false && request.IsRejected === false);
+          return(request.IsOneOnOne == true && request.IsApproved === false && request.IsRejected === false);
         }
       } else {
         // Handle case when selectedStatus is undefined or null
-        return(request.IsApproved === false || request.IsRejected === false);
+        return(request.IsOneOnOne == true && request.IsApproved === false || request.IsRejected === false);
       }
     });
 
