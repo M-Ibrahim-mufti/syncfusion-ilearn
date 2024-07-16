@@ -31,6 +31,14 @@ export class SlotBookingService extends ServiceBase {
     return this.http.get<any[]>(url, httpOptions);
   }
 
+  getBookingRequestsForDate(tutorId: string,date: string) {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/SlotBookingRequest';
+    const method: string = '/get-bookin-request-for-date';
+    const url: string = `${environment.BASE_API_PATH}${api}${method}?tutorId=${tutorId}&date=${date}`;
+    return this.http.get<any[]>(url, httpOptions);
+  }
+
   slotBookingRequest(model:RequestBooking){
     var httpOptions = this.RequestHeaders();
     const api: string = '/SlotBookingRequest';

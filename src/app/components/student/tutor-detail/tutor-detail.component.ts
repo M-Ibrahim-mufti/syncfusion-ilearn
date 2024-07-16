@@ -7,6 +7,7 @@ import { RequestBooking, SlotBookingService } from '../../../../services/slot-bo
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import {DatePickerComponent} from "@syncfusion/ej2-angular-calendars";
+import {delay} from "rxjs";
 
 
 @Component({
@@ -351,62 +352,87 @@ export class TutorDetailComponent {
 
   public setConsultancyDate(event: any) {
     this.consultancyTimeFrames = [];
-    const selectedDate = new Date(event.value);
-    // Format the selected date as YYYY/MM/DD
-    const selectedFormattedDate = `${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}/${selectedDate.getDate()}`;
+    if (event.value) {
+      const selectedDate = new Date(event.value);
+      const selectedFormattedDate = `${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}/${selectedDate.getDate()}`;
 
-    this.allConsultancy.forEach((consultancy: any) => {
-      // Generate all dates for the consultancy based on recurrence rules or single date
-      let datesToCheck: Date[] = [];
-      if (consultancy.RecurrenceRule) {
-        datesToCheck = this.getDatesFromRecurrence(consultancy.RecurrenceRule, new Date(consultancy.StartTime));
-      } else {
-        datesToCheck.push(new Date(consultancy.StartTime));
-      }
-
-      datesToCheck.forEach(date => {
-        // Format the date to YYYY/MM/DD
-        const consultancyFormattedDate = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-
-        if (selectedFormattedDate === consultancyFormattedDate) {
-          const startTime = new Date(consultancy.StartTime);
-          const endTime = new Date(consultancy.EndTime);
-          let i = 0;
-          while (startTime <= endTime) {
-            const hours24 = startTime.getHours();
-            const minutes = startTime.getMinutes();
-
-            // Convert to 12-hour format with AM/PM
-            const hours12 = hours24 % 12 || 12;
-            const period = hours24 < 12 ? 'AM' : 'PM';
-            let formattedTime = `${hours12}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
-
-            // Check if the time slot is booked
-            const slotExists = this.slotBookingRequests.some((slot:any) => {
-              const slotStartTime = new Date(slot.StartTime);
-              return (
-                  slotStartTime.getFullYear() === selectedDate.getFullYear() &&
-                  slotStartTime.getMonth() === selectedDate.getMonth() &&
-                  slotStartTime.getDate() === selectedDate.getDate() &&
-                  slotStartTime.getHours() === hours24 &&
-                  slotStartTime.getMinutes() === minutes
-              );
-            });
-            if (slotExists) {
-              formattedTime += ' Booked';
-            }
-
-            this.consultancyTimeFrames.push({ value: i + 1, label: formattedTime });
-            startTime.setMinutes(startTime.getMinutes() + 30);
-            i = i + 1;
+      // Fetch booking requests for the selected date
+      this.slotBookingService.getBookingRequestsForDate(this.tutorId, selectedFormattedDate).subscribe((bookingRequests: any[]) => {
+        this.allConsultancy.forEach((consultancy: any) => {
+          let datesToCheck: Date[] = [];
+          if (consultancy.RecurrenceRule) {
+            datesToCheck = this.getDatesFromRecurrence(consultancy.RecurrenceRule, new Date(consultancy.StartTime));
+          } else {
+            datesToCheck.push(new Date(consultancy.StartTime));
           }
-          this.generalConsultancy.EventStartTime = consultancy.StartTime;
-          this.generalConsultancy.MeetingStartTime = selectedDate;
-          this.enableTimeFrame = false;
-        }
+
+          datesToCheck.forEach(date => {
+            const consultancyFormattedDate = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+
+            if (selectedFormattedDate === consultancyFormattedDate) {
+              const startTime = new Date(consultancy.StartTime);
+              const endTime = new Date(consultancy.EndTime);
+              let i = 0;
+
+              while (startTime < endTime) {
+                let hours24 = startTime.getHours();
+                let minutes = startTime.getMinutes();
+                let hours12 = hours24 % 12 || 12;
+                let period = hours24 < 12 ? 'AM' : 'PM';
+                let formattedTime = `${hours12}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
+
+                let slotExists = false;
+                let duration = 0;
+                // Check if the current slot or any subsequent slots within the duration are booked
+                for (const slot of bookingRequests) {
+                  const slotStartTime = new Date(slot.MeetingStartTime);
+                  const slotEndTime = new Date(slotStartTime.getTime() + slot.Duration * 60000);
+                  if (
+                      slotStartTime <= startTime &&
+                      slotEndTime > startTime &&
+                      (slot.IsRequestSent || slot.IsApproved || slot.IsRejected)
+                  ) {
+                    slotExists = true;
+                    duration = slot.Duration;
+                    break;
+                  }
+                }
+
+                if (slotExists) {
+                  formattedTime += ' Booked';
+                  for(let j = 0; j <= duration/30;j++ ){
+
+                    this.consultancyTimeFrames.push({ value: i + 1, label: formattedTime });
+                    startTime.setMinutes(startTime.getMinutes() + 30);
+                    i++;
+                    hours24 = startTime.getHours();
+                    minutes = startTime.getMinutes();
+                    hours12 = hours24 % 12 || 12;
+                    period = hours24 < 12 ? 'AM' : 'PM';
+                    formattedTime = `${hours12}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
+                    formattedTime += ' Booked'
+                  }
+                  duration = 0;
+                }
+                else{
+                  this.consultancyTimeFrames.push({ value: i + 1, label: formattedTime });
+                  startTime.setMinutes(startTime.getMinutes() + 30);
+                  i++;
+                  duration = 0;
+                }
+              }
+
+              this.generalConsultancy.EventStartTime = consultancy.StartTime;
+              this.generalConsultancy.MeetingStartTime = selectedDate;
+              this.enableTimeFrame = false;
+            }
+          });
+        });
       });
-    });
+    }
   }
+
+
 
   closeDialogForConsult(){
     this.resetDatePicker();
