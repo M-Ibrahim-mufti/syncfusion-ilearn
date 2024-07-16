@@ -7,18 +7,22 @@ import { ClassMetaData, ClassMetadataService } from '../../../../services/class-
 import { SelectItem } from '../../../../services/event.service';
 import { StudentService } from '../../../../services/student.service';
 import { TutorService } from '../../../../services/tutor.service';
-import { CoreSubjects, Subject, SubjectService } from '../../../../services/subject.service';
+import { CoreSubjects, Subject, SubjectGradesRequest, SubjectService } from '../../../../services/subject.service';
+import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
 
 @Component({
   selector: 'app-subject',
   templateUrl: './subject.component.html',
-  styleUrl: './subject.component.css'
+  styleUrl: './subject.component.css',
+  providers: [CheckBoxSelectionService]
 })
 export class SubjectComponent {
   public Subjects: Subject[] = [];
   public addSubjectDialogueBox: boolean = false;
+  public addSubjectGradeDialogueBox: boolean = false;
   public isCoreSubjectVisible: boolean = false;
-  public insertSubjectData!:Subject; 
+  public insertSubjectData : Subject = {} as Subject;
+  public subjectGrades: SubjectGradesRequest = {} as SubjectGradesRequest; 
   public pageSettings?: PageSettingsModel;
   public dialogInstance: any;
   public filterSubjects: Subject[] = [];
@@ -26,6 +30,23 @@ export class SubjectComponent {
   public AllSubjects: CoreSubjects [] = []
   public CoreSubjectId!: string;
   public showSubjects:boolean = false;
+  public mode:string = 'CheckBox';
+  public grades:any[] = [
+    {label:'prep', value:'prep'},
+    {label:'1', value:'1'},
+    {label:'2', value:'2'},
+    {label:'3', value:'3'},
+    {label:'4', value:'4'},
+    {label:'5', value:'5'},
+    {label:'6', value:'6'},
+    {label:'7', value:'7'},
+    {label:'8', value:'8'},
+    {label:'9', value:'9'},
+    {label:'10', value:'10'},
+    {label:'11', value:'11'},
+    {label:'12', value:'12'},
+  ]
+  public filterGrades:any[] = []
 
   constructor(private subjectService: SubjectService,
     private toastr: ToastrService,
@@ -35,9 +56,8 @@ export class SubjectComponent {
   }
 
   ngOnInit() {
-    this.viewSubjects();
+    this.viewSubjects();   
     this.getAllSubjects();
-    this.switchToPrimary();
     // this.getTutorSubjects();
     this.pageSettings = { pageSize: 6 };
   }
@@ -62,7 +82,7 @@ export class SubjectComponent {
 
   public addNewSubject() {
     this.insertSubjectData = new Subject();
-    this.addSubjectDialogueBox = true;
+    this.addSubjectDialogueBox = true;    
     this.switchToPrimary();
   }
 
@@ -94,9 +114,56 @@ export class SubjectComponent {
     })
   }
 
+  public saveSubjectGrade() {
+    const newGradeArr:any[] = []
+    this.subjectGrades.Grades.forEach((grade) => {
+      newGradeArr.push({
+          GradeLevel:grade
+        })
+    });
+    this.subjectGrades.Grades = newGradeArr;
+    this.subjectGrades.SubjectId = this.insertSubjectData.Id;    
+    this.ngxSpinner.show();
+    this.subjectService.saveSubjectGrade(this.subjectGrades).subscribe((response) => {
+      if (response.Success) {
+        this.toastr.success(
+          'Success',
+          response.ResponseMessage
+        );
+        this.ngxSpinner.hide();
+       this.onGradeDialogClose();
+       this.subjectGrades = new SubjectGradesRequest();
+      }
+      else {
+        this.toastr.error(
+          'Error',
+          response.ResponseMessage
+        );
+        this.ngxSpinner.hide();
+      }
+    })
+  }
+
   public editSubject(selectedSubject: Subject){
     this.addSubjectDialogueBox = true;
     this.insertSubjectData = selectedSubject;
+    console.log(selectedSubject)
+  }
+
+  public addSubjectGrade(selectedRow: Subject){
+    this.addSubjectGradeDialogueBox = true;
+    if(selectedRow.IsPrimarySchool){
+      this.filterGrades = ['prep', '1', '2', '3', '4', '5', '6'];
+    }
+    else{
+      this.filterGrades = ['7', '8', '9', '10', '11', '12'];
+    }    
+  
+    this.insertSubjectData = selectedRow;     
+  }
+
+  public onGradeChange($event: any){    
+    this.subjectGrades.Grades = $event.value
   }
 
   // public editMetaData(selectedRow: ClassMetaData) {
@@ -153,6 +220,10 @@ export class SubjectComponent {
     this.addSubjectDialogueBox = false;
     this.insertSubjectData = new Subject();
   }
+  onGradeDialogClose() {
+    this.addSubjectGradeDialogueBox = false;
+    this.subjectGrades = new SubjectGradesRequest();
+  }
 
   // checkData(data: any) {
   //   console.log(data);
@@ -164,7 +235,7 @@ export class SubjectComponent {
     const inputValue = inputElement.value;
     
     this.filterSubjects = this.Subjects.filter((data) => {   
-      if (data.Name.includes(inputValue)) {
+      if (data.Name.includes(inputValue) || data.CoreSubjectName.includes(inputValue) ) {
         if(data.Description !== null) {
           if(data.Description.includes(inputValue)){
             return data
@@ -206,6 +277,8 @@ export class SubjectComponent {
   }
 
   switchToPrimary() {
+    console.log("subjects",this.AllSubjects);
+    
     this.coreSubjects = this.AllSubjects.filter(p=>p.IsPrimarySchool === true)
     this.isCoreSubjectVisible = true
     this.showSubjects = false;    

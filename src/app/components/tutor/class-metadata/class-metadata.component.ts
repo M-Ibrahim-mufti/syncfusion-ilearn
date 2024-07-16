@@ -206,7 +206,7 @@ export class ClassMetadataComponent {
   }
 
   public getAllCoreSubjects() {
-    this.tutorService.getAllCoreSubjects().subscribe((subject: SelectItem[]) => {
+    this.tutorService.getAllCoreSubjects(false).subscribe((subject: SelectItem[]) => {
       this.CoreSubjects = subject
     })
   }

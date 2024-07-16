@@ -89,11 +89,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Grades</label>
-                                    <ejs-multiselect [enabled]="filterGradesForUpdation.length > 0 && subject.isEditable" (change)="updationOnGrades($event)" [(value)]="subject.Grades" [dataSource]="filterGradesForUpdation" [fields]="{text:'label', value:'value'}" [mode]="mode" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
+                                    <ejs-multiselect [enabled]="filterGradesForUpdation.length > 0 && subject.isEditable"  [(value)]="subject.Grades" [allowFiltering]="true"  [dataSource]="filterGradesForUpdation"  [mode]="mode" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
                                 </div>
                                 <div class="my-2">
-                                    <button ejs-button [disabled]="subject.isEditable == false" class="e-danger w-50 py-2 rounded-start-2 rounded-end-0"(click)="callSubSubjectForUpdate(subject.CoreSubject.Id, i)"> Edit Subject </button>
-                                    <button ejs-button [disabled]="subject.isEditable == false" class="bg-white w-50 py-2 rounded-end-2 rounded-start-0"(click)="updateSubject(i)" > Save Subject </button>
+                                    <button ejs-button [disabled]="subject.isEditable == false" class="e-danger w-50 py-2 rounded-start-2 rounded-end-0"(click)="callSubSubjectForUpdate(subject.CoreSubject.Id, subject.SubSubject.value ,i)"> Edit Subject </button>
+                                    <button ejs-button [disabled]="subject.isEditable == false" class="bg-white w-50 py-2 rounded-end-2 rounded-start-0"(click)="updateSubject(subject.SubSubject.value,subject.Grades,i)" > Save Subject </button>
                                 </div>
                             </div>
                         </div>
@@ -115,9 +115,9 @@
                             <label class="form-label">Subject</label>
                             <ejs-dropdownlist (change)="selectSubSubject($event)" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group">    
                             <label class="form-label">Grades</label>
-                            <ejs-multiselect [(ngModel)]="selectedGrades" [enabled]="filterGrades.length > 0" [mode]="mode" [fields]="{text:'label', value:'value'}" [dataSource]="filterGrades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
+                            <ejs-multiselect (change)="selectGrades($event)" [enabled]="grades.length > 0" [mode]="mode" [fields]="{text:'label', value:'value'}" [dataSource]="grades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
                         </div>
                         <div class="my-2">
                             <button [disabled]="!AddSubject.SubjectId || selectedGrades.length <= 0" ejs-button class="e-danger w-100 py-2 rounded-2" (click)="saveSubject()"> Save Subject </button>
@@ -197,71 +197,3 @@
         </div>
     </div>
 </div>
-
-<!-- <ejs-dialog *ngIf="user" [header]='headerTemplate' [width]="700" [visible]="UserEditProfileDialog" [showCloseIcon]="true" (close)="this.UserEditProfileDialog = false" [isModal]="true" > 
-    <ng-template #headerTemplate>
-        <h5 class="fw-bold text-muted-dark mb-2">Edit Profile</h5>
-    </ng-template>
-    <div class="row col-md-12 py-3 justify-content-between">
-        <div class="mb-2 col-md-4 form-group" [ngClass]="{'col-md-6': !StudentInfo}"  >
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Hon (Mr, Ms, Sir)</label>
-            <input *ngIf="StudentInfo || isTeacher" class="form-control" [(ngModel)]="user.Hon" />
-            <input *ngIf="!StudentInfo" class="form-control" [(ngModel)]="user.Parent" />
-        </div>
-        <div class="mb-2 col-md-4 form-group" [ngClass]="{'col-md-6': !StudentInfo}">
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Name</label>
-            <input *ngIf="StudentInfo || isTeacher"  [(ngModel)]="user.Name" class="form-control"/>
-            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
-        </div>
-        <div *ngIf="isTeacher" class="mb-2 col-md-4 form-group">
-            <label class="form-label">Qualification</label>
-            <input *ngIf="!StudentInfo"  [(ngModel)]="user.Qualifications" class="form-control"/>
-        </div>
-        <div *ngIf="isStudent && StudentInfo" class="mb-2 col-md-4 form-group">
-            <label class="form-label">School Grade</label>
-            <input [(ngModel)]="user.SchoolGrade" class="form-control"/>
-        </div>
-        <div class="mb-2 col-md-6 form-group">
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Email</label>
-            <input *ngIf="StudentInfo || isTeacher"  [(ngModel)]="user.Email" class="form-control"/>
-            <input *ngIf="!StudentInfo"  [(ngModel)]="user.Parent" class="form-control"/>
-        </div>
-        <div class="mb-2 col-md-6 form-group">
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Phone Number</label>
-            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.PhoneNumber" class="form-control"/>
-            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
-        </div>
-        <div class="mb-2 form-group">
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Address</label>
-            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.Address" class="form-control"/>
-            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
-        </div>
-        <div class="mb-2 col-md-6 form-group">
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Country</label>
-            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.Country" class="form-control"/>
-            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
-        </div>
-        <div class="mb-2 col-md-6 form-group">
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} State</label>
-            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.State" class="form-control"/>
-            <input *ngIf="!StudentInfo"  [(ngModel)]="user.Parent" class="form-control"/>
-        </div>
-        <div class="mb-2 col-md-6 form-group">
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} City</label>
-            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.City" class="form-control"/>
-            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
-        </div>
-        <div class="mb-2 col-md-6 form-group">
-            <label class="form-label"> {{!StudentInfo ? 'Parent' : ''}} Postal Code</label>
-            <input *ngIf="StudentInfo || isTeacher" [(ngModel)]="user.PostCode" class="form-control"/>
-            <input *ngIf="!StudentInfo" [(ngModel)]="user.Parent" class="form-control"/>
-        </div>
-        <div *ngIf="StudentInfo || isTeacher" class="mb-2 form-group">
-            <label class="form-label">Subjects</label>
-            <ejs-multiselect id="multiSubjectSelect" [(value)]="selectedSubjects" [allowObjectBinding]="true" [dataSource]="subjects" [fields]="{text:'label', value:'value'}" ></ejs-multiselect>
-        </div>
-    </div>
-    <ng-template #footerTemplate>
-        <button ejs-button class="e-danger py-2 rounded-3" (click)="updateUserData()"> Update Profile </button>
-    </ng-template>
-</ejs-dialog> -->
