@@ -9,17 +9,22 @@ import { SelectItem } from '../../../../services/event.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import { ZoomMeetingDetail, ZoomMeetingService } from '../../../../services/zoom-meeting.service';
+import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
+import { TutorService } from '../../../../services/tutor.service';
+
 
 @Component({
   selector: 'app-user-profile',
-  providers:[UsersService, StudentService],
+  providers:[UsersService, StudentService,ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent {
   public user!: ApplicationViewStudent;
   public subjects!: SelectItem[];
+  public subjectGrades!: any[];
   public selectedSubjects: any[] = [];
+  public selectedSubjectGrades!: any[];
   public newProfileImage?: File;
   public meetings: ZoomMeetingDetail[] = []
   public UserEditProfileDialog = false
@@ -33,16 +38,34 @@ export class UserProfileComponent {
     private toastr: ToastrService,
     private uploadingService: CloudinaryImageService,
     private authService: AuthService,
-    private meetingService:ZoomMeetingService
+    private meetingService:ZoomMeetingService,
+    private tutorSevice: TutorService
   ) { 
     this.isStudent = this.authService.isStudent()
     this.isTeacher = this.authService.isTeacher()
   }
 
+  public tools: object = {
+    items: ['Undo', 'Redo', '|',
+        'Bold', 'Italic', 'Underline', 'Strikethrough', '|',
+        'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
+        'SubScript', 'SuperScript', '|',
+        'LowerCase', 'UpperCase', '|',
+        'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
+        'Indent', 'Outdent', '|', 'CreateLink',
+        'Image', '|', 'ClearFormat', 'Print',]
+    };
+
+    public quickTools: object = {
+      image: [
+          'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
+    };
+
   async ngOnInit():Promise<void> {
     this.getAllSubjects();
-    this.getUserDetail()
-    this.getPreviousMeetings()
+    this.getUserDetail();
+    this.getPreviousMeetings();
+    this.getAllGrades();
   }
 
 
@@ -52,17 +75,35 @@ export class UserProfileComponent {
       if(response){
         this.user = response;
         console.log(this.user)
-        this.populateSelectedSubjects();    
+        this.populateSelectedSubjects();  
+        setTimeout(() => {
+          this.toolBarFixation();
+        },300)
       }
       this.spinner.hide();       
     })
   }
 
+  public getSubjectGrades(event:any) {
+    console.log(event.target.value);
+  }
+
   public getAllSubjects() {
     this.studentService.getAllSubjects().subscribe((subject: SelectItem[]) => {
       this.subjects = subject
-
       this.populateSelectedSubjects();
+    
+    })
+  }
+
+  public getAllGrades() {
+    this.tutorSevice.getAllSubjects().subscribe((grade:any[]) =>{
+      console.log(grade)
+      this.subjectGrades = grade[0].Grades;
+      this.subjectGrades = this.subjectGrades.map((grade) => ({
+        label: grade.GradeLevel,
+        value: grade.Id
+      }))
     })
   }
 
@@ -110,6 +151,20 @@ export class UserProfileComponent {
     })
   }
 
+  public populateGrades(event:any) {
+    const subjectValue = event.target.value;
+    this.user.TutorSubjects.forEach((subject) => {
+      if (subject.SubjectId === subjectValue) {
+        this.subjectGrades = subject.Grades;
+      }
+    })
+    this.subjectGrades = this.subjectGrades.map((grade) => ({
+      label: grade.GradeLevel,
+      value: grade.GradeId
+    }))
+    console.log(this.subjectGrades)
+  }
+
   private populateSelectedSubjects(): void {
     if(this.isStudent){
       if (this.user && this.user.StudentSubjects.length > 0 && this.subjects) {      
@@ -149,5 +204,52 @@ export class UserProfileComponent {
     this.UserEditProfileDialog = !this.UserEditProfileDialog
   }
 
+  public toolBarFixation() {
+    let toolbarButtons = document.querySelectorAll('.e-strike-through')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-strike-through') : null;
+      toolbarButton ? toolbarButton.classList.add('e-strikethrough') : null;
+    })  
+    toolbarButtons = document.querySelectorAll('.e-sub-script')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-sub-script') : null;
+      toolbarButton ? toolbarButton.classList.add('e-subscript') : null;
+    })
+    toolbarButtons = document.querySelectorAll('.e-super-script')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-super-script') : null;
+      toolbarButton ? toolbarButton.classList.add('e-superscript') : null;
+    })
+    toolbarButtons = document.querySelectorAll('.e-justify-left')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-jutify-left') : null;
+      toolbarButton ? toolbarButton.classList.add('e-align-left') : null;
+    })
+    toolbarButtons = document.querySelectorAll('.e-order-list')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-order-list') : null;
+      toolbarButton ? toolbarButton.classList.add('e-list-ordered') : null;
+    })
+    toolbarButtons = document.querySelectorAll('.e-unorder-list')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-unorder-list') : null;
+      toolbarButton ? toolbarButton.classList.add('e-list-unordered') : null;
+    })
+    toolbarButtons = document.querySelectorAll('.e-indent')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-indent') : null;
+      toolbarButton ? toolbarButton.classList.add('e-increase-indent') : null;
+    })
+    toolbarButtons = document.querySelectorAll('.e-outdent')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-outdent') : null;
+      toolbarButton ? toolbarButton.classList.add('e-decrease-indent') : null;
+    })
+    toolbarButtons = document.querySelectorAll('.e-create-link')
+    toolbarButtons.forEach((toolbarButton) => {
+      toolbarButton ? toolbarButton.classList.remove('e-create-link') : null;
+      toolbarButton ? toolbarButton.classList.add('e-link') : null;
+    })
+  }
 
 }

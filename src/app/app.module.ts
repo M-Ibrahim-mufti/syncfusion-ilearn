@@ -45,6 +45,7 @@ import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { DropDownListModule, MultiSelect, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 import { StepperModule, StepperAllModule } from '@syncfusion/ej2-angular-navigations';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 //thirdparty imports
 import { ToastrModule } from 'ngx-toastr';
@@ -124,7 +125,8 @@ export function getTokenFactory(injector: Injector) {
         MultiSelectModule,
         StepperAllModule,
         StepperModule,
-        SchedulerComponent
+        SchedulerComponent,
+        RichTextEditorModule,
 
 
     ],

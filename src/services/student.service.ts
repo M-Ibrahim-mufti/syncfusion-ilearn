@@ -131,6 +131,8 @@ export class Parent {
 export class ApplicationViewStudent {
 
   Address!: string; 
+  Certification!:string
+  AboutMe!:string | '';
   AllowLogin!: boolean;
   City!: string; 
   Country!: string;
@@ -169,4 +171,6 @@ export class ApplicationViewStudent {
   TutorSlotBookingRequests!: string; 
   TutorSubjects!: any[];
   UserRefreshTokens!: string;
+  WorkHistory!: string;
+
 }

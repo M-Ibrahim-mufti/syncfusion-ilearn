@@ -6,20 +6,23 @@ import { NotificationTypes } from '../../../app.enums';
 import { DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, EventSettingsModel, ScheduleComponent, View, ActionEventArgs, PopupOpenEventArgs, PopupCloseEventArgs } from '@syncfusion/ej2-angular-schedule';
 import { ButtonComponent, classNames } from '@syncfusion/ej2-angular-buttons';
 import { DataManager, UrlAdaptor, ODataV4Adaptor, Query } from '@syncfusion/ej2-data';
+import { FieldModel, FieldOptionsModel } from '@syncfusion/ej2-angular-schedule';
 import { environment } from '../../../../environments/environment';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { ToastrService } from 'ngx-toastr';
-import { createCustomElement } from '@angular/elements';
 import { createElement } from '@syncfusion/ej2-base';
-
 import { ChangeEventArgs, DropDownList } from '@syncfusion/ej2-angular-dropdowns';
 import { StudentService } from '../../../../services/student.service';
+
+
+
 @Component({
   selector: 'app-availability-selection',
   templateUrl: './availability-selection.component.html',
   styleUrls: ['./availability-selection.component.css'],
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService, MonthAgendaService, TimelineViewsService, TimelineMonthService, TutorService]
 })
+
 export class AvailabilitySelectionComponent implements OnInit {
   @ViewChild('scheduleObj') scheduleObj?: ScheduleComponent;
   public view: CalendarView = CalendarView.Month;
@@ -35,6 +38,13 @@ export class AvailabilitySelectionComponent implements OnInit {
     { label: 'Friday', value: 'Fri' },
     { label: 'Saturday', value: 'Sat' }
   ];
+  public fields: ECustomField = {
+    id:'Id',
+    subject: { name:'Subject', title:'Class Title' },
+    description: {name:'Description', title: 'Class Description'},
+    classSubject: {name:'SubjectId'},
+    classGrade: {name:'GradeId'},
+  };
   
   public timeOptions: string[] = [];
   public selectedAvailability: TutorAvailability[] = [];
@@ -85,13 +95,7 @@ export class AvailabilitySelectionComponent implements OnInit {
 
     this.eventSettings = {
       dataSource: this.dataManager,
-      fields: {
-        id:'Id',
-        subject: { name:'Subject', title:'Class Title' },
-        description: {name:'Description', title: 'Class Description'},
-        classSubject: {name:'SubjectId'},
-        classGrade: {name:'GradeId'},
-      }
+      fields: this.fields
      }
   }
 
@@ -435,4 +439,21 @@ export class AvailabilitySelectionComponent implements OnInit {
     this.dateTimes[dateIndex].timeRanges.splice(timeIndex, 1);
   }
 
+}
+
+export class ECustomField implements FieldModel {
+  id?: string;
+  isBlock?: string;
+  subject?: FieldOptionsModel;
+  startTime?: FieldOptionsModel;
+  endTime?: FieldOptionsModel;
+  location?: FieldOptionsModel;
+  description?: FieldOptionsModel;
+  isAllDay?: FieldOptionsModel;
+  recurrenceID?: FieldOptionsModel;
+  recurrenceException?: FieldOptionsModel;
+  isReadonly?: string;
+  followingID?: string;
+  classSubject?: FieldOptionsModel;
+  classGrade?: FieldOptionsModel;
 }
