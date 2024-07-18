@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { createElement } from '@syncfusion/ej2-base';
 import { ChangeEventArgs, DropDownList } from '@syncfusion/ej2-angular-dropdowns';
 import { StudentService } from '../../../../services/student.service';
+import {ClassMetaData, ClassMetadataService} from "../../../../services/class-metadata.service";
+import {SelectItem} from "../../../../services/event.service";
 
 
 
@@ -58,6 +60,7 @@ export class AvailabilitySelectionComponent implements OnInit {
   public tutorSubjects: any[] = []
   public tutorGrades: any[] = []
   public gradeDropDownList!:DropDownList
+  public subjectDropDownList!:DropDownList
   public IsOneOnOne:any[] = [
     {label:'One On One', value: true },
     {label:"On Group", value: false }
@@ -69,16 +72,19 @@ export class AvailabilitySelectionComponent implements OnInit {
   constructor(private tutorService:TutorService,
      private toastr: ToastrService,
      private ngxSpinner: SpinnerService,
+     private classMetaServices: ClassMetadataService,
      private studentService:StudentService
   
     ) {  }
 
 
   ngOnInit(): void {
+    this.viewClassMetaData();
     this.initializeDataManager();
-    this.generateTimeOptions();
-    this.loadAvalabilites();
-    this.getTutorSubjects()
+    //this.generateTimeOptions();
+    //this.loadAvalabilites();
+    this.getTutorSubjects();
+
   }
   // Start of Scheduler data
   private initializeDataManager() {
@@ -128,71 +134,157 @@ export class AvailabilitySelectionComponent implements OnInit {
     }
   }
 
-  public onPopupOpen(args: PopupOpenEventArgs): void {
-      console.log(this.scheduleObj?.eventWindow)
-    if (args.type === 'Editor') {
-        if (!args.element.querySelector('.custom-field-row')) {
-            let row: HTMLElement = createElement('div', { className: 'e-control' });
-            let formElement: HTMLElement = args.element.querySelector('.e-schedule-form') as HTMLElement;
-            formElement.firstChild?.insertBefore(row, args.element.querySelector('.e-start-end-row'));
-            let container: HTMLElement = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
-            let inputEle: HTMLInputElement = createElement('input', {
-                className: 'e-field', attrs: { name: 'SubjectId' }
-            }) as HTMLInputElement;
-            container.appendChild(inputEle);
-            row.appendChild(container);
-            let dropDownList: DropDownList = new DropDownList({
-                dataSource:this.tutorSubjects,
-                fields: { text: 'label', value: 'value' },
-                value: (<{ [key: string]: Object; }>(args.data))['SubjectId'] as string,
-                floatLabelType: 'Always', placeholder: 'Select Subject',
-                change:this.onChangeSubject.bind(this)
+    public onPopupOpen(args: PopupOpenEventArgs): void {
+        if (args.type === 'Editor') {
+            if (!args.element.querySelector('.custom-field-row')) {
+                // Locate the e-dialog-parent element
+                const dialogParent: HTMLElement = args.element.querySelector('.e-dialog-parent')!;
 
-            });
-            dropDownList.appendTo(inputEle);
-            inputEle.setAttribute('name', 'SubjectId');
+                // Create the custom field row
+                const row: HTMLElement = createElement('div', { className: 'custom-field-row' });
 
-            container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
-            inputEle = createElement('input', {
-                className: 'e-field', attrs: { name: 'GradeId'  }
-            }) as HTMLInputElement;
-            container.appendChild(inputEle);
-            row.appendChild(container);
-            this.gradeDropDownList = new DropDownList({
-                enabled: false,
-                dataSource: this.tutorGrades,
-                fields: { text: 'label', value: 'value' },
-                value: (<{ [key: string]: Object; }>(args.data))['GradeId'] as string,
-                floatLabelType: 'Always', placeholder: 'Select Grade',
-            });
-            this.gradeDropDownList.appendTo(inputEle);
-            inputEle.setAttribute('name', 'GradeId'); 
-            
-            container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
-            inputEle = createElement('input', {
-              className: 'e-field', attrs: { name: 'IsOneOnOne'  }
-            }) as HTMLInputElement;
-            container.appendChild(inputEle);
-            row.appendChild(container);
-            const MeetingTypeDropDownList = new DropDownList({
-                enabled: true,
-                dataSource: this.IsOneOnOne,
-                fields: { text: 'label', value: 'value' },
-                value: (<{ [key: string]: Object; }>(args.data))['isOneOnOne'] as string,
-                floatLabelType: 'Always', placeholder: 'Select Meeting type',
-                change:this.onChangeMeetingType.bind(this)
+                // Create the container for the first dropdown (Class Name)
+                let container: HTMLElement = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
+                let inputEle: HTMLInputElement = createElement('input', {
+                    className: 'e-field', attrs: { name: 'EventId' }
+                }) as HTMLInputElement;
+                container.appendChild(inputEle);
+                row.appendChild(container);
+                let dropDownList: DropDownList = new DropDownList({
+                    dataSource: this.eventTitle,
+                    fields: { text: 'label', value: 'value' },
+                    value: (<{ [key: string]: Object; }>(args.data))['EventId'] as string,
+                    floatLabelType: 'Always', placeholder: 'Select Class',
+                    change: this.onEventChange.bind(this)
+                });
+                dropDownList.appendTo(inputEle);
+                inputEle.setAttribute('name', 'EventId');
 
-            });
-            MeetingTypeDropDownList.appendTo(inputEle);
-            inputEle.setAttribute('name', 'IsOneOnOne');          
 
-          }
-      }
-  }
+                //Grade Start
+                container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
+                inputEle = createElement('input', {
+                    className: 'e-field', attrs: { name: 'SubjectId'  }
+                }) as HTMLInputElement;
+                container.appendChild(inputEle);
+                row.appendChild(container);
+                this.subjectDropDownList = new DropDownList({
+                    enabled: false,
+                    dataSource: this.tutorGrades,
+                    fields: { text: 'label', value: 'value' },
+                    value: (<{ [key: string]: Object; }>(args.data))['SubjectId'] as string,
+                    floatLabelType: 'Always', placeholder: 'Select Subject',
+                });
+                this.subjectDropDownList.appendTo(inputEle);
+                inputEle.setAttribute('name', 'SubjectId');
 
-  public onChangeMeetingType(data: ChangeEventArgs) {
-    console.log(data)
-  }
+                container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
+                inputEle = createElement('input', {
+                    className: 'e-field', attrs: { name: 'IsOneOnOne'  }
+                }) as HTMLInputElement;
+                container.appendChild(inputEle);
+                //Grade End
+
+
+
+                // // Create the dropdown element for Subject Name
+                // let inputEleForSubjectName: HTMLSelectElement = createElement('select', {
+                //     className: 'e-field form-select', attrs: { name: 'SubjectName', disabled: 'true' }
+                // }) as HTMLSelectElement;
+                // container.appendChild(inputEleForSubjectName);
+                // row.appendChild(container)
+                //
+                // const subjectNameDropDownList: DropDownList = new DropDownList({
+                //     dataSource: this.subjects,
+                //     fields: { text: 'label', value: 'value' },
+                //     placeholder: 'Select Subject Name',
+                //     enabled: false // Disable the dropdown initially
+                // });
+                // subjectNameDropDownList.appendTo(inputEleForSubjectName);
+
+                // Insert the custom field row before the e-title-location-row
+                const titleLocationRow = dialogParent.querySelector('.e-title-location-row');
+                if (titleLocationRow) {
+                    titleLocationRow.parentNode!.insertBefore(row, titleLocationRow);
+                } else {
+                    dialogParent.appendChild(row);
+                }
+
+                // Create the custom field row for IsOneOnOne and insert after e-title-location-row
+                const meetingTypeRow: HTMLElement = createElement('div', { className: 'custom-field-row' });
+                container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
+                let inputEleForIsOneOnOne: HTMLInputElement = createElement('input', {
+                    className: 'e-field', attrs: { name: 'IsOneOnOne' }
+                }) as HTMLInputElement;
+                container.appendChild(inputEleForIsOneOnOne);
+                meetingTypeRow.appendChild(container);
+                const MeetingTypeDropDownList = new DropDownList({
+                    enabled: true,
+                    dataSource: this.IsOneOnOne,
+                    fields: { text: 'label', value: 'value' },
+                    value: (<{ [key: string]: Object; }>(args.data))['isOneOnOne'] as string,
+                    floatLabelType: 'Always', placeholder: 'Select Meeting type',
+                    change: this.onChangeMeetingType.bind(this)
+                });
+                MeetingTypeDropDownList.appendTo(inputEleForIsOneOnOne);
+                inputEleForIsOneOnOne.setAttribute('name', 'IsOneOnOne');
+
+                // Insert the custom field row after the e-title-location-row
+                if (titleLocationRow) {
+                    titleLocationRow.parentNode!.insertBefore(meetingTypeRow, titleLocationRow.nextSibling);
+                } else {
+                    dialogParent.appendChild(meetingTypeRow);
+                }
+            }
+        }
+    }
+
+    public onChangeMeetingType(data: ChangeEventArgs) {
+        console.log(data);
+        // Implement your logic for meeting type change here
+    }
+
+    public classMetaData: ClassMetaData[] = [];
+    public eventTitle: any[] = [];
+    public selectedEvent: SelectItem | null = null;
+    public subjects: any[] = [];
+
+    public viewClassMetaData() {
+        this.classMetaServices.viewClassMetaData().subscribe((response) => {
+            this.classMetaData = response;
+            this.eventTitle = this.classMetaData.map((p) => ({
+                label: p.Title,
+                value: p.Id,
+                SubjectName: p.SubjectName, // Include SubjectName in eventTitle mapping
+                SubjectId: p.SubjectId // Include SubjectId in eventTitle mapping
+            }));
+            console.log(this.eventTitle);
+        });
+    }
+
+    public onEventChange(data: ChangeEventArgs) {
+        const selectedEventId = data.itemData.value;
+
+        const selectedEventData = this.classMetaData.find(p => p.Id === selectedEventId);
+        if (selectedEventData) {
+            this.selectedEvent = {
+                label: selectedEventData.Title,
+                value: selectedEventData.Id
+            };
+
+            // Update subjects with the selected event's subject details
+            this.subjects = [{
+                label: selectedEventData.SubjectName,
+                value: selectedEventData.SubjectId
+            }];
+
+            this.subjectDropDownList.dataSource = this.subjects;
+            this.subjectDropDownList.refresh()
+
+            this.subjectDropDownList.value = selectedEventData.SubjectId;
+            this.subjectDropDownList.dataBind();
+        }
+    }
 
   public loadAvalabilites(){
     this.selectedAvailability = []
