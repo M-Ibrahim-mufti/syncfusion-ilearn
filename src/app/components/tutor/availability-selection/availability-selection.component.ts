@@ -158,7 +158,7 @@ export class AvailabilitySelectionComponent implements OnInit {
             // Create the container for the first dropdown (Class Name)
             let container: HTMLElement = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
             let inputEle: HTMLInputElement = createElement('input', {
-                className: 'e-field', attrs: { name: 'ClassId' }
+                className: 'e-field', attrs: { name: 'ClassMataDataId' }
             }) as HTMLInputElement;
             container.appendChild(inputEle);
             row.appendChild(container);
@@ -166,12 +166,12 @@ export class AvailabilitySelectionComponent implements OnInit {
             let dropDownList: DropDownList = new DropDownList({
                 dataSource: this.eventTitle,
                 fields: { text: 'label', value: 'value' },
-                value: (<{ [key: string]: Object; }>(args.data))['ClassId'] as string,
+                value: (<{ [key: string]: Object; }>(args.data))['ClassMataDataId'] as string,
                 floatLabelType: 'Always', placeholder: 'Select Class',
-                change: this.onEventChange.bind(this)
+                change: (e) => this.onEventChange(e, args.data!)
             });
             dropDownList.appendTo(inputEle);
-            inputEle.setAttribute('name', 'ClassId');
+            inputEle.setAttribute('name', 'ClassMataDataId');
 
             container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
             inputEle = createElement('input', {
@@ -182,7 +182,7 @@ export class AvailabilitySelectionComponent implements OnInit {
 
             this.subjectDropDownList = new DropDownList({
                 enabled: false,
-                dataSource: this.tutorGrades,
+                dataSource: this.getSubjectsForClass((<{ [key: string]: Object; }>(args.data))['ClassMataDataId'] as string),
                 fields: { text: 'label', value: 'value' },
                 value: (<{ [key: string]: Object; }>(args.data))['SubjectId'] as string,
                 floatLabelType: 'Always', placeholder: 'Select Subject',
@@ -197,6 +197,8 @@ export class AvailabilitySelectionComponent implements OnInit {
             container.appendChild(inputEle);
 
             if (args.type === 'Editor') {
+                //(<any>this.scheduleObj!.eventWindow).recurrenceEditor.frequencies = ['never' ,'daily', 'weekly'];
+
                 const dialogParent: HTMLElement = args.element.querySelector('.e-dialog-parent')!;
 
                 const titleLocationRow = dialogParent.querySelector('.e-title-location-row');
@@ -218,7 +220,7 @@ export class AvailabilitySelectionComponent implements OnInit {
                     enabled: true,
                     dataSource: this.IsOneOnOne,
                     fields: { text: 'label', value: 'value' },
-                    value: (<{ [key: string]: Object; }>(args.data))['isOneOnOne'] as string,
+                    value: (<{ [key: string]: Object; }>(args.data))['IsOneOnOne'] as string,
                     floatLabelType: 'Always', placeholder: 'Select Meeting type',
                     change: this.onChangeMeetingType.bind(this)
                 });
@@ -235,6 +237,7 @@ export class AvailabilitySelectionComponent implements OnInit {
             }
         }
     }
+
 
 
 
@@ -262,7 +265,7 @@ export class AvailabilitySelectionComponent implements OnInit {
         });
     }
 
-    public onEventChange(data: ChangeEventArgs) {
+    public onEventChange(data: ChangeEventArgs, eventData: { [key: string]: Object }) {
         const selectedEventId = data.itemData.value;
 
         const selectedEventData = this.classMetaData.find(p => p.Id === selectedEventId);
@@ -279,12 +282,26 @@ export class AvailabilitySelectionComponent implements OnInit {
             }];
 
             this.subjectDropDownList.dataSource = this.subjects;
-            this.subjectDropDownList.refresh()
+            this.subjectDropDownList.refresh();
 
-            this.subjectDropDownList.value = selectedEventData.SubjectId;
+            // If editing existing event, set the existing SubjectId value
+            const subjectId = eventData && eventData['SubjectId'] ? eventData['SubjectId'] : selectedEventData.SubjectId;
+            this.subjectDropDownList.value = subjectId;
             this.subjectDropDownList.dataBind();
         }
     }
+
+    public getSubjectsForClass(classMataDataId: string): { label: string, value: string }[] {
+        const selectedEventData = this.classMetaData.find(p => p.Id === classMataDataId);
+        if (selectedEventData) {
+            return [{
+                label: selectedEventData.SubjectName,
+                value: selectedEventData.SubjectId
+            }];
+        }
+        return [];
+    }
+
 
     public loadAvalabilites(){
         this.selectedAvailability = []
