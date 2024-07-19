@@ -76,7 +76,8 @@ export class TutorDetailComponent {
   public getTutorDetail() {
     this.spinnerService.show();
     this.tutorService.tutorProfile(this.tutorId).subscribe(async (response) => {      
-      this.tutor = await response;
+      this.tutor = response;
+      console.log(this.tutor)
       this.getTutorEvents(this.tutorId);
       this.spinnerService.hide();
     })

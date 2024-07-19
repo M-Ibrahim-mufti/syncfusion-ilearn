@@ -72,14 +72,13 @@
                         <ejs-multiselect id="multiSubjectSelect" [(value)]="selectedSubjects" [allowObjectBinding]="true" [dataSource]="subjects" [fields]="{text:'label', value:'value'}" ></ejs-multiselect>
                     </div>
                     <div *ngIf="isTeacher" class="mt-2 text-start text-muted d-flex col-md-12 flex-column">
-                        <div class="mt-2" *ngFor="let subject of selectedSubjects">
-                            <p class="mb-0">{{subject.label}}</p> 
-                            <div class="mt-2    " >
+                        <div class="mt-2" *ngFor="let subject of selectedSubjects; let i = index">
+                            <p class="mb-0">{{subject.label}}</p>
+                            <div class="mt-2" >
                                 <p class="mb-0 col-md-12"> Select Grade </p>
-                                <ejs-multiselect  [dataSource]="subjectGrades" [allowObjectBinding]="true" [fields]="{text:'label', value:'value'}"></ejs-multiselect>
+                                <ejs-multiselect [dataSource]="this.grades" [allowObjectBinding]="true" [fields]="{text:'label', value:'value'}"></ejs-multiselect>
                             </div>
                         </div>
-
                     </div>  
                 </div>
             </div>

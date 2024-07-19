@@ -41,9 +41,9 @@
             <span class="e-icons fs-5 e-people"></span>
             <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> View Tutor</a>
           </div>
-          <div [routerLink]="['/parrent/view-children']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/parrent/view-children'), 'bg-black': !isActive('/parrent/view-children') }">
+          <div [routerLink]="['/parrent/view-children']" class="d-flex align-items-center gap-3 cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link': isActive('/parrent/view-children'), 'bg-black': !isActive('/parrent/view-children'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar}">
             <span class="e-icons fs-5 e-people"></span>
-            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> View Children</a>
+            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white">View Children</a>
           </div>
           <div [routerLink]="['/meeting']" class="d-flex align-items-center gap-3 cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/meeting'), 'bg-black': !isActive('/meeting'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar }">
             <span class="e-icons e-agenda-date-range"></span>

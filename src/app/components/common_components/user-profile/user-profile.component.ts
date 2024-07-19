@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component  } from '@angular/core';
 import { UsersService } from '../../../../services/users.service';
 import { ApplicationViewStudent } from '../../../../services/student.service';
 import { StudentService } from '../../../../services/student.service';
@@ -22,9 +22,10 @@ import { TutorService } from '../../../../services/tutor.service';
 export class UserProfileComponent {
   public user!: ApplicationViewStudent;
   public subjects!: SelectItem[];
-  public subjectGrades!: any[];
+  public grades: SelectItem[] = [];
+  public selectedGrades: SelectItem[] = [];
   public selectedSubjects: any[] = [];
-  public selectedSubjectGrades!: any[];
+  public selectedSubjectGrades: any[] = [];
   public newProfileImage?: File;
   public meetings: ZoomMeetingDetail[] = []
   public UserEditProfileDialog = false
@@ -39,7 +40,8 @@ export class UserProfileComponent {
     private uploadingService: CloudinaryImageService,
     private authService: AuthService,
     private meetingService:ZoomMeetingService,
-    private tutorSevice: TutorService
+    private tutorSevice: TutorService,
+    private cdr:ChangeDetectorRef
   ) { 
     this.isStudent = this.authService.isStudent()
     this.isTeacher = this.authService.isTeacher()
@@ -63,11 +65,10 @@ export class UserProfileComponent {
 
   async ngOnInit():Promise<void> {
     this.getAllSubjects();
-    this.getUserDetail();
     this.getPreviousMeetings();
     this.getAllGrades();
+    this.getUserDetail();
   }
-
 
   public getUserDetail(){
     this.spinner.show();
@@ -97,13 +98,14 @@ export class UserProfileComponent {
   }
 
   public getAllGrades() {
-    this.tutorSevice.getAllSubjects().subscribe((grade:any[]) =>{
-      console.log(grade)
-      this.subjectGrades = grade[0].Grades;
-      this.subjectGrades = this.subjectGrades.map((grade) => ({
-        label: grade.GradeLevel,
-        value: grade.Id
+    this.tutorSevice.getAllSubjects().subscribe((grade) =>{
+      const AllGrades:any[] = grade[0].Grades
+      this.grades = AllGrades.map((grade) => ({
+        value: grade.Id,
+        label: grade.GradeLevel
       }))
+      console.log(this.grades)
+      
     })
   }
 
@@ -151,19 +153,19 @@ export class UserProfileComponent {
     })
   }
 
-  public populateGrades(event:any) {
-    const subjectValue = event.target.value;
-    this.user.TutorSubjects.forEach((subject) => {
-      if (subject.SubjectId === subjectValue) {
-        this.subjectGrades = subject.Grades;
-      }
-    })
-    this.subjectGrades = this.subjectGrades.map((grade) => ({
-      label: grade.GradeLevel,
-      value: grade.GradeId
-    }))
-    console.log(this.subjectGrades)
-  }
+  // public populateGrades(event:any) {
+  //   const subjectValue = event.target.value;
+  //   this.user.TutorSubjects.forEach((subject) => {
+  //     if (subject.SubjectId === subjectValue) {
+  //       this.subjectGrades = subject.Grades;
+  //     }
+  //   })
+  //   this.subjectGrades = this.subjectGrades.map((grade) => ({
+  //     label: grade.GradeLevel,
+  //     value: grade.GradeId
+  //   }))
+  //   console.log(this.subjectGrades)
+  // }
 
   private populateSelectedSubjects(): void {
     if(this.isStudent){
@@ -175,11 +177,25 @@ export class UserProfileComponent {
       }
     }
     if(this.isTeacher){
-      if (this.user && this.user.TutorSubjects.length > 0 && this.subjects) {
+      if(this.user && this.user.TutorSubjects.length > 0 && this.subjects) {
         this.selectedSubjects = this.user.TutorSubjects.map(subject => ({
           label: subject.SubjectName,
           value: subject.SubjectId
         }))
+        // let subjectGrades:any[] = []
+        // this.selectedSubjects.forEach((subject) => {
+        //   this.user.TutorSubjects.forEach((innerSubject, index) => {
+        //     if(subject.value === innerSubject.SubjectId) {
+        //       subjectGrades.push(innerSubject.Grades)
+        //       let innerArray:any[]= subjectGrades[index]
+        //       this.selectedGrades = innerArray.map((grade) => ({
+        //         label: grade.GradeLevel,
+        //         value:grade.GradeId
+        //       }))
+        //     }
+        //   })      
+        // })
+        // console.log(this.selectedGrades)
       }
     }
   }

@@ -142,6 +142,9 @@ export class Grade {
 
 export class Tutor {
   Id!: string;
+  AboutMe!:string;
+  WorkHistory!:string;
+  Certification!:string;
   FullName!: string;
   Name!:string;
   Hon?: string;

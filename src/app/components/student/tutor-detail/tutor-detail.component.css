@@ -16,6 +16,11 @@
 
 }
 
+.right-side-col {
+    width: 40%;
+    flex: 0 0 auto;
+}
+
 .custom-qualification-badge {
     width: auto;
     text-align: center;
@@ -146,4 +151,9 @@
 
 .e-rowcell{
     padding: 16px;
+}
+
+.grade-encircle {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
 }

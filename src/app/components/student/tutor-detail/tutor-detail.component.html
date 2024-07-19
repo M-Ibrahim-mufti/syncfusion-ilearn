@@ -1,129 +1,76 @@
-<div class="row g-5 mx-3 my-2 bg-white rounded-4" *ngIf="tutor">
-    <div class="d-flex my-3 mb-5">
-        <div class="col-md-2 mt-4 d-flex align-items-center justify-content-center">
-            <img style="object-fit:cover; width: 180px; height: 150px; " class="rounded-3" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
-        </div>
-        <div class="col-md-8 mt-4 d-flex flex-column gap-2">
-            <h5 class="fs-4 fw-bold">{{tutor.Name}}</h5>
-            <div class="d-flex flex-wrap gap-1">
-                <i class="fa fa-brands fa-whatsapp me-3 fs-6 text-muted fw-bold" ><span class="ms-1 fw-bold text-muted"> {{tutor.PhoneNumber}} </span></i>
-                <i class="e-icons e-location fs-6 text-muted me-3 d-flex"><span class="ms-1 fw-bold text-muted">{{tutor.Address + ", " + tutor.City + ", " + tutor.Country}}</span></i>
-                <i class="fa fa-solid fa-envelope me-3 fs-6 text-muted fw-bold" ><span class="ms-2 fw-bold text-muted">{{tutor.Email}}</span> </i>
+<div class="d-flex">
+    <div *ngIf="tutor" class="col-md-7 row g-5 mx-3 my-2">
+        <div class="d-flex bg-white py-2 mt-0 pb-5 rounded-4">
+            <div class="col-md-4 mt-4 d-flex align-items-center justify-content-center">
+                <img style="object-fit:cover; width: 180px; height: 150px; " class="rounded-3" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
             </div>
-            <div class="d-flex flex-row gap-3 py-2">
-                <div class="py-2 px-2 border border-dull-white rounded-3">
-                    <i class="text-success text-opacity-50 d-flex gap-2 fa fs-4 fa-solid fa-graduation-cap"><span class="text-black fs-5 fw-bold"> {{tutor.Qualifications}}</span></i>
-                    <p class="m-0 mt-2 text-muted fw-semibold">Qualification</p>
-                </div>
-                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
-                    <i class="e-icons e-bookmark-fill fs-4 text-danger text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> 5 </span></i>
-                    <p class="m-0 mt-2 text-muted fw-semibold">Subjects</p>
-                </div>
-                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
-                    <i class="e-icons e-arrow-up fs-5 text-success text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> 10 </span> </i>
-                    <p class="m-0 mt-2 text-muted fw-semibold"> Grades </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-     
-        </div>
-    </div>
-</div>
-<div class="row g-5 mx-3 my-2 bg-white rounded-4" *ngIf="tutor">
-    <div class="py-3 mt-0 border-bottom border-1 border-dull-white">
-        <h5 class="fw-bold">Tutor Details</h5>
-    </div>
-    <div class="mx-4 d-flex flex-column gap-3">
-        <div class="d-flex justify-content-start flex-row">
-            <p class="text-muted fw-bold w-50">Name</p>
-            <p class="text-muted fw-bold w-50">{{tutor.Name}}</p>
-        </div>
-        <div class="d-flex flex-row justify-content-start">
-            <p class="text-muted fw-bold w-50">Qualifications</p>
-            <p class="text-muted fw-bold w-50">{{tutor.Qualifications}}</p>
-        </div>
-        <div class="d-flex flex-row justify-content-start">
-            <p class="text-muted fw-bold w-50" >Contact Phone</p>
-            <p class="text-muted fw-bold w-50" >{{tutor.PhoneNumber}}</p>
-        </div>
-        <div class="d-flex flex-row justify-content-start">
-            <p class="text-muted fw-bold w-50" >Country</p>
-            <p class="text-muted fw-bold w-50" >{{tutor.Country}}</p>
-        </div>
-        <div class="d-flex flex-row justify-content-start">
-            <p class="text-muted fw-bold w-50">Email</p>
-            <p class="text-muted fw-bold w-50">{{tutor.Email}}</p>
-        </div>
-        <div class="d-flex flex-row justify-content-start">
-            <p class="text-muted fw-bold w-50">Subject</p>
-            <p class="text-muted fw-bold w-50 d-flex flex-wrap gap-2">
-                <span class="bg-secondary py-1 px-4 rounded-pill" *ngFor="let subject of tutor.TutorSubjects">{{subject.SubjectName}}</span>
-            </p>
-        </div>
-    </div>
-</div>
-<div *ngIf="tutor" class="row g-5 mx-3 my-2 rounded-4">
-    <div class="ps-0 d-flex col-md-12 gap-4">
-        <div class="rounded-4 col-md-4 bg-white">
-            <div class="py-3 mt-0 border-bottom border-1 border-dull-white">
-                <h5 class="fw-bold mx-3"> {{tutor.Name}} Availabilities </h5>
-            </div>
-            <div class="card-body pt-2">
-                <div class="d-flex align-items-center pt-2 mb-3" *ngFor="let availability of sortedAvailabilities">
-                    <span class="bullet bullet-vertical h-40px bg-primary"></span>
-                    <div class="flex-grow-1 ms-3">
-                        <span class="text-muted text-hover-primary fw-bolder fs-6">
-                            {{availability.Day + (availability.Day === 'Wed' ? "enesday" : availability.Day === 'Thu' ?  "rsday" : availability.Day === 'Tue' ? "sday"  : availability.Day === 'Sat' ? 'urday' : "day"  ) }}
-                        </span>
-                        <span class="text-muted fw-semibold d-block">
-                            Time frame starts from {{availability.OpenTimeHours}}:{{availability.OpenTimeMinutes < 10 ? '0' + availability.OpenTimeMinutes : availability.OpenTimeMinutes}} — {{availability.CloseTimeHours}}:{{availability.CloseTimeMinutes < 10 ? '0' + availability.CloseTimeMinutes : availability.CloseTimeMinutes}}
-                        </span>
+            <div class="col-md-8 mt-4 d-flex justify-content-center flex-column gap-2">
+                <h5 class="fs-4 fw-bold">{{tutor.Name}}</h5>
+                <div class="d-flex flex-row gap-3 py-2">
+                    <div class="py-2 px-2 border border-dull-white rounded-3">
+                        <i class="text-success text-opacity-50 d-flex gap-2 fa fs-4 fa-solid fa-graduation-cap"><span class="text-black fs-5 fw-bold"> BSC </span></i>
+                        <p class="m-0 mt-2 text-muted fw-semibold">Qualification</p>
+                    </div>
+                    <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                        <i class="e-icons e-bookmark-fill fs-4 text-danger text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> 5 </span></i>
+                        <p class="m-0 mt-2 text-muted fw-semibold">Subjects</p>
+                    </div>
+                    <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                        <i class="e-icons e-arrow-up fs-5 text-success text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> 10 </span> </i>
+                        <p class="m-0 mt-2 text-muted fw-semibold"> Grades </p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="rounded-4 col-md-8 bg-white">
-            <div class="py-3 mt-0 border-bottom border-1 border-dull-white">
-              <h5 class="fw-bold mx-3">{{ tutor.Name }} Classes</h5>
-              <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='events' [allowPaging]="events.length > 10 ? true : false" [pageSettings]="{ pageSize: 10 }" [allowSorting]="true">
-                    <e-columns >
-                        <e-column field='Name' headerText='Name' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate"  >
-                            <ng-template #cellTemplate let-data let-column>
-                                <span class="fw-bold text-muted-dark py-3">{{ data.Name }}</span>
-                            </ng-template>
-                        </e-column>
-                        <e-column field='SubjectId' headerText='Subject Name' width='250' textAlign='left' [headerTemplate]='headerTemplate' [template]="subjectNameTemplate">
-                            <ng-template #subjectNameTemplate let-data let-column>
-                                <span class="fw-bold text-muted py-3">{{ getEventSubject(data.SubjectId) }}</span>
-                            </ng-template>
-                        </e-column>
-                        <e-column field='Duration' headerText='Duration' width='120' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
-                            <ng-template #cellTemplate2 let-data let-column>
-                                <span class="fw-bold text-muted py-3">{{ data.Duration }}</span>
-                            </ng-template>
-                        </e-column>
-                        <e-column field='EventStartTime' headerText='Start Time' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate3">
-                            <ng-template #cellTemplate3 let-data let-column>
-                                <span class="fw-bold text-muted py-3">{{ data.EventStartTime | date: 'yyyy/MM/dd HH:mm' }}</span>
-                            </ng-template>
-                        </e-column>
-                        <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]="headerTemplate" [template]="cellTemplate" [template]='actionTemplate'></e-column>
-                    </e-columns>
-                </ejs-grid>
-                <div *ngIf="events.length === 0" class="text-center">
-                    <p class="text-muted fs-5">No classes available.</p>
+        <div class="bg-white px-0 mt-2 rounded-4">
+            <div class="py-3 mt-0 px-3 border-bottom border-1 border-dull-white">
+                <h5>Subjects of {{tutor.Name}}</h5>
+            </div>
+            <div class="mt-0 py-3 px-3 text-muted">
+                <div class="d-flex flex-column gap-2">
+                    <div *ngFor="let subject of tutor.TutorSubjects" class="d-flex flex-row justify-content-between">
+                        <div class="col-md-6 fw-semibold">{{subject.SubjectName}}</div>
+                        <div class="d-flex col-md-6 justify-content-start gap-3">
+                            <span class="bg-secondary rounded-circle grade-encircle py-1" *ngFor="let grade of subject.Grades">{{ grade.GradeLevel }}</span>
+                        </div>
+                    </div>
                 </div>
-                <ng-template #headerTemplate let-column>
-                    <span class="text-muted fw-bolder fs-6">{{column.headerText}}</span>
-                </ng-template>
-                <ng-template #actionTemplate let-data>
-                    <button ejs-button cssClass="e-info text-white" (click)="enRollClass(data)">
-                        Enroll
-                      </button>
-                  </ng-template>
             </div>
         </div>
-        
+        <div class="bg-white px-0 mt-2 rounded-4">
+            <div class="py-3 mt-0 px-3 border-bottom border-1 border-dull-white">
+                <h5 class="fw-bold text-muted-dark">About {{tutor.Name}}</h5>
+            </div>
+            <div class=" mt-0 py-3 px-3 text-muted">
+                <p class="fw-semibold"> {{tutor.AboutMe}} </p>
+            </div>
+        </div>
+        <div class="bg-white px-0 mt-2 rounded-4">
+            <div class="py-3 mt-0 px-3 border-bottom border-1 border-dull-white">
+                <h5 class="fw-bold text-muted-dark"> Qualification of {{tutor.Name}}</h5>
+            </div>
+            <div class="mt-0 py-3 px-3 text-muted" >
+                <p [innerHTML]="tutor.Qualifications" > </p>
+            </div>
+        </div>
+        <div class="bg-white px-0 mt-2 rounded-4">
+            <div class="py-3 mt-0 px-3 border-bottom border-1 border-dull-white">
+                <h5 class="fw-bold text-muted-dark">Certification of {{tutor.Name}}</h5>
+            </div>
+            <div class="mt-0 py-3 px-3 text-muted" >
+                <p [innerHTML]="tutor.Certification" > </p>
+            </div>
+        </div>
+        <div class="bg-white px-0 mt-2 rounded-4">
+            <div class="py-3 mt-0 px-3 border-bottom border-1 border-dull-white">
+                <h5 class="fw-bold text-muted-dark">Work History of {{tutor.Name}}</h5>
+            </div>
+            <div class="mt-0 py-3 px-3 text-muted" >
+                <p [innerHTML]="tutor.WorkHistory" > </p>
+            </div>
+        </div>
+    </div>
+    <div class="right-side-col row g-5 my-2 rounded-2">
+        <div class="py-3 mt-0 bg-white mx-3"></div>
     </div>
 </div>
