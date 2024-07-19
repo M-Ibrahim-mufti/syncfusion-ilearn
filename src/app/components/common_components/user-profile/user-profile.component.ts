@@ -23,7 +23,7 @@ export class UserProfileComponent {
   public user!: ApplicationViewStudent;
   public subjects!: SelectItem[];
   public grades: SelectItem[] = [];
-  public selectedGrades: SelectItem[] = [];
+  public selectedGrades: any[] = []
   public selectedSubjects: any[] = [];
   public selectedSubjectGrades: any[] = [];
   public newProfileImage?: File;
@@ -136,21 +136,23 @@ export class UserProfileComponent {
     }
     if(this.isTeacher){
       this.user.TutorSubjects = []
-      this.selectedSubjects.forEach(subject => {
-        this.user.TutorSubjects.push(subject.value)
+      this.selectedSubjects.forEach((subject,index) => {
+        this.user.TutorSubjects.push({subjectId: subject.value , grade: this.selectedGrades[index]})
       })
     }
-    this.spinner.show();
-    this.UserService.updateStudent(this.user).subscribe((response) => {
-      this.spinner.hide();
-      this.UserEditProfileDialog = false
-      if(response.Success){
-        this.toastr.success(
-          'Success',
-          response.ResponseMessage
-        );
-      }
-    })
+
+    console.log(this.user.TutorSubjects)
+    // this.spinner.show();
+    // this.UserService.updateStudent(this.user).subscribe((response) => {
+    //   this.spinner.hide();
+    //   this.UserEditProfileDialog = false
+    //   if(response.Success){
+    //     this.toastr.success(
+    //       'Success',
+    //       response.ResponseMessage
+    //     );
+    //   }
+    // })
   }
 
   // public populateGrades(event:any) {
@@ -182,20 +184,23 @@ export class UserProfileComponent {
           label: subject.SubjectName,
           value: subject.SubjectId
         }))
-        // let subjectGrades:any[] = []
-        // this.selectedSubjects.forEach((subject) => {
-        //   this.user.TutorSubjects.forEach((innerSubject, index) => {
-        //     if(subject.value === innerSubject.SubjectId) {
-        //       subjectGrades.push(innerSubject.Grades)
-        //       let innerArray:any[]= subjectGrades[index]
-        //       this.selectedGrades = innerArray.map((grade) => ({
-        //         label: grade.GradeLevel,
-        //         value:grade.GradeId
-        //       }))
-        //     }
-        //   })      
-        // })
-        // console.log(this.selectedGrades)
+        let subjectGrades:any[] = []
+        this.selectedSubjects.forEach((subject) => {
+          this.user.TutorSubjects.forEach((innerSubject, index) => {
+            if(subject.value === innerSubject.SubjectId) {
+              subjectGrades.push(innerSubject.Grades)
+              let innerArray:any[]= subjectGrades[index]
+              subjectGrades = [];
+              innerArray = innerArray.map((grade) => ({
+                label: grade.GradeLevel,
+                value: grade.GradeId,
+              }))
+              subjectGrades.push(innerArray);
+              this.selectedGrades.push(subjectGrades);
+              console.log(this.selectedGrades)
+            }
+          })      
+        })
       }
     }
   }
@@ -268,4 +273,7 @@ export class UserProfileComponent {
     })
   }
 
+  public checkGrades() {
+    console.log(this.selectedGrades)
+  }
 }

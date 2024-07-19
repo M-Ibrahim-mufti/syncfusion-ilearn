@@ -76,7 +76,7 @@
                             <p class="mb-0">{{subject.label}}</p>
                             <div class="mt-2" >
                                 <p class="mb-0 col-md-12"> Select Grade </p>
-                                <ejs-multiselect [dataSource]="this.grades" [allowObjectBinding]="true" [fields]="{text:'label', value:'value'}"></ejs-multiselect>
+                                <ejs-multiselect (change)="checkGrades()" [(value)]="selectedGrades[i]" [dataSource]="grades" [allowObjectBinding]="true" [fields]="{text:'label', value:'value'}"></ejs-multiselect>
                             </div>
                         </div>
                     </div>  

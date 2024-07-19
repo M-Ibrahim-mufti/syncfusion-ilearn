@@ -11,6 +11,8 @@ import { Student, StudentService } from '../../../../services/student.service';
 })
 export class ViewChildrenComponent implements OnInit {
   public students!: Student[];
+  public childDialogue: boolean = false
+  public childSubject:any[] = [];
   
  constructor(private studentService: StudentService,
     private toastr: ToastrService,
@@ -37,4 +39,9 @@ export class ViewChildrenComponent implements OnInit {
     });
   }
 
+  public openChildSubjectDialogue(studentSubject:any) {
+    
+    this.childSubject = studentSubject;
+    this.childDialogue  = true
+  }
 }
