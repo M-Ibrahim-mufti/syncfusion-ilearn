@@ -158,7 +158,7 @@ export class AvailabilitySelectionComponent implements OnInit {
             // Create the container for the first dropdown (Class Name)
             let container: HTMLElement = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
             let inputEle: HTMLInputElement = createElement('input', {
-                className: 'e-field', attrs: { name: 'ClassMataDataId' }
+                className: 'e-field', attrs: { name: 'ClassId' }
             }) as HTMLInputElement;
             container.appendChild(inputEle);
             row.appendChild(container);
@@ -166,12 +166,12 @@ export class AvailabilitySelectionComponent implements OnInit {
             let dropDownList: DropDownList = new DropDownList({
                 dataSource: this.eventTitle,
                 fields: { text: 'label', value: 'value' },
-                value: (<{ [key: string]: Object; }>(args.data))['ClassMataDataId'] as string,
+                value: (<{ [key: string]: Object; }>(args.data))['ClassId'] as string,
                 floatLabelType: 'Always', placeholder: 'Select Class',
                 change: this.onEventChange.bind(this)
             });
             dropDownList.appendTo(inputEle);
-            inputEle.setAttribute('name', 'ClassMataDataId');
+            inputEle.setAttribute('name', 'ClassId');
 
             container = createElement('div', { className: 'custom-field-container e-input-wrapper e-form-left' });
             inputEle = createElement('input', {
