@@ -26,7 +26,7 @@ export class SchedulerComponent implements OnInit, OnChanges {
   @ViewChild('scheduleObj') scheduleObj?: ScheduleComponent;
   // private dataManager!: DataManager;
   public eventSettings!: EventSettingsModel;
-  public scheduleViews: View[] = ['Month'];
+  public scheduleViews: View[] = ['Week','Month'];
   data: any = [];
   isTeacher: boolean = false;
   isStudent: boolean = false;
