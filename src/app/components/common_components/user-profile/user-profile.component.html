@@ -44,6 +44,10 @@
                         <input class="form-control" [(ngModel)]="user.Email" />
                     </div>
                     <div class="text-start text-muted d-flex col-md-12 flex-column">
+                        <p class="col-md-12" >Degree</p>
+                        <input class="form-control" [(ngModel)]="user.Degree" />
+                    </div>
+                    <div class="text-start text-muted d-flex col-md-12 flex-column">
                         <p class="col-md-12" > Address</p>
                         <input class="form-control" [(ngModel)]="user.Address" />
                     </div>
@@ -76,7 +80,7 @@
                             <p class="mb-0">{{subject.label}}</p>
                             <div class="mt-2" >
                                 <p class="mb-0 col-md-12"> Select Grade </p>
-                                <ejs-multiselect (change)="checkGrades()" [(value)]="selectedGrades[i]" [dataSource]="grades" [allowObjectBinding]="true" [fields]="{text:'label', value:'value'}"></ejs-multiselect>
+                                <ejs-multiselect (change)="checkGrades()" [(value)]="selectedSubjects[i].grades" [dataSource]="grades" [allowObjectBinding]="true" [fields]="{text:'label', value:'value'}"></ejs-multiselect>
                             </div>
                         </div>
                     </div>  

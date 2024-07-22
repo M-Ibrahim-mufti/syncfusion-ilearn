@@ -49,7 +49,13 @@ export class SlotBookingService extends ServiceBase {
     return this.http.post<ResponseObject>(url, {}, httpOptions);
   }
 
-
+  saveGeneralConsultancyRequest(consultancyDetails:any): Observable<any>{
+    let httpOptions = this.RequestHeaders();
+    const api: string = '/slotBookingRequest/';
+    const method: string = `send-consultant-request`;
+    const url: string = environment.BASE_API_PATH + api + method
+    return this.http.post<any>(url, consultancyDetails ,httpOptions)
+  }
 
 }
 

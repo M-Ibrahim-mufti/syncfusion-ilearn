@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TutorService, Tutor, TutorAvailability } from '../../../../services/tutor.service';
+import { TutorService, Tutor, TutorAvailability, GeneralConsultancy } from '../../../../services/tutor.service';
 import { ActivatedRoute } from '@angular/router';
 import { Event,GroupedAvailabilities,EventService, SelectItem } from '../../../../services/event.service';
 import { StudentService } from '../../../../services/student.service';
@@ -26,7 +26,20 @@ export class TutorDetailComponent {
   public groupedAvailabilities: GroupedAvailabilities = [];
   public tutorGrades:any[] = []
   public totalGrade:any[] = []
-
+  public totalGrades: number = 0 
+  public consultDialog: boolean = false;
+  public generalConsultancy: GeneralConsultancy = {
+    TutorId: '',
+    EventStartTime: '',
+    MeetingStartTime: new Date(),
+    Duration: 0,    
+  };
+  public consultancyTimeFrames:any[] = [];
+  public consultancyDuration:any[] =[
+    { value:'30', label:30},
+    { value:'60', label:60},
+    { value:'90', label:90}
+  ]
   constructor(
     private tutorService: TutorService,
     private eventService: EventService,
@@ -47,17 +60,17 @@ export class TutorDetailComponent {
   public getTutorEvents(tutorId: string) {
     this.eventService.getEvents(tutorId).subscribe(response => {
       this.events = response;
-      console.log(this.events);
-      
+
       const todayDateTime = new Date();
       const data: any[] = [];
       this.events!.forEach(x => {
         const eventdate = new Date(x.EventStartTime)
-        if (eventdate > todayDateTime) {
+        if (!x.IsOneOnOne && eventdate >= todayDateTime ) {
           data.push(x)
         }
       })
       this.events = data;
+      console.log(this.events)
       this.loadAvalabilites(tutorId);
     })
   }
@@ -79,6 +92,12 @@ export class TutorDetailComponent {
       this.tutor = response;
       console.log(this.tutor)
       this.getTutorEvents(this.tutorId);
+
+      this.tutor.TutorSubjects.forEach((subject) => {
+        if(subject.Grades.length > 0) {
+          this.totalGrades += subject.Grades.length
+        }
+      })
       this.spinnerService.hide();
     })
   }
@@ -94,6 +113,47 @@ export class TutorDetailComponent {
     })
   }
 
+  getConsultancy() {  
+    this.tutorService.getTutorConsultancy(this.tutorId).subscribe((response) => {
+      const startTime = new Date(response.StartTime);
+      const endTime = new Date(response.EndTime)
+      let i = 0;
+      while (startTime <= endTime) {
+        const hours = startTime.getHours();
+        const minutes = startTime.getMinutes();
+        const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+        this.consultancyTimeFrames.push({value:i+1 ,label:formattedTime});
+        startTime.setMinutes(startTime.getMinutes() + 15);
+        i = i+1;      
+      }
+      this.generalConsultancy.EventStartTime = response.StartTime
+      console.log(this.generalConsultancy)
+    })
+    this.consultDialog = true;
+  }
+  public setConsultancyMeetingTime(event:any) {
+    let meetingArr = this.consultancyTimeFrames.filter((timeFrame) => timeFrame.value == event.target.value)
+    let meetingTime = meetingArr[0];
+    const [hours, minutes] = meetingTime.label.split(':').map(Number)
+    const formattedTime = new Date()
+    formattedTime.setHours(hours, minutes)
+    this.generalConsultancy.MeetingStartTime = formattedTime
+
+  }
+  public setConsultancyDuration(event:any) {
+    let DurationArr = this.consultancyDuration.filter((duration) => duration.value == event.target.value);
+    let duration = DurationArr[0];
+    this.generalConsultancy.Duration = duration.label;
+    console.log(this.generalConsultancy)
+  }
+  public enrollInGeneralConsultancy() {
+    this.generalConsultancy.TutorId = this.tutorId;
+    console.log(this.generalConsultancy)
+    this.slotBookingService.saveGeneralConsultancyRequest(this.generalConsultancy).subscribe((response) => {
+      console.log(response)
+    })
+  }
+
   totalCounters() {
     if (this.tutor.TutorSubjects.length > 0 && !this.tutor.TutorSubjects[0].SubjectName) {
       this.totalSubjects = 0
@@ -102,6 +162,7 @@ export class TutorDetailComponent {
       this.totalSubjects = this.tutor.TutorSubjects.length
     }
   }
+
   public enRollClass(event: Event) {
     this.spinnerService.show();
     const model: RequestBooking = new RequestBooking(event.TutorId!, event.EventStartTime)
@@ -122,4 +183,5 @@ export class TutorDetailComponent {
       }
     })
   }
+  
 }

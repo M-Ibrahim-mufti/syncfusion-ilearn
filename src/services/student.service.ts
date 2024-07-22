@@ -131,7 +131,8 @@ export class Parent {
 export class ApplicationViewStudent {
 
   Address!: string; 
-  Certification!:string
+  Certification!:string;
+  Degree!:string;
   AboutMe!:string | '';
   AllowLogin!: boolean;
   City!: string; 

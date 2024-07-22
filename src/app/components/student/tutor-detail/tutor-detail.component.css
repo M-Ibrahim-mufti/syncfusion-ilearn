@@ -21,6 +21,15 @@
     flex: 0 0 auto;
 }
 
+.inner-right-col-sidebar-collapse {
+    width: 38%;
+    flex: 0 0 auto;
+}
+
+.inner-right-col {
+    width: 33%;
+    flex: 0 0 auto;
+}
 .custom-qualification-badge {
     width: auto;
     text-align: center;
@@ -156,4 +165,43 @@
 .grade-encircle {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
+}
+
+.consultancy-button{
+    top: 20px;
+    right: 20px;
+}
+
+.e-dlg-header-content{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+    border-bottom: 1px solid !important;
+    border-color: #e0e0e0 !important;
+    padding-top: 10px;
+    padding-bottom:10px;
+}
+
+.e-dlg-content{
+    border-bottom: 1px solid !important;
+    border-color: #e0e0e0 !important; 
+}
+
+.consult-timeframe-width{
+    width: 49%;
+    flex:0 0 auto;
+}
+
+.grouping-container {
+    max-height: 450px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #f1f1f1 white;
+    overflow-y: scroll;
+}
+
+.group-hover:hover {
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    transition: all .3s linear;
 }

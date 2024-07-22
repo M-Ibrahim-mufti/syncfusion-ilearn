@@ -1,6 +1,6 @@
 <div class="d-flex">
     <div *ngIf="tutor" class="col-md-7 row g-5 mx-3 my-2">
-        <div class="d-flex bg-white py-2 mt-0 pb-5 rounded-4">
+        <div class="d-flex bg-white py-2 mt-0 pb-5 rounded-4 position-relative">
             <div class="col-md-4 mt-4 d-flex align-items-center justify-content-center">
                 <img style="object-fit:cover; width: 180px; height: 150px; " class="rounded-3" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
             </div>
@@ -12,14 +12,17 @@
                         <p class="m-0 mt-2 text-muted fw-semibold">Qualification</p>
                     </div>
                     <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
-                        <i class="e-icons e-bookmark-fill fs-4 text-danger text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> 5 </span></i>
-                        <p class="m-0 mt-2 text-muted fw-semibold">Subjects</p>
+                        <i class="e-icons e-bookmark-fill fs-4 text-danger text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> {{tutor.TutorSubjects.length}} </span></i>
+                        <p class="m-0 mt-2 text-muted fw-semibold">Subject(s)</p>
                     </div>
                     <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
-                        <i class="e-icons e-arrow-up fs-5 text-success text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> 10 </span> </i>
+                        <i class="e-icons e-arrow-up fs-5 text-success text-opacity-50 d-flex gap-2"> <span class="text-black fs-5 fw-bold"> {{ totalGrades }} </span> </i>
                         <p class="m-0 mt-2 text-muted fw-semibold"> Grades </p>
                     </div>
                 </div>
+            </div>
+            <div class="position-absolute consultancy-button">
+                <button ejs-button (click)="getConsultancy()" class="px-4 py-1 e-info rounded-2"> Consult </button>
             </div>
         </div>
         <div class="bg-white px-0 mt-2 rounded-4">
@@ -27,6 +30,7 @@
                 <h5>Subjects of {{tutor.Name}}</h5>
             </div>
             <div class="mt-0 py-3 px-3 text-muted">
+                <p class="mb-2 text-muted">Below is the list of Subject with correspondence to the grade {{tutor.Hon}} {{tutor.Name}} teaches to</p>
                 <div class="d-flex flex-column gap-2">
                     <div *ngFor="let subject of tutor.TutorSubjects" class="d-flex flex-row justify-content-between">
                         <div class="col-md-6 fw-semibold">{{subject.SubjectName}}</div>
@@ -70,7 +74,80 @@
             </div>
         </div>
     </div>
-    <div class="right-side-col row g-5 my-2 rounded-2">
-        <div class="py-3 mt-0 bg-white mx-3"></div>
+    <div *ngIf="tutor" class="right-side-col row g-5 my-2">
+        <div class="my-0 mx-3 px-0 col-md-12">
+            <div id="tutorDetail-right-side" class="position-fixed inner-right-col bg-white py-2 rounded-4">
+                <div class="my-2 px-3 border-bottom border-1">
+                    <h5 class="text-muted">Group Events of {{tutor.Name}}</h5>
+                </div>
+                <div class="py-2 px-3">
+                    <div class="d-flex my-2 grouping-container flex-column gap-2">
+                        <div *ngFor="let event of events" class="group-hover  col-md-12 d-flex justify-content-between e-info align-items-center bg-transparent border border-1 border-dull white rounded-2" >
+                            <div class="mx-3 col-md-8 py-2">
+                                <div class="d-flex">
+                                    <span class="w-25 text-muted-dark fw-bold">Event Title</span>
+                                    <h6 class="mb-0  text-muted-dark fw-semibold"> : {{event.Name}}</h6>
+                                </div>
+                                <div class="d-flex">
+                                    <span class="w-25 text-muted-dark fw-bold">Start Time</span>
+                                    <p class="mb-0 text-muted fw-semibold"> : {{event.EventStartTime | date: 'hh:mm a'}}</p>
+                                </div>
+                                <div class="d-flex">
+                                    <span class="w-25 text-muted-dark fw-bold">Duration</span>
+                                    <p class="mb-0 text-muted fw-semibold"> : {{event.Duration}} mins </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button ejs-button (click)="enRollClass(event)" class="e-info px-3 rounded-2 py-1"> Enroll </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<ejs-dialog *ngIf="tutor" [footerTemplate]="consultancyFooter" [isModal]="true" [visible]="consultDialog" [width]="500" [showCloseIcon]="true" [isModal]="true" (close)="consultDialog = false">
+    <ng-template #header>
+        <h5 class="text-muted-dark mb-0 fw-bold">Consult with {{tutor.Name}}</h5>
+    </ng-template>
+    <div class="py-2">
+        <p class="text-muted px-2 fw-semibold">Tutor is available for consultancy please choose the time frame below and duration to check at which time tutor is available for consultancy</p>
+        <div class="d-flex justify-content-between">
+            <div class="form-group consult-timeframe-width">
+                <label class="form-label">Select Time Frame</label>
+                <select (change)="setConsultancyMeetingTime($event)" class="form-select form-control form-select-sm">
+                    <option value="-1" selected disabled> Select Time frame </option>
+                    <option *ngFor="let time of consultancyTimeFrames" [value]="time.value" > {{time.label}} </option>
+                </select>
+            </div>
+            <div class="form-group consult-timeframe-width">
+                <label class="form-label">Select Duration</label>
+                <select (change)="setConsultancyDuration($event)" class="form-select form-control form-select-sm">
+                    <option value="-1" selected disabled> Select Duration </option>
+                    <option *ngFor="let duration of consultancyDuration" [value]="duration.value">{{duration.label}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <ng-template #consultancyFooter>
+        <div class="py-2">
+            <button (click)="enrollInGeneralConsultancy()" ejs-button class="e-info px-5 py-2 rounded-2"> Enroll </button>
+        </div>
+    </ng-template>
+</ejs-dialog>
+
+<!--       
+<select name="availability" class="form-select" (change)="generateTimeOptions(selectedEvent.AvailabilityId)" [(ngModel)]="selectedEvent.AvailabilityId">
+    <option selected value="-1" disabled>Select Availability</option>
+    <ng-container *ngFor="let dayGroup of groupedAvailabilities">
+        <optgroup class="text-muted" [label]="getDayLabel(dayGroup.key)">
+            <ng-container *ngFor="let availability of dayGroup.value">
+                <option [selected]="selectedEvent.AvailabilityId === availability.Id" class="text-start" [value]="availability.Id" [disabled]="disabledTimeOptions.includes(timeOptions)">
+                    {{ formatTimeTo12Hours(availability.OpenTimeHours, availability.OpenTimeMinutes) }} - {{ formatTimeTo12Hours(availability.CloseTimeHours, availability.CloseTimeMinutes) }}
+                </option>
+            </ng-container>
+        </optgroup>
+    </ng-container>
+</select> -->

@@ -128,20 +128,23 @@ export class UserProfileComponent {
   }
 
   public updateUserData() {
-    if(this.isStudent){
-      this.user.StudentSubjects = []
-      this.selectedSubjects.forEach(subject => {
-        this.user.StudentSubjects.push(subject.value)
-      })
-    }
-    if(this.isTeacher){
-      this.user.TutorSubjects = []
-      this.selectedSubjects.forEach((subject,index) => {
-        this.user.TutorSubjects.push({subjectId: subject.value , grade: this.selectedGrades[index]})
-      })
-    }
+    // if(this.isStudent){
+    //   this.user.StudentSubjects = []
+    //   this.selectedSubjects.forEach(subject => {
+    //     this.user.StudentSubjects.push(subject.value)
+    //   })
+    // }
+    // if(this.isTeacher){
+    //   this.user.TutorSubjects = []
+    //   this.selectedSubjects.forEach((subject,index) => {
+    //     this.user.TutorSubjects.push({subjectId: subject.value , grade: this.selectedGrades[index]})
+    //     this.user.TutorSubjects.push(subject.value)
+    //   })
+    // }
+    console.log(this.selectedSubjects)
+    console.log(this.selectedGrades)
 
-    console.log(this.user.TutorSubjects)
+    // console.log(this.user.TutorSubjects)
     // this.spinner.show();
     // this.UserService.updateStudent(this.user).subscribe((response) => {
     //   this.spinner.hide();
@@ -155,19 +158,6 @@ export class UserProfileComponent {
     // })
   }
 
-  // public populateGrades(event:any) {
-  //   const subjectValue = event.target.value;
-  //   this.user.TutorSubjects.forEach((subject) => {
-  //     if (subject.SubjectId === subjectValue) {
-  //       this.subjectGrades = subject.Grades;
-  //     }
-  //   })
-  //   this.subjectGrades = this.subjectGrades.map((grade) => ({
-  //     label: grade.GradeLevel,
-  //     value: grade.GradeId
-  //   }))
-  //   console.log(this.subjectGrades)
-  // }
 
   private populateSelectedSubjects(): void {
     if(this.isStudent){

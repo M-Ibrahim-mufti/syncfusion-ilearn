@@ -81,6 +81,16 @@ export class TutorService extends ServiceBase {
     return headerObj;
   }
 
+  public getTutorConsultancy(tutorId:string): Observable<any> {
+    const httpOptions = this.RequestHeaders();
+    const api:string = '/tutor/';
+    const method:string = `general-consultant/${tutorId}`;
+    const url:string = environment.BASE_API_PATH + api + method;
+    return this.http.get<any>(url, httpOptions);
+  }
+
+
+
 }
 export interface SaveTutorAvailabilityRequest {
   Availabilities: TutorAvailability[];
@@ -100,6 +110,7 @@ export class SaveTutorRequest {
   Email!: string;
   Password!: string;
   Qualifications!: string;
+  Degree!:string;
   ImgUrl!: string;
   IsPoliceFormChecked!: boolean;
   PoliceFormCheckDate!: Date;
@@ -145,6 +156,7 @@ export class Tutor {
   AboutMe!:string;
   WorkHistory!:string;
   Certification!:string;
+  Degree!:string;
   FullName!: string;
   Name!:string;
   Hon?: string;
@@ -168,6 +180,14 @@ export class Tutor {
   Description!: string;
 
 }
+
+export class GeneralConsultancy {
+  TutorId?:string;
+  EventStartTime?:string;
+  MeetingStartTime?:Date;
+  Duration?:number;
+}
+
 
 export class ShowTutor extends Tutor {
   isExpanded?:boolean = false;

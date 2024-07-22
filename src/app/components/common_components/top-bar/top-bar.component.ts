@@ -171,5 +171,13 @@ export class TopBarComponent implements OnInit {
   public toggleSidebar () {
     this.Sidebar = !this.Sidebar
     this.SidebarToggle.emit(this.Sidebar)
+    const element = document.getElementById('tutorDetail-right-side') as HTMLElement
+    if(this.Sidebar){
+      element.classList.add('inner-right-col')
+      element.classList.remove('inner-right-col-sidebar-collapse')
+    } else {
+      element.classList.remove('inner-right-col')
+      element.classList.add('inner-right-col-sidebar-collapse')
+    }
   }
 }
