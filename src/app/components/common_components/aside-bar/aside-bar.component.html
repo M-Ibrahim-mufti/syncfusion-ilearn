@@ -22,6 +22,10 @@
             <span class="e-icons fs-5 e-people"></span>
             <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white"> View Tutor</a>
           </div>
+          <div [routerLink]="['/tutor/requests']" class="d-flex align-items-center gap-3 cursor-pointer link-hover" [ngClass]="{'active-link':isActive('/tutor/requests'), 'bg-black': !isActive('/tutor/requests'), 'py-2 px-4':isSideBar, 'py-3 justify-content-center': !isSideBar}">
+            <span class="e-icons e-expand"></span>
+            <a *ngIf="isSideBar" class="letter-spacing fs-6 text-white">Requests</a>
+          </div>
           <!-- <div [routerLink]="['/classes']" class="cursor-pointer py-2 px-4 link-hover" [ngClass]="{'active-link':isActive('/classes'), 'bg-black': !isActive('/classes') }">
             <a class="letter-spacing fs-6 text-white">
               <i class="pi pi-calendar"></i> Class

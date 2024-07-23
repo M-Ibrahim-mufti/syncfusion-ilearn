@@ -28,13 +28,14 @@
                                     <h5 class="m-0">{{bookingRequest.StudentName}}</h5>
                                     <span class="fw-bold text-muted">{{bookingRequest.SubjectName}}</span>
                                 </div>
+                                <p class="m-0 mb-1">Tutor: <span class="fs-6 fw-bold">{{bookingRequest.TutorName}}</span></p>
                                 <p class="m-0 mb-1">Topic of Class: <span class="fs-6 fw-bold">{{bookingRequest.SubjectTopic}}</span></p>
                                 <p class="m-0 mb-1">Duration of Class: <span class="fs-6 fw-bold">{{bookingRequest.Duration}} minutes</span></p>
                                 <p class="m-0 mb-1">Class Timing: <span class="fs-6 fw-bold">{{getDayLabel(bookingRequest.Day)}} <span class="fw-bold">{{bookingRequest.StartTime | date: 'yyyy/MM/dd HH:mm' }}</span> </span></p>
                             </div>
                         </div>
                     </div>
-                    <div class="button-group">
+                    <div class="button-group" *ngIf="authConfig.IsTeacher">
                         <button ejs-button [ngClass]="{'reject-btn w-50': true}" (click)="rejectBookingRequest(bookingRequest.Id)" [disabled]="bookingRequest.IsApproved">Reject</button>
                         <button ejs-button [ngClass]="{'accept-btn w-50': true, 'opacity-50': bookingRequest.IsApproved}" [disabled]="bookingRequest.IsApproved" (click)="approveBookingRequest(bookingRequest.Id)">Accept</button>
                     </div>                      

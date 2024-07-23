@@ -73,7 +73,6 @@ export class TutorDetailComponent {
         if (!x.IsOneOnOne && eventdate >= todayDateTime ) {
           data.push(x)
         }
-
       })
       this.events = data;
       console.log(this.events)
@@ -95,11 +94,9 @@ export class TutorDetailComponent {
   public getTutorDetail() {
     this.spinnerService.show()
     this.tutorService.tutorProfile(this.tutorId).subscribe(async (response) => {      
-      this.tutor = response;
-      this.spinnerService.hide();
-      console.log(this.tutor)
+      this.tutor = await response;      
       this.getTutorEvents(this.tutorId);
-
+      this.spinnerService.hide();
       this.tutor.TutorSubjects.forEach((subject) => {
         if(subject.Grades.length > 0) {
           this.totalGrades += subject.Grades.length

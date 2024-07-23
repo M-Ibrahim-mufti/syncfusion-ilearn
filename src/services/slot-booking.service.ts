@@ -80,4 +80,5 @@ export class RequestBooking{
   StudentName!:string;
   SubjectName!:string;
   SubjectTopic!:string;
+  TutorName!: string;
 }
