@@ -187,6 +187,7 @@ export class GeneralConsultancy {
   EventStartTime?:string;
   MeetingStartTime?:Date;
   Duration?:number;
+  Title!:string;
 }
 
 

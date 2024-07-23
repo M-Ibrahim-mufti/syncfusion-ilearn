@@ -69,6 +69,7 @@ export class TutorSelectionComponent {
       this.spinnerService.hide();
       this.availableTutor = tutors;
       this.currentAvailableTutor = tutors.length;
+      console.log(this.availableTutor)
       this.loadAvailabilities();
     })
   }

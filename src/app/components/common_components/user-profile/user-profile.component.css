@@ -113,3 +113,7 @@
     scrollbar-color: #f1f1f1 white;
     overflow-y: scroll;
 }
+::ng-deep .e-rte-content ul,
+::ng-deep .e-rte-content ol {
+    margin-left: 20px!important;
+}

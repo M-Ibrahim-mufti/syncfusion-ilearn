@@ -53,25 +53,19 @@
             <div class="py-3 mt-0 px-3 border-bottom border-1 border-dull-white">
                 <h5 class="fw-bold text-muted-dark"> Qualification of {{tutor.Name}}</h5>
             </div>
-            <div class="mt-0 py-3 px-3 text-muted" >
-                <p [innerHTML]="tutor.Qualifications" > </p>
-            </div>
+            <div class="mt-0 py-3 px-3 text-muted" [innerHTML]="tutor.Qualifications"  ></div>
         </div>
         <div class="bg-white px-0 mt-2 rounded-4">
             <div class="py-3 mt-0 px-3 border-bottom border-1 border-dull-white">
                 <h5 class="fw-bold text-muted-dark">Certification of {{tutor.Name}}</h5>
             </div>
-            <div class="mt-0 py-3 px-3 text-muted" >
-                <p [innerHTML]="tutor.Certification" > </p>
-            </div>
+            <div class="mt-0 py-3 px-3 text-muted" [innerHTML]="tutor.Certification" ></div>
         </div>
         <div class="bg-white px-0 mt-2 rounded-4">
             <div class="py-3 mt-0 px-3 border-bottom border-1 border-dull-white">
                 <h5 class="fw-bold text-muted-dark">Work History of {{tutor.Name}}</h5>
             </div>
-            <div class="mt-0 py-3 px-3 text-muted" >
-                <p [innerHTML]="tutor.WorkHistory" > </p>
-            </div>
+            <div class="mt-0 py-3 mx-3 px-3 text-muted" [innerHTML]="tutor.WorkHistory" ></div>
         </div>
     </div>
     <div *ngIf="tutor" class="right-side-col row g-5 my-2">
@@ -135,6 +129,10 @@
                     <option value="-1" selected disabled> Select Duration </option>
                     <option *ngFor="let duration of consultancyDuration" [value]="duration.value">{{duration.label}}</option>
                 </select>
+            </div>
+            <div class="form-group consult-timeframe-width">
+                <label class="form-label"> Title </label>
+                <input class="form-control form-control-sm" disabled [(ngModel)]="generalConsultancy.Title" />
             </div>
         </div>
     </div>
