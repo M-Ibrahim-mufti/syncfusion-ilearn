@@ -36,7 +36,8 @@ export class TutorDetailComponent {
     TutorId: '',
     EventStartTime: '',
     MeetingStartTime: new Date(),
-    Duration: 0,    
+    Duration: 0,  
+    Title:''  
   };
   public consultancyTimeFrames:any[] = [];
   public consultancyDuration:any[] =[
@@ -167,6 +168,7 @@ export class TutorDetailComponent {
         }
         this.generalConsultancy.EventStartTime = consultancy.StartTime
         this.generalConsultancy.MeetingStartTime = formattedDate
+        this.generalConsultancy.Title = consultancy.Title
         this.enableTimeFrame = false
       }
     })
