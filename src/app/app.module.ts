@@ -10,7 +10,7 @@ import { JWT_OPTIONS, JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { AuthGuard } from './authGuard';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { GroupByPipe } from './pipes/GroupBy.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -46,6 +46,7 @@ import { DropDownListModule, MultiSelect, MultiSelectModule } from '@syncfusion/
 import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 import { StepperModule, StepperAllModule } from '@syncfusion/ej2-angular-navigations';
 import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { DatePickerModule, CalendarModule} from '@syncfusion/ej2-angular-calendars';
 
 //thirdparty imports
 import { ToastrModule } from 'ngx-toastr';
@@ -97,10 +98,10 @@ export function getTokenFactory(injector: Injector) {
         CommonModule,
         RouterModule.forRoot(routes),
         ReactiveFormsModule,
-        CalendarModule.forRoot({
-            provide: DateAdapter,
-            useFactory: adapterFactory,
-        }),
+        // CalendarModule.forRoot({
+        //     provide: DateAdapter,
+        //     useFactory: adapterFactory,
+        // }),
         JwtModule.forRoot({
             jwtOptionsProvider: {
                 provide: JWT_OPTIONS,
@@ -127,7 +128,8 @@ export function getTokenFactory(injector: Injector) {
         StepperModule,
         SchedulerComponent,
         RichTextEditorModule,
-
+        DatePickerModule,
+        CalendarModule
 
     ],
   exports: [RouterModule],

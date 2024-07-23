@@ -233,7 +233,17 @@ export class AvailabilitySelectionComponent implements OnInit {
                     dialogParent.appendChild(meetingTypeRow);
                 }
             } else if (args.type === 'QuickInfo') {
-                args.element.insertBefore(row, args.element.firstChild);
+                // Find the element with the class 'e-popup-content'
+                const popupContentElement = args.element.querySelector('.e-popup-content');
+
+                if (popupContentElement) {
+                    // Insert the custom row before the 'e-popup-content' element
+                    popupContentElement.parentNode!.insertBefore(row, popupContentElement);
+                } else {
+                    // Fallback: insert the custom row at the beginning of the element
+                    args.element.insertBefore(row, args.element.firstChild);
+                }
+                //args.element.insertBefore(row, args.element.firstChild);
             }
         }
     }
