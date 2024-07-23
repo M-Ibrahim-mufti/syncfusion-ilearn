@@ -144,18 +144,18 @@ export class UserProfileComponent {
     console.log(this.selectedSubjects)
     console.log(this.selectedGrades)
 
-    // console.log(this.user.TutorSubjects)
-    // this.spinner.show();
-    // this.UserService.updateStudent(this.user).subscribe((response) => {
-    //   this.spinner.hide();
-    //   this.UserEditProfileDialog = false
-    //   if(response.Success){
-    //     this.toastr.success(
-    //       'Success',
-    //       response.ResponseMessage
-    //     );
-    //   }
-    // })
+    console.log(this.user.TutorSubjects)
+    this.spinner.show();
+    this.UserService.updateStudent(this.user).subscribe((response) => {
+      this.spinner.hide();
+      this.UserEditProfileDialog = false
+      if(response.Success){
+        this.toastr.success(
+          'Success',
+          response.ResponseMessage
+        );
+      }
+    })
   }
 
 
@@ -174,23 +174,23 @@ export class UserProfileComponent {
           label: subject.SubjectName,
           value: subject.SubjectId
         }))
-        let subjectGrades:any[] = []
-        this.selectedSubjects.forEach((subject) => {
-          this.user.TutorSubjects.forEach((innerSubject, index) => {
-            if(subject.value === innerSubject.SubjectId) {
-              subjectGrades.push(innerSubject.Grades)
-              let innerArray:any[]= subjectGrades[index]
-              subjectGrades = [];
-              innerArray = innerArray.map((grade) => ({
-                label: grade.GradeLevel,
-                value: grade.GradeId,
-              }))
-              subjectGrades.push(innerArray);
-              this.selectedGrades.push(subjectGrades);
-              console.log(this.selectedGrades)
-            }
-          })      
-        })
+        // let subjectGrades:any[] = []
+        // this.selectedSubjects.forEach((subject) => {
+        //   this.user.TutorSubjects.forEach((innerSubject, index) => {
+        //     if(subject.value === innerSubject.SubjectId) {
+        //       subjectGrades.push(innerSubject.Grades)
+        //       let innerArray:any[]= subjectGrades[index]
+        //       subjectGrades = [];
+        //       innerArray = innerArray.map((grade) => ({
+        //         label: grade.GradeLevel,
+        //         value: grade.GradeId,
+        //       }))
+        //       subjectGrades.push(innerArray);
+        //       this.selectedGrades.push(subjectGrades);
+        //       console.log(this.selectedGrades)
+        //     }
+        //   })      
+        // })
       }
     }
   }

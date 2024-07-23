@@ -7,6 +7,7 @@ import { RequestBooking, SlotBookingService } from '../../../../services/slot-bo
 import { NotificationTypes } from '../../../app.enums';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgIfContext } from '@angular/common';
 
 
 @Component({
@@ -28,6 +29,9 @@ export class TutorDetailComponent {
   public totalGrade:any[] = []
   public totalGrades: number = 0 
   public consultDialog: boolean = false;
+  public allConsultancy:any[] = []
+  public consultancyDate:any[] = [];
+  public enableTimeFrame:boolean = true
   public generalConsultancy: GeneralConsultancy = {
     TutorId: '',
     EventStartTime: '',
@@ -40,13 +44,15 @@ export class TutorDetailComponent {
     { value:'60', label:60},
     { value:'90', label:90}
   ]
+  public frameTimeSet:boolean = true 
+
   constructor(
     private tutorService: TutorService,
     private eventService: EventService,
     private router: ActivatedRoute,
     private studentService: StudentService,
-    private spinnerService: SpinnerService,
     private toastr: ToastrService,
+    private spinnerService: SpinnerService,
     private slotBookingService: SlotBookingService,
     // private toastr: ToastrService,
   ) { }
@@ -60,7 +66,6 @@ export class TutorDetailComponent {
   public getTutorEvents(tutorId: string) {
     this.eventService.getEvents(tutorId).subscribe(response => {
       this.events = response;
-
       const todayDateTime = new Date();
       const data: any[] = [];
       this.events!.forEach(x => {
@@ -68,28 +73,30 @@ export class TutorDetailComponent {
         if (!x.IsOneOnOne && eventdate >= todayDateTime ) {
           data.push(x)
         }
+
       })
       this.events = data;
       console.log(this.events)
-      this.loadAvalabilites(tutorId);
+      // this.loadAvalabilites(tutorId);
     })
   }
 
-  public loadAvalabilites(tutorId: string) {
-    this.tutorService.getAllAvalabilities(tutorId).subscribe(response => {
-      this.sortedAvailabilities = response;
+  // public loadAvalabilites(tutorId: string) {
+  //   this.tutorService.getAllAvalabilities(tutorId).subscribe(response => {
+  //     this.sortedAvailabilities = response;
 
-      // this.totalCounters();
-      this.sortedAvailabilities = this.sortedAvailabilities.sort((el, compareEl) => {
-        return this.dayOrder.indexOf(el.Day) - this.dayOrder.indexOf(compareEl.Day)
-      })
-    });
-  }
+  //     // this.totalCounters();
+  //     this.sortedAvailabilities = this.sortedAvailabilities.sort((el, compareEl) => {
+  //       return this.dayOrder.indexOf(el.Day) - this.dayOrder.indexOf(compareEl.Day)
+  //     })
+  //   });
+  // }
 
   public getTutorDetail() {
-    this.spinnerService.show();
+    this.spinnerService.show()
     this.tutorService.tutorProfile(this.tutorId).subscribe(async (response) => {      
       this.tutor = response;
+      this.spinnerService.hide();
       console.log(this.tutor)
       this.getTutorEvents(this.tutorId);
 
@@ -98,7 +105,6 @@ export class TutorDetailComponent {
           this.totalGrades += subject.Grades.length
         }
       })
-      this.spinnerService.hide();
     })
   }
 
@@ -115,39 +121,67 @@ export class TutorDetailComponent {
 
   getConsultancy() {  
     this.tutorService.getTutorConsultancy(this.tutorId).subscribe((response) => {
-      const startTime = new Date(response.StartTime);
-      const endTime = new Date(response.EndTime)
-      let i = 0;
-      while (startTime <= endTime) {
-        const hours = startTime.getHours();
-        const minutes = startTime.getMinutes();
-        const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
-        this.consultancyTimeFrames.push({value:i+1 ,label:formattedTime});
-        startTime.setMinutes(startTime.getMinutes() + 15);
-        i = i+1;      
-      }
-      this.generalConsultancy.EventStartTime = response.StartTime
-      console.log(this.generalConsultancy)
+      this.allConsultancy = response;
+      console.log(this.allConsultancy)
+      this.allConsultancy.forEach((consultancy, index) => {
+        let date = new Date(consultancy.StartTime);
+        let formattedDate = date.getFullYear() + "/" + (date.getMonth() + 1 )+ "/" + date.getDate()
+        this.consultancyDate.push({value:`Date${index+1}`, label: formattedDate})
+      })
+      console.log(this.consultancyDate)
     })
     this.consultDialog = true;
   }
   public setConsultancyMeetingTime(event:any) {
-    let meetingArr = this.consultancyTimeFrames.filter((timeFrame) => timeFrame.value == event.target.value)
-    let meetingTime = meetingArr[0];
-    const [hours, minutes] = meetingTime.label.split(':').map(Number)
-    const formattedTime = new Date()
-    formattedTime.setHours(hours, minutes)
-    this.generalConsultancy.MeetingStartTime = formattedTime
 
+    const timeFrame = this.consultancyTimeFrames.filter((timeFrame) => timeFrame.value == event.target.value);
+    const [hours, minutes] = timeFrame[0].label.split(':').map(Number);
+    let formattedTime = new Date()
+    formattedTime.setHours(hours,minutes);
+    let meetingDate = this.generalConsultancy.MeetingStartTime
+    let formattedMeetingStartTime = 
+        meetingDate?.getFullYear() + '/' + (meetingDate!.getMonth() + 1) + '/' + meetingDate?.getDate() + " " + formattedTime.getHours() + ':' + formattedTime.getMinutes()
+    this.generalConsultancy.MeetingStartTime = new Date(formattedMeetingStartTime);
+    this.frameTimeSet = false 
   }
+
+  public setConsultancyDate(event:any) {
+    this.consultancyTimeFrames = []
+    let date = this.consultancyDate.filter((date) => date.value === event.target.value);
+    let formattedDate = new Date(date[0].label);
+    let selectedFormattedDate = formattedDate.getFullYear() + "/" + (formattedDate.getMonth() + 1) + "/" + formattedDate.getDate()
+    this.allConsultancy.forEach((consultancy) => {
+      let date = new Date(consultancy.StartTime);
+      let innerFormattedDate = date.getFullYear() + "/" + (date.getMonth() + 1)+ "/" + date.getDate();
+      if (selectedFormattedDate === innerFormattedDate) {
+        const startTime = new Date(consultancy.StartTime);
+        const endTime = new Date(consultancy.EndTime);
+        let i = 0;
+        while (startTime <= endTime) {
+          const hours = startTime.getHours();
+          const minutes = startTime.getMinutes();
+          const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+          this.consultancyTimeFrames.push({value:i+1 ,label:formattedTime});
+          startTime.setMinutes(startTime.getMinutes() + 15);
+          i = i+1;      
+        }
+        this.generalConsultancy.EventStartTime = consultancy.StartTime
+        this.generalConsultancy.MeetingStartTime = formattedDate
+        this.enableTimeFrame = false
+      }
+    })
+  } 
+
   public setConsultancyDuration(event:any) {
     let DurationArr = this.consultancyDuration.filter((duration) => duration.value == event.target.value);
     let duration = DurationArr[0];
     this.generalConsultancy.Duration = duration.label;
     console.log(this.generalConsultancy)
   }
+  
   public enrollInGeneralConsultancy() {
     this.generalConsultancy.TutorId = this.tutorId;
+    
     console.log(this.generalConsultancy)
     this.slotBookingService.saveGeneralConsultancyRequest(this.generalConsultancy).subscribe((response) => {
       console.log(response)
@@ -164,11 +198,9 @@ export class TutorDetailComponent {
   }
 
   public enRollClass(event: Event) {
-    this.spinnerService.show();
     const model: RequestBooking = new RequestBooking(event.TutorId!, event.EventStartTime)
     this.slotBookingService.slotBookingRequest(model).subscribe(response => {
       if (response.Success) {
-        this.spinnerService.hide();
         this.toastr.success(
           'Success',
           'Student enroll this class successfully'
@@ -179,7 +211,6 @@ export class TutorDetailComponent {
           'Error',
           response.ResponseMessage
         );
-       this.spinnerService.hide();
       }
     })
   }

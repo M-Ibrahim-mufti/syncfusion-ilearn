@@ -181,6 +181,7 @@ export class Tutor {
 
 }
 
+
 export class GeneralConsultancy {
   TutorId?:string;
   EventStartTime?:string;
