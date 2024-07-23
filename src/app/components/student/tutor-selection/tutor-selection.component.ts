@@ -1,5 +1,5 @@
 import { Tutor, TutorRequest, TutorService, TutorSubject, ShowTutor, TutorAvailability } from './../../../../services/tutor.service';
-import { Component } from '@angular/core';
+import { Component,ElementRef, Renderer2, ViewChildren,ViewChild ,AfterViewInit, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
 import { StudentService } from '../../../../services/student.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
@@ -47,11 +47,15 @@ export class TutorSelectionComponent {
   public selectedTimegroup!: number
   public selectedTutorAvailibilities: any = []
   public availabilityCont: string = ''
+  @ViewChildren('tutorCard') tutorCards!: QueryList<ElementRef>;
+  @ViewChild('availabilityContainer') availabilityContainers!: ElementRef;
+  public availabilityContainerHeight: number | null = null;
 
   constructor( private spinnerService:SpinnerService,
                private tutorService: TutorService,
                private studentService: StudentService,
                private router: Router,
+               private renderer: Renderer2
   ) { 
     this.TimeGroup.unshift({
       label:'Select Timegroup', value: -1
@@ -63,7 +67,18 @@ export class TutorSelectionComponent {
     this.getTutors();
   }
 
-  private getTutors(filters: TutorRequest ={}) {
+  ngAfterViewInit() {
+    // Initial height set for all tutor cards
+    this.tutorCards.forEach((tutorCard, index) => {
+      const height = tutorCard.nativeElement.offsetHeight;
+      const availabilityContainer = this.availabilityContainers.nativeElement;
+      if (availabilityContainer) {
+        this.renderer.setStyle(availabilityContainer.nativeElement, 'height', `${height}px`);
+      }
+    });
+  }
+
+  private getTutors(filters: TutorRequest = {}) {
     this.spinnerService.show();
     this.tutorService.getTutor(filters).subscribe(tutors => {
       this.spinnerService.hide();
@@ -80,13 +95,24 @@ export class TutorSelectionComponent {
     })
   }
 
-  public getTutorAvailabilities(tutorId:string) {
+  public getTutorAvailabilities(tutorId:string, index:number) {
     this.selectedTutorAvailibilities = []
     this.tutorAvailaibility.forEach((availibility) => {
         if (availibility.TutorId === tutorId){
           this.selectedTutorAvailibilities.push(availibility)
         }
     })
+    setTimeout(() => {
+      const tutorCard = this.tutorCards.toArray()[index];
+      const availabilityContainer = this.availabilityContainers;
+      console.log(tutorCard, availabilityContainer)
+      
+      if (tutorCard && availabilityContainer) {
+        const height = tutorCard.nativeElement.firstChild.offsetHeight;
+        console.log(height)
+        this.renderer.setStyle(availabilityContainer.nativeElement, 'max-height', `${height}px`);
+      }
+    }, 0);
     this.availabilityCont = tutorId
   }
 

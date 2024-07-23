@@ -70,8 +70,8 @@
 </div>  -->
 <div class="row g-5 mx-1 my-2 bg-white rounded-2">
     <ng-container *ngFor="let tutor of availableTutor; let i = index">
-        <div class="col-md-8 mb-2 px-3">
-            <div class="border border-2 border-dull-white rounded-3 shadows py-5 px-4" (mouseenter)="getTutorAvailabilities(tutor.Id)">
+        <div class="col-md-8 mb-2 px-3" #tutorCard>
+            <div class=" border border-2 border-dull-white rounded-3 shadows py-3 px-4" (mouseenter)="getTutorAvailabilities(tutor.Id, i)">
                 <div class="mx-3 d-flex gap-2">
                     <div class="col-md-2 text-center neg-margin mt-0">
                         <img class="rounded-3" style="object-fit:cover; width: 120px; height: 120px; background-color: #f2f2f2;" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
@@ -83,14 +83,14 @@
                                     <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708"/>
                                 </svg>
                             </h5>
-                            <!-- <p class="mb-1 text-muted fw-bold">{{tutor.Qualifications}}</p> -->
+                            <p class="text-muted mb-0 fw-semibold">Qualified in : {{tutor.Degree}}</p>
                             <p class="bg-secondary mb-0 text-muted rounded-2 fw-bolder ST-width mt-1 py-1 px-4" *ngIf="tutor.TotalMeetings >= 5">Super Tutor</p>
                             <p class="text-muted mb-0 fw-semibold">{{tutor.TotalStudents}} active students</p>
                             <span class="text-muted fw-semibold">{{tutor.TotalMeetings}} lectures</span>
                             <div class="d-flex gap-3 mb-1">
                                 <span class="py-1 px-4 bg-secondary rounded-2 text-muted fw-bolder" *ngFor="let subject of tutor.TutorSubjects">{{subject.SubjectName}}</span>
                             </div>
-                            <p class="text-muted fw-semibold">
+                            <p class="text-muted mb-1 description-style fw-semibold">
                                 {{ tutor.isExpanded ? tutor.AboutMe : (tutor.AboutMe | slice:0:150) + '...' }}
                             </p>
                             <p class="text-primary cursor-pointer fw-semibold" (click)="toggleReadMore(i)">
@@ -104,7 +104,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="tutor.Id === availabilityCont" class="overflow-scroll availability-cont-height col-md-3 py-2 px-0 shadows rounded-3 border border-2 border-dull-white mb-2 mx-3">
+        <div *ngIf="tutor.Id === availabilityCont" #availabilityContainer class="overflow-scroll availability-cont-height py-2 px-0 shadows rounded-3 border border-2 border-dull-white mb-2 mx-3">
             <div *ngIf="tutor" class="col-md-12">
                 <div class="border-bottom px-3 py-2">
                   <h3 class="mb-0 card-title fw-bolder text-dark">{{tutor.FullName}} Availabilities</h3>
