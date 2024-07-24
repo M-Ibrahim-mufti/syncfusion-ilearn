@@ -347,7 +347,8 @@ export class TutorDetailComponent {
             startTime.setMinutes(startTime.getMinutes() + 15);
             i = i + 1;
           }
-
+          this.generalConsultancy.EventStartTime = consultancy.StartTime;
+          this.generalConsultancy.MeetingStartTime = selectedDate;
           this.enableTimeFrame = false;
         }
       });

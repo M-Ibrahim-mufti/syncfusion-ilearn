@@ -134,8 +134,6 @@ export class AvailabilitySelectionComponent implements OnInit {
     }
 
     public onPopupOpen(args: PopupOpenEventArgs): void {
-        console.log(args.type);
-
         if (args.type === 'Editor' || args.type === 'QuickInfo') {
             // Remove existing custom field rows if they exist
             const existingCustomRows = args.element.querySelectorAll('.custom-field-row');
