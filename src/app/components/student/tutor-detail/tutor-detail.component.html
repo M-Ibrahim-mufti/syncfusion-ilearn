@@ -74,29 +74,38 @@
                 <div class="my-2 px-3 border-bottom border-1">
                     <h5 class="text-muted">Group Events of {{tutor.Name}}</h5>
                 </div>
-                <div class="py-2 px-3">
-                    <div class="d-flex my-2 grouping-container flex-column gap-2">
-                        <div *ngFor="let event of events" class="group-hover  col-md-12 d-flex justify-content-between e-info align-items-center bg-transparent border border-1 border-dull white rounded-2" >
-                            <div class="mx-3 col-md-8 py-2">
-                                <div class="d-flex">
-                                    <span class="w-25 text-muted-dark fw-bold">Event Title</span>
-                                    <h6 class="mb-0  text-muted-dark fw-semibold"> : {{event.Name}}</h6>
-                                </div>
-                                <div class="d-flex">
-                                    <span class="w-25 text-muted-dark fw-bold">Start Time</span>
-                                    <p class="mb-0 text-muted fw-semibold"> : {{event.EventStartTime | date: 'hh:mm a'}}</p>
-                                </div>
-                                <div class="d-flex">
-                                    <span class="w-25 text-muted-dark fw-bold">Duration</span>
-                                    <p class="mb-0 text-muted fw-semibold"> : {{event.Duration}} mins </p>
-                                </div>
+                <div class="d-flex py-4 px-4 grouping-container flex-column gap-3">
+                    <div *ngFor="let event of events; let i = index;" class="mb-2 position-relative group-hover col-md-12 d-flex justify-content-between align-items-center bg-transparent border border-1 border-dull white rounded-2" >
+                        <div class="mx-3 col-md-8 py-2">
+                            <ejs-tooltip content="Number of student enrolled in this class" class="number-of-Student-enrolled  text-white text-center fw-bold"> 
+                                <div class="">
+                                    {{event.ApprovedStudentCount}}/50
+                                </div> 
+                            </ejs-tooltip>
+                            <div class="d-flex">
+                                <span class="w-25 text-muted-dark fw-bold">Event Title</span>
+                                <h6 class="mb-0  text-muted-dark fw-semibold"> : {{event.Name}}</h6>
                             </div>
-                            <div class="col-md-3">
-                                <button ejs-button (click)="enRollClass(event)" class="e-info px-3 rounded-2 py-1"> Enroll </button>
+                            <div class="d-flex">
+                                <span class="w-25 text-muted-dark fw-bold">Start Time</span>
+                                <p class="mb-0 text-muted fw-semibold"> : {{event.EventStartTime | date: 'hh:mm a'}}</p>
+                            </div>
+                            <div class="d-flex">
+                                <span class="w-25 text-muted-dark fw-bold">Duration</span>
+                                <p class="mb-0 text-muted fw-semibold"> : {{event.Duration}} mins </p>
+                            </div>
+                            <div *ngIf="event.ClassCount === 0 || event.ClassDay || event.ClassRepeat " class="d-flex">
+                                <span class="w-25 text-muted-dark fw-bold">Repetition</span>
+                                <p class="mb-0 text-muted fw-semibold">
+                                    {{event.ClassCount }} {{event.ClassCount > 1 ? 'classes' : 'class'}} Every {{event.ClassDay}} on {{event.ClassRepeat}} basis  
+                                </p>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <button ejs-button (click)="enRollClass(event)" class="e-info px-3 rounded-2 py-1"> Enroll </button>
+                        </div>
                     </div>
-                </div>
+                </div>               
             </div>
         </div>
     </div>
@@ -123,6 +132,7 @@
                     (navigated)="onNavigated($event)"
                     (change)="setConsultancyDate($event)"
                     placeholder="Select a date"
+                    class="consult-timeframe-width"
             ></ejs-datepicker>
             <div class="form-group consult-timeframe-width">
                 <label class="form-label">Select Time Frame</label>
@@ -134,8 +144,7 @@
             <div class="form-group consult-timeframe-width">
                 <label class="form-label">Select Duration</label>
                 <select (change)="setConsultancyDuration($event)" class="form-select form-control form-select-sm">
-                    <option value="-1" selected disabled> Select Duration </option>
-                    <option *ngFor="let duration of consultancyDuration" [value]="duration.value">{{duration.label}}</option>
+                    <option *ngFor="let duration of consultancyDuration" [disabled]="duration.value === '-1'" [selected]="duration.value === '-1'" [value]="duration.value">{{duration.label}}</option>
                 </select>
             </div>
             <div class="form-group consult-timeframe-width">

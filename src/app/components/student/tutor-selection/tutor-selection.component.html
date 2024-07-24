@@ -71,7 +71,7 @@
 <div class="row g-5 mx-1 my-2 bg-white rounded-2">
     <ng-container *ngFor="let tutor of availableTutor; let i = index">
         <div class="col-md-8 mb-2 px-3" #tutorCard>
-            <div class=" border border-2 border-dull-white rounded-3 shadows py-3 px-4" (mouseenter)="getTutorAvailabilities(tutor.Id, i)">
+            <div class=" border border-2 border-dull-white rounded-3 shadows py-3 px-4" (mouseenter)="getTutorEvents(tutor.Id, i)">
                 <div class="mx-3 d-flex gap-2">
                     <div class="col-md-2 text-center neg-margin mt-0">
                         <img class="rounded-3" style="object-fit:cover; width: 120px; height: 120px; background-color: #f2f2f2;" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
@@ -104,21 +104,27 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="tutor.Id === availabilityCont" #availabilityContainer class="overflow-scroll availability-cont-height py-2 px-0 shadows rounded-3 border border-2 border-dull-white mb-2 mx-3">
+        <div *ngIf="tutor.Id === availabilityCont" #availabilityContainer class=" availability-cont-height py-2 px-0 shadows rounded-3 border border-2 border-dull-white mb-2 mx-3">
             <div *ngIf="tutor" class="col-md-12">
                 <div class="border-bottom px-3 py-2">
-                  <h3 class="mb-0 card-title fw-bolder text-dark">{{tutor.FullName}} Availabilities</h3>
+                  <h3 class="mb-0 card-title fw-bolder text-dark">{{tutor.FullName}} Classes</h3>
                 </div>
-                <div class="card-body pt-2">
-                  <div class="d-flex align-items-center pt-2 mb-3" *ngFor="let availability of selectedTutorAvailibilities">
+                <div class="card-body pt-2 overflow-y-scroll max-height-scroll">
+                  <div class="d-flex align-items-center pt-2 mb-3" *ngFor="let event of tutorEvents">
                     <span class="bullet bullet-vertical h-40px bg-primary"></span>
                     <div class="flex-grow-1 ms-3">
-                      <span class="text-muted text-hover-primary fw-bolder fs-6">
-                      {{availability.Day + (availability.Day === 'Wed' ? "enesday" : availability.Day === 'Thu' ?  "rsday" : availability.Day === 'Tue' ? "sday"  : availability.Day === 'Sat' ? 'urday' : "day"  ) }}
-                      </span>
-                      <span class="text-muted fw-semibold d-block">
-                        Time frame starts from {{availability.OpenTimeHours}}:{{availability.OpenTimeMinutes < 10 ? '0' + availability.OpenTimeMinutes : availability.OpenTimeMinutes}} — {{availability.CloseTimeHours}}:{{availability.CloseTimeMinutes < 10 ? '0' + availability.CloseTimeMinutes : availability.CloseTimeMinutes}}
-                      </span>
+                        <div class="d-flex">
+                            <span class="w-25 text-muted-dark fw-bold">Title</span>
+                            <p class="mb-0 text-muted fw-semibold"> : {{event.Title}}</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="w-25 text-muted-dark fw-bold">Start Time</span>
+                            <p class="mb-0 text-muted fw-semibold"> : {{event.EventStartTime | date: 'hh:mm a'}}</p>
+                        </div>
+                        <div class="d-flex">
+                            <span class="w-25 text-muted-dark fw-bold">Duration</span>
+                            <p class="mb-0 text-muted fw-semibold"> : {{event.Duration}}</p>
+                        </div>
                     </div>
                   </div>
                 </div>

@@ -42,11 +42,7 @@ export class TutorDetailComponent {
     Title:''  
   };
   public consultancyTimeFrames:any[] = [];
-  public consultancyDuration:any[] =[
-    { value:'30', label:30},
-    { value:'60', label:60},
-    { value:'90', label:90}
-  ]
+  public consultancyDuration:any[] = []
   public frameTimeSet:boolean = true 
 
   constructor(
@@ -128,6 +124,19 @@ export class TutorDetailComponent {
 
 
   getConsultancy() {
+    this.generalConsultancy.Title = '';
+    this.consultancyTimeFrames = [];
+    this.consultancyDate = [];
+    this.consultancyDuration.push(
+      { value: '-1', label: "Select Duration" },
+      { value:'30', label:30},
+      { value:'60', label:60},
+      { value:'90', label:90}
+    )
+    console.log(this.consultancyDuration)
+
+    // this.consultancyDuration = []; 
+
     this.tutorService.getTutorConsultancy(this.tutorId).subscribe((response) => {
       // Clear the enabledDates array
       this.allConsultancy = response;
@@ -375,8 +384,22 @@ export class TutorDetailComponent {
   
   public enrollInGeneralConsultancy() {
     this.generalConsultancy.TutorId = this.tutorId;
-
+    this.spinnerService.show();
     this.slotBookingService.saveGeneralConsultancyRequest(this.generalConsultancy).subscribe((response) => {
+      if(response.success) {
+        this.toastr.success(
+          'success',
+          'Enrolled Successfully'
+        )
+      } else {
+        this.toastr.error(
+          "danger",
+          response.ResponseMessage
+        )
+      }
+      this.consultDialog = false
+      this.consultancyDuration = [];
+      this.spinnerService.hide();
     })
   }
 
@@ -390,6 +413,7 @@ export class TutorDetailComponent {
   }
 
   public enRollClass(event: Event) {
+    this.spinnerService.show();
     const model: RequestBooking = new RequestBooking(event.TutorId!, event.EventStartTime)
     this.slotBookingService.slotBookingRequest(model).subscribe(response => {
       if (response.Success) {
@@ -404,6 +428,7 @@ export class TutorDetailComponent {
           response.ResponseMessage
         );
       }
+      this.spinnerService.hide();
     })
   }
   

@@ -63,6 +63,10 @@ export class Event{
   EventStartTime!:Date
   SubjectName?:string
   Day!:string
+  ApprovedStudentCount!:number
+  ClassCount!:number
+  ClassDay!:string
+  ClassRepeat!:string
 }
 
 export class SelectItem{

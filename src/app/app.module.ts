@@ -47,6 +47,7 @@ import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 import { StepperModule, StepperAllModule } from '@syncfusion/ej2-angular-navigations';
 import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { DatePickerModule, CalendarModule} from '@syncfusion/ej2-angular-calendars';
+import { TooltipAllModule } from '@syncfusion/ej2-angular-popups';
 
 //thirdparty imports
 import { ToastrModule } from 'ngx-toastr';
@@ -129,7 +130,8 @@ export function getTokenFactory(injector: Injector) {
         SchedulerComponent,
         RichTextEditorModule,
         DatePickerModule,
-        CalendarModule
+        CalendarModule,
+        TooltipAllModule
 
     ],
   exports: [RouterModule],

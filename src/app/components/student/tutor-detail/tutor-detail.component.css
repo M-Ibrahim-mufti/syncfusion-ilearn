@@ -202,6 +202,23 @@
 }
 
 .group-hover:hover {
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    transform: translateY(-6px);
     transition: all .3s linear;
+}
+
+.number-of-Student-enrolled{
+    position: absolute;
+    top: -5px;
+    right: -20px;
+    width: 60px;
+    height: 25px;
+    z-index: 5;
+    transform: rotate(45deg);
+    border-radius: 6px;
+    background-color: rgba(255, 0, 0,0.6);
+
+}
+
+::ng-deep .e-date-wrapper {
+    margin-top: 20px;
 }
