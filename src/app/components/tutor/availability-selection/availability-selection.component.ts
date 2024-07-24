@@ -248,13 +248,8 @@ export class AvailabilitySelectionComponent implements OnInit {
         }
     }
 
-
-
-
-
     public onChangeMeetingType(data: ChangeEventArgs) {
         console.log(data);
-        // Implement your logic for meeting type change here
     }
 
     public classMetaData: ClassMetaData[] = [];

@@ -1,14 +1,11 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { TutorService, Tutor, TutorAvailability, GeneralConsultancy } from '../../../../services/tutor.service';
 import { ActivatedRoute } from '@angular/router';
 import { Event,GroupedAvailabilities,EventService, SelectItem } from '../../../../services/event.service';
 import { StudentService } from '../../../../services/student.service';
 import { RequestBooking, SlotBookingService } from '../../../../services/slot-booking.service';
-import { NotificationTypes } from '../../../app.enums';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { ToastrService } from 'ngx-toastr';
-import { NgIfContext } from '@angular/common';
-import { generate } from '@syncfusion/ej2-schedule';
 import {DatePickerComponent} from "@syncfusion/ej2-angular-calendars";
 
 
@@ -37,14 +34,20 @@ export class TutorDetailComponent {
   public generalConsultancy: GeneralConsultancy = {
     TutorId: '',
     EventStartTime: '',
-    MeetingStartTime: new Date(),
+    MeetingStartTime: undefined,
     Duration: 0,  
     Comment:''  
   };
   public indexes :any[]= [] 
   public consultancyTimeFrames:any[] = [];
   public consultancyDuration:any[] = []
-  public frameTimeSet:boolean = true 
+  public frameTimeSet:boolean = true
+  public enabledDates: Date[] = [];
+  avalabilityDates: Date[] = [];
+  private currentViewMonth: number = new Date().getMonth(); // Track current month
+  private currentViewYear: number = new Date().getFullYear(); // Track current year
+  @ViewChild('datepicker', { static: false }) datepicker!: DatePickerComponent;
+
 
   constructor(
     private tutorService: TutorService,
@@ -54,7 +57,6 @@ export class TutorDetailComponent {
     private toastr: ToastrService,
     private spinnerService: SpinnerService,
     private slotBookingService: SlotBookingService,
-    private cdr: ChangeDetectorRef
     // private toastr: ToastrService,
   ) { }
 
@@ -124,13 +126,6 @@ export class TutorDetailComponent {
     })
   }
 
-  public enabledDates: Date[] = [];
-  avalabilityDates: Date[] = [];
-  private currentViewMonth: number = new Date().getMonth(); // Track current month
-  private currentViewYear: number = new Date().getFullYear(); // Track current year
-  @ViewChild('datepicker', { static: false }) datepicker!: DatePickerComponent;
-
-
   getConsultancy() {
     this.generalConsultancy.Comment = '';
     this.consultancyTimeFrames = [];
@@ -199,7 +194,7 @@ export class TutorDetailComponent {
     const interval = parseInt(ruleParts.find(part => part[0] === 'INTERVAL')?.[1] || '1', 10);
     const count = parseInt(ruleParts.find(part => part[0] === 'COUNT')?.[1] || '1', 10);
     const byDay = ruleParts.find(part => part[0] === 'BYDAY')?.[1]?.split(',') || [];
-    const bySetPos = ruleParts.find(part => part[0] === 'BYSETPOS')?.[1] || '1';
+    const byMonthDay = ruleParts.find(part => part[0] === 'BYMONTHDAY')?.[1] || '1';
 
     let currentDate = new Date(startDate);
 
@@ -236,15 +231,15 @@ export class TutorDetailComponent {
       let occurrences = 0;
       while (occurrences < count) {
         // Calculate the target date for the current month
-        let targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(bySetPos, 10));
+        let targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(byMonthDay, 10));
         if (dayIndex !== -1) {
           const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
           const daysUntilTargetDay = (dayIndex - firstDayOfMonth + 7) % 7;
-          targetDate.setDate(parseInt(bySetPos, 10) + daysUntilTargetDay);
+          targetDate.setDate(parseInt(byMonthDay, 10) + daysUntilTargetDay);
 
           // Adjust if the target date is beyond the days of the month
           if (targetDate.getDate() > daysInMonth) {
-            targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, parseInt(bySetPos, 10));
+            targetDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, parseInt(byMonthDay, 10));
           }
         }
 
@@ -255,22 +250,13 @@ export class TutorDetailComponent {
         occurrences++;
       }
     }
-
     return dates;
   }
-
-
-
   getDayIndex(dayOfWeek: string): number {
     const dayNames = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
     const index = dayNames.indexOf(dayOfWeek);
     return index !== -1 ? index : -1;
   }
-
-
-
-
-
   isEnabled(date: Date): boolean {
     return this.enabledDates.some(enabledDate =>
         enabledDate.getFullYear() === date.getFullYear() &&
@@ -278,7 +264,6 @@ export class TutorDetailComponent {
         enabledDate.getDate() === date.getDate()
     );
   }
-
   renderDayCell(args: any): void {
     if (!this.isEnabled(args.date)) {
       args.element.classList.add('e-disabled');
@@ -288,7 +273,6 @@ export class TutorDetailComponent {
       args.isDisabled = false;
     }
   }
-
   onNavigated(args: any): void {
     if (args && args.date) {
       this.currentViewMonth = args.date.getMonth();
@@ -298,7 +282,6 @@ export class TutorDetailComponent {
       console.error('ViewDate is undefined in navigated event.');
     }
   }
-
   updateEnabledDatesForView(): void {
     // Clear the enabledDates array
     this.enabledDates = [];
@@ -324,11 +307,7 @@ export class TutorDetailComponent {
     });
     this.datepicker?.refresh();
   }
-
-
-
   public setConsultancyMeetingTime(event:any) {
-
     const timeFrame = this.consultancyTimeFrames.filter((timeFrame) => timeFrame.value == event.target.value);
     const [hours, minutes] = timeFrame[0].label.split(':').map(Number);
     let formattedTime = new Date()
@@ -339,14 +318,11 @@ export class TutorDetailComponent {
     this.generalConsultancy.MeetingStartTime = new Date(formattedMeetingStartTime);
     this.frameTimeSet = false 
   }
-
   public setConsultancyDate(event: any) {
     this.consultancyTimeFrames = [];
     const selectedDate = new Date(event.value);
-
     // Format the selected date as YYYY/MM/DD
     const selectedFormattedDate = `${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}/${selectedDate.getDate()}`;
-
     this.allConsultancy.forEach((consultancy: any) => {
       // Generate all dates for the consultancy based on recurrence rules or single date
       let datesToCheck: Date[] = [];
@@ -355,7 +331,6 @@ export class TutorDetailComponent {
       } else {
         datesToCheck.push(new Date(consultancy.StartTime));
       }
-
       datesToCheck.forEach(date => {
         // Format the date to YYYY/MM/DD
         const consultancyFormattedDate = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
@@ -364,7 +339,6 @@ export class TutorDetailComponent {
           const startTime = new Date(consultancy.StartTime);
           const endTime = new Date(consultancy.EndTime);
           let i = 0;
-
           while (startTime <= endTime) {
             const hours = startTime.getHours();
             const minutes = startTime.getMinutes();
@@ -374,15 +348,25 @@ export class TutorDetailComponent {
             i = i + 1;
           }
 
-          this.generalConsultancy.EventStartTime = consultancy.StartTime;
-          this.generalConsultancy.MeetingStartTime = selectedDate;
           this.enableTimeFrame = false;
         }
       });
     });
   }
-
-
+  closeDialogForConsult(){
+    this.resetDatePicker();
+    this.consultDialog = false;
+    this.consultancyDuration = [];
+    this.enabledDates = [];
+    this.consultancyTimeFrames = [];
+    this.enableTimeFrame = true;
+    this.generalConsultancy.EventStartTime = undefined;
+    this.generalConsultancy.MeetingStartTime = undefined;
+    this.generalConsultancy.Comment = ''
+  }
+  resetDatePicker() {
+    this.datepicker!.value = null as any; // Cast null to any to avoid type error
+  }
   public setConsultancyDuration(event:any) {
     let DurationArr = this.consultancyDuration.filter((duration) => duration.value == event.target.value);
     let duration = DurationArr[0];

@@ -115,7 +115,7 @@
     </div>
 </div>
 
-<ejs-dialog *ngIf="tutor" [footerTemplate]="consultancyFooter" [isModal]="true" [visible]="consultDialog" [width]="500" [showCloseIcon]="true" [isModal]="true" (close)="consultDialog = false">
+<ejs-dialog *ngIf="tutor" [footerTemplate]="consultancyFooter" [isModal]="true" [visible]="consultDialog" [width]="500" [showCloseIcon]="true" [isModal]="true" (close)="closeDialogForConsult()">
     <ng-template #header>
         <h5 class="text-muted-dark mb-0 fw-bold">Consult with {{tutor.Name}}</h5>
     </ng-template>
@@ -136,7 +136,7 @@
             <div class="form-group consult-timeframe-width">
                 <label class="form-label">Select Time Frame</label>
                 <select [disabled]="enableTimeFrame" (change)="setConsultancyMeetingTime($event)" class="form-select form-control form-select-sm">
-                    <option value="-1" selected disabled> Select Time frame </option>
+                    <option value="-1" [selected]="generalConsultancy.MeetingStartTime == undefined" disabled> Select Time frame </option>
                     <option *ngFor="let time of consultancyTimeFrames" [value]="time.value" > {{time.label}} </option>
                 </select>
             </div>
