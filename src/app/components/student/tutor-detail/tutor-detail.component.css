@@ -222,3 +222,18 @@
 ::ng-deep .e-date-wrapper {
     margin-top: 20px;
 }
+
+.event-button-width {
+    width: 20%;
+    flex: 0 0 auto
+}
+
+.event-title-width {
+    width: 20%;
+}
+
+
+/* 
+::ng-deep #Certification , #WorkHistory, #Qualification ul  {
+    margin-left: 20px!important;
+} */

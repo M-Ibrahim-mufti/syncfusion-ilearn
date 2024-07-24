@@ -39,8 +39,9 @@ export class TutorDetailComponent {
     EventStartTime: '',
     MeetingStartTime: new Date(),
     Duration: 0,  
-    Title:''  
+    Comment:''  
   };
+  public indexes :any[]= [] 
   public consultancyTimeFrames:any[] = [];
   public consultancyDuration:any[] = []
   public frameTimeSet:boolean = true 
@@ -97,6 +98,13 @@ export class TutorDetailComponent {
       this.tutor = await response;      
       this.getTutorEvents(this.tutorId);
       this.spinnerService.hide();
+      this.tutorService.getTutorEditorDetails(this.tutorId).subscribe((response) => {
+        console.log(response)
+        this.tutor.Certification = response.Certification;
+        this.tutor.WorkHistory = response.WorkHistory;
+        this.tutor.Qualifications = response.Qualifications;
+      })
+
       this.tutor.TutorSubjects.forEach((subject) => {
         if(subject.Grades.length > 0) {
           this.totalGrades += subject.Grades.length
@@ -124,7 +132,7 @@ export class TutorDetailComponent {
 
 
   getConsultancy() {
-    this.generalConsultancy.Title = '';
+    this.generalConsultancy.Comment = '';
     this.consultancyTimeFrames = [];
     this.consultancyDate = [];
     this.consultancyDuration.push(
@@ -368,7 +376,6 @@ export class TutorDetailComponent {
 
           this.generalConsultancy.EventStartTime = consultancy.StartTime;
           this.generalConsultancy.MeetingStartTime = selectedDate;
-          this.generalConsultancy.Title = consultancy.Title;
           this.enableTimeFrame = false;
         }
       });
@@ -412,7 +419,7 @@ export class TutorDetailComponent {
     }
   }
 
-  public enRollClass(event: Event) {
+  public enRollClass(event: Event, index:number) {
     this.spinnerService.show();
     const model: RequestBooking = new RequestBooking(event.TutorId!, event.EventStartTime)
     this.slotBookingService.slotBookingRequest(model).subscribe(response => {
@@ -428,6 +435,7 @@ export class TutorDetailComponent {
           response.ResponseMessage
         );
       }
+      this.indexes.push(index);
       this.spinnerService.hide();
     })
   }

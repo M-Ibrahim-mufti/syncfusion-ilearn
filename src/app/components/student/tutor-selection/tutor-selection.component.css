@@ -162,6 +162,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    height: 60px;
 }
 
 .bullet-vertical::before {
@@ -191,6 +192,6 @@
 }
 
 .max-height-scroll {
-    scrollbar-width: thin;
+    scrollbar-width: thin;  
     scrollbar-color: #f1f1f1 white
 }

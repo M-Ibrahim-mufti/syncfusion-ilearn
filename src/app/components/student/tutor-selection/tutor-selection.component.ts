@@ -94,15 +94,26 @@ export class TutorSelectionComponent {
 
   public getTutorEvents(tutorId:string, index:number) {
     const tutor = this.availableTutor.filter((tutor) => tutor.Id === tutorId);
-    this.tutorEvents = tutor[0].CreateEvents ? tutor[0].CreateEvents.filter((event) => event.IsOneOnOne === false) : [];
+    const todayDate = new Date()
+    this.tutorEvents = tutor[0].CreateEvents ? tutor[0].CreateEvents.filter((event) => {
+      const eventDate = new Date(event.EventStartTime)
+      if(!event.IsOneOnOne && eventDate >= todayDate) {
+        return event
+      }
+      return
+    }) : [];
     console.log(this.tutorEvents)
     setTimeout(() => {
       const tutorCard = this.tutorCards.toArray()[index];
       const availabilityContainer = this.availabilityContainers;
-      
+
       if (tutorCard && availabilityContainer) {
         const height = tutorCard.nativeElement.firstChild.offsetHeight;
         this.renderer.setStyle(availabilityContainer.nativeElement, 'max-height', `${height}px`);
+        const firstChild = this.availabilityContainers.nativeElement.firstChild.childNodes[0];
+        const secondChild = this.availabilityContainers.nativeElement.firstChild.childNodes[1];
+        const finalHeight = height - firstChild.offsetHeight - 10;
+        this.renderer.setStyle(secondChild, 'max-height', `${finalHeight}px`);
       }
     }, 0);
     this.availabilityCont = tutorId

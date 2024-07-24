@@ -43,9 +43,13 @@
                         <p class="col-md-12" >Email</p>
                         <input class="form-control" [(ngModel)]="user.Email" />
                     </div>
-                    <div *ngIf="isTeacher" class="text-start text-muted d-flex col-md-12 flex-column">
+                    <div *ngIf="isTeacher" class="text-start text-muted d-flex input-part-width flex-column">
                         <p class="col-md-12" >Degree</p>
                         <input class="form-control" [(ngModel)]="user.Degree" />
+                    </div>
+                    <div *ngIf="isTeacher" class="text-start text-muted d-flex input-part-width flex-column">
+                        <p class="col-md-12" >One line Title</p>
+                        <input class="form-control" [(ngModel)]="user.Title" />
                     </div>
                     <div class="text-start text-muted d-flex col-md-12 flex-column">
                         <p class="col-md-12" > Address</p>

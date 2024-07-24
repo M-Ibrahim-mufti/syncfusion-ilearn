@@ -89,6 +89,13 @@ export class TutorService extends ServiceBase {
     return this.http.get<any>(url, httpOptions);
   }
 
+  public getTutorEditorDetails(tutorId:string): Observable<any> {
+    const httpOptions = this.getRequestHeaders();
+    const api:string = `/User/${tutorId}/`;
+    const method:string = 'editor-detail'
+    const url:string = environment.BASE_API_PATH + api + method;
+    return this.http.get<any>(url, httpOptions);
+  }
 
 
 }
@@ -187,7 +194,7 @@ export class GeneralConsultancy {
   EventStartTime?:string;
   MeetingStartTime?:Date;
   Duration?:number;
-  Title!:string;
+  Comment!:string;
 }
 
 

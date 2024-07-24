@@ -51,22 +51,23 @@ export class EventService extends ServiceBase {
 }
 
 export class Event{
-  Id?:string
+  Id?:string;
   Name!: string;
-  Duration!: number
-  IsOneOnOne!: boolean
-  IsOneTime!: boolean
-  IsCompleted!: boolean
-  AvailabilityId!: string
-  SubjectId!:string
-  TutorId?: string
-  EventStartTime!:Date
-  SubjectName?:string
-  Day!:string
-  ApprovedStudentCount!:number
-  ClassCount!:number
-  ClassDay!:string
-  ClassRepeat!:string
+  Duration!: number;
+  IsOneOnOne!: boolean;
+  IsOneTime!: boolean;
+  IsCompleted!: boolean;
+  AvailabilityId!: string;
+  SubjectId!:string;
+  TutorId?: string;
+  EventStartTime!:Date;
+  SubjectName?:string;
+  Day!:string;
+  ApprovedStudentCount!:number;
+  ClassCount!:number;
+  ClassDay!:string;
+  ClassRepeat!:string;
+  IsEnrolled!:boolean;
 }
 
 export class SelectItem{
