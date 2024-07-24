@@ -110,6 +110,7 @@ export class TutorSelectionComponent {
       if (tutorCard && availabilityContainer) {
         const height = tutorCard.nativeElement.firstChild.offsetHeight;
         console.log(height)
+        console.log("checking")
         this.renderer.setStyle(availabilityContainer.nativeElement, 'max-height', `${height}px`);
       }
     }, 0);
