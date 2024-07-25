@@ -4,7 +4,7 @@ import { ApplicationViewStudent } from '../../../../services/student.service';
 import { StudentService } from '../../../../services/student.service';
 import { CloudinaryImageService } from '../../../../services/cloudinary-image.service';
 import { NotificationTypes } from '../../../app.enums';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthConfig, AuthService } from '../../../../services/auth.service';
 import { SelectItem } from '../../../../services/event.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { ToastrService } from 'ngx-toastr';
@@ -32,6 +32,8 @@ export class UserProfileComponent {
   isStudent: boolean = false;
   isTeacher: boolean = false;
   public StudentInfo: boolean = true 
+  public authConfig!: AuthConfig;
+  public logginUserId!: string;
 
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
@@ -64,6 +66,10 @@ export class UserProfileComponent {
     };
 
   async ngOnInit():Promise<void> {
+    this.authConfig = this.authService.getAuthConfig();
+    if(this.authConfig.IsTeacher){
+      this.logginUserId = this.authService.getUserId();
+    }
     this.getAllSubjects();
     this.getPreviousMeetings();
     this.getAllGrades();
@@ -81,8 +87,16 @@ export class UserProfileComponent {
           this.toolBarFixation();
         },300)
       }
-      this.spinner.hide();       
+      this.spinner.hide(); 
+      if(this.authConfig.IsTeacher){
+        this.tutorSevice.getTutorEditorDetails(this.logginUserId).subscribe((response) => {
+          this.user.Certification = response.Certification;
+          this.user.WorkHistory = response.WorkHistory;
+          this.user.Qualifications = response.Qualifications;
+        })
+      }        
     })
+     
   }
 
   public getSubjectGrades(event:any) {

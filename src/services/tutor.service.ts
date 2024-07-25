@@ -165,6 +165,7 @@ export class Tutor {
   Certification!:string;
   Degree!:string;
   FullName!: string;
+  Title!: string;
   Name!:string;
   Hon?: string;
   Address!: string;
