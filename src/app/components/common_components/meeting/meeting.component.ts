@@ -71,6 +71,7 @@ export class MeetingsComponent implements OnInit {
       if (this.isSameDay(meetingDate, todayDate)) {
         if(meetingEndTime >= todayDate)
           this.todayMeetings.push(meeting);
+        
       } else if (this.isTomorrow(meetingDate, todayDate)) {
         if(meetingEndTime >= todayDate)
           this.tomorrowMeetings.push(meeting);
