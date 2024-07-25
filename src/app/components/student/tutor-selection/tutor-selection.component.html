@@ -94,13 +94,13 @@
                             <p class="text-muted mb-1 description-style fw-semibold">
                                 {{ tutor.isExpanded ? tutor.AboutMe : (tutor.AboutMe | slice:0:150) + '...' }}
                             </p>
-                            <p class="text-primary cursor-pointer fw-semibold" (click)="toggleReadMore(i)">
+                            <p class="text-danger cursor-pointer fw-semibold" (click)="toggleReadMore(i)">
                                 {{ tutor.isExpanded ? 'Read Less' : 'Read More' }}
                             </p>
                         </div>
                     </div>
                     <div class="col-md-3 d-flex align-items-end justify-content-center">
-                        <button ejs-button class="px-4 py-3 e-info rounded-3" (click)="navigateTutorDetailPage(tutor)">Show Profile</button>
+                        <button ejs-button style="padding-top: 0.75rem; padding-bottom: 0.75rem;" class="px-4 e-danger rounded-3" (click)="navigateTutorDetailPage(tutor)">Show Profile</button>
                     </div>
                 </div>
             </div>
@@ -137,7 +137,7 @@
         <!-- <div class="profile-card">
             <div class="profile-header">
                 <img [src]="tutor.ImgUrl ? tutor.ImgUrl : './assets/Ilearn-assets/user-profile.png'" alt="Profile Picture" class="profile-picture">
-                <div class="profile-info">
+                <div class="profile-danger">
                     <h2 class="profile-name">{{tutor.Hon}} {{tutor.FullName}} 
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
                             <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708"/>

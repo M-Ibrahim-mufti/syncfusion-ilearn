@@ -58,12 +58,12 @@ export class UserProfileComponent {
         'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
         'Indent', 'Outdent', '|', 'CreateLink',
         'Image', '|', 'ClearFormat', 'Print',]
-    };
+  };
 
-    public quickTools: object = {
+  public quickTools: object = {
       image: [
           'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
-    };
+  };
 
   async ngOnInit():Promise<void> {
     this.authConfig = this.authService.getAuthConfig();

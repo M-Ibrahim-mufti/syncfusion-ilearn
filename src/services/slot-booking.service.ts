@@ -65,6 +65,7 @@ export class RequestBooking{
     this.EventStartTime = EventStartTime
   }
   Id!:string;
+  IsOneOnOne!:boolean;
   TutorId:string;
   EventStartTime:Date;
   Day!:string;

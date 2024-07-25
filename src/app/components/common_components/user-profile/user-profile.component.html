@@ -1,7 +1,7 @@
 <div class="row g-5 mx-3 my-4 bg-white rounded-3">
     <div class="my-3 d-flex justify-content-between mx-2">
         <h5 class="fw-bold m-0">User Profile</h5>
-        <button (click)="updateUserData()" ejs-button class="e-info fs-6 mb-2 py-2 rounded-3">Update Profile</button>
+        <button (click)="updateUserData()" ejs-button class="e-danger fs-6 mb-2 py-2 rounded-3">Update Profile</button>
     </div>
 </div>
 <div *ngIf="user" class="row gap-4 g-5 mx-3 my-1">
@@ -24,7 +24,7 @@
                 <div class="border-bottom border-dull-white d-flex justify-content-between align-items-center gap-3">
                     <h5 *ngIf="isTeacher" class="px-3 fw-bolder text-muted-dark mb-3"> Personal Information  </h5>
                     <h5 *ngIf="isStudent" class="px-3 fw-bolder text-muted-dark mb-2"> <a class="cursor-pointer" [ngClass]="{'text-primary': StudentInfo, 'text-hover': !StudentInfo }" (click)="StudentInfo = true" >Personal</a> | <a [ngClass]="{'text-primary': !StudentInfo, 'text-hover':StudentInfo }" (click)="StudentInfo = false" class="cursor-pointer">Parental</a> Information </h5>
-                    <!-- <button (click)="openEditProfileDialog()" ejs-button class="e-info mx-3 mb-3 px-4 py-2 rounded-3 ">Edit</button> -->
+                    <!-- <button (click)="openEditProfileDialog()" ejs-button class="e-danger mx-3 mb-3 px-4 py-2 rounded-3 ">Edit</button> -->
                 </div>
                 <div class="d-flex flex-row flex-wrap justify-content-between gap-3 fw-bold mt-2 px-3">
                     <div *ngIf="isTeacher" class="text-start text-muted d-flex flex-column input-part-width">
@@ -75,19 +75,10 @@
                         <p class="col-md-12" >About Me</p>
                         <textarea style="height: 90px; resize: none;" class="form-control" [(ngModel)]="user.AboutMe"></textarea>
                     </div>
-                    <div *ngIf="StudentInfo || isTeacher" class="text-start text-muted d-flex col-md-12 flex-column">
-                        <p class="col-md-12" >Subjects</p>
-                        <ejs-multiselect id="multiSubjectSelect" [(value)]="selectedSubjects" [allowObjectBinding]="true" [dataSource]="subjects" [fields]="{text:'label', value:'value'}" ></ejs-multiselect>
+                    <div class="text-start text-muted d-flex flex-column col-md-12">
+                        <p class="col-md-12">Select Subject</p>
+                        <button > Add Subject </button>
                     </div>
-                    <div *ngIf="isTeacher" class="mt-2 text-start text-muted d-flex col-md-12 flex-column">
-                        <div class="mt-2" *ngFor="let subject of selectedSubjects; let i = index">
-                            <p class="mb-0">{{subject.label}}</p>
-                            <div class="mt-2" >
-                                <p class="mb-0 col-md-12"> Select Grade </p>
-                                <ejs-multiselect (change)="checkGrades()" [(value)]="selectedSubjects[i].grades" [dataSource]="grades" [allowObjectBinding]="true" [fields]="{text:'label', value:'value'}"></ejs-multiselect>
-                            </div>
-                        </div>
-                    </div>  
                 </div>
             </div>
         </div>
@@ -127,7 +118,7 @@
                     <input placeholder="Re Enter New Password" type="password" class="form-control"/>
                 </div>
                 <div>
-                    <button ejs-button class="e-info fs-6 w-100 mb-2 py-2 rounded-3">Change Password</button>
+                    <button ejs-button class="e-danger fs-6 w-100 mb-2 py-2 rounded-3">Change Password</button>
                 </div>
             </div>
         </div>
@@ -227,6 +218,6 @@
         </div>
     </div>
     <ng-template #footerTemplate>
-        <button ejs-button class="e-info py-2 rounded-3" (click)="updateUserData()"> Update Profile </button>
+        <button ejs-button class="e-danger py-2 rounded-3" (click)="updateUserData()"> Update Profile </button>
     </ng-template>
 </ejs-dialog> -->

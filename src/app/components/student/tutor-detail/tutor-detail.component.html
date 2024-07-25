@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="position-absolute consultancy-button">
-                <button ejs-button (click)="getConsultancy()" class="px-4 py-1 e-info rounded-2"> Consult </button>
+                <button ejs-button (click)="getConsultancy()" class="px-4 py-1 e-danger rounded-2"> Consult </button>
             </div>
         </div>
         <div class="bg-white px-0 mt-2 rounded-4">
@@ -79,34 +79,30 @@
                         <div class="mx-3 col-md-9 py-2">
                             <ejs-tooltip content="Number of student enrolled in this class" class="number-of-Student-enrolled d-flex align-items-center justify-content-center text-white text-center fw-bold"> 
                                 <div style="font-size: 10px;" class="">
-                                    {{event.ApprovedStudentCount}} enrolled
+                                    {{event[0].ApprovedStudentCount}} enrolled
                                 </div> 
                             </ejs-tooltip>
                             <div class="d-flex">
                                 <span class="event-title-width text-muted-dark fw-bold">Event Title</span>
-                                <h6 class="mb-0  text-muted-dark fw-semibold"> : {{event.Name}}</h6>
+                                <h6 class="mb-0  text-muted-dark fw-semibold"> : {{event[0].Name}}</h6>
                             </div>
                             <div class="d-flex">
                                 <span class="event-title-width text-muted-dark fw-bold">Start Time</span>
-                                <p class="mb-0 text-muted fw-semibold"> : {{event.EventStartTime | date: 'hh:mm a'}}</p>
+                                <p class="mb-0 text-muted fw-semibold"> : {{event[0].EventStartTime | date: 'yyyy/MM/dd hh:mm'}}</p>
                             </div>
                             <div class="d-flex">
                                 <span class="event-title-width text-muted-dark fw-bold">Duration</span>
-                                <p class="mb-0 text-muted fw-semibold"> : {{event.Duration}} mins </p>
+                                <p class="mb-0 text-muted fw-semibold"> : {{event[0].Duration}} mins </p>
                             </div>
-                            <div *ngIf="event.ClassCount === 0 || event.ClassDay || event.ClassRepeat " class="d-flex">
+                            <div *ngIf="event[0].ClassCount === 0 || event[0].ClassDay || event[0].ClassRepeat " class="d-flex">
                                 <span class="event-title-width text-muted-dark fw-bold">Repetition</span>
                                 <p class="mb-0 text-muted fw-semibold">
-                                   : {{event.ClassCount }} {{event.ClassCount > 1 ? 'classes' : 'class'}} Every
-                                    {{event.ClassDay === 'MO' ? 'Monday' : event.ClassDay === 'TU' ? 'Tuesday' : event.ClassDay === 'WE' ? 'Wednesday' :
-                                     event.ClassDay === 'TH' ? 'Thursday' : event.ClassDay === 'FR'? 'Friday' : event.ClassDay === 'ST' ? 'Saturday' : 
-                                     event.ClassDay === 'SU' ? 'Sunday' : "Invalid Day"}} 
-                                    on {{event.ClassRepeat.toLocaleLowerCase()}} basis  
+                                   : Total {{event[0].ClassCount }} {{event[0].ClassCount > 1 ? 'classes' : 'class'}} next on {{event[1].EventStartTime | date:"yyyy/MM/dd"}}
                                 </p>
                             </div>
                         </div>
                         <div class="event-button-width">
-                            <button ejs-button [disabled]="event.IsEnrolled || indexes.includes(i)" (click)="enRollClass(event, i)" class="e-info px-3 rounded-2 py-1"> Enroll </button>
+                            <button ejs-button [disabled]="event.IsEnrolled || indexes.includes(i)" (click)="enRollClass(event[0], i)" class="e-danger px-3 rounded-2 py-1"> Enroll </button>
                         </div>
                     </div>
                 </div>               
@@ -154,7 +150,7 @@
     </div>
     <ng-template #consultancyFooter>
         <div class="py-2">
-            <button [disabled]="!generalConsultancy.EventStartTime || frameTimeSet || !generalConsultancy.Duration" (click)="enrollInGeneralConsultancy()" ejs-button class="e-info px-5 py-2 rounded-2"> Enroll </button>
+            <button [disabled]="!generalConsultancy.EventStartTime || frameTimeSet || !generalConsultancy.Duration" (click)="enrollInGeneralConsultancy()" ejs-button class="e-danger px-5 py-2 rounded-2"> Enroll </button>
         </div>
     </ng-template>
 </ejs-dialog>

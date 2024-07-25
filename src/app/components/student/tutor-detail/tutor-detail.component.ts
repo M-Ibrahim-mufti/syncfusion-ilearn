@@ -21,7 +21,7 @@ export class TutorDetailComponent {
   public sortedAvailabilities: TutorAvailability[] = []
   public dayOrder = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   public Subjects!: SelectItem[];
-  public events: Event[] = [];
+  public events: any[] = [];
   public tutorId!: string;
   public groupedAvailabilities: GroupedAvailabilities = [];
   public tutorGrades:any[] = []
@@ -69,30 +69,36 @@ export class TutorDetailComponent {
   public getTutorEvents(tutorId: string) {
     this.eventService.getEvents(tutorId).subscribe(response => {
       this.events = response;
-      const todayDateTime = new Date();
       const data: any[] = [];
-      this.events!.forEach(x => {
-        const eventdate = new Date(x.EventStartTime)
-        if (!x.IsOneOnOne && eventdate >= todayDateTime ) {
-          data.push(x)
+      const todayDateTime = new Date();
+      this.events!.forEach(event => {
+        const eventDate = new Date(event.EventStartTime);
+        if (!event.IsOneOnOne && eventDate >= todayDateTime) {
+          let multiArr: any[] = [];
+          const relatedEvents = this.events.filter(innerEvent =>
+            event.AvailabilityId === innerEvent.AvailabilityId
+          );
+          relatedEvents.forEach(innerEvent => {
+            if (!multiArr.includes(innerEvent)) {
+              multiArr.push(innerEvent);
+            }
+          });
+          if (!data.some(arr => arr.includes(event))) {
+            data.push(multiArr);
+          }
         }
-      })
+      });
+      for(let i = 0; i < data.length; i++) {
+        let sortedArr:any[] = data[i];
+        sortedArr.sort((a, b) => new Date(a.EventStartTime).getTime() - new Date(b.EventStartTime).getTime());
+        data[i] = sortedArr
+      }
       this.events = data;
       console.log(this.events)
-      // this.loadAvalabilites(tutorId);
     })
   }
 
-  // public loadAvalabilites(tutorId: string) {
-  //   this.tutorService.getAllAvalabilities(tutorId).subscribe(response => {
-  //     this.sortedAvailabilities = response;
 
-  //     // this.totalCounters();
-  //     this.sortedAvailabilities = this.sortedAvailabilities.sort((el, compareEl) => {
-  //       return this.dayOrder.indexOf(el.Day) - this.dayOrder.indexOf(compareEl.Day)
-  //     })
-  //   });
-  // }
 
   public getTutorDetail() {
     this.spinnerService.show()

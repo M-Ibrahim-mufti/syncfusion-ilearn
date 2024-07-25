@@ -39,6 +39,8 @@ export class EventRequestComponent implements OnInit{
 
   public filterRequests!: RequestBooking[]
   public selectedStatus: any = this.Status[0].value
+  public groupRequests:any[] = []
+  public consultancyRequests:any[] = []
 
   constructor(
     private authService: AuthService,
@@ -57,7 +59,14 @@ export class EventRequestComponent implements OnInit{
     this.slotBookingService.getRequests().subscribe(response => {
       this.bookingRequests = response;
       this.totalStudentRequest = response.length;
-      this.filterRequests = this.bookingRequests; 
+      this.filterRequests = this.bookingRequests;
+      this.groupRequests = this.bookingRequests.filter((request) => request.IsOneOnOne == false)
+      this.consultancyRequests = this.bookingRequests.filter((request) => request.IsOneOnOne == true);
+
+      console.log("Group Requests : ", this.groupRequests);
+      console.log("Consultancy Requests : ", this.consultancyRequests)
+
+
       const pendingRequest = this.bookingRequests.filter((request) => (request.IsApproved === false && request.IsRejected === false))
       if(pendingRequest.length > 0){
         this.selectedStatus = this.Status[3].value
@@ -136,7 +145,6 @@ export class EventRequestComponent implements OnInit{
       }
     });
 
-    console.log(this.selectedStatus);
   }
   
   public clearFilter() {
