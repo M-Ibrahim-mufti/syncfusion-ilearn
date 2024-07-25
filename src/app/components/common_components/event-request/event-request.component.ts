@@ -60,22 +60,21 @@ export class EventRequestComponent implements OnInit{
       this.bookingRequests = response;
       this.totalStudentRequest = response.length;
       this.filterRequests = this.bookingRequests;
-      this.groupRequests = this.bookingRequests.filter((request) => request.IsOneOnOne == false)
-      this.consultancyRequests = this.bookingRequests.filter((request) => request.IsOneOnOne == true);
-
-      console.log("Group Requests : ", this.groupRequests);
-      console.log("Consultancy Requests : ", this.consultancyRequests)
-
-
-      const pendingRequest = this.bookingRequests.filter((request) => (request.IsApproved === false && request.IsRejected === false))
-      if(pendingRequest.length > 0){
-        this.selectedStatus = this.Status[3].value
-        this.filterStatus();
-      } 
+      this.groupRequests = this.bookingRequests.filter((request) => request.IsOneOnOne == false && !request.IsApproved && !request.IsRejected)
+      this.consultancyRequests = this.bookingRequests.filter((request) => request.IsOneOnOne == true && !request.IsApproved && !request.IsRejected);
+      //this.selectedStatus = this.Status[3].value //this value is for setting pending status
+      this.selectedStatus = this.Status[3].value
+      if(this.groupRequests == null && this.consultancyRequests == null){
+        this.selectedStatus = this.Status[1].value //this value is for setting pending status
+      }
+      if(this.groupRequests == null){
+        this.groupRequests = this.bookingRequests.filter((request) => request.IsOneOnOne == false && request.IsApproved)
+      }
+      if(this.consultancyRequests == null){
+        this.consultancyRequests = this.bookingRequests.filter((request) => request.IsOneOnOne == true && request.IsApproved)
+      }
 
       this.spinnerService.hide();
-
-
     })
 
   }
@@ -128,7 +127,7 @@ export class EventRequestComponent implements OnInit{
   }
 
   public filterStatus() {
-    this.filterRequests = this.bookingRequests.filter((request) => {
+    this.groupRequests = this.bookingRequests.filter((request) => {
       if (this.selectedStatus !== undefined && this.selectedStatus !== null) {
         if (this.selectedStatus === 'app') {
          return request.IsApproved === true;
@@ -142,6 +141,23 @@ export class EventRequestComponent implements OnInit{
       } else {
         // Handle case when selectedStatus is undefined or null
           return(request.IsApproved === false || request.IsRejected === false);
+      }
+    });
+
+    this.consultancyRequests = this.bookingRequests.filter((request) => {
+      if (this.selectedStatus !== undefined && this.selectedStatus !== null) {
+        if (this.selectedStatus === 'app') {
+          return request.IsApproved === true;
+        }
+        else if (this.selectedStatus === 'rej') {
+          return request.IsRejected === true;
+        }
+        else {
+          return(request.IsApproved === false && request.IsRejected === false);
+        }
+      } else {
+        // Handle case when selectedStatus is undefined or null
+        return(request.IsApproved === false || request.IsRejected === false);
       }
     });
 
