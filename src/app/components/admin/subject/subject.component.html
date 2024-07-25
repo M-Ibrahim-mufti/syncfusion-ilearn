@@ -19,10 +19,15 @@
         </div>
     </div>
     <div class="col-md-12 mt-2 p-0">
-        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='filterSubjects' [allowPaging]="filterSubjects.length > 10" [pageSettings]="{ pageSize: 10 }" [allowSorting]="true">
+        <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='filterSubjects' [allowPaging]="true"  [pageSettings]="{ pageSettings }" [allowSorting]="true">
             <e-columns >
-                <e-column field='Name' headerText='Name' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate">
+                <e-column field='CoreSubjectName' headerText='CoreSubjectName' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate">
                     <ng-template #cellTemplate let-data let-column>
+                        <span class="fw-bold text-muted-dark py-3">{{ data.CoreSubjectName }}</span>
+                    </ng-template>
+                </e-column>
+                <e-column field='Name' headerText='Name' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate1">
+                    <ng-template #cellTemplate1 let-data let-column>
                         <span class="fw-bold text-muted-dark py-3">{{ data.Name }}</span>
                     </ng-template>
                 </e-column>
@@ -51,6 +56,47 @@
 
   <ejs-dialog header="Add Subject" [visible]="addSubjectDialogueBox" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="onDialogClose()">
     <div class="form-horizontal mt-2 px-3">
+        <div class="d-flex justify-content-between">
+            <!-- <button ejs-button cssClass="e-info py-2 rounded-3" (click)="onPrimayChange()">  Primary </button>
+            <button ejs-button cssClass="e-info py-2 rounded-3" (click)="onHighChange()">  High </button> -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="toggle-container">
+                        <button class="toggle-btn" [ngClass]="{'active': !showSubjects}" (click)="switchToPrimary()">
+                            Primary
+                        </button>
+                        <button class="toggle-btn" [ngClass]="{'active': showSubjects}" (click)="switchToHigh()">
+                            High
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group mt-2" *ngIf="isCoreSubjectVisible">
+            <label for="CoreSubject" class="form-label">Core Subject <span class="text-danger">*</span></label>
+            <!-- <input type="text" class="form-control" id="Name" name="Name" [(ngModel)]="insertSubjectData.Name" placeholder="Enter Subject Name"/> -->
+            <ejs-dropdownlist
+            id="CoreSubject"
+            [(ngModel)]="insertSubjectData.CoreSubjectId"
+            [allowObjectBinding]="true"
+            [dataSource]="coreSubjects"
+            [fields]="{ text: 'Name', value: 'Id' }"
+            placeholder="Select a Subject"
+            (change)="onCoreSubject($event)"
+          ></ejs-dropdownlist>
+        </div>
+        <!-- <div class="form-group mt-2">
+            <label for="CourseSubject" class="form-label">Course Subject <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="Name" name="Name" [(ngModel)]="insertSubjectData.Name" placeholder="Enter Subject Name"/>
+            <ejs-dropdownlist
+            id="CourseSubject"
+            [(ngModel)]="courseSubjects"
+            [allowObjectBinding]="true"
+            [dataSource]="courseSubjects"
+            [fields]="{ text: 'Name', value: 'Id' }"
+            placeholder="Select a Subject"
+          ></ejs-dropdownlist>
+        </div> -->
         <div class="form-group mt-2">
             <label for="Name" class="form-label">Name <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="Name" name="Name" [(ngModel)]="insertSubjectData.Name" placeholder="Enter Subject Name"/>

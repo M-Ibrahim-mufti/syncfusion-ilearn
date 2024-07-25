@@ -23,6 +23,14 @@ export class SubjectService extends ServiceBase {
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.get<Subject[]>(url, httpOptions);
   }
+  
+  public getAllSubjects(): Observable<CoreSubjects[]> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Subject';
+    const method: string = '/core-subjects';
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<CoreSubjects[]>(url, httpOptions);
+  }
 
   public saveSubject(data: Subject): Observable<ResponseObject> {
     var httpOptions = this.RequestHeaders();
@@ -34,6 +42,16 @@ export class SubjectService extends ServiceBase {
 }
 
 export class Subject {
+  Id!: string;
+  CoreSubjectId!: string;
   Name!: string;
-  Description!: string;
+  Description!: null | string;
+  CoreSubjectName!: string;
+}
+
+export class CoreSubjects {
+  Id!: string;
+  Name!: string;
+  Description!: null;
+  IsPrimarySchool!: boolean;
 }
