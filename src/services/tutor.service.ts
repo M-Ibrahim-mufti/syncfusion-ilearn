@@ -97,6 +97,22 @@ export class TutorService extends ServiceBase {
     return this.http.get<any>(url, httpOptions);
   }
 
+  public getAllCoreSubjects():Observable<any> {
+    const httpOptions = this.RequestHeaders();
+    const api:string = '/Subject';
+    const method:string = '/core-subjects';
+    const url:string = environment.BASE_API_PATH + api + method;
+    return this.http.get<any>(url, httpOptions);
+    
+  }
+
+  public getSubSubjects(subjectId:string):Observable<any> {
+    const httpOptions = this.RequestHeaders();
+    const api:string = '/Subject/'
+    const method:string = `/fetch/${subjectId}`
+    const url:string = environment.BASE_API_PATH + api + method
+    return this.http.get<any>(url, httpOptions)
+  }
 
 }
 export interface SaveTutorAvailabilityRequest {
