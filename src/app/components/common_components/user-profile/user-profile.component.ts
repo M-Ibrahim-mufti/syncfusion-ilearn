@@ -21,11 +21,11 @@ import { TutorService } from '../../../../services/tutor.service';
 })
 export class UserProfileComponent {
   public user!: ApplicationViewStudent;
-  public subjects!: SelectItem[];
-  public grades: SelectItem[] = [];
-  public selectedGrades: any[] = []
-  public selectedSubjects: any[] = [];
-  public selectedSubjectGrades: any[] = [];
+  // public subjects!: SelectItem[];
+  // public grades: SelectItem[] = [];
+  // public selectedGrades: any[] = []
+  // public selectedSubjects: any[] = [];
+  // public selectedSubjectGrades: any[] = [];
   public newProfileImage?: File;
   public meetings: ZoomMeetingDetail[] = []
   public UserEditProfileDialog = false
@@ -34,7 +34,32 @@ export class UserProfileComponent {
   public StudentInfo: boolean = true 
   public authConfig!: AuthConfig;
   public logginUserId!: string;
+  public CoreSubjects: any[] = [];
+  public subjectDrop:boolean = false
+  public subjectTypeSelection:any[] = []
+  public activeType: string = ''
+  public subSubjects: string = ''
+  public grades:any[] = [
+    {label:'prep', value:'prep'},
+    {label:'1', value:'1'},
+    {label:'2', value:'2'},
+    {label:'3', value:'3'},
+    {label:'4', value:'4'},
+    {label:'5', value:'5'},
+    {label:'6', value:'6'},
+    {label:'7', value:'7'},
+    {label:'8', value:'8'},
+    {label:'9', value:'9'},
+    {label:'10', value:'10'},
+    {label:'11', value:'11'},
+    {label:'12', value:'12'},
 
+  ]
+  public filterGrades:any[] = []
+  public AddSubject:AddSubjects = {
+    SubjectId: '',
+    Grades:[]
+  }
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
     private studentService: StudentService,
@@ -43,7 +68,8 @@ export class UserProfileComponent {
     private authService: AuthService,
     private meetingService:ZoomMeetingService,
     private tutorSevice: TutorService,
-    private cdr:ChangeDetectorRef
+    private cdr:ChangeDetectorRef,
+    private tutorService:TutorService
   ) { 
     this.isStudent = this.authService.isStudent()
     this.isTeacher = this.authService.isTeacher()
@@ -70,9 +96,9 @@ export class UserProfileComponent {
     if(this.authConfig.IsTeacher){
       this.logginUserId = this.authService.getUserId();
     }
-    this.getAllSubjects();
+    this.getAllCoreSubjects();
     this.getPreviousMeetings();
-    this.getAllGrades();
+    // this.getAllGrades();
     this.getUserDetail();
   }
 
@@ -82,7 +108,6 @@ export class UserProfileComponent {
       if(response){
         this.user = response;
         console.log(this.user)
-        this.populateSelectedSubjects();  
         setTimeout(() => {
           this.toolBarFixation();
         },300)
@@ -96,32 +121,80 @@ export class UserProfileComponent {
         })
       }        
     })
-     
   }
 
-  public getSubjectGrades(event:any) {
-    console.log(event.target.value);
-  }
+  // public getSubjectGrades(event:any) {
+  //   console.log(event.target.value);
+  // }
 
-  public getAllSubjects() {
-    this.studentService.getAllSubjects().subscribe((subject: SelectItem[]) => {
-      this.subjects = subject
-      this.populateSelectedSubjects();
-    
+  public getAllCoreSubjects() {
+    this.tutorService.getAllCoreSubjects().subscribe((subject: SelectItem[]) => {
+      this.CoreSubjects = subject
+      console.log(this.CoreSubjects)
+    })
+  } 
+  public getSubSubjects(event:any) {
+    this.tutorService.getSubSubjects(event.value).subscribe((response) => {
+      this.subSubjects = response
     })
   }
+  public subjectBox() {
+    this.subjectDrop = true
+  }
 
-  public getAllGrades() {
-    this.tutorSevice.getAllSubjects().subscribe((grade) =>{
-      const AllGrades:any[] = grade[0].Grades
-      this.grades = AllGrades.map((grade) => ({
-        value: grade.Id,
-        label: grade.GradeLevel
+  public filterSubjects(type:string){
+    console.log("Original grades", this.grades)
+    if (type === 'Primary') {
+      this.subjectTypeSelection = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool == true)
+      this.subjectTypeSelection = this.subjectTypeSelection.map(subject => ({
+        label:subject.Name,
+        value:subject.Id
       }))
-      console.log(this.grades)
-      
-    })
+    
+      this.filterGrades = this.grades.filter(grade => {
+        const numericGrades = ['prep', '1', '2', '3', '4', '5', '6'];
+        return numericGrades.includes(grade.label);        
+      });
+      console.log(this.filterGrades)
+      this.activeType = type
+    } else if(type ==='Secondary') {
+      this.subjectTypeSelection = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool == false);
+      this.subjectTypeSelection = this.subjectTypeSelection.map(subject => ({
+        label:subject.Name,
+        value:subject.Id
+      }))
+      this.filterGrades = this.grades.filter(grade => {
+        const numericGrades = ['7', '8', '9', '10', '11', '12'];
+        return numericGrades.includes(grade.label);
+      });
+      this.activeType = type
+      console.log(this.filterGrades)
+    }
   }
+
+  public selectSubSubject(event:any) {
+    this.AddSubject.SubjectId = event.value
+  }
+
+  public saveSubject(){
+    const arr:any[] = this.AddSubject.Grades.map((grade) => ({
+      GradeLevel:grade
+    }))
+    this.AddSubject.Grades = arr
+    console.log(this.AddSubject)
+  }
+
+  // public getAllGrades() {
+  //   this.tutorSevice.getAllSubjects().subscribe((grade) =>{
+  //     const AllGrades:any[] = grade[0].Grades
+  //     this.grades = AllGrades.map((grade) => ({
+  //       value: grade.Id,
+  //       label: grade.GradeLevel
+  //     }))
+  //     console.log(this.grades)
+      
+  //   })
+  // }
 
   public onImageSelected(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
@@ -148,17 +221,7 @@ export class UserProfileComponent {
     //     this.user.StudentSubjects.push(subject.value)
     //   })
     // }
-    // if(this.isTeacher){
-    //   this.user.TutorSubjects = []
-    //   this.selectedSubjects.forEach((subject,index) => {
-    //     this.user.TutorSubjects.push({subjectId: subject.value , grade: this.selectedGrades[index]})
-    //     this.user.TutorSubjects.push(subject.value)
-    //   })
-    // }
-    console.log(this.selectedSubjects)
-    console.log(this.selectedGrades)
 
-    console.log(this.user.TutorSubjects)
     this.spinner.show();
     this.UserService.updateStudent(this.user).subscribe((response) => {
       this.spinner.hide();
@@ -173,41 +236,24 @@ export class UserProfileComponent {
   }
 
 
-  private populateSelectedSubjects(): void {
-    if(this.isStudent){
-      if (this.user && this.user.StudentSubjects.length > 0 && this.subjects) {      
-        this.selectedSubjects = this.user.StudentSubjects.map(subject => ({
-          label: subject.Name,
-          value: subject.Id
-        }));
-      }
-    }
-    if(this.isTeacher){
-      if(this.user && this.user.TutorSubjects.length > 0 && this.subjects) {
-        this.selectedSubjects = this.user.TutorSubjects.map(subject => ({
-          label: subject.SubjectName,
-          value: subject.SubjectId
-        }))
-        // let subjectGrades:any[] = []
-        // this.selectedSubjects.forEach((subject) => {
-        //   this.user.TutorSubjects.forEach((innerSubject, index) => {
-        //     if(subject.value === innerSubject.SubjectId) {
-        //       subjectGrades.push(innerSubject.Grades)
-        //       let innerArray:any[]= subjectGrades[index]
-        //       subjectGrades = [];
-        //       innerArray = innerArray.map((grade) => ({
-        //         label: grade.GradeLevel,
-        //         value: grade.GradeId,
-        //       }))
-        //       subjectGrades.push(innerArray);
-        //       this.selectedGrades.push(subjectGrades);
-        //       console.log(this.selectedGrades)
-        //     }
-        //   })      
-        // })
-      }
-    }
-  }
+  // private populateSelectedSubjects(): void {
+  //   if(this.isStudent){
+  //     if (this.user && this.user.StudentSubjects.length > 0 && this.subjects) {      
+  //       this.selectedSubjects = this.user.StudentSubjects.map(subject => ({
+  //         label: subject.Name,
+  //         value: subject.Id
+  //       }));
+  //     }
+  //   }
+  //   if(this.isTeacher){
+  //     if(this.user && this.user.TutorSubjects.length > 0 && this.subjects) {
+  //       this.selectedSubjects = this.user.TutorSubjects.map(subject => ({
+  //         label: subject.SubjectName,
+  //         value: subject.SubjectId
+  //       }))
+  //     }
+  //   }
+  // }
 
   private getPreviousMeetings () {
     this.meetingService.getMeetings().subscribe((response)=> {
@@ -276,8 +322,9 @@ export class UserProfileComponent {
       toolbarButton ? toolbarButton.classList.add('e-link') : null;
     })
   }
+}
 
-  public checkGrades() {
-    console.log(this.selectedGrades)
-  }
+interface AddSubjects {
+  SubjectId: string;
+  Grades: any[];
 }

@@ -77,7 +77,28 @@
                     </div>
                     <div class="text-start text-muted d-flex flex-column col-md-12">
                         <p class="col-md-12">Select Subject</p>
-                        <button > Add Subject </button>
+                        <button (click)="subjectBox()" ejs-button class="e-danger col-md-2 rounded-2"> Add Subject </button>
+                    </div>
+                    <div class="d-flex flex-column col-md-12" *ngIf="subjectDrop" >
+                        <div class="d-flex col-md-12 mb-2">
+                            <button ejs-button (click)="filterSubjects('Primary')" [ngClass]=" activeType === 'Primary' ? 'e-danger' : ''" class="w-100">Primary</button>
+                            <button ejs-button (click)="filterSubjects('Secondary')" [ngClass]="activeType === 'Secondary' ? 'e-danger' : ''" class="w-100">Secondary</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Core Subject</label>
+                            <ejs-dropdownlist (change)="getSubSubjects($event)" [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subject</label>
+                            <ejs-dropdownlist (change)="selectSubSubject($event)" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Grades</label>
+                            <ejs-multiselect [(value)]="AddSubject.Grades"  [fields]="{text:'label', value:'value'}" [dataSource]="filterGrades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
+                        </div>
+                        <div class="my-2">
+                            <button ejs-button class="e-danger" (click)="saveSubject()"> Save Subject </button>
+                        </div>
                     </div>
                 </div>
             </div>
