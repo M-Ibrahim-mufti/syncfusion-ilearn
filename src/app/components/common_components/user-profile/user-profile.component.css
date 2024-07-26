@@ -117,3 +117,10 @@
 ::ng-deep .e-rte-content ol {
     margin-left: 20px!important;
 }
+
+.subject-row-overflow{
+    overflow-x:scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #f1f1f1 white;
+
+}

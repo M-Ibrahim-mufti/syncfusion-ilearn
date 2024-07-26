@@ -75,6 +75,28 @@
                         <p class="col-md-12" >About Me</p>
                         <textarea style="height: 90px; resize: none;" class="form-control" [(ngModel)]="user.AboutMe"></textarea>
                     </div>
+                    <div *ngIf="TutorSubjectAndGrades.length > 0" class="d-flex flex-column col-md-12">
+                        <p class="col-md-12 text-start text-muted" >Your Selected Subjects </p>
+                        <div class="d-flex subject-row-overflow flex-row gap-3">
+                            <div *ngFor="let subject of TutorSubjectAndGrades" class="d-flex flex-column col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Core Subject</label>
+                                    <ejs-dropdownlist [enabled]='subjectTypeSelection.length > 0' [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Subject</label>
+                                    <ejs-dropdownlist  [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Grades</label>
+                                    <ejs-multiselect [enabled]="filterGrades.length > 0"  [fields]="{text:'label', value:'value'}" [dataSource]="filterGrades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
+                                </div>
+                                <div class="my-2">
+                                    <button [disabled]="!AddSubject.SubjectId || selectedGrades.length <= 0" ejs-button class="e-danger w-100 py-2 rounded-2" (click)="saveSubject()"> Save Subject </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="text-start text-muted d-flex flex-column col-md-12">
                         <p class="col-md-12">Select Subject</p>
                         <button (click)="subjectBox()" ejs-button class="e-danger col-md-2 rounded-2"> Add Subject </button>
@@ -97,7 +119,7 @@
                             <ejs-multiselect [(ngModel)]="selectedGrades" [enabled]="filterGrades.length > 0"  [fields]="{text:'label', value:'value'}" [dataSource]="filterGrades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
                         </div>
                         <div class="my-2">
-                            <button [disabled]="!AddSubject.SubjectId || selectedGrades.length <= 0" ejs-button class="e-danger w-100 py-2" (click)="saveSubject()"> Save Subject </button>
+                            <button [disabled]="!AddSubject.SubjectId || selectedGrades.length <= 0" ejs-button class="e-danger w-100 py-2 rounded-2" (click)="saveSubject()"> Save Subject </button>
                         </div>
                     </div>
                 </div>

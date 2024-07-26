@@ -62,6 +62,7 @@ export class UserProfileComponent {
     Grades:[]
   }
   public selectedGrades:any[] = []
+  public TutorSubjectAndGrades:any[] = []
 
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
@@ -114,21 +115,30 @@ export class UserProfileComponent {
         setTimeout(() => {
           this.toolBarFixation();
         },300)
+        this.toastr.success(
+          'success',
+          'Data Loaded successfully'
+        )
+        this.getAllTutorSubject();
       }
-      this.spinner.hide(); 
       if(this.authConfig.IsTeacher){
         this.tutorSevice.getTutorEditorDetails(this.logginUserId).subscribe((response) => {
           this.user.Certification = response.Certification;
           this.user.WorkHistory = response.WorkHistory;
           this.user.Qualifications = response.Qualifications;
         })
-      }        
+      }
+      this.spinner.hide(); 
     })
   }
 
-  // public getSubjectGrades(event:any) {
-  //   console.log(event.target.value);
-  // }
+  public getAllTutorSubject() {
+    this.tutorService.getAllSubjectandTheirGrades().subscribe((response) => {
+      this.TutorSubjectAndGrades = response;
+      console.log(this.TutorSubjectAndGrades)
+    })
+  }
+
 
   public getAllCoreSubjects() {
     this.tutorService.getAllCoreSubjects().subscribe((subject: SelectItem[]) => {
@@ -139,6 +149,7 @@ export class UserProfileComponent {
   public getSubSubjects(event:any) {
     this.tutorService.getSubSubjects(event.value).subscribe((response) => {
       this.subSubjects = response
+      console.log(this.subSubjects)
     })
   }
   public subjectBox() {
@@ -146,7 +157,6 @@ export class UserProfileComponent {
   }
 
   public filterSubjects(type:string){
-    console.log("Original grades", this.grades)
     if (type === 'Primary') {
       this.subjectTypeSelection = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool == true)
       this.subjectTypeSelection = this.subjectTypeSelection.map(subject => ({
@@ -155,8 +165,8 @@ export class UserProfileComponent {
       }))
     
       this.filterGrades = this.grades.filter(grade => {
-        const numericGrades = ['prep', '1', '2', '3', '4', '5', '6'];
-        return numericGrades.includes(grade.label);        
+        const primaryGrades = ['prep', '1', '2', '3', '4', '5', '6'];
+        return primaryGrades.includes(grade.label);        
       });
       console.log(this.filterGrades)
       this.activeType = type
@@ -167,11 +177,10 @@ export class UserProfileComponent {
         value:subject.Id
       }))
       this.filterGrades = this.grades.filter(grade => {
-        const numericGrades = ['7', '8', '9', '10', '11', '12'];
-        return numericGrades.includes(grade.label);
+        const secondaryGrades = ['7', '8', '9', '10', '11', '12'];
+        return secondaryGrades.includes(grade.label);
       });
       this.activeType = type
-      console.log(this.filterGrades)
     }
   }
 
@@ -181,7 +190,6 @@ export class UserProfileComponent {
 
 
   public saveSubject() {
-    console.log(this.selectedGrades)
     const newArr:any[] = []
     this.selectedGrades.forEach((grade) => {
         newArr.push({
@@ -189,25 +197,25 @@ export class UserProfileComponent {
         })
     });
     this.AddSubject.Grades = newArr;
-    console.log(this.AddSubject)
+    this.spinner.show()
     this.tutorService.saveSubjects(this.AddSubject).subscribe((response) => {
-      console.log(response)
+      if(response) {
+        this.toastr.success(
+          'success',
+          'Tutor Subject Saved Successfully'
+        )
+        this.getAllTutorSubject()
+      }else {
+        this.toastr.error(
+          'error',
+          'unable to save subject'
+        )
+      }  
+      this.spinner.hide()
     })
     
 
   }
-
-  // public getAllGrades() {
-  //   this.tutorSevice.getAllSubjects().subscribe((grade) =>{
-  //     const AllGrades:any[] = grade[0].Grades
-  //     this.grades = AllGrades.map((grade) => ({
-  //       value: grade.Id,
-  //       label: grade.GradeLevel
-  //     }))
-  //     console.log(this.grades)
-      
-  //   })
-  // }
 
   public onImageSelected(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
@@ -247,26 +255,6 @@ export class UserProfileComponent {
       }
     })
   }
-
-
-  // private populateSelectedSubjects(): void {
-  //   if(this.isStudent){
-  //     if (this.user && this.user.StudentSubjects.length > 0 && this.subjects) {      
-  //       this.selectedSubjects = this.user.StudentSubjects.map(subject => ({
-  //         label: subject.Name,
-  //         value: subject.Id
-  //       }));
-  //     }
-  //   }
-  //   if(this.isTeacher){
-  //     if(this.user && this.user.TutorSubjects.length > 0 && this.subjects) {
-  //       this.selectedSubjects = this.user.TutorSubjects.map(subject => ({
-  //         label: subject.SubjectName,
-  //         value: subject.SubjectId
-  //       }))
-  //     }
-  //   }
-  // }
 
   private getPreviousMeetings () {
     this.meetingService.getMeetings().subscribe((response)=> {
