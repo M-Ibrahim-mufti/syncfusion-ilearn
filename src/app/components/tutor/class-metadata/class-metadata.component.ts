@@ -26,6 +26,31 @@ export class ClassMetadataComponent {
   public dialogInstance: any;
   public filterClasses!: ClassMetaData[];
 
+  public CoreSubjects: any[] = [];
+  public subjectTypeSelection:any[] = []
+  public activeType: string = ''
+  public subSubjects: string = ''
+  public grades:any[] = [
+    {label:'prep', value:'prep'},
+    {label:'1', value:'1'},
+    {label:'2', value:'2'},
+    {label:'3', value:'3'},
+    {label:'4', value:'4'},
+    {label:'5', value:'5'},
+    {label:'6', value:'6'},
+    {label:'7', value:'7'},
+    {label:'8', value:'8'},
+    {label:'9', value:'9'},
+    {label:'10', value:'10'},
+    {label:'11', value:'11'},
+    {label:'12', value:'12'},
+
+  ]
+  public filterGrades:any[] = []
+  public AddSubject: AddSubjects = {
+    SubjectId: '',
+    Grades:[]
+  }  
 
   constructor(private studentService: StudentService,
     private tutorService: TutorService,
@@ -39,7 +64,7 @@ export class ClassMetadataComponent {
   ngOnInit() {
     this.viewClassMetaData();
     this.getTutorSubjects();
-
+    this.getAllCoreSubjects();
     this.pageSettings = { pageSize: 6 };
   }
 
@@ -183,5 +208,60 @@ export class ClassMetadataComponent {
       }
     })
   }
+
+  public getAllCoreSubjects() {
+    this.tutorService.getAllCoreSubjects().subscribe((subject: SelectItem[]) => {
+      this.CoreSubjects = subject
+      console.log(this.CoreSubjects)
+    })
+  }
+
+  public getSubSubjects(event:any) {
+    this.tutorService.getSubSubjects(event.value).subscribe((response) => {
+      this.subSubjects = response
+    })
+  }
+  // public subjectBox() {
+  //   this.subjectDrop = true
+  // }
+
+  public filterSubjects(type:string){
+    console.log("Original grades", this.grades)
+    if (type === 'Primary') {
+      this.subjectTypeSelection = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool == true)
+      this.subjectTypeSelection = this.subjectTypeSelection.map(subject => ({
+        label:subject.Name,
+        value:subject.Id
+      }))
+    
+      this.filterGrades = this.grades.filter(grade => {
+        const numericGrades = ['prep', '1', '2', '3', '4', '5', '6'];
+        return numericGrades.includes(grade.label);        
+      });
+      console.log(this.filterGrades)
+      this.activeType = type
+    } else if(type ==='Secondary') {
+      this.subjectTypeSelection = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool == false);
+      this.subjectTypeSelection = this.subjectTypeSelection.map(subject => ({
+        label:subject.Name,
+        value:subject.Id
+      }))
+      this.filterGrades = this.grades.filter(grade => {
+        const numericGrades = ['7', '8', '9', '10', '11', '12'];
+        return numericGrades.includes(grade.label);
+      });
+      this.activeType = type
+      console.log(this.filterGrades)
+    }
+  }
+
+  public selectSubSubject(event:any) {
+    this.AddSubject.SubjectId = event.value
+  }
+
 }
 
+interface AddSubjects {
+  SubjectId: string;
+  Grades: any[];
+}

@@ -61,11 +61,24 @@
 
   <ejs-dialog header="Add Class Data" [visible]="addClassDialogueBox" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="onDialogClose()">
     <div class="form-horizontal mt-2 px-3">
-        <div class="form-group mt-2">
+        <!-- <div class="form-group mt-2">
             <label for="subject" class="form-label">Select Subject <span class="text-danger">*</span></label>
             <ejs-dropdownlist [dataSource]="Subjects" id="subject" name="tutorSubjects" [fields]="dropdownFields" [(ngModel)]="insertClassData.SubjectId" [placeholder]="'Select Subject'"
                               (change)="onSubjectChange($event.value)">
             </ejs-dropdownlist>
+        </div> -->
+
+        <div class="d-flex col-md-12 mb-2">
+            <button ejs-button (click)="filterSubjects('Primary')" [ngClass]=" activeType === 'Primary' ? 'e-danger' : ''" class="w-100">Primary</button>
+            <button ejs-button (click)="filterSubjects('Secondary')" [ngClass]="activeType === 'Secondary' ? 'e-danger' : ''" class="w-100">Secondary</button>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Core Subject</label>
+            <ejs-dropdownlist (change)="getSubSubjects($event)" [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Subject</label>
+            <ejs-dropdownlist (change)="selectSubSubject($event)" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
         </div>
         <div class="form-group mt-2">
             <label for="title" class="form-label">Course Title <span class="text-danger">*</span></label>
