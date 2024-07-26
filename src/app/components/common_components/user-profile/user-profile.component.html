@@ -86,7 +86,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Core Subject</label>
-                            <ejs-dropdownlist (change)="getSubSubjects($event)" [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
+                            <ejs-dropdownlist [enabled]='subjectTypeSelection.length > 0' (change)="getSubSubjects($event)" [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Subject</label>
@@ -94,10 +94,10 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Grades</label>
-                            <ejs-multiselect [(value)]="AddSubject.Grades"  [fields]="{text:'label', value:'value'}" [dataSource]="filterGrades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
+                            <ejs-multiselect [(ngModel)]="selectedGrades" [enabled]="filterGrades.length > 0"  [fields]="{text:'label', value:'value'}" [dataSource]="filterGrades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
                         </div>
                         <div class="my-2">
-                            <button ejs-button class="e-danger" (click)="saveSubject()"> Save Subject </button>
+                            <button [disabled]="!AddSubject.SubjectId || selectedGrades.length <= 0" ejs-button class="e-danger w-100 py-2" (click)="saveSubject()"> Save Subject </button>
                         </div>
                     </div>
                 </div>

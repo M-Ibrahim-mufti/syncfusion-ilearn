@@ -10,7 +10,7 @@ import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import { ZoomMeetingDetail, ZoomMeetingService } from '../../../../services/zoom-meeting.service';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
-import { TutorService } from '../../../../services/tutor.service';
+import { TutorService, AddSubjects } from '../../../../services/tutor.service';
 
 
 @Component({
@@ -19,6 +19,7 @@ import { TutorService } from '../../../../services/tutor.service';
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
+
 export class UserProfileComponent {
   public user!: ApplicationViewStudent;
   // public subjects!: SelectItem[];
@@ -34,7 +35,7 @@ export class UserProfileComponent {
   public StudentInfo: boolean = true 
   public authConfig!: AuthConfig;
   public logginUserId!: string;
-  public CoreSubjects: any[] = [];
+  public  CoreSubjects: any[] = [];
   public subjectDrop:boolean = false
   public subjectTypeSelection:any[] = []
   public activeType: string = ''
@@ -60,6 +61,8 @@ export class UserProfileComponent {
     SubjectId: '',
     Grades:[]
   }
+  public selectedGrades:any[] = []
+
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
     private studentService: StudentService,
@@ -176,12 +179,22 @@ export class UserProfileComponent {
     this.AddSubject.SubjectId = event.value
   }
 
-  public saveSubject(){
-    const arr:any[] = this.AddSubject.Grades.map((grade) => ({
-      GradeLevel:grade
-    }))
-    this.AddSubject.Grades = arr
+
+  public saveSubject() {
+    console.log(this.selectedGrades)
+    const newArr:any[] = []
+    this.selectedGrades.forEach((grade) => {
+        newArr.push({
+          GradeLevel:grade
+        })
+    });
+    this.AddSubject.Grades = newArr;
     console.log(this.AddSubject)
+    this.tutorService.saveSubjects(this.AddSubject).subscribe((response) => {
+      console.log(response)
+    })
+    
+
   }
 
   // public getAllGrades() {
@@ -324,7 +337,3 @@ export class UserProfileComponent {
   }
 }
 
-interface AddSubjects {
-  SubjectId: string;
-  Grades: any[];
-}
