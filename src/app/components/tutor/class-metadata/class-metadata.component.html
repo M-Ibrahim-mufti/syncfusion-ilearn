@@ -81,14 +81,14 @@
             <ejs-dropdownlist (change)="selectSubSubject($event)" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
         </div>
         <div class="form-group mt-2">
-            <label for="title" class="form-label">Course Title <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="insertClassData.Title" placeholder="Enter Title of Course"/>
-        </div>
-        <div class="form-group mt-2">
             <label for="gradeLevel" class="form-label">Grade Level <span class="text-danger">*</span></label>
             <ejs-dropdownlist [dataSource]="TutorGrades" id="gradeLevel" name="gradeLevel" [fields]="dropdownFields" [(ngModel)]="insertClassData.GradeId" [placeholder]="'Select Grade'"
                               [enabled]="insertClassData.SubjectId !== null && insertClassData.SubjectId !== ''" (change)="onGradeChange($event.value)">
             </ejs-dropdownlist>
+        </div>
+        <div class="form-group mt-2">
+            <label for="title" class="form-label">Course Title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="insertClassData.Title" placeholder="Enter Title of Course"/>
         </div>
         <div class="form-group mt-2">
             <label for="description" class="form-label">Course Description</label>

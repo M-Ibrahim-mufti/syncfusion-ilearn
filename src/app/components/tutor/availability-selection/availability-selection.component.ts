@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { SaveTutorAvailabilityRequest, TutorAvailability, TutorService } from '../../../../services/tutor.service';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { addMonths, startOfDay } from 'date-fns';
@@ -65,6 +65,10 @@ export class AvailabilitySelectionComponent implements OnInit {
         {label:'One On One', value: true },
         {label:"On Group", value: false }
     ]
+    public classMetaData: ClassMetaData[] = [];
+    public eventTitle: any[] = [];
+    public selectedEvent: SelectItem | null = null;
+    public subjects: any[] = [];
 
     @ViewChild("addButton")
     public addButton?: ButtonComponent;
@@ -132,7 +136,6 @@ export class AvailabilitySelectionComponent implements OnInit {
             })
         }
     }
-
     public onPopupOpen(args: PopupOpenEventArgs): void {
         if (args.type === 'Editor' || args.type === 'QuickInfo') {
             // Remove existing custom field rows if they exist
@@ -195,7 +198,10 @@ export class AvailabilitySelectionComponent implements OnInit {
             container.appendChild(inputEle);
 
             if (args.type === 'Editor') {
-                //(<any>this.scheduleObj!.eventWindow).recurrenceEditor.frequencies = ['never' ,'daily', 'weekly'];
+                // (<any>this.scheduleObj!.eventWindow).recurrenceEditor.frequencies = ['never', 'daily', 'weekly'];
+                const recurrenceEditor = (<any>this.scheduleObj!.eventWindow).recurrenceEditor;
+                // recurrenceEditor.frequencies = ['never', 'daily', 'weekly'];
+                recurrenceEditor.endTypes = ['count'];
 
                 const dialogParent: HTMLElement = args.element.querySelector('.e-dialog-parent')!;
 
@@ -250,11 +256,6 @@ export class AvailabilitySelectionComponent implements OnInit {
         console.log(data);
     }
 
-    public classMetaData: ClassMetaData[] = [];
-    public eventTitle: any[] = [];
-    public selectedEvent: SelectItem | null = null;
-    public subjects: any[] = [];
-
     public viewClassMetaData() {
         this.classMetaServices.viewClassMetaData().subscribe((response) => {
             this.classMetaData = response;
@@ -264,7 +265,6 @@ export class AvailabilitySelectionComponent implements OnInit {
                 SubjectName: p.SubjectName, // Include SubjectName in eventTitle mapping
                 SubjectId: p.SubjectId // Include SubjectId in eventTitle mapping
             }));
-            console.log(this.eventTitle);
         });
     }
 

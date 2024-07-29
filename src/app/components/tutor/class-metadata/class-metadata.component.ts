@@ -44,7 +44,6 @@ export class ClassMetadataComponent {
     {label:'10', value:'10'},
     {label:'11', value:'11'},
     {label:'12', value:'12'},
-
   ]
   public filterGrades:any[] = []
   public AddSubject: AddSubjects = {
@@ -74,7 +73,6 @@ export class ClassMetadataComponent {
       this.ngxSpinner.hide();
       this.classMetaData = response;
       this.filterClasses = this.classMetaData;
-      console.log(this.classMetaData)
     });
   }
 
@@ -83,8 +81,6 @@ export class ClassMetadataComponent {
     this.studentService.getAllUserSubjects().subscribe((response) => {
       this.ngxSpinner.hide();
       this.Subjects = response;
-      console.log(response);
-      
     });
   }
 
@@ -98,8 +94,8 @@ export class ClassMetadataComponent {
   public addNewClass() {
     this.insertClassData = new ClassMetaData();
     this.insertClassData.SubjectId = '';
-    console.log("data", this.insertClassData);
     this.addClassDialogueBox = true;
+    this.filterSubjects('Primary')
   }
 
   public onSubjectChange(subjectId: any) {
@@ -212,7 +208,6 @@ export class ClassMetadataComponent {
   public getAllCoreSubjects() {
     this.tutorService.getAllCoreSubjects().subscribe((subject: SelectItem[]) => {
       this.CoreSubjects = subject
-      console.log(this.CoreSubjects)
     })
   }
 
@@ -226,7 +221,6 @@ export class ClassMetadataComponent {
   // }
 
   public filterSubjects(type:string){
-    console.log("Original grades", this.grades)
     if (type === 'Primary') {
       this.subjectTypeSelection = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool == true)
       this.subjectTypeSelection = this.subjectTypeSelection.map(subject => ({
@@ -238,7 +232,6 @@ export class ClassMetadataComponent {
         const numericGrades = ['prep', '1', '2', '3', '4', '5', '6'];
         return numericGrades.includes(grade.label);        
       });
-      console.log(this.filterGrades)
       this.activeType = type
     } else if(type ==='Secondary') {
       this.subjectTypeSelection = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool == false);
@@ -251,12 +244,15 @@ export class ClassMetadataComponent {
         return numericGrades.includes(grade.label);
       });
       this.activeType = type
-      console.log(this.filterGrades)
     }
   }
 
   public selectSubSubject(event:any) {
     this.AddSubject.SubjectId = event.value
+    if(this.AddSubject.SubjectId){
+      this.onSubjectChange(this.AddSubject.SubjectId)
+    }
+
   }
 
 }
