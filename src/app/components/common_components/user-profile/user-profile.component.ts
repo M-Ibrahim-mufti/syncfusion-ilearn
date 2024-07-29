@@ -11,11 +11,11 @@ import { ToastrService } from 'ngx-toastr';
 import { ZoomMeetingDetail, ZoomMeetingService } from '../../../../services/zoom-meeting.service';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 import { TutorService, AddSubjects } from '../../../../services/tutor.service';
-
+import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
 
 @Component({
   selector: 'app-user-profile',
-  providers:[UsersService, StudentService,ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService ],
+  providers:[UsersService, StudentService,CheckBoxSelectionService ,ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
@@ -54,7 +54,6 @@ export class UserProfileComponent {
     {label:'10', value:'10'},
     {label:'11', value:'11'},
     {label:'12', value:'12'},
-
   ]
   public filterGrades:any[] = []
   public AddSubject:AddSubjects = {
@@ -63,22 +62,31 @@ export class UserProfileComponent {
   }
   public selectedGrades:any[] = []
   public TutorSubjectAndGrades:any[] = []
+  public toggleChangeButton:boolean = true
+  public subSubjectUpdation:any[] = [];
+  public subSubjectIndexes:any[] = [];
+  public filterGradesForUpdation:any[] = [];
+  public updateSubjectData:AddSubjects = {
+    SubjectId:'',
+    Grades:[]
+  }
+  public filterSubjectForUpdation:any[] =[];
+
 
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
-    private studentService: StudentService,
     private toastr: ToastrService,
     private uploadingService: CloudinaryImageService,
     private authService: AuthService,
     private meetingService:ZoomMeetingService,
     private tutorSevice: TutorService,
-    private cdr:ChangeDetectorRef,
-    private tutorService:TutorService
+    private tutorService:TutorService,
   ) { 
     this.isStudent = this.authService.isStudent()
     this.isTeacher = this.authService.isTeacher()
   }
 
+  public mode:string = 'CheckBox';
   public tools: object = {
     items: ['Undo', 'Redo', '|',
         'Bold', 'Italic', 'Underline', 'Strikethrough', '|',
@@ -130,13 +138,90 @@ export class UserProfileComponent {
   public getAllTutorSubject() {
     this.tutorService.getAllSubjectandTheirGrades().subscribe((response) => {
       this.TutorSubjectAndGrades = response;
-      console.log(this.TutorSubjectAndGrades)
+      console.log(response)
+      let tutorSubjects: any[] = [];
+      this.TutorSubjectAndGrades.forEach((subject)  => {
+        let grades:any[] = subject.Grades;
+        grades = grades.map((grade) => 
+          ( this.grades.filter(innerGrade => {
+              if(grade.GradeLevel == innerGrade.label) { 
+                  return innerGrade
+                }
+            }).pop().label))
+          tutorSubjects.push({
+                CoreSubject: {
+                  Name: subject.CoreSubjectName,
+                  Id:subject.CoreSubjectId
+                },
+                SubSubject: {
+                  label:subject.SubjectName,
+                  value:subject.SubjectId
+                },
+                Grades:grades,
+                isEditable: null
+          })
+
+      })
+      this.TutorSubjectAndGrades = tutorSubjects;
     })
   }
 
+  public callSubSubjectForUpdate(subjectId:string,index:number){
+    const getData:any = this.CoreSubjects.filter((subject) => subject.Id === subjectId);
+    if(getData.isPrimarySchool){
+      this.filterGradesForUpdation = this.grades.filter(grade => {
+        const primaryGrades = ['prep', '1', '2', '3', '4', '5', '6'];
+        return primaryGrades.includes(grade.label);        
+      });
+    } else {
+      this.filterGradesForUpdation = this.grades.filter(grade => {
+        const secondaryGrades = ['7', '8', '9', '10', '11', '12'];
+        return secondaryGrades.includes(grade.label);
+      });
+    }
+
+
+    this.tutorService.getSubSubjects(subjectId).subscribe((response) => {
+      this.subSubjectUpdation = response;
+      this.TutorSubjectAndGrades.forEach((subject,innerIndex)=> {
+        if(index !== innerIndex){
+          subject.isEditable = false
+        } else {
+          subject.isEditable = true
+        }
+      })
+      console.log(this.TutorSubjectAndGrades)
+    })
+  }
+  public updationOnSubject(event:any) {
+    this.updateSubjectData.SubjectId = event.value
+  }
+
+  public updationOnGrades(event:any) {
+    this.updateSubjectData.Grades = event.value
+  }
+
+  public updateSubject(index:number){
+    const updatedGrades:any[] = this.updateSubjectData.Grades;
+    let newArr:any[] = []
+    updatedGrades.forEach((grade) => {
+      newArr.push({
+        GradeLevel:grade
+      })
+    });
+    console.log(this.updateSubjectData)
+    this.updateSubjectData.Grades = newArr
+    this.TutorSubjectAndGrades.forEach((subject, innerIndex) => {
+      if(index === innerIndex ){
+        subject.isEditable = true
+      } else {
+        subject.isEditable = true
+      }
+    })
+  }
 
   public getAllCoreSubjects() {
-    this.tutorService.getAllCoreSubjects().subscribe((subject: SelectItem[]) => {
+    this.tutorService.getAllCoreSubjects().subscribe((subject: any[]) => {
       this.CoreSubjects = subject
       console.log(this.CoreSubjects)
     })
@@ -192,6 +277,7 @@ export class UserProfileComponent {
         })
     });
     this.AddSubject.Grades = newArr;
+    console.log(this.AddSubject)
     this.spinner.show()
     this.tutorService.saveSubjects(this.AddSubject).subscribe((response) => {
       if(response) {
