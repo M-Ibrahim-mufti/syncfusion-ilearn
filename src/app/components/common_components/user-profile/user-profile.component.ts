@@ -102,7 +102,6 @@ export class UserProfileComponent {
     }
     this.getAllCoreSubjects();
     this.getPreviousMeetings();
-    // this.getAllGrades();
     this.getUserDetail();
   }
 
@@ -115,10 +114,6 @@ export class UserProfileComponent {
         setTimeout(() => {
           this.toolBarFixation();
         },300)
-        this.toastr.success(
-          'success',
-          'Data Loaded successfully'
-        )
         this.getAllTutorSubject();
       }
       if(this.authConfig.IsTeacher){
@@ -236,12 +231,6 @@ export class UserProfileComponent {
   }
 
   public updateUserData() {
-    // if(this.isStudent){
-    //   this.user.StudentSubjects = []
-    //   this.selectedSubjects.forEach(subject => {
-    //     this.user.StudentSubjects.push(subject.value)
-    //   })
-    // }
 
     this.spinner.show();
     this.UserService.updateStudent(this.user).subscribe((response) => {
