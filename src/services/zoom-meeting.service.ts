@@ -76,6 +76,7 @@ export class ZoomMeetingDetail {
   EncryptedPassword!: string;
   PreSchedule!: boolean;
   MeetingId!: number;
+  ActualDuration!: number;
 }
 
 export class StudentMeeting {

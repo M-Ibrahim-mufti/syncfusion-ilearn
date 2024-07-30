@@ -56,42 +56,78 @@ export class MeetingsComponent implements OnInit {
     this.zoomService.getMeetings().subscribe(response => {      
       this.meetings = response;
       this.spinnerService.hide();
-      this.filterMeetingsForUpcoming();
-      this.filterMeetingsForPrevious(); 
+      this.filterMeetings();
+      // this.filterMeetingsForPrevious(); 
       this.cdr.detectChanges();
     });
   }
 
-  filterMeetingsForUpcoming(): void {
-    const todayDate = new Date();   
+  // filterMeetingsForUpcoming(): void {
+  //   const todayDate = new Date();   
+  //   this.todayMeetings = [];
     
-    this.meetings.forEach(meeting => {      
-      const meetingDate = new Date(meeting.StartTime);
-      const meetingEndTime = this.meetingEndTime(meetingDate, meeting.Duration);
-      if (this.isSameDay(meetingDate, todayDate)) {
-        if(meetingEndTime >= todayDate)
-          this.todayMeetings.push(meeting);
+  //   this.meetings.forEach(meeting => {      
+  //     const meetingDate = new Date(meeting.StartTime);
+  //     const meetingEndTime = this.meetingEndTime(meetingDate, meeting.Duration);
+  //     if (this.isSameDay(meetingDate, todayDate)) {
+  //       if(meetingEndTime >= todayDate)
+  //         this.todayMeetings.push(meeting);
         
-      } else if (this.isTomorrow(meetingDate, todayDate)) {
-        if(meetingEndTime >= todayDate)
-          this.tomorrowMeetings.push(meeting);
-      } else if (meetingDate > todayDate) {
-          this.futureMeetings.push(meeting);
-      }
-    });
-  }
+  //     } else if (this.isTomorrow(meetingDate, todayDate)) {
+  //       if(meetingEndTime >= todayDate)
+  //         this.tomorrowMeetings.push(meeting);
+  //     } else if (meetingDate > todayDate) {
+  //         this.todayMeetings.push(meeting);
+  //     }
+  //   });
+  // }
 
-  filterMeetingsForPrevious(): void {
+  // filterMeetingsForPrevious(): void {
+  //   const todayDate = new Date();
+  //   this.previousMeetings =[];
+  //   this.meetings.forEach(meeting => {
+  //     const meetingDate = new Date(meeting.StartTime);
+  //     if(meetingDate < todayDate){
+  //       const upcomingmeeting = this.futureMeetings.filter(x => x.Id == meeting.Id)
+  //       if(upcomingmeeting.length == 0)
+  //         this.previousMeetings.push(meeting);
+  //     }
+  //   });
+  // }
+
+  filterMeetings(): void {
     const todayDate = new Date();
+    this.todayMeetings = [];
+    this.tomorrowMeetings = [];
+    this.previousMeetings = [];
+    
     this.meetings.forEach(meeting => {
-      const meetingDate = new Date(meeting.StartTime);
-      if(meetingDate < todayDate){
-        const upcomingmeeting = this.futureMeetings.filter(x => x.Id == meeting.Id)
-        if(upcomingmeeting.length == 0)
-          this.previousMeetings.push(meeting);
-      }
+        const meetingDate = new Date(meeting.StartTime);
+        const meetingEndTime = this.meetingEndTime(meetingDate, meeting.Duration);
+
+        // For meetings on the same day
+        if (this.isSameDay(meetingDate, todayDate)) {
+            if (meetingEndTime >= todayDate) {
+                // Meeting is ongoing or will start later today
+                this.todayMeetings.push(meeting);
+            } else {
+                // Meeting has ended earlier today
+                this.previousMeetings.push(meeting);
+            }
+        } else if (this.isTomorrow(meetingDate, todayDate)) {
+            // For meetings tomorrow
+            this.tomorrowMeetings.push(meeting);
+        } else if (meetingDate > todayDate) {
+            // For future meetings
+            this.todayMeetings.push(meeting);
+        } else if (meetingDate < todayDate) {
+            // For past meetings
+            if (meetingEndTime < todayDate) {
+                this.previousMeetings.push(meeting);
+            }
+        }
     });
-  }
+}
 
   isSameDay(date1: Date, date2: Date): boolean {
     return (

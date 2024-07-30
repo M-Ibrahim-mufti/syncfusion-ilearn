@@ -51,6 +51,7 @@ export class SchedulerComponent implements OnInit, OnChanges {
     // const headers = this.tutorService.getRequestHeaders();
 
     this.data = this.meetings.map((meeting: any) => {
+      
       return {
         Id: meeting.Id,
         Subject: meeting.Topic,

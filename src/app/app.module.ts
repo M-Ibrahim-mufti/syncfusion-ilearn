@@ -53,6 +53,7 @@ import { TooltipAllModule } from '@syncfusion/ej2-angular-popups';
 import { ToastrModule } from 'ngx-toastr';
 import {SchedulerComponent} from "./components/tutor/scheduler/scheduler.component";
 import { ViewChildrenComponent } from './components/Parrent/view-children/view-children.component';
+import { DurationPipe } from './pipes/duration.pipe';
 
 
 export function getTokenFactory(injector: Injector) {
@@ -89,7 +90,8 @@ export function getTokenFactory(injector: Injector) {
     SubjectComponent,
     StudentRegistrationComponent,
     TutorRegistrationComponent,
-    ViewChildrenComponent
+    ViewChildrenComponent,
+    DurationPipe
   ],
     imports: [
         BrowserModule,

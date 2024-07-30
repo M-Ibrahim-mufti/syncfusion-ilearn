@@ -46,12 +46,13 @@
                                         <span class="pt-1 text-dark fs-5 fw-bolder">{{meeting.Topic}}</span>
                                         <span class="pt-1 text-muted fs-6 fw-bold">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-bold">StartDate: {{ meeting.StartTime | date: 'yyyy/MMM/dd' }}</span>
+                                        <span class="pt-1 text-muted fs-6 fw-bold">Actual Duration: {{ meeting.ActualDuration | duration }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-bold">Meeting Id: {{meeting.MeetingId}}</span>
                                     </div>
                                 </div>
                             </div>
                             <div id="meeting-cont" *ngIf="!activateBtn" class="z-2 py-4 px-2 mx-5 d-flex flex-wrap flex-gap">
-                                <div class="card-styling card-upcoming border border-dull-white shadow-lg" *ngFor="let meeting of futureMeetings;">
+                                <div class="card-styling card-upcoming border border-dull-white shadow-lg" *ngFor="let meeting of todayMeetings;">
                                     <div class="px-2 inner-card-styling inner-card-upcoming d-flex flex-column">
                                         <span class="pt-1 text-dark fs-5 fw-bolder">{{ meeting.Topic }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-bold">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>
