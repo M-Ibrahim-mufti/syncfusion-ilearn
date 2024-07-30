@@ -106,10 +106,10 @@ export class TutorService extends ServiceBase {
     
   }
 
-  public getSubSubjects(subjectId:string):Observable<any> {
+  public getSubSubjects(subjectId:string, isProfilePage:boolean):Observable<any> {
     const httpOptions = this.RequestHeaders();
     const api:string = '/Subject/'
-    const method:string = `fetch/${subjectId}`
+    const method:string = `fetch/${subjectId}/${isProfilePage}`
     const url:string = environment.BASE_API_PATH + api + method
     return this.http.get<any>(url, httpOptions)
   }

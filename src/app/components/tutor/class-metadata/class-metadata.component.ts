@@ -212,7 +212,7 @@ export class ClassMetadataComponent {
   }
 
   public getSubSubjects(event:any) {
-    this.tutorService.getSubSubjects(event.value).subscribe((response) => {
+    this.tutorService.getSubSubjects(event.value, false).subscribe((response) => {
       this.subSubjects = response
     })
   }

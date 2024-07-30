@@ -15,6 +15,14 @@ export class SlotBookingService extends ServiceBase {
     super(authService);
   }
 
+  public getAllTutorRequests(tutorId:string): Observable<any[]> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/SlotBookingRequest';
+    const method: string = '/view-all-tutor-requests';
+    const url: string = `${environment.BASE_API_PATH}${api}${method}/${tutorId}`;
+    return this.http.get<any[]>(url, httpOptions);
+  }
+
   public getRequests(): Observable<any[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/SlotBookingRequest';

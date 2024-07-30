@@ -181,7 +181,7 @@ export class UserProfileComponent {
     }
 
 
-    this.tutorService.getSubSubjects(subjectId).subscribe((response) => {
+    this.tutorService.getSubSubjects(subjectId, true).subscribe((response) => {
       this.subSubjectUpdation = response;
       this.TutorSubjectAndGrades.forEach((subject,innerIndex)=> {
         if(index !== innerIndex){
@@ -227,7 +227,7 @@ export class UserProfileComponent {
   } 
   public getSubSubjects(event:any) {
     console.log("subjectId",event.value);    
-    this.tutorService.getSubSubjects(event.value).subscribe((response) => {
+    this.tutorService.getSubSubjects(event.value,true).subscribe((response) => {
       this.subSubjects = response
       console.log(this.subSubjects)
     })

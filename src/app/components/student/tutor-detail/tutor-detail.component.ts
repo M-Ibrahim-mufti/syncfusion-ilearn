@@ -131,7 +131,7 @@ export class TutorDetailComponent {
       this.Subjects = subjects
     })
   }
-
+  slotBookingRequests:any;
   getConsultancy() {
     this.generalConsultancy.Comment = '';
     this.consultancyTimeFrames = [];
@@ -144,7 +144,10 @@ export class TutorDetailComponent {
     )
     console.log(this.consultancyDuration)
 
-    // this.consultancyDuration = []; 
+    // this.consultancyDuration = [];
+    this.slotBookingService.getAllTutorRequests(this.tutorId).subscribe(response => {
+      this.slotBookingRequests = response;
+    })
 
     this.tutorService.getTutorConsultancy(this.tutorId).subscribe((response) => {
       // Clear the enabledDates array
@@ -312,23 +315,46 @@ export class TutorDetailComponent {
       });
     });
     this.datepicker?.refresh();
+    this.datepicker.show()
   }
-  public setConsultancyMeetingTime(event:any) {
+  public setConsultancyMeetingTime(event: any) {
     const timeFrame = this.consultancyTimeFrames.filter((timeFrame) => timeFrame.value == event.target.value);
-    const [hours, minutes] = timeFrame[0].label.split(':').map(Number);
-    let formattedTime = new Date()
-    formattedTime.setHours(hours,minutes);
-    let meetingDate = this.generalConsultancy.MeetingStartTime
-    let formattedMeetingStartTime = 
-        meetingDate?.getFullYear() + '/' + (meetingDate!.getMonth() + 1) + '/' + meetingDate?.getDate() + " " + formattedTime.getHours() + ':' + formattedTime.getMinutes()
-    this.generalConsultancy.MeetingStartTime = new Date(formattedMeetingStartTime);
-    this.frameTimeSet = false 
+
+    // Split the label to get time and period (AM/PM)
+    const [time, period] = timeFrame[0].label.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+
+    // Convert 12-hour format to 24-hour format
+    if (period === 'PM' && hours < 12) {
+      hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+      hours = 0;
+    }
+
+    // Get the meeting date
+    let meetingDate = new Date(this.generalConsultancy.MeetingStartTime!);
+
+    // Create a new Date object in UTC
+    let formattedMeetingStartTime = new Date(Date.UTC(
+        meetingDate.getUTCFullYear(),
+        meetingDate.getUTCMonth(),
+        meetingDate.getUTCDate(),
+        hours,
+        minutes,
+        0
+    ));
+
+    // Update MeetingStartTime with the new UTC Date
+    this.generalConsultancy.MeetingStartTime = formattedMeetingStartTime;
+    this.frameTimeSet = false;
   }
+
   public setConsultancyDate(event: any) {
     this.consultancyTimeFrames = [];
     const selectedDate = new Date(event.value);
     // Format the selected date as YYYY/MM/DD
     const selectedFormattedDate = `${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}/${selectedDate.getDate()}`;
+
     this.allConsultancy.forEach((consultancy: any) => {
       // Generate all dates for the consultancy based on recurrence rules or single date
       let datesToCheck: Date[] = [];
@@ -337,6 +363,7 @@ export class TutorDetailComponent {
       } else {
         datesToCheck.push(new Date(consultancy.StartTime));
       }
+
       datesToCheck.forEach(date => {
         // Format the date to YYYY/MM/DD
         const consultancyFormattedDate = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
@@ -346,11 +373,31 @@ export class TutorDetailComponent {
           const endTime = new Date(consultancy.EndTime);
           let i = 0;
           while (startTime <= endTime) {
-            const hours = startTime.getHours();
+            const hours24 = startTime.getHours();
             const minutes = startTime.getMinutes();
-            const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+
+            // Convert to 12-hour format with AM/PM
+            const hours12 = hours24 % 12 || 12;
+            const period = hours24 < 12 ? 'AM' : 'PM';
+            let formattedTime = `${hours12}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
+
+            // Check if the time slot is booked
+            const slotExists = this.slotBookingRequests.some((slot:any) => {
+              const slotStartTime = new Date(slot.StartTime);
+              return (
+                  slotStartTime.getFullYear() === selectedDate.getFullYear() &&
+                  slotStartTime.getMonth() === selectedDate.getMonth() &&
+                  slotStartTime.getDate() === selectedDate.getDate() &&
+                  slotStartTime.getHours() === hours24 &&
+                  slotStartTime.getMinutes() === minutes
+              );
+            });
+            if (slotExists) {
+              formattedTime += ' Booked';
+            }
+
             this.consultancyTimeFrames.push({ value: i + 1, label: formattedTime });
-            startTime.setMinutes(startTime.getMinutes() + 15);
+            startTime.setMinutes(startTime.getMinutes() + 30);
             i = i + 1;
           }
           this.generalConsultancy.EventStartTime = consultancy.StartTime;
@@ -360,6 +407,7 @@ export class TutorDetailComponent {
       });
     });
   }
+
   closeDialogForConsult(){
     this.resetDatePicker();
     this.consultDialog = false;
