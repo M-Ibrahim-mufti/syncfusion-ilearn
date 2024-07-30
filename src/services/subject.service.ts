@@ -47,6 +47,7 @@ export class Subject {
   Name!: string;
   Description!: null | string;
   CoreSubjectName!: string;
+  IsPrimarySchool!: boolean;
 }
 
 export class CoreSubjects {

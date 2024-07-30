@@ -35,7 +35,12 @@
                     <ng-template #cellTemplate2 let-data let-column>
                         <span class="fw-bold text-muted py-3">{{ data.Description }}</span>
                     </ng-template>
-                </e-column>                
+                </e-column>
+                <e-column field='IsPrimarySchool' headerText='Type' width='250' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate3">
+                    <ng-template #cellTemplate3 let-data let-column>
+                        <span class="fw-bold text-muted py-3">{{ data.IsPrimarySchool ? 'Primary' : 'Secondary' }}</span>
+                    </ng-template>
+                </e-column>                  
                 <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]="headerTemplate" [template]="cellTemplate" [template]='actionTemplate'></e-column>
             </e-columns>
         </ejs-grid>
@@ -49,6 +54,9 @@
     <button ejs-button cssClass='e-info e-icon-btn' class="me-2" (click)="editSubject(data)">
       <span class="e-btn-icon e-icons e-edit"></span>
     </button>
+    <button ejs-button cssClass='e-info e-icon-btn' class="me-2" (click)="editSubject(data)">
+        <span class="e-btn-icon e-icons e-edit"></span>Add 
+      </button>
     <button ejs-button cssClass='e-danger e-icon-btn ml-2' >
       <span class="e-btn-icon e-icons e-delete"></span>
     </button>

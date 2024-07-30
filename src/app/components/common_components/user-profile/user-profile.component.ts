@@ -227,7 +227,7 @@ export class UserProfileComponent {
   } 
   public getSubSubjects(event:any) {
     console.log("subjectId",event.value);    
-    this.tutorService.getSubSubjects(event.value,true).subscribe((response) => {
+    this.tutorService.getSubSubjects(event.value, true).subscribe((response) => {
       this.subSubjects = response
       console.log(this.subSubjects)
     })
