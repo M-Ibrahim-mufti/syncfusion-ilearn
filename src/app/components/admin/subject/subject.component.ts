@@ -76,6 +76,7 @@ export class SubjectComponent {
       this.ngxSpinner.hide();
       this.Subjects = response;
       this.filterSubjects = this.Subjects
+      console.log(this.filterSubjects)
     });
   }
 
@@ -146,6 +147,7 @@ export class SubjectComponent {
   public editSubject(selectedSubject: Subject){
     this.addSubjectDialogueBox = true;
     this.insertSubjectData = selectedSubject;
+    console.log(selectedSubject)
   }
 
   public addSubjectGrade(selectedRow: Subject){
@@ -233,7 +235,7 @@ export class SubjectComponent {
     const inputValue = inputElement.value;
     
     this.filterSubjects = this.Subjects.filter((data) => {   
-      if (data.Name.includes(inputValue)) {
+      if (data.Name.includes(inputValue) || data.CoreSubjectName.includes(inputValue) ) {
         if(data.Description !== null) {
           if(data.Description.includes(inputValue)){
             return data

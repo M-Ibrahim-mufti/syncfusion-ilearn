@@ -97,10 +97,10 @@ export class TutorService extends ServiceBase {
     return this.http.get<any>(url, httpOptions);
   }
 
-  public getAllCoreSubjects():Observable<any> {
+  public getAllCoreSubjects(isProfilePage:boolean):Observable<any> {
     const httpOptions = this.RequestHeaders();
     const api:string = '/Subject';
-    const method:string = '/core-subjects';
+    const method:string = `/core-subjects/${isProfilePage}`;
     const url:string = environment.BASE_API_PATH + api + method;
     return this.http.get<any>(url, httpOptions);
     
@@ -128,6 +128,14 @@ export class TutorService extends ServiceBase {
     const method:string = 'subjects-grades/'
     const url = environment.BASE_API_PATH + api + method;
     return this.http.get<any>(url, httpOptions);
+  }
+
+  public getSubSubjectGrades(subSubjectId:string):Observable<any> {
+    const httpOptions = this.RequestHeaders();
+    const api:string = '/Subject/'
+    const method:string = `${subSubjectId}/grade`
+    const url:string = environment.BASE_API_PATH + api + method
+    return this.http.get<any>(url, httpOptions)
   }
 
 }

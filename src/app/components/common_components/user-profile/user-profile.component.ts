@@ -22,11 +22,7 @@ import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
 
 export class UserProfileComponent {
   public user!: ApplicationViewStudent;
-  // public subjects!: SelectItem[];
-  // public grades: SelectItem[] = [];
-  // public selectedGrades: any[] = []
-  // public selectedSubjects: any[] = [];
-  // public selectedSubjectGrades: any[] = [];
+
   public newProfileImage?: File;
   public meetings: ZoomMeetingDetail[] = []
   public UserEditProfileDialog = false
@@ -40,22 +36,7 @@ export class UserProfileComponent {
   public subjectTypeSelection:any[] = []
   public activeType: string = ''
   public subSubjects: string = ''
-  public grades:any[] = [
-    {label:'prep', value:'prep'},
-    {label:'1', value:'1'},
-    {label:'2', value:'2'},
-    {label:'3', value:'3'},
-    {label:'4', value:'4'},
-    {label:'5', value:'5'},
-    {label:'6', value:'6'},
-    {label:'7', value:'7'},
-    {label:'8', value:'8'},
-    {label:'9', value:'9'},
-    {label:'10', value:'10'},
-    {label:'11', value:'11'},
-    {label:'12', value:'12'},
-  ]
-  public filterGrades:any[] = []
+  public grades:any[] = []
   public AddSubject:AddSubjects = {
     SubjectId: '',
     Grades:[]
@@ -71,7 +52,7 @@ export class UserProfileComponent {
     Grades:[]
   }
   public filterSubjectForUpdation:any[] =[];
-
+  public enableGradesFiels:boolean = false
 
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
@@ -142,12 +123,15 @@ export class UserProfileComponent {
       let tutorSubjects: any[] = [];
       this.TutorSubjectAndGrades.forEach((subject)  => {
         let grades:any[] = subject.Grades;
-        grades = grades.map((grade) => 
-          ( this.grades.filter(innerGrade => {
-              if(grade.GradeLevel == innerGrade.label) { 
-                  return innerGrade
-                }
-            }).pop().label))
+        // grades = grades.map((grade) => 
+        //   ( this.grades.filter(innerGrade => {
+        //       if(grade.GradeLevel == innerGrade.label) { 
+        //           return innerGrade
+        //         }
+        //     }).pop().label))
+          grades = grades.map((grade) => {
+            return grade.GradeLevel
+          })
           tutorSubjects.push({
                 CoreSubject: {
                   Name: subject.CoreSubjectName,
@@ -163,23 +147,22 @@ export class UserProfileComponent {
 
       })
       this.TutorSubjectAndGrades = tutorSubjects;
+      console.log(this.TutorSubjectAndGrades);
+      
     })
   }
 
-  public callSubSubjectForUpdate(subjectId:string,index:number){
+  public callSubSubjectForUpdate(subjectId:string,SubSubjectId:string,index:number){
     const getData:any = this.CoreSubjects.filter((subject) => subject.Id === subjectId);
-    if(getData.isPrimarySchool){
-      this.filterGradesForUpdation = this.grades.filter(grade => {
-        const primaryGrades = ['prep', '1', '2', '3', '4', '5', '6'];
-        return primaryGrades.includes(grade.label);        
-      });
-    } else {
-      this.filterGradesForUpdation = this.grades.filter(grade => {
-        const secondaryGrades = ['7', '8', '9', '10', '11', '12'];
-        return secondaryGrades.includes(grade.label);
-      });
-    }
-
+    console.log(getData)
+    this.tutorService.getSubSubjectGrades(SubSubjectId).subscribe((response) => {
+      this.filterGradesForUpdation = response;
+      console.log(response)
+      this.filterGradesForUpdation = this.filterGradesForUpdation.map((grade) => {
+        return parseInt(grade.label,10)
+      })
+      this.filterGradesForUpdation.sort((a,b) => a - b);
+    })
 
     this.tutorService.getSubSubjects(subjectId, true).subscribe((response) => {
       this.subSubjectUpdation = response;
@@ -195,13 +178,24 @@ export class UserProfileComponent {
   }
   public updationOnSubject(event:any) {
     this.updateSubjectData.SubjectId = event.value
+    this.tutorService.getSubSubjectGrades(event.value).subscribe((response) => {
+      this.filterGradesForUpdation = response;
+      console.log(response)
+      this.filterGradesForUpdation = this.filterGradesForUpdation.map((grade) => {
+        return parseInt(grade.label,10)
+      })
+      this.filterGradesForUpdation.sort((a,b) => a - b);
+    })
+
   }
 
-  public updationOnGrades(event:any) {
-    this.updateSubjectData.Grades = event.value
-  }
-
-  public updateSubject(index:number){
+  public updateSubject(subjectId:string, Grades:any[] ,index:number){
+    if(!this.updateSubjectData.SubjectId) {
+      this.updateSubjectData.SubjectId = subjectId;
+    }
+    if(this.updateSubjectData.Grades.length === 0) {
+      this.updateSubjectData.Grades = Grades;
+    }
     const updatedGrades:any[] = this.updateSubjectData.Grades;
     let newArr:any[] = []
     updatedGrades.forEach((grade) => {
@@ -209,31 +203,51 @@ export class UserProfileComponent {
         GradeLevel:grade
       })
     });
+    this.spinner.show()
     console.log(this.updateSubjectData)
+    this.tutorService.saveSubjects(this.AddSubject).subscribe((response) => {
+      if(response){
+        this.updateSubjectData.Grades = newArr
+        this.TutorSubjectAndGrades.forEach((subject, innerIndex) => {
+          if(index === innerIndex ){
+            subject.isEditable = null
+          } else {
+            subject.isEditable = null
+          }
+        })
+        this.toastr.success('success', 'subject updated successfully');
+      }
+      else {
+        this.toastr.error('error', 'unable to update subject')
+      }
+      this.spinner.hide()
+    })
+
     this.updateSubjectData.Grades = newArr
     this.TutorSubjectAndGrades.forEach((subject, innerIndex) => {
       if(index === innerIndex ){
-        subject.isEditable = true
+        subject.isEditable = null
       } else {
-        subject.isEditable = true
+        subject.isEditable = null
       }
     })
   }
 
   public getAllCoreSubjects() {
-    this.tutorService.getAllCoreSubjects().subscribe((subject: any[]) => {
-      this.CoreSubjects = subject;
+    this.tutorService.getAllCoreSubjects(true).subscribe((subject: any[]) => {
+      this.CoreSubjects = subject
+      console.log(this.CoreSubjects)
     })
   } 
   public getSubSubjects(event:any) {
-    console.log("subjectId",event.value);    
-    this.tutorService.getSubSubjects(event.value, true).subscribe((response) => {
+    this.tutorService.getSubSubjects(event.value,true).subscribe((response) => {
       this.subSubjects = response
       console.log(this.subSubjects)
     })
   }
   public subjectBox() {
     this.subjectDrop = true
+    console.log(this.grades)
   }
 
   public filterSubjects(type:string){
@@ -243,12 +257,6 @@ export class UserProfileComponent {
         label:subject.Name,
         value:subject.Id
       }))
-    
-      this.filterGrades = this.grades.filter(grade => {
-        const primaryGrades = ['prep', '1', '2', '3', '4', '5', '6'];
-        return primaryGrades.includes(grade.label);        
-      });
-      console.log(this.filterGrades)
       this.activeType = type
     } else if(type ==='Secondary') {
       this.subjectTypeSelection = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool == false);
@@ -256,16 +264,27 @@ export class UserProfileComponent {
         label:subject.Name,
         value:subject.Id
       }))
-      this.filterGrades = this.grades.filter(grade => {
-        const secondaryGrades = ['7', '8', '9', '10', '11', '12'];
-        return secondaryGrades.includes(grade.label);
-      });
       this.activeType = type
     }
   }
 
   public selectSubSubject(event:any) {
     this.AddSubject.SubjectId = event.value
+    this.tutorService.getSubSubjectGrades(event.value).subscribe((response) => {
+      this.grades = response
+      this.grades = this.grades.map((grade) => {
+        return grade.label
+      })
+      this.grades.sort((a,b) => parseInt(a) - parseInt(b))
+      console.log(this.grades)
+
+    })
+  }
+
+  public selectGrades(event:any) {
+    this.selectedGrades = event.value;
+    console.log(this.selectedGrades);
+    
   }
 
 
