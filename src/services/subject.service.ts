@@ -39,6 +39,14 @@ export class SubjectService extends ServiceBase {
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.post<ResponseObject>(url, data, httpOptions);
   }
+
+  public saveSubjectGrade(data: SubjectGradesRequest): Observable<ResponseObject> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Subject';
+    const method: string = '/save-subject-grade';
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.post<ResponseObject>(url, data, httpOptions);
+  }
 }
 
 export class Subject {
@@ -55,4 +63,14 @@ export class CoreSubjects {
   Name!: string;
   Description!: null;
   IsPrimarySchool!: boolean;
+}
+
+export class SubjectGradesRequest {
+  Id!: string;
+  SubjectId!: string;
+  Grades!: GradeDto[];
+}
+
+export class GradeDto{
+  GradeLevel!: number;
 }
