@@ -72,5 +72,5 @@ export class SubjectGradesRequest {
 }
 
 export class GradeDto{
-  GradeLevel!: number;
+  GradeLevel!: any;
 }

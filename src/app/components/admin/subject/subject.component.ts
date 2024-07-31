@@ -56,9 +56,8 @@ export class SubjectComponent {
   }
 
   ngOnInit() {
-    this.viewSubjects();
+    this.viewSubjects();   
     this.getAllSubjects();
-    this.switchToPrimary();
     // this.getTutorSubjects();
     this.pageSettings = { pageSize: 6 };
   }
@@ -77,13 +76,12 @@ export class SubjectComponent {
       this.ngxSpinner.hide();
       this.Subjects = response;
       this.filterSubjects = this.Subjects
-      console.log(this.filterSubjects)
     });
   }
 
   public addNewSubject() {
     this.insertSubjectData = new Subject();
-    this.addSubjectDialogueBox = true;
+    this.addSubjectDialogueBox = true;    
     this.switchToPrimary();
   }
 
@@ -133,6 +131,7 @@ export class SubjectComponent {
         );
         this.ngxSpinner.hide();
        this.onGradeDialogClose();
+       this.subjectGrades = new SubjectGradesRequest();
       }
       else {
         this.toastr.error(
@@ -276,6 +275,8 @@ export class SubjectComponent {
   }
 
   switchToPrimary() {
+    console.log("subjects",this.AllSubjects);
+    
     this.coreSubjects = this.AllSubjects.filter(p=>p.IsPrimarySchool === true)
     this.isCoreSubjectVisible = true
     this.showSubjects = false;    

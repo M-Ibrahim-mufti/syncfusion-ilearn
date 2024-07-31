@@ -50,7 +50,7 @@
                             }}</span>
                     </ng-template>
                 </e-column>
-                <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]="headerTemplate"
+                <e-column headerText='Action' width='220' textAlign='center' [headerTemplate]="headerTemplate"
                     [template]="cellTemplate" [template]='actionTemplate'></e-column>
             </e-columns>
         </ejs-grid>
@@ -61,12 +61,12 @@
 </div>
 
 <ng-template #actionTemplate let-data>
-    <button ejs-button cssClass='e-info e-icon-btn' class="me-2" (click)="editSubject(data)">
-        <span class="e-btn-icon e-icons e-edit"></span>
-    </button>
     <button ejs-button cssClass='e-info e-icon-btn' class="me-2" (click)="addSubjectGrade(data)">
-        <span class="e-btn-icon e-icons e-add"></span>Add
+        <span class="e-btn-icon e-icons e-add me-1"></span>Add Grade
     </button>
+    <button ejs-button cssClass='e-info e-icon-btn ml-2' class="me-2" (click)="editSubject(data)">
+        <span class="e-btn-icon e-icons e-edit"></span>
+    </button>    
     <button ejs-button cssClass='e-danger e-icon-btn ml-2'>
         <span class="e-btn-icon e-icons e-delete"></span>
     </button>
@@ -128,8 +128,8 @@
     </div>
 </ejs-dialog>
 
-<ejs-dialog header="Add Subject Grade" [visible]="addSubjectGradeDialogueBox" [width]="430" [showCloseIcon]="true"
-    [isModal]="true" (close)="onDialogClose()">
+<ejs-dialog header="Add Subject Grade" [visible]="addSubjectGradeDialogueBox" [width]="430" [showCloseIcon]="true" [isModal]="true"
+    [isModal]="true" (close)="onGradeDialogClose()">
     <div class="form-horizontal mt-2 px-3">
         <div class="form-group mt-2">
             <label for="Name" class="form-label">Name <span class="text-danger">*</span></label>
