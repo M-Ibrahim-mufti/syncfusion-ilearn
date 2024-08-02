@@ -165,10 +165,10 @@ export class MeetingsComponent implements OnInit {
       role = 1
     }
     let isMeetingDisable = this.disableStartMeeting(meeting.StartTime)
-    // if(isMeetingDisable){
-    //   console.log("Kaka g Kidhr?")
-    //   return;
-    // }
+    if(isMeetingDisable){
+      console.log("Kaka g Kidhr?")
+      return;
+    }
     this.zoomService.getSignature(meeting.MeetingId.toString(), role).subscribe((data: any) => {
       if (data.signature) {
         const zoomMeeting = {
