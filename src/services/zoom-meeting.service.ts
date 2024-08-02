@@ -59,6 +59,8 @@ export class ZoomMeetingService extends ServiceBase{
 export class ZoomMeetingDetail {
   Uuid!:string;
   Id!: string;
+  UserId!: string;
+  UserName!: string;
   HostId!: string;
   HostEmail!: string;
   Topic!: string;

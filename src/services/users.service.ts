@@ -15,10 +15,10 @@ export class UsersService extends ServiceBase {
         authService: AuthService) {
         super(authService);
     }
-    public getUserDetail():Observable<ApplicationViewStudent> {
+    public getUserDetail(userId: string | null = null):Observable<ApplicationViewStudent> {
         var httpOptions = this.RequestHeaders();
         const api: string = '/user';
-        const method: string = '/profile';
+        const method: string = '/profile/' + userId;
         const url = environment.BASE_API_PATH + api + method;
         return this.http.get<ApplicationViewStudent>(url, httpOptions);
     }

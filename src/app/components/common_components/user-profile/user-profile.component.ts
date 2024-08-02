@@ -12,6 +12,7 @@ import { ZoomMeetingDetail, ZoomMeetingService } from '../../../../services/zoom
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 import { TutorService, AddSubjects } from '../../../../services/tutor.service';
 import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -52,7 +53,8 @@ export class UserProfileComponent {
     Grades:[]
   }
   public filterSubjectForUpdation:any[] =[];
-  public enableGradesFiels:boolean = false
+  public enableGradesFiels:boolean = false;
+  public userId!: string;
 
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
@@ -62,6 +64,7 @@ export class UserProfileComponent {
     private meetingService:ZoomMeetingService,
     private tutorSevice: TutorService,
     private tutorService:TutorService,
+    private route: ActivatedRoute
   ) { 
     this.isStudent = this.authService.isStudent()
     this.isTeacher = this.authService.isTeacher()
@@ -85,6 +88,11 @@ export class UserProfileComponent {
   };
 
   async ngOnInit():Promise<void> {
+    this.route.params.subscribe((params) => {
+      this.route.queryParams.subscribe(params => {
+        this.userId = params['id'];
+      });
+    });
     this.authConfig = this.authService.getAuthConfig();
     if(this.authConfig.IsTeacher){
       this.logginUserId = this.authService.getUserId();
@@ -96,7 +104,7 @@ export class UserProfileComponent {
 
   public getUserDetail(){
     this.spinner.show();
-    this.UserService.getUserDetail().subscribe(response =>{
+    this.UserService.getUserDetail(this.userId).subscribe(response =>{
       if(response){
         this.user = response;
         console.log(this.user)
@@ -198,13 +206,13 @@ export class UserProfileComponent {
     }
     const updatedGrades:any[] = this.updateSubjectData.Grades;
     let newArr:any[] = []
-    updatedGrades.forEach((grade) => {
+    updatedGrades?.forEach((grade) => {
       newArr.push({
-        GradeLevel:grade
+        GradeLevel:grade.toLocaleString()
       })
     });
-    this.spinner.show()
-    console.log(this.updateSubjectData)
+    this.spinner.show();
+    console.log(this.updateSubjectData);    
     this.tutorService.saveSubjects(this.updateSubjectData).subscribe((response) => {
       if(response){
         this.updateSubjectData.Grades = newArr
@@ -313,10 +321,8 @@ export class UserProfileComponent {
       }  
       this.spinner.hide()
     })
-  }
-
-  public removeSubject(subject:any){
     
+
   }
 
   public onImageSelected(event: Event): void {

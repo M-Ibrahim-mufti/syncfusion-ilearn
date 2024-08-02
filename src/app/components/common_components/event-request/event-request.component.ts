@@ -34,7 +34,7 @@ export class EventRequestComponent implements OnInit{
     {value: -1, label:'Select Status'},
     {value: 'app', label: 'Approve'},
     {value: 'rej', label: 'Reject'},
-    {value: 'pen', label: 'pending'},
+    {value: 'pen', label: 'Pending'},
   ]
 
   public filterRequests!: RequestBooking[]

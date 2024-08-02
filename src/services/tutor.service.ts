@@ -114,10 +114,10 @@ export class TutorService extends ServiceBase {
     return this.http.get<any>(url, httpOptions)
   }
 
-  public saveSubjects(Subject:AddSubjects): Observable<any> {
+  public saveSubjects(Subject:AddSubjects): Observable<any> {    
     const httpOptions = this.RequestHeaders();
     const api:string = '/Subject/';
-    const method:string = 'save-tutor-subject/'
+    const method:string = 'save-tutor-subject'
     const url:string = environment.BASE_API_PATH + api + method;
     return this.http.post<any>(url, Subject, httpOptions)
   }

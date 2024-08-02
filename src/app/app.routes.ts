@@ -132,6 +132,10 @@ export const routes: Routes = [
         component:UserProfileComponent
     },
     {
+        path: 'profile/:id',
+        component:UserProfileComponent
+    },
+    {
         path: 'student/tutor-detail/:id',
         component:TutorDetailComponent
     },
