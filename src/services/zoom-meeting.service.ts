@@ -5,11 +5,14 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { AuthService, ResponseObject } from './auth.service';
 import { Tutor } from './tutor.service';
+import { KJUR } from 'jsrsasign';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ZoomMeetingService extends ServiceBase{
+  private sdkKey = '5jYNmws5QripxdjZibbzuQ';
+  private sdkSecret = 'Dy57tZrdVAryZVLT9DdgZGhwSXX6NnR4';
 
   constructor(private http: HttpClient,
     authService: AuthService) {
@@ -53,6 +56,35 @@ export class ZoomMeetingService extends ServiceBase{
     const method: string = '/meetings';
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.get<ZoomMeetingDetail[]>(url, httpOptions);
+  }
+
+  generateSignature(meetingNumber: string, role: number, expirationSeconds: number = 7200): string {
+    const iat = Math.floor(Date.now() / 1000);
+    const exp = iat + expirationSeconds;
+    const oHeader = { alg: 'HS256', typ: 'JWT' };
+
+    const oPayload = {
+      appKey: this.sdkKey,
+      sdkKey: this.sdkKey,
+      mn: meetingNumber,
+      role,
+      iat,
+      exp,
+      tokenExp: exp
+    };
+
+    const sHeader = JSON.stringify(oHeader);
+    const sPayload = JSON.stringify(oPayload);
+    let sdkJWT = KJUR.jws.JWS.sign('HS256', sHeader, sPayload, this.sdkSecret);
+    return sdkJWT;
+  }
+
+  getSignature(meetingNumber: string, role: number): Observable<any> {
+    const signature = this.generateSignature(meetingNumber, role);
+    return new Observable(observer => {
+      observer.next({ signature });
+      observer.complete();
+    });
   }
 }
 

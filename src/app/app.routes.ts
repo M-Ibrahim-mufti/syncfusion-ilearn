@@ -17,6 +17,7 @@ import { SubjectComponent } from './components/admin/subject/subject.component';
 import { StudentRegistrationComponent } from './components/registaration/student_registration/student-registration.component'
 import { TutorRegistrationComponent } from './components/registaration/tutor_registration/tutor-registration.component'
 import { ViewChildrenComponent } from './components/Parrent/view-children/view-children.component';
+import {ZoomComponent} from "./components/common_components/zoom/zoom.component";
 
 
 
@@ -151,5 +152,10 @@ export const routes: Routes = [
     {
         path: 'meeting',
         component:MeetingsComponent
+    },
+    {
+        path: 'zoom',
+        component:ZoomComponent
     }
+
 ];

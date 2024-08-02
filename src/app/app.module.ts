@@ -54,6 +54,7 @@ import { ToastrModule } from 'ngx-toastr';
 import {SchedulerComponent} from "./components/tutor/scheduler/scheduler.component";
 import { ViewChildrenComponent } from './components/Parrent/view-children/view-children.component';
 import { DurationPipe } from './pipes/duration.pipe';
+import {ZoomComponent} from "./components/common_components/zoom/zoom.component";
 
 
 export function getTokenFactory(injector: Injector) {
@@ -91,7 +92,8 @@ export function getTokenFactory(injector: Injector) {
     StudentRegistrationComponent,
     TutorRegistrationComponent,
     ViewChildrenComponent,
-    DurationPipe
+    DurationPipe,
+    ZoomComponent
   ],
     imports: [
         BrowserModule,

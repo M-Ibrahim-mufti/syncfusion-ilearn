@@ -159,6 +159,31 @@ export class MeetingsComponent implements OnInit {
     window.open(url, '_blank');
   }
 
+  redirectToZoomClass(meeting:any){
+    let role = 0;
+    if(this.isTeacher){
+      role = 1
+    }
+    let isMeetingDisable = this.disableStartMeeting(meeting.StartTime)
+    // if(isMeetingDisable){
+    //   console.log("Kaka g Kidhr?")
+    //   return;
+    // }
+    this.zoomService.getSignature(meeting.MeetingId.toString(), role).subscribe((data: any) => {
+      if (data.signature) {
+        const zoomMeeting = {
+          signature: data.signature,
+          meetingId: meeting.MeetingId,
+          role:role,
+          userName: meeting.UserName,
+          userEmail: meeting.UserEmail,
+          passWord: meeting.Password
+        }
+        this.router.navigate(['/zoom'], { state: { zoomMeeting } });
+      }
+    })
+  }
+
   disableStartMeeting(meetingTiming:any):boolean{
     const meetingTime = new Date(meetingTiming)
     
