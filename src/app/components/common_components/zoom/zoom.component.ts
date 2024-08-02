@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import {Component, OnInit, NgZone, OnDestroy} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ZoomMtg } from '@zoom/meetingsdk';
@@ -9,7 +9,7 @@ import {AuthService} from "../../../../services/auth.service";
   templateUrl: './zoom.component.html',
   styleUrls: ['./zoom.component.css']
 })
-export class ZoomComponent implements OnInit {
+export class ZoomComponent implements OnInit, OnDestroy {
   zoomMeeting: any;
   private sdkKey = "5jYNmws5QripxdjZibbzuQ"
   private userName:string = "";
@@ -72,18 +72,6 @@ export class ZoomComponent implements OnInit {
     });
   }
 
-  customizeMeetingUI() {
-    const participantsListButton = document.querySelector('.participants-btn') as HTMLElement;
-    if (participantsListButton) {
-      participantsListButton.style.display = 'none';
-    }
-
-    const inviteButton = document.querySelector('.invite-btn') as HTMLElement;
-    if (inviteButton) {
-      inviteButton.style.display = 'none';
-    }
-  }
-
   removeParticipantButton() {
     // Select the div based on class and attribute
     const participantsElement = document.querySelector('div.footer__button-wrap[feature-type="participants"]') as HTMLElement;
@@ -96,6 +84,17 @@ export class ZoomComponent implements OnInit {
     const chatElement = document.querySelector('div.footer__button-wrap[feature-type="chat"]') as HTMLElement;
     if(chatElement){
       chatElement.remove();
+    }
+  }
+  ngOnDestroy() {
+    this.hideMeetingRoot();
+    this.zoomMeeting = undefined;
+  }
+
+  hideMeetingRoot() {
+    const meetingRootElement = document.getElementById('zmmtg-root');
+    if (meetingRootElement) {
+      meetingRootElement.style.display = 'none'; // Hide the element
     }
   }
 }
