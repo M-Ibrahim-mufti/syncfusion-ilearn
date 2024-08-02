@@ -102,11 +102,11 @@ export class AvailabilitySelectionComponent implements OnInit {
             timeZoneHandling: true,
             crossDomain: true,
         });
-
         this.eventSettings = {
             dataSource: this.dataManager,
             fields: this.fields
         }
+
     }
 
     public getSubjectGrades(subjectId:string) {
@@ -120,6 +120,8 @@ export class AvailabilitySelectionComponent implements OnInit {
     public getTutorSubjects () {
         this.studentService.getAllUserSubjects().subscribe((response) => {
             this.tutorSubjects = response
+            this.fixScheduleView()
+
         })
     }
     public onChangeSubject(data: ChangeEventArgs) {
@@ -556,6 +558,12 @@ export class AvailabilitySelectionComponent implements OnInit {
         this.dateTimes[dateIndex].timeRanges.splice(timeIndex, 1);
     }
 
+    public fixScheduleView() {
+        const tableWrapper = document.querySelector('.e-table-wrap') as HTMLElement;
+        if(tableWrapper.classList.contains('e-month-view')) {
+            console.log(true)
+        }
+    }
 }
 
 export class ECustomField implements FieldModel {

@@ -3,88 +3,125 @@
 }
 
 .column {
-    width: calc(50% - 1px);
+  width: calc(50% - 1px);
 }
 .column-right-border {
-    border-right: 1px solid rgb(198, 198, 198);
-    margin-top: -28px;
-    margin-bottom: -8px;
-    padding-top: 28px;
-    padding-bottom: 8px;
+  border-right: 1px solid rgb(198, 198, 198);
+  margin-top: -28px;
+  margin-bottom: -8px;
+  padding-top: 28px;
+  padding-bottom: 8px;
 }
 
 
 .custom-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-repeat: no-repeat;
-    background-position: right center;
-    padding-right: 1.25rem;
-  }
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 1.25rem;
+}
 
-  .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    overflow: auto;
-  }
-  
-  .modal.show {
-    display: block;
-  }
-  
-  .modal-dialog {
-    margin: 10% auto;
-  }
-  
-  .modal-content {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  .modal-body {
-    padding: 20px;
-  }
-  
-  .modal-header .close {
-    cursor: pointer;
-  }
-  
-  .toggle-container {
-    display: flex;
-    background-color: #f3f3f3;
-    align-items: center;
-    border: 1px;
-    border-radius: 10px;
-    padding: 5px;
-    width: 305px;
-  }
-  
-  .toggle-btn {
-    padding: 8px 22px; /* Adjust padding as needed */
-    margin: 0px 2px;
-    background-color: transparent;
-    border: none;
-    border-radius: 10px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .toggle-btn.active {
-    background-color: #ffffff;
-    color: #000000;
-    font-weight: bold;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  }
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: auto;
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal-dialog {
+  margin: 10% auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-header .close {
+  cursor: pointer;
+}
+
+.toggle-container {
+  display: flex;
+  background-color: #f3f3f3;
+  align-items: center;
+  border: 1px;
+  border-radius: 10px;
+  padding: 5px;
+  width: 305px;
+}
+
+.toggle-btn {
+  padding: 8px 22px; /* Adjust padding as needed */
+  margin: 0px 2px;
+  background-color: transparent;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-btn.active {
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: bold;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.e-schedule {
+  border:none!important;
+  border-radius: 6px;
+}
+
+::ng-deep .e-toolbar .e-toolbar-item .e-tbar-btn{
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  border-radius: 6px !important;
+  transition: all .3s linear !important;
+}
+
+::ng-deep .e-content-wrap {
+  scrollbar-width: thin;
+  scrollbar-color: #f1f1f1 white;
+}
+
+::ng-deep .e-date-header-wrap {
+  border-right: none!important;
+}
 
 
+::ng-deep .e-schedule .e-vertical-view .e-left-indent{
+  border-bottom: 1px solid #e5e5e5 !important;
+}
 
-  
+::ng-deep .e-schedule-table tr:nth-child(2) td:nth-child(1) {
+  border-left: none !important;
+}
+
+::ng-deep .e-month-view > .e-date-header-container {
+  padding-right: 0px !important;
+}
+
+::ng-deep .e-date-header-container {
+  border-bottom: 1px solid #e5e5e5;
+  padding-right: 11px !important;
+}

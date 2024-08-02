@@ -205,7 +205,7 @@ export class UserProfileComponent {
     });
     this.spinner.show()
     console.log(this.updateSubjectData)
-    this.tutorService.saveSubjects(this.AddSubject).subscribe((response) => {
+    this.tutorService.saveSubjects(this.updateSubjectData).subscribe((response) => {
       if(response){
         this.updateSubjectData.Grades = newArr
         this.TutorSubjectAndGrades.forEach((subject, innerIndex) => {
@@ -313,8 +313,10 @@ export class UserProfileComponent {
       }  
       this.spinner.hide()
     })
-    
+  }
 
+  public removeSubject(subject:any){
+    
   }
 
   public onImageSelected(event: Event): void {

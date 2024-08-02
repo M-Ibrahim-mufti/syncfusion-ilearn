@@ -76,33 +76,32 @@
                         <textarea style="height: 90px; resize: none;" class="form-control" [(ngModel)]="user.AboutMe"></textarea>
                     </div>
                     <div *ngIf="TutorSubjectAndGrades.length > 0" class="d-flex flex-column col-md-12">
-                        <p class="col-md-12 text-start text-muted" >Your Selected Subjects </p>
-                        <div class="d-flex subject-row-overflow flex-row gap-3">
-                            <div *ngFor="let subject of TutorSubjectAndGrades; let i = index" class="d-flex flex-column col-md-4">
-                                <div  class="form-group">
-                                    <label class="form-label">Core Subject </label>
-                                    <ejs-dropdownlist [enabled]="false" [(value)]="subject.CoreSubject.Id" [fields]="{text:'Name', value:'Id'}" [dataSource]="CoreSubjects" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
+                            <div class="text-start text-muted d-flex flex-row justify-content-between mb-3 col-md-12">
+                                <p class="col-md-6">Your Subjects</p>
+                                <button (click)="subjectBox()" ejs-button class="e-danger col-md-2 rounded-2"> Add Subject </button>
+                            </div>                        <div class="d-flex flex-row flex-wrap justify-content-between">
+                            <div *ngFor="let subject of TutorSubjectAndGrades; let i = index" class="position-relative mb-3 d-flex flex-column border rounded-2 col-width-sub">
+                                <div class="px-2 py-2  d-flex flex-row justify-content-between align-items-center border-bottom">
+                                    <p class="text-start form-label mb-0 custom-fs col-md-6"> Subject {{i + 1}} </p>
+                                    <span class="col-md-6 mt-1 text-end"><span class="cursor-pointer bg-danger rounded-2 e-icons e-edit py-2 text-white px-2 rounded-3"></span></span>
                                 </div>
-                                <div *ngIf="subject.isEditable" class="form-group">
-                                    <label class="form-label">Subject</label>
-                                    <ejs-dropdownlist (change)="updationOnSubject($event)" [(value)]="subject.SubSubject.value" [fields]="{text:'label', value:'value'}" [dataSource]="subSubjectUpdation" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Grades</label>
-                                    <ejs-multiselect [enabled]="filterGradesForUpdation.length > 0 && subject.isEditable"  [(value)]="subject.Grades" [allowFiltering]="true"  [dataSource]="filterGradesForUpdation"  [mode]="mode" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
-                                </div>
-                                <div class="my-2">
-                                    <button ejs-button [disabled]="subject.isEditable == false" class="e-danger w-50 py-2 rounded-start-2 rounded-end-0"(click)="callSubSubjectForUpdate(subject.CoreSubject.Id, subject.SubSubject.value ,i)"> Edit Subject </button>
-                                    <button ejs-button [disabled]="subject.isEditable == false" class="bg-white w-50 py-2 rounded-end-2 rounded-start-0"(click)="updateSubject(subject.SubSubject.value,subject.Grades,i)" > Save Subject </button>
-                                </div>
+                                <div class="px-2 pt-2 d-flex flex-row justify-content-between">
+                                    <p class="text-start form-label mb-0 custom-fs col-md-4">core Subject </p>
+                                    <p class="text-start text-muted-dark custom-fs form-label mb-0 fw-semibold col-md-8">{{subject.CoreSubject.Name}}</p>
+                               </div>
+                               <div class="px-2 d-flex flex-row justify-content-between">
+                                    <p class="text-start form-label custom-fs mb-0 col-md-4">Subject</p>
+                                    <p class="text-start form-label custom-fs text-muted-dark mb-0 fw-semibold col-md-8">{{subject.SubSubject.label}}</p>
+                               </div>
+                               <div class="px-2 pb-2 d-flex flex-row justify-content-between">
+                                    <p class="text-start form-label mb-0 custom-fs col-md-4">Grades</p>
+                                    <p class="text-start text-muted-dark mb-0 col-md-8 d-flex align-items-center gap-2"><span class="mx-0 fw-semibold form-label custom-fs" *ngFor="let grade of subject.Grades"> {{grade}} </span></p>
+                               </div>
                             </div>
                         </div>
                     </div>
-                    <div class="text-start text-muted d-flex flex-column col-md-12">
-                        <p class="col-md-12">Select Subject</p>
-                        <button (click)="subjectBox()" ejs-button class="e-danger col-md-2 rounded-2"> Add Subject </button>
-                    </div>
-                    <div class="d-flex flex-column col-md-12" *ngIf="subjectDrop" >
+
+                    <!-- <div class="d-flex flex-column col-md-12" *ngIf="subjectDrop" >
                         <div class="d-flex col-md-12 mb-2">
                             <button ejs-button (click)="filterSubjects('Primary')" [ngClass]=" activeType === 'Primary' ? 'e-danger' : ''" class="w-100">Primary</button>
                             <button ejs-button (click)="filterSubjects('Secondary')" [ngClass]="activeType === 'Secondary' ? 'e-danger' : ''" class="w-100">Secondary</button>
@@ -122,7 +121,7 @@
                         <div class="my-2">
                             <button [disabled]="!AddSubject.SubjectId || selectedGrades.length <= 0" ejs-button class="e-danger w-100 py-2 rounded-2" (click)="saveSubject()"> Save Subject </button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -144,6 +143,9 @@
         </div>
     </div>
     <div class="right-col-width d-flex flex-column gap-3 px-0 my-2">
+        <div class="bg-white px-0 py-2 bg-white roudned-2">
+
+        </div>
         <div class="bg-white px-0 py-2 bg-white rounded-3">
             <div class="border-bottom border-dull-white d-flex py-2 align-items-center gap-3">
                 <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Change Password </h5>

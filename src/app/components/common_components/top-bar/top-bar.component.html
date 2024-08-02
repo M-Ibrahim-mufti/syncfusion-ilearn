@@ -29,9 +29,9 @@
         </a>
         <ul class="dropdown-menu text-small shadow dropdown-menu-left py-0" aria-labelledby="dropdownUser2"
             style="width: 300px;">
-            <div class="row p-2 align-items-center gap-2 mt-2">
+            <div (click)="handleDropDownClose($event)" class="row p-2 align-items-center gap-2 mt-2">
                 <div class="col-3">
-                    <li class="dropdown-item">
+                    <li  class="dropdown-item">
                         <a href="javascript:void(0);" routerLink="/" class="text-center py-2">
                             <img [src]="ImgUrl ? ImgUrl : '../../../../../../assets/user-profile.png'" height="60"
                                 width="60" class="rounded-circle" />
@@ -43,11 +43,11 @@
                     <div>{{ UserEmail }}</div>
                 </div>
             </div>
-            <li><a routerLink="/profile" class="cursor-pointer py-2 dropdown-item">Profile</a></li>
+            <li (click)="handleDropDownClose($event)"><a routerLink="/profile" class="cursor-pointer py-2 dropdown-item">Profile</a></li>
             <li>
                 <hr class="dropdown-divider my-0">
             </li>
-            <li><a class="cursor-pointer dropdown-item pt-2 pb-3 rounded-bottom-2" (click)="logout($event)">Sign out</a>
+            <li><a (click)="handleDropDownClose($event)"  class="cursor-pointer dropdown-item pt-2 pb-3 rounded-bottom-2" (click)="logout($event)">Sign out</a>
             </li>
         </ul>
     </div>
