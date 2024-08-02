@@ -4,7 +4,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { registerLicense } from '@syncfusion/ej2-base';
 
-registerLicense('Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCeUx1RHxbf1x0ZFRGal5TTnVaUiweQnxTdEFjXn9ccHFQTmFdU0xwWQ==');
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXdecnRUQmFYWUF1VkA=');
 
 if (environment.production) {
   enableProdMode();
