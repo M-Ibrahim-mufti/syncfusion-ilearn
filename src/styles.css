@@ -231,3 +231,7 @@ body {
 .bg-search-logo{
   background-color: #f2f5f7;
 }
+
+.rounded-dialog{
+  border-radius: 6px !important;
+}

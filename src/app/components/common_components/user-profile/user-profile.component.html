@@ -1,10 +1,10 @@
-<div class="row g-5 mx-3 my-4 bg-white rounded-3">
-    <div class="my-3 d-flex justify-content-between mx-2">
+<div class="row g-5 mx-3 mt-3 mb-1 bg-white rounded-3">
+    <div class="my-2 d-flex align-items-center justify-content-between mx-2">
         <h5 class="fw-bold m-0">User Profile</h5>
         <button (click)="updateUserData()" ejs-button class="e-danger fs-6 mb-2 py-2 rounded-3">Update Profile</button>
     </div>
 </div>
-<div *ngIf="user" class="row gap-4 g-5 mx-3 my-1">
+<div *ngIf="user" class="row gap-3 g-5 mx-3 my-1">
     <div class="my-2 left-col-width d-flex flex-column gap-3 px-0">
         <div class="d-flex flex-column bg-white rounded-3">    
             <div class="d-flex flex-column gap-3 align-items-center px-3 py-3 border-bottom border-dull-white">
@@ -24,7 +24,6 @@
                 <div class="border-bottom border-dull-white d-flex justify-content-between align-items-center gap-3">
                     <h5 *ngIf="isTeacher" class="px-3 fw-bolder text-muted-dark mb-3"> Personal Information  </h5>
                     <h5 *ngIf="isStudent" class="px-3 fw-bolder text-muted-dark mb-2"> <a class="cursor-pointer" [ngClass]="{'text-primary': StudentInfo, 'text-hover': !StudentInfo }" (click)="StudentInfo = true" >Personal</a> | <a [ngClass]="{'text-primary': !StudentInfo, 'text-hover':StudentInfo }" (click)="StudentInfo = false" class="cursor-pointer">Parental</a> Information </h5>
-                    <!-- <button (click)="openEditProfileDialog()" ejs-button class="e-danger mx-3 mb-3 px-4 py-2 rounded-3 ">Edit</button> -->
                 </div>
                 <div class="d-flex flex-row flex-wrap justify-content-between gap-3 fw-bold mt-2 px-3">
                     <div *ngIf="isTeacher" class="text-start text-muted d-flex flex-column input-part-width">
@@ -76,52 +75,31 @@
                         <textarea style="height: 90px; resize: none;" class="form-control" [(ngModel)]="user.AboutMe"></textarea>
                     </div>
                     <div *ngIf="TutorSubjectAndGrades.length > 0" class="d-flex flex-column col-md-12">
-                            <div class="text-start text-muted d-flex flex-row justify-content-between mb-3 col-md-12">
-                                <p class="col-md-6">Your Subjects</p>
-                                <button (click)="subjectBox()" ejs-button class="e-danger col-md-2 rounded-2"> Add Subject </button>
-                            </div>                        <div class="d-flex flex-row flex-wrap justify-content-between">
+                        <div class="text-start text-muted d-flex flex-row justify-content-between mb-3 col-md-12">
+                            <p class="col-md-6">Your Subjects</p>
+                            <button (click)="AddSubjectDialogue('AddSubject')" ejs-button class="e-danger col-md-2 rounded-2"> Add Subject </button>
+                        </div>                       
+                        <div class="d-flex flex-row flex-wrap justify-content-between">
                             <div *ngFor="let subject of TutorSubjectAndGrades; let i = index" class="position-relative mb-3 d-flex flex-column border rounded-2 col-width-sub">
                                 <div class="px-2 py-2  d-flex flex-row justify-content-between align-items-center border-bottom">
                                     <p class="text-start form-label mb-0 custom-fs col-md-6"> Subject {{i + 1}} </p>
-                                    <span class="col-md-6 mt-1 text-end"><span class="cursor-pointer bg-danger rounded-2 e-icons e-edit py-2 text-white px-2 rounded-3"></span></span>
+                                    <span class="col-md-6 mt-1 text-end"><span (click)="AddSubjectDialogue('EditSubject', subject, i)" class="cursor-pointer bg-danger rounded-2 e-icons e-edit py-2 text-white px-2 rounded-3"></span></span>
                                 </div>
                                 <div class="px-2 pt-2 d-flex flex-row justify-content-between">
                                     <p class="text-start form-label mb-0 custom-fs col-md-4">core Subject </p>
                                     <p class="text-start text-muted-dark custom-fs form-label mb-0 fw-semibold col-md-8">{{subject.CoreSubject.Name}}</p>
-                               </div>
-                               <div class="px-2 d-flex flex-row justify-content-between">
+                                </div>
+                                <div class="px-2 d-flex flex-row justify-content-between">
                                     <p class="text-start form-label custom-fs mb-0 col-md-4">Subject</p>
                                     <p class="text-start form-label custom-fs text-muted-dark mb-0 fw-semibold col-md-8">{{subject.SubSubject.label}}</p>
-                               </div>
-                               <div class="px-2 pb-2 d-flex flex-row justify-content-between">
+                                </div>
+                                <div class="px-2 pb-2 d-flex flex-row justify-content-between">
                                     <p class="text-start form-label mb-0 custom-fs col-md-4">Grades</p>
                                     <p class="text-start text-muted-dark mb-0 col-md-8 d-flex align-items-center gap-2"><span class="mx-0 fw-semibold form-label custom-fs" *ngFor="let grade of subject.Grades"> {{grade}} </span></p>
-                               </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="d-flex flex-column col-md-12" *ngIf="subjectDrop" >
-                        <div class="d-flex col-md-12 mb-2">
-                            <button ejs-button (click)="filterSubjects('Primary')" [ngClass]=" activeType === 'Primary' ? 'e-danger' : ''" class="w-100">Primary</button>
-                            <button ejs-button (click)="filterSubjects('Secondary')" [ngClass]="activeType === 'Secondary' ? 'e-danger' : ''" class="w-100">Secondary</button>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Core Subject</label>
-                            <ejs-dropdownlist [enabled]='subjectTypeSelection.length > 0' (change)="getSubSubjects($event)" [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Subject</label>
-                            <ejs-dropdownlist (change)="selectSubSubject($event)" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
-                        </div>
-                        <div class="form-group">    
-                            <label class="form-label">Grades</label>
-                            <ejs-multiselect (change)="selectGrades($event)" [enabled]="grades.length > 0" [mode]="mode" [fields]="{text:'label', value:'value'}" [dataSource]="grades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
-                        </div>
-                        <div class="my-2">
-                            <button [disabled]="!AddSubject.SubjectId || selectedGrades.length <= 0" ejs-button class="e-danger w-100 py-2 rounded-2" (click)="saveSubject()"> Save Subject </button>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -143,9 +121,6 @@
         </div>
     </div>
     <div class="right-col-width d-flex flex-column gap-3 px-0 my-2">
-        <div class="bg-white px-0 py-2 bg-white roudned-2">
-
-        </div>
         <div class="bg-white px-0 py-2 bg-white rounded-3">
             <div class="border-bottom border-dull-white d-flex py-2 align-items-center gap-3">
                 <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Change Password </h5>
@@ -199,3 +174,37 @@
         </div>
     </div>
 </div>
+
+<ejs-dialog cssClass="rounded-dialog" [visible]="toggleAddSubDialogue" [footerTemplate]="footer" [isModal]="true" [width]="500" [showCloseIcon]="true" (close)="CloseAddSubjectDialogue()">
+    <ng-template #header>
+        <p *ngIf="dialogType === 'AddSubject'" class="mb-0 fw-semibold">Add Subject </p>
+        <p *ngIf="dialogType === 'EditSubject'" class="mb-0 fw-semibold">Edit Subject </p>
+    </ng-template>
+    <div class="d-flex my-2 flex-column col-md-12" >
+        <div *ngIf="dialogType === 'AddSubject'" class="d-flex col-md-12 mb-2">
+            <button ejs-button (click)="filterSubjects('Primary')" [ngClass]=" activeType === 'Primary' ? 'e-danger' : ''" class="w-100">Primary</button>
+            <button *ngIf="dialogType === 'AddSubject'" ejs-button (click)="filterSubjects('Secondary')" [ngClass]="activeType === 'Secondary' ? 'e-danger' : ''" class="w-100">Secondary</button>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Core Subject</label>
+            <ejs-dropdownlist *ngIf="dialogType === 'AddSubject'" [enabled]='subjectTypeSelection.length > 0' (change)="getSubSubjects($event)" [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
+            <ejs-dropdownlist *ngIf="dialogType === 'EditSubject'" [(value)]="selectedSubject.CoreSubject.Id" [enabled]='false' (change)="getSubSubjects($event)" [fields]="{text:'Name', value:'Id'}" [dataSource]="CoreSubjects" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Subject</label>
+            <ejs-dropdownlist *ngIf="dialogType === 'AddSubject'" (change)="selectSubSubject($event)" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
+            <ejs-dropdownlist *ngIf="dialogType === 'EditSubject'" [enabled]="subSubjectUpdation.length > 0" [(value)]="selectedSubject.SubSubject.value" (change)="updationOnSubject($event)" [dataSource]="subSubjectUpdation" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
+        </div>
+        <div class="form-group">    
+            <label class="form-label">Grades</label>
+            <ejs-multiselect *ngIf="dialogType === 'AddSubject'" (change)="selectGrades($event)" [enabled]="grades.length > 0" [mode]="mode" [fields]="{text:'label', value:'value'}" [dataSource]="grades" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
+            <ejs-multiselect *ngIf="dialogType === 'EditSubject'" [enabled]="filterGradesForUpdation.length > 0" (change)="updationOnGrades($event)" [(value)]="selectedSubject.Grades" [mode]="mode" [fields]="{text:'label', value:'value'}" [dataSource]="filterGradesForUpdation" [placeholder]="'Select Grade(s)'" ></ejs-multiselect>
+        </div>
+        <ng-template #footer>
+            <div class="my-2">
+                <button *ngIf="dialogType === 'AddSubject'" [disabled]="!AddSubject.SubjectId || selectedGrades.length <= 0" ejs-button class="ms-0 e-danger w-100 py-2 rounded-2" (click)="saveSubject()"> Save Subject </button>
+                <button *ngIf="dialogType === 'EditSubject'"  ejs-button class="ms-0 e-danger w-100 py-2 rounded-2" (click)="updateSubject()" >Update Subject</button>
+            </div>
+        </ng-template>
+    </div>
+</ejs-dialog>

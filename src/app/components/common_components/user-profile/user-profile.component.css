@@ -16,7 +16,7 @@
 }
 
 .right-col-width {
-    width: 40%;
+    width: calc(40% + .5rem);
     flex:0 0 auto;
 }
 .left-col-width {
@@ -139,4 +139,8 @@
 
 .custom-fs {
     font-size: 12px;
+}
+
+.e-dlg-header-content{
+    padding:14px !important;
 }

@@ -33,10 +33,10 @@ export class UserProfileComponent {
   public authConfig!: AuthConfig;
   public logginUserId!: string;
   public  CoreSubjects: any[] = [];
-  public subjectDrop:boolean = false
+  public toggleAddSubDialogue:boolean = false
   public subjectTypeSelection:any[] = []
   public activeType: string = ''
-  public subSubjects: string = ''
+  public subSubjects: any[] = []
   public grades:any[] = []
   public AddSubject:AddSubjects = {
     SubjectId: '',
@@ -55,6 +55,9 @@ export class UserProfileComponent {
   public filterSubjectForUpdation:any[] =[];
   public enableGradesFiels:boolean = false;
   public userId!: string;
+  public dialogType:string = ''
+  public selectedSubject:any;
+  public currentSubjectIndex:number = 0
 
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
@@ -190,15 +193,25 @@ export class UserProfileComponent {
       })
       this.filterGradesForUpdation.sort((a,b) => a - b);
     })
-
   }
 
-  public updateSubject(subjectId:string, Grades:any[] ,index:number){
+  public updationOnGrades(event:any) {
+    this.updateSubjectData.Grades = event.value
+    console.log(this.updateSubjectData)
+  }
+
+  public updateSubject(){
+
     if(!this.updateSubjectData.SubjectId) {
-      this.updateSubjectData.SubjectId = subjectId;
+      this.updateSubjectData.SubjectId = this.selectedSubject.SubSubject.Id;
     }
+    console.log(this.updateSubjectData)
     if(this.updateSubjectData.Grades.length === 0) {
-      this.updateSubjectData.Grades = Grades;
+      let grades:any[] = []
+      grades = grades.map((grade) => {
+        return grade.label;
+      })
+      this.updateSubjectData.Grades = this.selectedSubject.Grades;
     }
     const updatedGrades:any[] = this.updateSubjectData.Grades;
     let newArr:any[] = []
@@ -212,28 +225,12 @@ export class UserProfileComponent {
     this.tutorService.saveSubjects(this.updateSubjectData).subscribe((response) => {
       if(response){
         this.updateSubjectData.Grades = newArr
-        this.TutorSubjectAndGrades.forEach((subject, innerIndex) => {
-          if(index === innerIndex ){
-            subject.isEditable = null
-          } else {
-            subject.isEditable = null
-          }
-        })
         this.toastr.success('success', 'subject updated successfully');
       }
       else {
         this.toastr.error('error', 'unable to update subject')
       }
       this.spinner.hide()
-    })
-
-    this.updateSubjectData.Grades = newArr
-    this.TutorSubjectAndGrades.forEach((subject, innerIndex) => {
-      if(index === innerIndex ){
-        subject.isEditable = null
-      } else {
-        subject.isEditable = null
-      }
     })
   }
 
@@ -249,9 +246,27 @@ export class UserProfileComponent {
       console.log(this.subSubjects)
     })
   }
-  public subjectBox() {
-    this.subjectDrop = true
-    console.log(this.grades)
+  public AddSubjectDialogue(typeOfDialog:string, subject:any = null, index:number = 0) {
+    this.toggleAddSubDialogue = true
+    this.dialogType = typeOfDialog
+    this.selectedSubject = subject
+    console.log(this.selectedSubject)
+    if(this.dialogType === 'EditSubject'){
+      this.callSubSubjectForUpdate(subject.CoreSubject.Id, subject.SubSubject.value, index)
+    }
+
+  }
+  public CloseAddSubjectDialogue() {
+    this.toggleAddSubDialogue = false
+    this.dialogType = ''  
+    this.subjectTypeSelection = [];
+    this.subSubjects = [];
+    this.subSubjectUpdation = [];
+    this.grades = [];
+    this.filterGradesForUpdation = [];
+    this.activeType = '';
+    this.updateSubjectData.SubjectId = '';
+    this.updateSubjectData.Grades = []
   }
 
   public filterSubjects(type:string){
