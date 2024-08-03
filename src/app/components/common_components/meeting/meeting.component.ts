@@ -11,7 +11,7 @@ import { SpinnerService } from '../../../../services/Shared/spinner.service';
   styleUrls: ['./meeting.component.scss'],
 })
 export class MeetingsComponent implements OnInit {
-  public showListView:boolean = true;
+  public showListView: boolean = true;
   todayDate = new Date();
   startTime?: string;
   isTeacher: boolean = false;
@@ -23,14 +23,14 @@ export class MeetingsComponent implements OnInit {
   futureMeetings: ZoomMeetingDetail[] = [];
   previousMeetings: ZoomMeetingDetail[] = [];
   public activateBtn: boolean = false
-  studentMeetings:any;
+  studentMeetings: any;
   public inProgressMeetingId: string | null = null
 
   constructor(private router: Router,
     private spinnerService: SpinnerService,
     private zoomService: ZoomMeetingService,
-     private authService: AuthService,
-      private cdr: ChangeDetectorRef) {
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef) {
     this.isTeacher = this.authService.isTeacher()
     this.isStudent = this.authService.isStudent()
   }
@@ -53,7 +53,7 @@ export class MeetingsComponent implements OnInit {
 
   loadMeetings(): void {
     this.spinnerService.show();
-    this.zoomService.getMeetings().subscribe(response => {      
+    this.zoomService.getMeetings().subscribe(response => {
       this.meetings = response;
       this.spinnerService.hide();
       this.filterMeetings();
@@ -65,14 +65,14 @@ export class MeetingsComponent implements OnInit {
   // filterMeetingsForUpcoming(): void {
   //   const todayDate = new Date();   
   //   this.todayMeetings = [];
-    
+
   //   this.meetings.forEach(meeting => {      
   //     const meetingDate = new Date(meeting.StartTime);
   //     const meetingEndTime = this.meetingEndTime(meetingDate, meeting.Duration);
   //     if (this.isSameDay(meetingDate, todayDate)) {
   //       if(meetingEndTime >= todayDate)
   //         this.todayMeetings.push(meeting);
-        
+
   //     } else if (this.isTomorrow(meetingDate, todayDate)) {
   //       if(meetingEndTime >= todayDate)
   //         this.tomorrowMeetings.push(meeting);
@@ -100,34 +100,34 @@ export class MeetingsComponent implements OnInit {
     this.todayMeetings = [];
     this.tomorrowMeetings = [];
     this.previousMeetings = [];
-    
-    this.meetings.forEach(meeting => {
-        const meetingDate = new Date(meeting.StartTime);
-        const meetingEndTime = this.meetingEndTime(meetingDate, meeting.Duration);
 
-        // For meetings on the same day
-        if (this.isSameDay(meetingDate, todayDate)) {
-            if (meetingEndTime >= todayDate) {
-                // Meeting is ongoing or will start later today
-                this.todayMeetings.push(meeting);
-            } else {
-                // Meeting has ended earlier today
-                this.previousMeetings.push(meeting);
-            }
-        } else if (this.isTomorrow(meetingDate, todayDate)) {
-            // For meetings tomorrow
-            this.tomorrowMeetings.push(meeting);
-        } else if (meetingDate > todayDate) {
-            // For future meetings
-            this.todayMeetings.push(meeting);
-        } else if (meetingDate < todayDate) {
-            // For past meetings
-            if (meetingEndTime < todayDate) {
-                this.previousMeetings.push(meeting);
-            }
+    this.meetings.forEach(meeting => {
+      const meetingDate = new Date(meeting.StartTime);
+      const meetingEndTime = this.meetingEndTime(meetingDate, meeting.Duration);
+
+      // For meetings on the same day
+      if (this.isSameDay(meetingDate, todayDate)) {
+        if (meetingEndTime >= todayDate) {
+          // Meeting is ongoing or will start later today
+          this.todayMeetings.push(meeting);
+        } else {
+          // Meeting has ended earlier today
+          this.previousMeetings.push(meeting);
         }
+      } else if (this.isTomorrow(meetingDate, todayDate)) {
+        // For meetings tomorrow
+        this.tomorrowMeetings.push(meeting);
+      } else if (meetingDate > todayDate) {
+        // For future meetings
+        this.todayMeetings.push(meeting);
+      } else if (meetingDate < todayDate) {
+        // For past meetings
+        if (meetingEndTime < todayDate) {
+          this.previousMeetings.push(meeting);
+        }
+      }
     });
-}
+  }
 
   isSameDay(date1: Date, date2: Date): boolean {
     return (
@@ -153,13 +153,24 @@ export class MeetingsComponent implements OnInit {
     return endTime;
   }
 
-  redirectTo(url:string, meetingId: string){
+  redirectTo(url: string, meetingId: string) {
     this.inProgressMeetingId = meetingId;
     localStorage.setItem('inProgressMeetingId', meetingId);
     window.open(url, '_blank');
   }
 
-  redirectToZoomClass(meeting:any){
+  redirectToZoomClass(meeting: any) {
+
+
+    let startTime = new Date(meeting.StartTime);
+    let duration = meeting.Duration;
+    let expireTime = new Date(startTime.getTime() + duration * 60000);
+    let currentTime = new Date();
+
+    // Calculate the expire time in seconds from the current time
+    let expireTimeInSeconds = Math.floor((expireTime.getTime() - currentTime.getTime()) / 1000);
+    console.log("expireTimeInSeconds", expireTimeInSeconds);
+
     let role = 0;
     if(this.isTeacher){
       role = 1
@@ -169,8 +180,10 @@ export class MeetingsComponent implements OnInit {
       console.log("Kaka g Kidhr?")
       return;
     }
-    this.zoomService.getSignature(meeting.MeetingId.toString(), role).subscribe((data: any) => {
+    this.zoomService.getSignature(meeting.MeetingId.toString(), role, expireTimeInSeconds).subscribe((data: any) => {
       if (data.signature) {
+        console.log(data.signature);
+        
         const zoomMeeting = {
           signature: data.signature,
           meetingId: meeting.MeetingId,
@@ -184,10 +197,10 @@ export class MeetingsComponent implements OnInit {
     })
   }
 
-  disableStartMeeting(meetingTiming:any):boolean{
+  disableStartMeeting(meetingTiming: any): boolean {
     const meetingTime = new Date(meetingTiming)
-    
-    if(this.todayDate < meetingTime)
+
+    if (this.todayDate < meetingTime)
       return true
     return false
   }

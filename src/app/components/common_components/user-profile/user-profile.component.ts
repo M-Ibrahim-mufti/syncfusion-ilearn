@@ -88,11 +88,7 @@ export class UserProfileComponent {
   };
 
   async ngOnInit():Promise<void> {
-    this.route.params.subscribe((params) => {
-      this.route.queryParams.subscribe(params => {
-        this.userId = params['id'];
-      });
-    });
+   this.userId = this.route.snapshot.paramMap.get('id')!;    
     this.authConfig = this.authService.getAuthConfig();
     if(this.authConfig.IsTeacher){
       this.logginUserId = this.authService.getUserId();

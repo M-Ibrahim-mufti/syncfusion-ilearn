@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ZoomMtg } from '@zoom/meetingsdk';
 import {AuthService} from "../../../../services/auth.service";
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-zoom',
@@ -11,7 +12,6 @@ import {AuthService} from "../../../../services/auth.service";
 })
 export class ZoomComponent implements OnInit, OnDestroy {
   zoomMeeting: any;
-  private sdkKey = "5jYNmws5QripxdjZibbzuQ"
   private userName:string = "";
   private userEmail:string = "";
   constructor(private router: Router, private httpClient: HttpClient, private ngZone: NgZone,private authService: AuthService) {}
@@ -44,14 +44,14 @@ export class ZoomComponent implements OnInit, OnDestroy {
 
     this.ngZone.runOutsideAngular(() => {
       ZoomMtg.init({
-        leaveUrl: 'http://localhost:4200',
+        leaveUrl: environment.LEAVE_MEETING_URL,
         patchJsMedia: true,
         leaveOnPageUnload: true,
         success: (success:any) => {
           console.log(success);
           ZoomMtg.join({
             signature: signature,
-            sdkKey: this.sdkKey,
+            sdkKey: environment.SDK_KEY,
             meetingNumber: this.zoomMeeting.meetingId,
             passWord: this.zoomMeeting.passWord,
             userName: this.userName,
