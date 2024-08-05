@@ -1,25 +1,47 @@
 <div class="row g-5 mx-3 my-4 my-2 bg-white rounded-3 ">
-    <h4 class="text-dark fw-bold mb-0">View Subjects
-        <span *ngIf="Subjects.length > 0"
-            class="fs-6 text-muted badge rounded-pill bg-secondary">{{Subjects.length}}</span>
-        <div class="text-muted me-5 mt-2">
-            You can configure the subjects under the core study area, set which subjects are taught to which grades and categorize the primary and secondary school subjects
-        </div>
-    </h4>
-    <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
-        <div class="col-md-6">
-            <div class="input-group">
-                <span class="d-flex align-items-center px-4 bg-search-logo rounded-start-3">
-                    <span class="e-btn-icon e-icons e-search text-muted"></span>
-                </span>
-                <input (input)="filterSearch($event)" placeholder="Search..."
-                    class="form-control form-control-lg py-2" />
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="text-dark fw-bold mb-0">
+            View Subjects
+            <span *ngIf="Subjects.length > 0"
+                class="fs-6 text-muted badge rounded-pill bg-secondary ms-2">{{Subjects.length}}</span>
+        </h4>
+        <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="addNewSubject()"> Add Subject
+        </button>
+    </div>
+    <div class="text-muted mt-2">
+        <div class="row">
+            <div class="col-10">
+                You can configure the subjects under the core study area, set which subjects are taught to which grades
+                and
+                categorize the primary and secondary school subjects.
             </div>
         </div>
-        <div class="col-md-6 d-flex gap-4 justify-content-end">
-            <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="addNewSubject()"> Add
-                Subject </button>
+    </div>
+
+    <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
+
+        <div class="col-md-8">
+            <div class="input-group">
+                <span class="input-group-text bg-search-logo rounded-start-3">
+                    <i class="e-btn-icon e-icons e-search text-muted"></i>
+                </span>
+                <input (input)="filterSearch($event)" placeholder="Search..." [(ngModel)]="filters.Query"
+                    class="form-control form-control-lg py-2" />
+                <ejs-dropdownlist id="SubjectType" [allowObjectBinding]="true" [dataSource]="subjectType"
+                    [fields]="{ text: 'label', value: 'value' }" placeholder="Select a Subject Type"
+                    class="form-select mx-2" (change)="onSubjectType($event)">
+                </ejs-dropdownlist>
+                <ejs-dropdownlist id="CoreSubject" [(ngModel)]="insertSubjectData.CoreSubjectId"
+                    [allowObjectBinding]="true" [dataSource]="AllSubjects" [fields]="{ text: 'Name', value: 'Id' }"
+                    placeholder="Select a Core Area" class="form-select mx-2" (change)="onCoreSubject($event)">
+                </ejs-dropdownlist>
+            </div>
         </div>
+        <div class="col-md-4 d-flex gap-4 justify-content-end">
+            <button ejs-button cssClass="e-danger py-2 rounded-3" iconCss="fa fa-close"
+                (click)="clearAll()">Clear</button>
+        </div>
+
     </div>
     <div class="col-md-12 mt-2 p-0">
         <ejs-grid id="Grid" cssClass="border-dull-white border-0" [dataSource]='filterSubjects' [allowPaging]="true"
@@ -66,7 +88,7 @@
     </button>
     <button ejs-button cssClass='e-info e-icon-btn ml-2' class="me-2" (click)="editSubject(data)">
         <span class="e-btn-icon e-icons e-edit"></span>
-    </button>    
+    </button>
     <button ejs-button cssClass='e-danger e-icon-btn ml-2'>
         <span class="e-btn-icon e-icons e-delete"></span>
     </button>
@@ -116,6 +138,12 @@
                 placeholder="Enter Subject Name" />
         </div>
         <div class="form-group mt-2">
+            <label class="form-label">Grades</label>
+            <ejs-multiselect (change)="onGradeChange($event)" [(ngModel)]="insertSubjectData.Grades" [dataSource]="filterGrades"
+                [fields]="{text:'GradeLevel', value:'Id'}" [mode]="mode"
+                [placeholder]="'Select Grade(s)'"></ejs-multiselect>
+        </div>
+        <div class="form-group mt-2">
             <label for="description" class="form-label">Description</label>
             <textarea class="form-control" id="description" name="description" rows="5"
                 [(ngModel)]="insertSubjectData.Description" placeholder="Enter Course Description"></textarea>
@@ -128,8 +156,8 @@
     </div>
 </ejs-dialog>
 
-<ejs-dialog header="Add Subject Grade" [visible]="addSubjectGradeDialogueBox" [width]="430" [showCloseIcon]="true" [isModal]="true"
-    [isModal]="true" (close)="onGradeDialogClose()">
+<ejs-dialog header="Add Subject Grade" [visible]="addSubjectGradeDialogueBox" [width]="430" [showCloseIcon]="true"
+    [isModal]="true" [isModal]="true" (close)="onGradeDialogClose()">
     <div class="form-horizontal mt-2 px-3">
         <div class="form-group mt-2">
             <label for="Name" class="form-label">Name <span class="text-danger">*</span></label>
@@ -138,8 +166,7 @@
         </div>
         <div class="form-group mt-2">
             <label class="form-label">Grades</label>
-            <ejs-multiselect
-                (change)="onGradeChange($event)" [dataSource]="filterGrades"
+            <ejs-multiselect (change)="onGradeChange($event)" [dataSource]="filterGrades"
                 [fields]="{text:'label', value:'value'}" [mode]="mode"
                 [placeholder]="'Select Grade(s)'"></ejs-multiselect>
         </div>

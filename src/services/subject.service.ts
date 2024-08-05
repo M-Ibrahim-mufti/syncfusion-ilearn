@@ -1,3 +1,4 @@
+import { Query } from '@syncfusion/ej2-data';
 import { Injectable } from '@angular/core';
 import { ServiceBase } from './service.base';
 import { HttpClient } from '@angular/common/http';
@@ -16,12 +17,12 @@ export class SubjectService extends ServiceBase {
   }
 
 
-  public getAllSubjectsOnAdminSide(): Observable<Subject[]> {
+  public getAllSubjectsOnAdminSide(filters: FetchSubjectRequestParam): Observable<Subject[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Subject';
-    const method: string = '/view-subject';
+    const method: string = '/view-subject/';
     const url: string = environment.BASE_API_PATH + api + method;
-    return this.http.get<Subject[]>(url, httpOptions);
+    return this.http.post<Subject[]>(url, filters, httpOptions);
   }
   
   public getAllSubjects(): Observable<CoreSubjects[]> {
@@ -56,6 +57,7 @@ export class Subject {
   Description!: null | string;
   CoreSubjectName!: string;
   IsPrimarySchool!: boolean;
+  Grades!: any[];
 }
 
 export class CoreSubjects {
@@ -73,4 +75,10 @@ export class SubjectGradesRequest {
 
 export class GradeDto{
   GradeLevel!: any;
+}
+
+export class FetchSubjectRequestParam {
+  CoreSubjectId?: string;
+  SubjectType?: string;
+  Query?: string;
 }

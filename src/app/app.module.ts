@@ -40,7 +40,7 @@ import { AuthConfig, AuthService } from '../services/auth.service';
 
 //add import of synfussions
 import { EditService, GridModule, PageService, SortService } from '@syncfusion/ej2-angular-grids';
-import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { ButtonModule, SwitchModule } from '@syncfusion/ej2-angular-buttons';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { DropDownListModule, MultiSelect, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
@@ -135,7 +135,8 @@ export function getTokenFactory(injector: Injector) {
         RichTextEditorModule,
         DatePickerModule,
         CalendarModule,
-        TooltipAllModule
+        TooltipAllModule,
+        SwitchModule
 
     ],
   exports: [RouterModule],

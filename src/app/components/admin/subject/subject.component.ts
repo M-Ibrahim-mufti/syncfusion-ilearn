@@ -7,7 +7,7 @@ import { ClassMetaData, ClassMetadataService } from '../../../../services/class-
 import { SelectItem } from '../../../../services/event.service';
 import { StudentService } from '../../../../services/student.service';
 import { TutorService } from '../../../../services/tutor.service';
-import { CoreSubjects, Subject, SubjectGradesRequest, SubjectService } from '../../../../services/subject.service';
+import { CoreSubjects, FetchSubjectRequestParam, Subject, SubjectGradesRequest, SubjectService } from '../../../../services/subject.service';
 import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
 
 @Component({
@@ -31,6 +31,10 @@ export class SubjectComponent {
   public CoreSubjectId!: string;
   public showSubjects:boolean = false;
   public mode:string = 'CheckBox';
+  public subjectType: any[] = [
+    {label:'Primary', value:'Primary'},
+    {label:'Secondary', value:'Secondary'},
+  ]
   public grades:any[] = [
     {label:'prep', value:'prep'},
     {label:'1', value:'1'},
@@ -46,7 +50,9 @@ export class SubjectComponent {
     {label:'11', value:'11'},
     {label:'12', value:'12'},
   ]
-  public filterGrades:any[] = []
+  public filterGrades:any[] = [];
+
+  public filters: FetchSubjectRequestParam = {};
 
   constructor(private subjectService: SubjectService,
     private toastr: ToastrService,
@@ -70,13 +76,12 @@ export class SubjectComponent {
     })
   }
 
-  public viewSubjects() {
+  private viewSubjects(filters: FetchSubjectRequestParam = {}) {
     this.ngxSpinner.show();
-    this.subjectService.getAllSubjectsOnAdminSide().subscribe((response) => {
+    this.subjectService.getAllSubjectsOnAdminSide(filters).subscribe((response) => {
       this.ngxSpinner.hide();
       this.Subjects = response;
-      this.filterSubjects = this.Subjects
-      console.log(this.filterSubjects)
+      this.filterSubjects = this.Subjects;     
     });
   }
 
@@ -147,7 +152,12 @@ export class SubjectComponent {
   public editSubject(selectedSubject: Subject){
     this.addSubjectDialogueBox = true;
     this.insertSubjectData = selectedSubject;
-    console.log(selectedSubject)
+    this.filterGrades = this.insertSubjectData.Grades;
+
+    this.insertSubjectData.Grades = this.filterGrades.filter(grade => 
+      selectedSubject.Grades.some(selectedGrade => selectedGrade.Id === grade.Id)
+  );
+    console.log(this.insertSubjectData.Grades)
   }
 
   public addSubjectGrade(selectedRow: Subject){
@@ -230,28 +240,32 @@ export class SubjectComponent {
   // }
 
   public filterSearch(event: Event) {
-    this.filterSubjects = this.Subjects;
-    const inputElement = event.target as HTMLInputElement
-    const inputValue = inputElement.value;
+    // this.filterSubjects = this.Subjects;
+    // const inputElement = event.target as HTMLInputElement
+    // const inputValue = inputElement.value;
     
-    this.filterSubjects = this.Subjects.filter((data) => {   
-      if (data.Name.includes(inputValue) || data.CoreSubjectName.includes(inputValue) ) {
-        if(data.Description !== null) {
-          if(data.Description.includes(inputValue)){
-            return data
-          }
-        }
-        return data
-      }
-      else {
-        if(data.Description !== null) {
-          if (data.Description.includes(inputValue)){
-            return data
-          }
-        }
-        return undefined
-      }
-    })
+    // this.filterSubjects = this.Subjects.filter((data) => {   
+    //   if (data.Name.includes(inputValue) || data.CoreSubjectName.includes(inputValue) ) {
+    //     if(data.Description !== null) {
+    //       if(data.Description.includes(inputValue)){
+    //         return data
+    //       }
+    //     }
+    //     return data
+    //   }
+    //   else {
+    //     if(data.Description !== null) {
+    //       if (data.Description.includes(inputValue)){
+    //         return data
+    //       }
+    //     }
+    //     return undefined
+    //   }
+    // })
+
+    if (this.filters.Query && this.filters.Query.length >= 3) {
+      this.viewSubjects(this.filters);
+    }
   }
 
   // public onPrimayChange(){
@@ -267,14 +281,25 @@ export class SubjectComponent {
   // }
 
   public onCoreSubject($event: any){
-     //console.log($event.value.Id)
      if($event.value != null){
-      //  if(!$event.value.Id){
-      //   return
-      //  }
-       this.CoreSubjectId = $event.value.Id
+       this.CoreSubjectId = $event.value.Id;
+       this.filters.CoreSubjectId = this.CoreSubjectId;          
+       this.viewSubjects(this.filters);
      }
   }
+
+  public onSubjectType($event: any){
+    this.filters.SubjectType = $event.value.value;
+    this.viewSubjects(this.filters);
+ }
+
+ public clearAll(){
+  
+  this.viewSubjects();
+  this.filters = {};
+  this.filters.SubjectType = '';
+  this.insertSubjectData = new Subject();
+ }
 
   switchToPrimary() {
     console.log("subjects",this.AllSubjects);
