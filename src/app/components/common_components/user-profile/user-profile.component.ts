@@ -130,12 +130,6 @@ export class UserProfileComponent {
       let tutorSubjects: any[] = [];
       this.TutorSubjectAndGrades.forEach((subject)  => {
         let grades:any[] = subject.Grades;
-        // grades = grades.map((grade) => 
-        //   ( this.grades.filter(innerGrade => {
-        //       if(grade.GradeLevel == innerGrade.label) { 
-        //           return innerGrade
-        //         }
-        //     }).pop().label))
           grades = grades.map((grade) => {
             return grade.GradeLevel
           })
@@ -148,13 +142,13 @@ export class UserProfileComponent {
                   label:subject.SubjectName,
                   value:subject.SubjectId
                 },
-                Grades:grades,
+                Grades:grades.sort((a,b) => a-b),
                 isEditable: null
           })
 
       })
       this.TutorSubjectAndGrades = tutorSubjects;
-      console.log(this.TutorSubjectAndGrades);
+      console.log(this.TutorSubjectAndGrades.sort((a,b) => a-b));
       
     })
   }
@@ -217,14 +211,16 @@ export class UserProfileComponent {
     let newArr:any[] = []
     updatedGrades?.forEach((grade) => {
       newArr.push({
-        GradeLevel:grade.toLocaleString()
+        GradeLevel:grade
       })
     });
-    this.spinner.show();
-    console.log(this.updateSubjectData);    
+    this.updateSubjectData.Grades = newArr;
+    
+    this.spinner.show();    
     this.tutorService.saveSubjects(this.updateSubjectData).subscribe((response) => {
       if(response){
-        this.updateSubjectData.Grades = newArr
+        this.updateSubjectData.Grades = newArr;
+        this.CloseAddSubjectDialogue();
         this.toastr.success('success', 'subject updated successfully');
       }
       else {
@@ -322,7 +318,8 @@ export class UserProfileComponent {
         this.toastr.success(
           'success',
           'Tutor Subject Saved Successfully'
-        )
+        );
+        this.CloseAddSubjectDialogue();
         this.getAllTutorSubject()
       }else {
         this.toastr.error(
@@ -331,8 +328,7 @@ export class UserProfileComponent {
         )
       }  
       this.spinner.hide()
-    })
-    
+    })   
 
   }
 
