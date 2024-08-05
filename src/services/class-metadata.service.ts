@@ -46,6 +46,7 @@ export class ClassMetadataService extends ServiceBase {
 export class ClassMetaData {
   Id!: string;
   TutorId!: string;
+  CoreSubjectId!:string;
   SubjectId!: string;
   GradeId!: string;
   Title!: string;

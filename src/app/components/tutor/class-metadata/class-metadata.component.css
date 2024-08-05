@@ -136,3 +136,7 @@
     border-bottom-right-radius: 6px;
 }
 
+.e-dlg-header-content{
+    padding: 14px;
+    border-bottom: 1px solid #f1f1f2 !important;
+}

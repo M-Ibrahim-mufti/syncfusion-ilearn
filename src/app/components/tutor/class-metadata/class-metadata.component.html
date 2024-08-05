@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="col-md-6 d-flex gap-4 justify-content-end">
-            <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="addNewClass()">  Add New </button>
+            <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="addNewClass('AddClassMeta')">  Add New </button>
         </div>
     </div>
     <div *ngIf="classMetaData.length > 0" class="col-md-12 mt-2 p-0">
@@ -59,47 +59,42 @@
     </button>
   </ng-template>
 
-  <ejs-dialog header="Add Class Data" [visible]="addClassDialogueBox" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="onDialogClose()">
-    <div class="form-horizontal mt-2 px-3">
-        <!-- <div class="form-group mt-2">
-            <label for="subject" class="form-label">Select Subject <span class="text-danger">*</span></label>
-            <ejs-dropdownlist [dataSource]="Subjects" id="subject" name="tutorSubjects" [fields]="dropdownFields" [(ngModel)]="insertClassData.SubjectId" [placeholder]="'Select Subject'"
-                              (change)="onSubjectChange($event.value)">
-            </ejs-dropdownlist>
-        </div> -->
-
-        <div class="d-flex col-md-12 mb-2">
+<ejs-dialog [visible]="addClassDialogueBox" [footerTemplate]="footer" [width]="430" [showCloseIcon]="true" [isModal]="true" (close)="onDialogClose()">
+    <ng-template #header>
+        <p class="mb-0"> Add Class Data </p>
+    </ng-template>
+    <div class="my-2">
+        <div *ngIf="isAddData" class="d-flex col-md-12 mb-2">
             <button ejs-button (click)="filterSubjects('Primary')" [ngClass]=" activeType === 'Primary' ? 'e-danger' : ''" class="w-100">Primary</button>
             <button ejs-button (click)="filterSubjects('Secondary')" [ngClass]="activeType === 'Secondary' ? 'e-danger' : ''" class="w-100">Secondary</button>
         </div>
         <div class="form-group">
             <label class="form-label">Core Subject</label>
-            <ejs-dropdownlist (change)="getSubSubjects($event)" [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
+            <ejs-dropdownlist [enabled]='isAddData' [(value)]="insertClassData.CoreSubjectId" (change)="getSubSubjects($event)" [fields]="{text:'label', value:'value'}" [dataSource]="subjectTypeSelection" [placeholder]="'Select Core Subject'" ></ejs-dropdownlist>
         </div>
         <div class="form-group">
             <label class="form-label">Subject</label>
-            <ejs-dropdownlist (change)="selectSubSubject($event)" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
+            <ejs-dropdownlist *ngIf="!insertClassData.SubjectId" (change)="selectSubSubject($event)" [(value)]="insertClassData.SubjectId" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
+            <ejs-dropdownlist *ngIf="insertClassData.SubjectId" (change)="selectSubSubject($event)" [(value)]="insertClassData.SubjectId" [enabled]="subSubjects.length > 0" [dataSource]="subSubjects" [fields]="{text:'label', value:'value'}" [placeholder]="'Select Subject'" ></ejs-dropdownlist>
         </div>
-        <div class="form-group mt-2">
-            <label for="gradeLevel" class="form-label">Grade Level <span class="text-danger">*</span></label>
-            <ejs-dropdownlist [dataSource]="TutorGrades" id="gradeLevel" name="gradeLevel" [fields]="dropdownFields" [(ngModel)]="insertClassData.GradeId" [placeholder]="'Select Grade'"
-                              [enabled]="insertClassData.SubjectId !== null && insertClassData.SubjectId !== ''" (change)="onGradeChange($event.value)">
-            </ejs-dropdownlist>
+        <div class="form-group">
+            <label class="form-label">Grade</label>
+            <ejs-dropdownlist *ngIf="!insertClassData.GradeId" (change)="selectGrade($event)" [(value)]="insertClassData.GradeId" [enabled]="grades.length > 0" [fields]="{text:'label', value:'value'}" [dataSource]="grades" [placeholder]="'Select Grade(s)'" ></ejs-dropdownlist>
+            <ejs-dropdownlist *ngIf="insertClassData.GradeId" (change)="selectGrade($event)" [(value)]="insertClassData.GradeId" [enabled]="grades.length > 0" [fields]="{text:'label', value:'value'}" [dataSource]="grades" [placeholder]="'Select Grade(s)'" ></ejs-dropdownlist>
         </div>
-        <div class="form-group mt-2">
-            <label for="title" class="form-label">Course Title <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="insertClassData.Title" placeholder="Enter Title of Course"/>
+        <div class="form-group">
+            <label class="form-label">Course Title</label>
+            <input class="form-control" [(ngModel)]="insertClassData.Title" placeholder="Add Course Title"/>
         </div>
-        <div class="form-group mt-2">
-            <label for="description" class="form-label">Course Description</label>
-            <textarea class="form-control" id="description" name="description" rows="5" [(ngModel)]="insertClassData.Description" placeholder="Enter Course Description"></textarea>
+        <div class="form-group">
+            <label class="form-label">Course Description</label>
+            <textarea style="height: 90px; resize: none;" [(ngModel)]="insertClassData.Description" class="form-control" placeholder="Add Course Description"></textarea>
         </div>
-
-
-        <div class="text-center mt-4">
-            <button ejs-button cssClass="e-info w-100" (click)="saveClassMetaData()" [disabled]="!insertClassData.SubjectId || !insertClassData.Title || !insertClassData.GradeId">
-                Submit
-            </button>
-        </div>
+        <ng-template #footer>
+            <div class="my-2">
+                <button *ngIf="isAddData" ejs-button class="ms-0 e-danger w-100 py-2 rounded-2" (click)="saveClassMetaData()"> Save Subject </button>
+                <button *ngIf="!isAddData"  ejs-button class="ms-0 e-danger w-100 py-2 rounded-2" (click)="saveClassMetaData()" >Update Subject</button>
+            </div>
+        </ng-template>
     </div>
 </ejs-dialog>

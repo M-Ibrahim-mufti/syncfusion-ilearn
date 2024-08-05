@@ -25,31 +25,19 @@ export class ClassMetadataComponent {
   public dropdownFields: Object = { text: 'label', value: 'value' };
   public dialogInstance: any;
   public filterClasses!: ClassMetaData[];
-
   public CoreSubjects: any[] = [];
   public subjectTypeSelection:any[] = []
   public activeType: string = ''
-  public subSubjects: string = ''
-  public grades:any[] = [
-    {label:'prep', value:'prep'},
-    {label:'1', value:'1'},
-    {label:'2', value:'2'},
-    {label:'3', value:'3'},
-    {label:'4', value:'4'},
-    {label:'5', value:'5'},
-    {label:'6', value:'6'},
-    {label:'7', value:'7'},
-    {label:'8', value:'8'},
-    {label:'9', value:'9'},
-    {label:'10', value:'10'},
-    {label:'11', value:'11'},
-    {label:'12', value:'12'},
-  ]
+  public subSubjects: any[] = []
+  public grades:any[] = []
   public filterGrades:any[] = []
-  public AddSubject: AddSubjects = {
+  public selectedRowData:any = {
     SubjectId: '',
-    Grades:[]
-  }  
+    CoreSubjectId:'',
+    GradeId:'',
+  }
+
+  public isAddData!:boolean;
 
   constructor(private studentService: StudentService,
     private tutorService: TutorService,
@@ -73,6 +61,8 @@ export class ClassMetadataComponent {
       this.ngxSpinner.hide();
       this.classMetaData = response;
       this.filterClasses = this.classMetaData;
+      console.log(this.classMetaData);
+      
     });
   }
 
@@ -88,13 +78,15 @@ export class ClassMetadataComponent {
     this.studentService.viewUserGrades(subjectId).subscribe((response: SelectItem[]) => {
       this.TutorGrades = response;
       this.insertClassData.GradeId = response.map(p => p.value)[0]!;
+    
     });
   }
 
-  public addNewClass() {
+  public addNewClass(type:string) {
     this.insertClassData = new ClassMetaData();
     this.insertClassData.SubjectId = '';
     this.addClassDialogueBox = true;
+    this.isAddData = true
     this.filterSubjects('Primary')
   }
 
@@ -110,8 +102,21 @@ export class ClassMetadataComponent {
   }
 
   public saveClassMetaData() {
+    let saveData:ClassMetaData = {} as ClassMetaData 
+    if(!this.isAddData) {
+      saveData.Id = this.insertClassData.Id
+      saveData.CoreSubjectId = this.insertClassData.CoreSubjectId;
+      saveData.SubjectId = this.insertClassData.SubjectId;
+      saveData.Title = this.insertClassData.Title;
+      saveData.Description = this.insertClassData.Description;
+      saveData.GradeId = this.insertClassData.GradeId;
+      console.log(saveData)
+    } else {
+      saveData = this.insertClassData
+      console.log(saveData)
+    }
     this.ngxSpinner.show();
-    this.classMetaServices.saveClassMetaData(this.insertClassData).subscribe((response) => {
+    this.classMetaServices.saveClassMetaData(saveData).subscribe((response) => {
       if (response.Success) {
         this.toastr.success(
           'Success',
@@ -131,11 +136,16 @@ export class ClassMetadataComponent {
       }
     })
   }
-  public editMetaData(selectedRow: ClassMetaData) {
+  public editMetaData(selectedRow:ClassMetaData) {
+    this.isAddData = false
     this.addClassDialogueBox = true;
     this.insertClassData = { ...selectedRow };
+
     if (this.insertClassData.SubjectId) {
-      this.viewUserGrades(this.insertClassData.SubjectId);
+      console.log("Inside If")
+      this.filterSubjects('Primary');
+      // this.getSubSubjects(this.insertClassData.CoreSubjectId)
+      // this.selectSubSubject(this.insertClassData.SubjectId)
     }
   }
 
@@ -208,17 +218,22 @@ export class ClassMetadataComponent {
   public getAllCoreSubjects() {
     this.tutorService.getAllCoreSubjects(false).subscribe((subject: SelectItem[]) => {
       this.CoreSubjects = subject
+      console.log(this.CoreSubjects)
     })
   }
 
   public getSubSubjects(event:any) {
-    this.tutorService.getSubSubjects(event.value, false).subscribe((response) => {
+    const CoreSubId = event.value ? event.value : event;
+    this.tutorService.getSubSubjects(CoreSubId, false).subscribe((response) => {
       this.subSubjects = response
+      console.log(response)
     })
   }
-  // public subjectBox() {
-  //   this.subjectDrop = true
-  // }
+
+  public selectGrade(event:any) {
+    console.log(event.value)
+    this.insertClassData.GradeId = event.value
+  }
 
   public filterSubjects(type:string){
     if (type === 'Primary') {
@@ -248,13 +263,11 @@ export class ClassMetadataComponent {
   }
 
   public selectSubSubject(event:any) {
-    this.AddSubject.SubjectId = event.value
-    if(this.AddSubject.SubjectId){
-      this.onSubjectChange(this.AddSubject.SubjectId)
-    }
 
+    this.tutorService.getSubSubjectGrades(event.value, false).subscribe((response) => {
+      this.grades = response
+    })
   }
-
 }
 
 interface AddSubjects {

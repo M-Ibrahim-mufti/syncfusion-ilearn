@@ -130,10 +130,10 @@ export class TutorService extends ServiceBase {
     return this.http.get<any>(url, httpOptions);
   }
 
-  public getSubSubjectGrades(subSubjectId:string):Observable<any> {
+  public getSubSubjectGrades(subSubjectId:string, isProfilePage:boolean):Observable<any> {
     const httpOptions = this.RequestHeaders();
     const api:string = '/Subject/'
-    const method:string = `${subSubjectId}/grade`
+    const method:string = `${subSubjectId}/grade/${isProfilePage}`
     const url:string = environment.BASE_API_PATH + api + method
     return this.http.get<any>(url, httpOptions)
   }

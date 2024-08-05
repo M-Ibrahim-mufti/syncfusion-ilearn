@@ -162,7 +162,7 @@ export class UserProfileComponent {
   public callSubSubjectForUpdate(subjectId:string,SubSubjectId:string,index:number){
     const getData:any = this.CoreSubjects.filter((subject) => subject.Id === subjectId);
     console.log(getData)
-    this.tutorService.getSubSubjectGrades(SubSubjectId).subscribe((response) => {
+    this.tutorService.getSubSubjectGrades(SubSubjectId, true).subscribe((response) => {
       this.filterGradesForUpdation = response;
       console.log(response)
       this.filterGradesForUpdation = this.filterGradesForUpdation.map((grade) => {
@@ -185,7 +185,7 @@ export class UserProfileComponent {
   }
   public updationOnSubject(event:any) {
     this.updateSubjectData.SubjectId = event.value
-    this.tutorService.getSubSubjectGrades(event.value).subscribe((response) => {
+    this.tutorService.getSubSubjectGrades(event.value,true).subscribe((response) => {
       this.filterGradesForUpdation = response;
       console.log(response)
       this.filterGradesForUpdation = this.filterGradesForUpdation.map((grade) => {
@@ -289,7 +289,7 @@ export class UserProfileComponent {
 
   public selectSubSubject(event:any) {
     this.AddSubject.SubjectId = event.value
-    this.tutorService.getSubSubjectGrades(event.value).subscribe((response) => {
+    this.tutorService.getSubSubjectGrades(event.value, true).subscribe((response) => {
       this.grades = response
       this.grades = this.grades.map((grade) => {
         return grade.label
