@@ -31,7 +31,9 @@ export class TutorDetailComponent {
   public consultDialog: boolean = false;
   public allConsultancy:any[] = []
   public consultancyDate:any[] = [];
-  public enableTimeFrame:boolean = true
+  public enableTimeFrame:boolean = true;
+  public selectedDuration: string = '-1';
+  isDurationDisabled: boolean = true;
   public generalConsultancy: GeneralConsultancy = {
     TutorId: '',
     EventStartTime: '',
@@ -138,12 +140,11 @@ export class TutorDetailComponent {
     this.consultancyTimeFrames = [];
     this.consultancyDate = [];
     this.consultancyDuration.push(
-      { value: '-1', label: "Select Duration" },
-      { value:'30', label:30},
-      { value:'60', label:60},
-      { value:'90', label:90}
+      { value: '-1', label: "Select Duration",disabled: true },
+      { value:'30', label:30,disabled: true},
+      { value:'60', label:60,disabled: true},
+      { value:'90', label:90,disabled: true}
     )
-    console.log(this.consultancyDuration)
 
     // this.consultancyDuration = [];
     this.slotBookingService.getAllTutorRequests(this.tutorId).subscribe(response => {
@@ -292,6 +293,8 @@ export class TutorDetailComponent {
       console.error('ViewDate is undefined in navigated event.');
     }
   }
+
+
   updateEnabledDatesForView(): void {
     // Clear the enabledDates array
     this.enabledDates = [];
@@ -318,9 +321,15 @@ export class TutorDetailComponent {
     this.datepicker?.refresh();
     this.datepicker.show()
   }
-  public setConsultancyMeetingTime(event: any) {
-    const timeFrame = this.consultancyTimeFrames.filter((timeFrame) => timeFrame.value == event.target.value);
 
+  public setConsultancyMeetingTime(event: any) {
+    this.selectedDuration = "-1"
+    const timeFrame = this.consultancyTimeFrames.filter((timeFrame) => timeFrame.value == event.target.value);
+    if (timeFrame && timeFrame.includes('Booked')) {
+      this.isDurationDisabled = true;
+    } else {
+      this.isDurationDisabled = false;
+    }
     // Split the label to get time and period (AM/PM)
     const [time, period] = timeFrame[0].label.split(' ');
     let [hours, minutes] = time.split(':').map(Number);
@@ -348,6 +357,30 @@ export class TutorDetailComponent {
     // Update MeetingStartTime with the new UTC Date
     this.generalConsultancy.MeetingStartTime = formattedMeetingStartTime;
     this.frameTimeSet = false;
+    const selectedIndex = parseInt(event.target.value, 10) - 1; // Adjust if your value is not 1-based
+    const nextOption = this.consultancyTimeFrames[selectedIndex + 1];
+
+    this.isDurationDisabled = nextOption && nextOption.label.includes('Booked');
+    if(this.consultancyTimeFrames.length - 1 == selectedIndex){
+      this.isDurationDisabled = true;
+    }
+    this.consultancyDuration.forEach((option, index) => {
+      if (index > 0 && this.consultancyTimeFrames[selectedIndex + index] && this.consultancyTimeFrames[selectedIndex + index].label.includes('Booked')) {
+        option.disabled = true;
+      } else {
+        option.disabled = false;
+      }
+      if(this.consultancyTimeFrames.length - 2 == selectedIndex){
+        if(index > 1){
+          option.disabled = true;
+        }
+      }
+      if(this.consultancyTimeFrames.length - 3 == selectedIndex){
+        if(index > 2){
+          option.disabled = true;
+        }
+      }
+    });
   }
 
   public setConsultancyDate(event: any) {
@@ -374,7 +407,7 @@ export class TutorDetailComponent {
               const endTime = new Date(consultancy.EndTime);
               let i = 0;
 
-              while (startTime < endTime) {
+              while (startTime <= endTime) {
                 let hours24 = startTime.getHours();
                 let minutes = startTime.getMinutes();
                 let hours12 = hours24 % 12 || 12;
@@ -420,13 +453,30 @@ export class TutorDetailComponent {
                   duration = 0;
                 }
               }
-
               this.generalConsultancy.EventStartTime = consultancy.StartTime;
               this.generalConsultancy.MeetingStartTime = selectedDate;
               this.enableTimeFrame = false;
             }
           });
         });
+
+        if(this.consultancyTimeFrames.length > 0 && this.consultancyTimeFrames.length < 3){
+          for(let i = 0; i < this.consultancyDuration.length; i++){
+            this.isDurationDisabled = false;
+            if(i < this.consultancyTimeFrames.length){
+              this.consultancyDuration[i].disabled = false
+            }
+            else{
+              this.consultancyDuration[i].disabled = true
+            }
+          }
+        }
+        else{
+          this.isDurationDisabled = false;
+          this.consultancyDuration.forEach(value => {
+            value.disabled = false;
+          })
+        }
       });
     }
   }
