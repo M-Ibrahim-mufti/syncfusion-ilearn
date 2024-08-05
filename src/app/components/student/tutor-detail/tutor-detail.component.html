@@ -155,7 +155,7 @@
     </div>
     <ng-template #consultancyFooter>
         <div class="py-2">
-            <button [disabled]="!generalConsultancy.EventStartTime || !frameTimeSet || !generalConsultancy.Duration" (click)="enrollInGeneralConsultancy()" ejs-button class="e-danger px-5 py-2 rounded-2"> Enroll </button>
+            <button [disabled]="!generalConsultancy.EventStartTime || !generalConsultancy.Duration" (click)="enrollInGeneralConsultancy()" ejs-button class="e-danger px-5 py-2 rounded-2"> Enroll </button>
         </div>
     </ng-template>
 </ejs-dialog>

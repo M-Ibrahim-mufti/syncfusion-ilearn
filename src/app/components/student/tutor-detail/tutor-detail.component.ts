@@ -456,6 +456,7 @@ export class TutorDetailComponent {
               this.generalConsultancy.EventStartTime = consultancy.StartTime;
               this.generalConsultancy.MeetingStartTime = selectedDate;
               this.enableTimeFrame = false;
+              this.frameTimeSet = true;
             }
           });
         });
