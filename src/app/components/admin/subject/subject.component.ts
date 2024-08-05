@@ -149,20 +149,16 @@ export class SubjectComponent {
     })
   }
 
-  public editSubject(selectedSubject: Subject){
+  public editSubject(selectedSubject: Subject, grades:any[]){
     this.addSubjectDialogueBox = true;
     this.insertSubjectData = selectedSubject;
-    this.filterGrades = this.insertSubjectData.Grades;
-
-    this.insertSubjectData.Grades = this.filterGrades.filter(grade => 
-      selectedSubject.Grades.some(selectedGrade => selectedGrade.Id === grade.Id)
-  );
-    console.log(this.insertSubjectData.Grades)
   }
 
   public addSubjectGrade(selectedRow: Subject){
     this.addSubjectGradeDialogueBox = true;
-    if(selectedRow.IsPrimarySchool){
+    
+
+    if(selectedRow.IsPrimarySchool  ){
       this.filterGrades = ['prep', '1', '2', '3', '4', '5', '6'];
     }
     else{
@@ -280,21 +276,20 @@ export class SubjectComponent {
   //   this.isCoreSubjectVisible = true
   // }
 
-  public onCoreSubject($event: any){
-     if($event.value != null){
-       this.CoreSubjectId = $event.value.Id;
+  public onCoreSubject(event: any){
+     if(event.target.value != null){
+       this.CoreSubjectId = event.target.value;
        this.filters.CoreSubjectId = this.CoreSubjectId;          
        this.viewSubjects(this.filters);
      }
   }
 
-  public onSubjectType($event: any){
-    this.filters.SubjectType = $event.value.value;
+  public onSubjectType(event: any){
+    this.filters.SubjectType = event.target.value;
     this.viewSubjects(this.filters);
  }
 
  public clearAll(){
-  
   this.viewSubjects();
   this.filters = {};
   this.filters.SubjectType = '';
@@ -303,7 +298,7 @@ export class SubjectComponent {
 
   switchToPrimary() {
     console.log("subjects",this.AllSubjects);
-    
+    this.filterGrades = ['prep', '1', '2', '3', '4', '5', '6'];
     this.coreSubjects = this.AllSubjects.filter(p=>p.IsPrimarySchool === true)
     this.isCoreSubjectVisible = true
     this.showSubjects = false;    
@@ -311,6 +306,7 @@ export class SubjectComponent {
 
   switchToHigh() {
     this.coreSubjects = this.AllSubjects.filter(p=>p.IsPrimarySchool === false)
+    this.filterGrades = ['7', '8', '9', '10', '11', '12'];  
     this.isCoreSubjectVisible = true
     this.showSubjects = true;
   }

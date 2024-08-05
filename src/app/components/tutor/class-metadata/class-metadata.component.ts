@@ -140,10 +140,18 @@ export class ClassMetadataComponent {
     this.isAddData = false
     this.addClassDialogueBox = true;
     this.insertClassData = { ...selectedRow };
+    console.log(this.insertClassData)
 
     if (this.insertClassData.SubjectId) {
       console.log("Inside If")
-      this.filterSubjects('Primary');
+      console.log("Subject",this.insertClassData.SubjectId)
+      console.log("Grades",this.insertClassData.GradeId)
+      if(this.insertClassData.IsPrimary){
+        this.filterSubjects('Primary');
+      }
+      else {
+        this.filterSubjects('Secondary');
+      }
       // this.getSubSubjects(this.insertClassData.CoreSubjectId)
       // this.selectSubSubject(this.insertClassData.SubjectId)
     }
@@ -242,7 +250,7 @@ export class ClassMetadataComponent {
         label:subject.Name,
         value:subject.Id
       }))
-    
+      console.log(this.subjectTypeSelection)
       this.filterGrades = this.grades.filter(grade => {
         const numericGrades = ['prep', '1', '2', '3', '4', '5', '6'];
         return numericGrades.includes(grade.label);        
@@ -266,6 +274,7 @@ export class ClassMetadataComponent {
 
     this.tutorService.getSubSubjectGrades(event.value, false).subscribe((response) => {
       this.grades = response
+      console.log(this.grades)
     })
   }
 }

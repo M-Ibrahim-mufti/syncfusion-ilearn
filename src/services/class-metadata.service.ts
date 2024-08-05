@@ -52,7 +52,7 @@ export class ClassMetaData {
   Title!: string;
   Description!: string;
   IsActive!: boolean;
-
+  IsPrimary!:boolean;
   //helper property
   SubjectName!: string;
   GradeLevel!: number;
