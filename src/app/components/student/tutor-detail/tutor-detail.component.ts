@@ -490,7 +490,7 @@ export class TutorDetailComponent {
       if (response.Success) {
         this.toastr.success(
           'Success',
-          'Student enroll this class successfully'
+          'You have been successfully enrolled in this class'
         );
       }
       else {

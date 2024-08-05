@@ -22,13 +22,10 @@
                 </div>
             </li>
             <li class="list-group-item" *ngIf="!showListView">
-                <div class="container mt-4">
-                    <div class="bg-white rounded-3 py-3">
+                <div class="container">
+                    <div class="bg-white rounded-3 py-2">
                         <div class="col-md-12">
                             <div class="d-flex flex-column">
-                                <div class="px-5 w-100 border border-end-0 border-start-0 border-top-0">
-                                    <p class="mt-3 mb-4 fs-4 fw-bolder">Your meetings</p>
-                                </div>
                                 <div class="w-100 d-flex flex-row justify-content-around bg-light py-4">
                                     <button [disabled]="!activateBtn" (click)="toggleContentPreview()" class="text-muted fw-bold fs-5 btn-width px-4 py-3" [ngClass]="{'bg-white': !activateBtn}">Upcoming meetings</button>
                                     <button [disabled]="activateBtn" (click)="toggleContentPreview()" class="text-muted fw-bold fs-5 btn-width px-4 py-3" [ngClass]="{'bg-white': activateBtn}">Previous meetings</button>
@@ -48,8 +45,7 @@
                                         <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isStudent" [routerLink]="['/profile', meeting.UserId]" >Tutor: {{ meeting.UserName }}</span>                                                                              
                                         <span class="pt-1 text-muted fs-6 fw-semibold">Start Date: {{ meeting.StartTime | date: 'dd/MMM/yyyy' }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-semibold">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>
-                                        <span class="pt-1 text-muted fs-6 fw-semibold">Actual Duration: {{ meeting.ActualDuration | duration }}</span>
-                                        <span class="pt-1 text-muted fs-6 fw-semibold">MeetingId: {{meeting.MeetingId}}</span>
+                                        <span class="pt-1 text-muted fs-6 fw-semibold">Meeting ended in {{ meeting.ActualDuration | duration }}</span>
                                     </div>
                                 </div>
                             </div>

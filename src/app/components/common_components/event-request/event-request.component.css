@@ -17,7 +17,7 @@
     object-fit: cover;
 }
 .reject{
-	background-color: red;
+	background-color: rgb(190, 17, 17);
 	padding: 4px 8px;
 	font-size: 12px;
     font-weight: bold;
@@ -26,7 +26,7 @@
 }
 
 .pending{
-	background-color: rgb(86, 191, 232);
+	background-color: rgb(24, 109, 143);
 	padding: 4px 8px;
 	font-size: 12px;
     font-weight: bold;
@@ -35,7 +35,7 @@
 }
 
 .approve{
-	background-color: #7abe8b;
+	background-color: #308245;
 	padding: 4px 8px;
 	font-size: 12px;
     font-weight: bold;
