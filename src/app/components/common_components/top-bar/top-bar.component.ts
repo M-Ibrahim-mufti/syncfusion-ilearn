@@ -23,15 +23,15 @@ export class TopBarComponent implements OnInit {
   public selectedRole: string | undefined;
   public roles: SelectItem[] = [
     {
-      label:"Select Account Type",
+      label:"Account Type",
       value:"-1"
     },
     {
-      label: 'As an Tutor',
+      label: 'Tutor',
       value: 'Tutor',
     },
     {
-      label: 'As a Student',
+      label: 'Student',
       value: 'Student',
     },
   ]

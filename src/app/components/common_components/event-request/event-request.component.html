@@ -1,10 +1,10 @@
 <div class="row g-5 mx-3 my-4 my-2">
-    <div class="d-flex flex-column mt-0 px-0">
+    <div class="d-flex flex-column mt-0 px-0" *ngIf="groupRequests.length > 0">
         <div class="py-3 mb-1 bg-white rounded-3">
-            <h2 class="d-inline-flex align-items-center gap-3 my-3 px-3 fw-bold text-dark d-block fs-4 ">Group Classes Requests  <span *ngIf="bookingRequests" class="fs-6 text-muted badge rounded-pill bg-secondary">{{groupRequests.length}}</span></h2>
+            <h2 class="d-inline-flex align-items-center gap-3 my-3 px-3 fw-bold text-dark d-block fs-4 ">Classes Requests  <span *ngIf="bookingRequests" class="fs-6 text-muted badge rounded-pill bg-secondary">{{groupRequests.length}}</span></h2>
         </div>
         <div class="py-2 mb-1 bg-white rounded-3">
-            <p class="mb-0 px-3"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, fugit nobis. Consectetur, placeat omnis! Doloribus voluptatibus, repellendus et repudiandae cumque, possimus perferendis excepturi reiciendis praesentium corporis est quod quam sit!</p>
+            <p class="mb-0 px-3">The requests for group classes that you have either received or sent are shown below.</p>
         </div>
         <div class="bg-white rounded-3 py-3 mb-1">
             <div class="col-md-3 px-3 gap-3 d-flex justify-content-between align-items-center">
@@ -19,32 +19,32 @@
         <div class="py-2 px-3 bg-white rounded-3 mb-1" *ngIf="groupRequests.length > 0">
             <div class=" my-2 d-flex flex-wrap gap-2">
                 <ng-container *ngFor="let bookingRequest of groupRequests">
-                    <div class="shadow-sm border border-1 py-2 px-2 prounded-3 custom-card-width rounded-2 position-relative">
+                    <div class="shadow-sm border border-1 py-2 prounded-3 custom-card-width rounded-2 position-relative">
                         <div class="d-flex">
-                            <div class="col-md-3 d-flex me-2 justify-content-end">
+                            <div class="d-flex me-2 justify-content-end">
                                 <img class="rounded-circle" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover    ;" />
                             </div>
-                            <div class="col-md-9 mb-2 d-flex">
+                            <div class="mb-2 d-flex flex-grow-1">
                                 <div class="w-100 mb-2">
                                     <div class="m-0 d-flex flex-column">
                                         <h5 class="m-0 fw-bolder text-muted-dark">{{bookingRequest.StudentName}}</h5>
-                                        <span class="fw-bold text-muted">{{bookingRequest.SubjectName ? bookingRequest.SubjectName : 'not provided'}}</span>
+                                        <span class="fw-bold text-muted">{{bookingRequest.SubjectName ? bookingRequest.SubjectName : 'Not provided'}}</span>
                                     </div>
                                     <div *ngIf="authConfig.IsStudent" class="m-0 d-flex flex-row gap-2">
-                                        <p class="col-md-3 mb-0 px-0 text-muted-dark fw-bolder">Tutor</p>
+                                        <p class="col-md-3 mb-0 px-0 text-muted-dark fw-semibold">Tutor</p>
                                         <span class="fs-6 mb-0 text-muted fw-semibold">: {{bookingRequest.TutorName}}</span>
                                     </div>
                                     <div class="m-0 d-flex flex-row gap-2">
-                                        <p class="col-md-3 mb-0 px-0 text-muted-dark fw-bolder">Topic</p>
-                                        <span class="d-inline-flex gap-1 text-muted align-items-center">:<span [ngClass]="bookingRequest.SubjectTopic && bookingRequest.length < 15 ? 'fs-6' : 'd-flex align-items-center'" class="fw-semibold text-muted mb-0" [style]="bookingRequest.SubjectTopic && bookingRequest.SubjectTopic.length > 15 ? 'font-size:10px' : ''" > {{bookingRequest.SubjectTopic ? bookingRequest.SubjectTopic : 'Not Provided'}}</span></span>
+                                        <p class="col-md-3 mb-0 px-0 text-muted-dark fw-semibold">Topic</p>
+                                        <span class="d-inline-flex gap-1 text-muted align-items-center">: <span [ngClass]="bookingRequest.SubjectTopic && bookingRequest.length < 15 ? 'fs-6' : 'd-flex align-items-center'" class="fw-semibold text-muted mb-0"> {{bookingRequest.SubjectTopic ? bookingRequest.SubjectTopic : 'Not Provided'}}</span></span>
                                     </div>
                                     <div class="m-0 d-flex flex-row gap-2">
-                                        <p class="col-md-3 mb-0 px-0 text-muted-dark fw-bolder">Duration</p>
-                                        <span class="fs-6 mb-0 text-muted fw-semibold">: {{bookingRequest.Duration}}</span>
+                                        <p class="col-md-3 mb-0 px-0 text-muted-dark fw-semibold">Duration</p>
+                                        <span class="fs-6 mb-0 text-muted fw-semibold">: {{bookingRequest.Duration}} minutes</span>
                                     </div>
                                     <div class="m-0 d-flex flex-row gap-2">
-                                        <p class="col-md-3 mb-0 px-0 text-muted-dark fw-bolder">Timing</p>
-                                        <p class="mb-0 text-muted fw-semibold">: {{bookingRequest.StartTime | date: 'yyyy/MM/dd HH:mm' }}</p>
+                                        <p class="col-md-3 mb-0 px-0 text-muted-dark fw-semibold">Timing</p>
+                                        <p class="mb-0 text-muted fw-semibold">: {{bookingRequest.StartTime | date: 'dd/MMM/yyyy HH:mm' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -66,35 +66,38 @@
             <div class="mb-1 rounded-3 bg-white py-2 px-3">
                 <h2 class="d-inline-flex align-items-center gap-3 my-3 px-3 fw-bold text-dark d-block fs-4 ">Consultancy Requests  <span *ngIf="bookingRequests" class="fs-6 text-muted badge rounded-pill bg-secondary">{{consultancyRequests.length}}</span></h2>
             </div>
+            <div class="py-2 mb-1 bg-white rounded-3">
+                <p class="mb-0 px-3">The consultation requests that you have either received or sent are shown below.</p>
+            </div>
             <div class="py-2 px-3 bg-white rounded-3">
                 <div class=" my-2 d-flex flex-wrap gap-2">
                     <ng-container *ngFor="let bookingRequest of consultancyRequests">
                         <div class="shadow-sm border border-1 py-2 px-2 prounded-3 custom-card-width rounded-2 position-relative">
                             <div class="d-flex">
-                                <div class="col-md-3 d-flex me-2 justify-content-end">
+                                <div class="d-flex me-2 justify-content-end">
                                     <img class="rounded-circle" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover;" />
                                 </div>
-                                <div class="col-md-9 mb-2 d-flex">
+                                <div class="mb-2 d-flex flex-grow-1">
                                     <div class="w-100 mb-2">
                                         <div class="m-0 d-flex flex-column">
                                             <h5 class="m-0 fw-bolder text-muted-dark">{{bookingRequest.StudentName}}</h5>
                                             <span class="fw-bold text-muted">{{bookingRequest.SubjectName ? bookingRequest.SubjectName : 'not provided'}}</span>
                                         </div>
                                         <div *ngIf="authConfig.IsStudent" class="m-0 d-flex flex-row gap-2">
-                                            <p class="col-md-3 mb-0 px-0 text-muted-dark fw-bolder">Tutor</p>
+                                            <p class="col-md-3 mb-0 px-0 text-muted-dark fw-semibold">Tutor</p>
                                             <span class="fs-6 mb-0 text-muted fw-semibold">: {{bookingRequest.TutorName}}</span>
                                         </div>
                                         <div class="m-0 d-flex flex-row gap-2">
-                                            <p class="col-md-3 mb-0 px-0 text-muted-dark fw-bolder">Topic</p>
-                                            <span class="d-inline-flex gap-1 text-muted align-items-center fw-semibold">:<span [ngClass]="bookingRequest.SubjectTopic && bookingRequest.length < 15 ? 'fs-6' : 'd-flex align-items-center'" class="fw-semibold text-muted mb-0" [style]="bookingRequest.SubjectTopic && bookingRequest.SubjectTopic.length > 15 ? 'font-size:10px' : ''" > {{bookingRequest.SubjectTopic ? bookingRequest.SubjectTopic : 'Not Provided'}}</span></span>
+                                            <p class="col-md-3 mb-0 px-0 text-muted-dark fw-semibold">Topic</p>
+                                            <span class="d-inline-flex gap-1 text-muted align-items-center fw-semibold">:<span [ngClass]="bookingRequest.SubjectTopic && bookingRequest.length < 15 ? 'fs-6' : 'd-flex align-items-center'" class="fw-semibold text-muted mb-0"> {{bookingRequest.SubjectTopic ? bookingRequest.SubjectTopic : 'Not Provided'}}</span></span>
                                         </div>
                                         <div class="m-0 d-flex flex-row gap-2">
-                                            <p class="col-md-3 mb-0 px-0 text-muted-dark fw-bolder">Duration</p>
-                                            <span class="fs-6 mb-0 text-muted fw-semibold">: {{bookingRequest.Duration}}</span>
+                                            <p class="col-md-3 mb-0 px-0 text-muted-dark fw-semibold">Duration</p>
+                                            <span class="fs-6 mb-0 text-muted fw-semibold">: {{bookingRequest.Duration}} minutes</span>
                                         </div>
                                         <div class="m-0 d-flex flex-row gap-2">
-                                            <p class="col-md-3 mb-0 px-0 text-muted-dark fw-bolder">Timing</p>
-                                            <p class="mb-0 text-muted fw-semibold">: {{bookingRequest.StartTime | date: 'yyyy/MM/dd HH:mm' }}</p>
+                                            <p class="col-md-3 mb-0 px-0 text-muted-dark fw-semibold">Timing</p>
+                                            <p class="mb-0 text-muted fw-semibold">: {{bookingRequest.StartTime | date: 'dd/MMM/yyyy HH:mm' }}</p>
                                         </div>
                                     </div>
                                 </div>

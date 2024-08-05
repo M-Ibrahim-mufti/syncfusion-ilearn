@@ -72,11 +72,14 @@
     <ng-container *ngFor="let tutor of availableTutor; let i = index">
         <div class="col-md-8 mb-2 px-3" #tutorCard>
             <div class=" border border-2 border-dull-white rounded-3 shadows py-3 px-4" (mouseenter)="getTutorEvents(tutor.Id, i)">
-                <div class="mx-3 d-flex gap-2">
+                <div class="d-flex gap-3">
                     <div class="col-md-2 text-center neg-margin mt-0">
-                        <img class="rounded-3" style="object-fit:cover; width: 120px; height: 120px; background-color: #f2f2f2;" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
+                        <img class="" style="object-fit:cover; width: 120px; height: 120px; background-color: #f2f2f2; border-radius: 50%;" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
+                        <div class="d-flex flex-column align-items-center justify-content-center w-100 mt-2">
+                            <button ejs-button class="e-danger rounded-3 btn-sm" (click)="navigateTutorDetailPage(tutor)">View Profile</button>
+                        </div>
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-10">
                         <div class="d-flex flex-column gap-1 mt-2">
                             <h5 class="mb-0 fw-bold text-muted-dark fs-4 d-flex gap-2 align-items-center cursor-pointer" (click)="navigateTutorDetailPage(tutor)">{{tutor.Hon}} {{tutor.FullName}}.  
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#000" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
@@ -85,22 +88,19 @@
                             </h5>
                             <p class="text-muted mb-0 fw-semibold">{{tutor.Title}}</p>
                             <p class="text-muted mb-0 fw-semibold">Qualified in : {{tutor.Degree}}</p>
-                            <p class="bg-secondary mb-0 text-muted rounded-2 fw-bolder ST-width mt-1 py-1 px-4" *ngIf="tutor.TotalMeetings >= 5">Super Tutor</p>
+                            <p class="bg-secondary mb-0 text-muted rounded-2 fw-semibold ST-width mt-1 py-1 px-4" *ngIf="tutor.TotalMeetings >= 5">Super Tutor</p>
                             <p class="text-muted mb-0 fw-semibold">{{tutor.TotalStudents}} active students</p>
                             <span class="text-muted fw-semibold">{{tutor.TotalMeetings}} lectures</span>
-                            <div class="d-flex gap-3 mb-1">
-                                <span class="py-1 px-4 bg-secondary rounded-2 text-muted fw-bolder" *ngFor="let subject of tutor.TutorSubjects">{{subject.SubjectName}}</span>
+                            <div class="d-flex flex-wrap gap-2 mb-1">
+                                <span class="py-1 px-2 bg-secondary rounded-2 text-muted fw-semibold" *ngFor="let subject of tutor.TutorSubjects">{{subject.SubjectName}}</span>
                             </div>
                             <p class="text-muted mb-1 description-style fw-semibold">
                                 {{ tutor.isExpanded ? tutor.AboutMe : (tutor.AboutMe | slice:0:150) + '...' }}
                             </p>
-                            <p class="text-danger cursor-pointer fw-semibold" (click)="toggleReadMore(i)">
+                            <p class="text-danger cursor-pointer fw-semibold" (click)="toggleReadMore(i)" *ngIf="tutor.AboutMe">
                                 {{ tutor.isExpanded ? 'Read Less' : 'Read More' }}
                             </p>
                         </div>
-                    </div>
-                    <div class="col-md-3 d-flex align-items-end justify-content-center">
-                        <button ejs-button style="padding-top: 0.75rem; padding-bottom: 0.75rem;" class="px-4 e-danger rounded-3" (click)="navigateTutorDetailPage(tutor)">Show Profile</button>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,7 @@
                         </div>
                         <div class="d-flex">
                             <span class="w-25 text-muted-dark fw-bold">Duration</span>
-                            <p class="mb-0 text-muted fw-semibold"> : {{event.Duration}}</p>
+                            <p class="mb-0 text-muted fw-semibold"> : {{event.Duration}} minutes</p>
                         </div>
                     </div>
                   </div>

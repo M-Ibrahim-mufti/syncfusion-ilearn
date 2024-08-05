@@ -1,8 +1,8 @@
 <div class="row g-5 mx-3 my-4 my-2 bg-white rounded-3 ">
-    <h4 class="text-dark fw-bold mb-0">Class
+    <h4 class="text-dark fw-bold mb-0">Your Classes
         <span *ngIf="classMetaData.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{filterClasses.length}}</span>
         <div class="text-muted me-5 mt-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, fugit nobis. Consectetur, placeat omnis! Doloribus voluptatibus, repellendus et repudiandae cumque, possimus perferendis excepturi reiciendis praesentium corporis est quod quam sit!
+            This is the list of classes and consultations that you offer. Create your package here and then add a schedule to it from your availability to offer that service to all iLearn users
         </div>
     </h4>
     <div class="d-flex border-bottom border-1 border-dull-white align-items-center justify-content-between pb-3 mb-3">
@@ -23,22 +23,22 @@
             <e-columns >
                 <e-column field='title' headerText='Title' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate">
                     <ng-template #cellTemplate let-data let-column>
-                        <span class="fw-bold text-muted-dark py-3">{{ data.Title }}</span>
+                        <span class="fw-semibold text-muted-dark py-3">{{ data.Title }}</span>
                     </ng-template>
                 </e-column>
                 <e-column field='description' headerText='Description' width='250' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate2">
                     <ng-template #cellTemplate2 let-data let-column>
-                        <span class="fw-bold text-muted py-3">{{ data.Description }}</span>
+                        <span class="fw-semibold text-muted py-3">{{ data.Description }}</span>
                     </ng-template>
                 </e-column>
                 <e-column field='gradeLevel' headerText='Grade Level' width='120' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate3">
                     <ng-template #cellTemplate3 let-data let-column>
-                        <span class="fw-bold text-muted py-3">{{ data.GradeLevel }}</span>
+                        <span class="fw-semibold text-muted py-3">{{ data.GradeLevel }}</span>
                     </ng-template>
                 </e-column>
                 <e-column field='subjectName' headerText='Subject Name' width='150' textAlign='left' [headerTemplate]='headerTemplate' [template]="cellTemplate4">
                     <ng-template #cellTemplate4 let-data let-column>
-                        <span class="fw-bold text-muted py-3">{{ data.SubjectName }}</span>
+                        <span class="fw-semibold text-muted py-3">{{ data.SubjectName }}</span>
                     </ng-template>
                 </e-column>
                 <e-column headerText='Action' width='120' textAlign='center' [headerTemplate]="headerTemplate" [template]="cellTemplate" [template]='actionTemplate'></e-column>

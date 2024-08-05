@@ -27,14 +27,14 @@
   border-radius: 8px;
 }
 .card-upcoming {
-  height: 170px!important;
+  height: 190px!important;
 }
 
 .inner-card-upcoming {
-  height: 160px!important;
+  height: 180px!important;
 }
 .inner-card-upcoming:hover {
-  height: 155px!important;
+  height: 180px!important;
   transition: all .4s linear;
 }
 .inner-card-styling {

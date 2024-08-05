@@ -1,11 +1,13 @@
 <div class="d-flex">
     <div *ngIf="tutor" class="col-md-7 row g-5 mx-3 my-2">
-        <div class="d-flex bg-white py-2 mt-0 pb-5 rounded-4 position-relative">
-            <div class="col-md-4 mt-4 d-flex align-items-center justify-content-center">
-                <img style="object-fit:cover; width: 180px; height: 150px; " class="rounded-3" [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
+        <div class="d-flex bg-white py-2 mt-0 pb-5 rounded-4 gap-2 position-relative">
+            <div class="d-flex justify-content-center">
+                <img style="object-fit:cover; width: 150px; height: 150px; border-radius: 50%; " 
+                    [src]="tutor.ImgUrl ? tutor.ImgUrl : '../../../../assets/user-profile.png'" />
             </div>
-            <div class="col-md-8 mt-4 d-flex justify-content-center flex-column gap-2">
+            <div class="d-flex justify-content-start flex-column">
                 <h5 class="fs-4 fw-bold">{{tutor.Name}}</h5>
+                <div class="text-muted">{{tutor.Title}}</div>
                 <div class="d-flex flex-row gap-3 py-2">
                     <div class="py-2 px-2 border border-dull-white rounded-3">
                         <i class="text-success text-opacity-50 d-flex gap-2 fa fs-4 fa-solid fa-graduation-cap"><span class="text-black fs-5 fw-bold"> BSC </span></i>
@@ -72,7 +74,7 @@
         <div class="my-0 mx-3 px-0 col-md-12">
             <div id="tutorDetail-right-side" class="position-fixed inner-right-col bg-white py-2 rounded-4">
                 <div class="my-2 px-3 border-bottom border-1">
-                    <h5 class="text-muted">Group Events of {{tutor.Name}}</h5>
+                    <h5 class="text-muted">Group Classes offered by {{tutor.Name}}</h5>
                 </div>
                 <div class="d-flex py-4 px-4 grouping-container flex-column gap-3">
                     <div *ngFor="let event of events; let i = index;" class="mb-2 position-relative group-hover col-md-12 d-flex justify-content-between align-items-center bg-transparent border border-1 border-dull white rounded-2" >
@@ -119,7 +121,7 @@
         <h5 class="text-muted-dark mb-0 fw-bold">Consult with {{tutor.Name}}</h5>
     </ng-template>
     <div class="py-2">
-        <p class="text-muted px-2 fw-semibold">Tutor is available for consultancy please choose the time frame below and duration to check at which time tutor is available for consultancy</p>
+        <p class="text-muted px-2 fw-semibold">Tutor is available for a consultation session. Please choose the time frame below and send them the request</p>
         <div class="d-flex justify-content-between flex-wrap">
            <!-- <div class="form-group consult-timeframe-width"> -->
             <!-- <label class="form-label"> select Date </label>  -->
@@ -146,7 +148,7 @@
                 </select>
             </div>
             <div class="form-group col-md-12">
-                <label class="form-label"> Description </label>
+                <label class="form-label">Description </label>
                 <textarea class="form-control" style="height: 90px; resize: none;" [(ngModel)]="generalConsultancy.Comment"></textarea>
             </div>
         </div>
