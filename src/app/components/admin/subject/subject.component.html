@@ -97,8 +97,8 @@
 
 <ejs-dialog header="Add Subject" [visible]="addSubjectDialogueBox" [width]="430" [showCloseIcon]="true" [isModal]="true"
     (close)="onDialogClose()">
-    <div class="form-horizontal mt-2 px-3">
-        <div class="d-flex justify-content-between">
+    <div  class="form-horizontal mt-2 px-3">
+        <div *ngIf="!isEditing" class="d-flex justify-content-between">
             <!-- <button ejs-button cssClass="e-info py-2 rounded-3" (click)="onPrimayChange()">  Primary </button>
             <button ejs-button cssClass="e-info py-2 rounded-3" (click)="onHighChange()">  High </button> -->
             <div class="row">
@@ -117,9 +117,9 @@
         <div class="form-group mt-2" *ngIf="isCoreSubjectVisible">
             <label for="CoreSubject" class="form-label">Core Subject <span class="text-danger">*</span></label>
             <!-- <input type="text" class="form-control" id="Name" name="Name" [(ngModel)]="insertSubjectData.Name" placeholder="Enter Subject Name"/> -->
-            <ejs-dropdownlist id="CoreSubject" [(ngModel)]="insertSubjectData.CoreSubjectId" [allowObjectBinding]="true"
+            <ejs-dropdownlist id="CoreSubject" [(value)]="insertSubjectData.CoreSubjectId"
                 [dataSource]="coreSubjects" [fields]="{ text: 'Name', value: 'Id' }" placeholder="Select a Subject"
-                (change)="onCoreSubject($event)"></ejs-dropdownlist>
+                ></ejs-dropdownlist>
         </div>
         <!-- <div class="form-group mt-2">
             <label for="CourseSubject" class="form-label">Course Subject <span class="text-danger">*</span></label>
@@ -140,7 +140,7 @@
         </div>
         <div class="form-group mt-2">
             <label class="form-label">Grades</label>
-            <ejs-multiselect (change)="onGradeChange($event)" [(ngModel)]="insertSubjectData.Grades" [dataSource]="filterGrades"
+            <ejs-multiselect (change)="onGradeChange($event)" [(value)]="SelectedGrades" [dataSource]="filterGrades"
                  [mode]="mode"
                 [placeholder]="'Select Grade(s)'"></ejs-multiselect>
         </div>

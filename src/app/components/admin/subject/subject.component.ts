@@ -21,7 +21,7 @@ export class SubjectComponent {
   public addSubjectDialogueBox: boolean = false;
   public addSubjectGradeDialogueBox: boolean = false;
   public isCoreSubjectVisible: boolean = false;
-  public insertSubjectData : Subject = {} as Subject;
+  public insertSubjectData: Subject = {} as Subject ;
   public subjectGrades: SubjectGradesRequest = {} as SubjectGradesRequest; 
   public pageSettings?: PageSettingsModel;
   public dialogInstance: any;
@@ -35,6 +35,7 @@ export class SubjectComponent {
     {label:'Primary', value:'Primary'},
     {label:'Secondary', value:'Secondary'},
   ]
+  public isEditing: boolean = false
   public grades:any[] = [
     {label:'prep', value:'prep'},
     {label:'1', value:'1'},
@@ -51,7 +52,7 @@ export class SubjectComponent {
     {label:'12', value:'12'},
   ]
   public filterGrades:any[] = [];
-
+  public SelectedGrades:any[] = []
   public filters: FetchSubjectRequestParam = {};
 
   constructor(private subjectService: SubjectService,
@@ -92,13 +93,23 @@ export class SubjectComponent {
   }
 
   public saveSubject() {
-    this.insertSubjectData.CoreSubjectId = this.CoreSubjectId
-    console.log(this.insertSubjectData)
-    if(!this.insertSubjectData.Id){
-      this.insertSubjectData.Id = ''
-    }
+    let data:any = {
+        CoreSubjectId: '',
+        Name: '',
+        Description: '',
+        Grades: []
+    }  as object
+      
+    data.CoreSubjectId = this.insertSubjectData.CoreSubjectId;
+    data.Description = this.insertSubjectData.Description
+    data.Name = this.insertSubjectData.Name
+    data.Grades = this.SelectedGrades.map((grade) => ({
+      GradeLevel: parseInt(grade,10)
+    }))
+    
+    console.log(data);
     this.ngxSpinner.show();
-    this.subjectService.saveSubject(this.insertSubjectData).subscribe((response) => {
+    this.subjectService.saveSubject(data).subscribe((response) => {
       if (response.Success) {
         this.toastr.success(
           'Success',
@@ -151,7 +162,22 @@ export class SubjectComponent {
 
   public editSubject(selectedSubject: Subject, grades:any[]){
     this.addSubjectDialogueBox = true;
+    this.isEditing = true
+    
     this.insertSubjectData = selectedSubject;
+    console.log(this.insertSubjectData.CoreSubjectId);
+    this.insertSubjectData.Grades = [];
+    this.SelectedGrades = grades.map((Grade) => {
+      return Grade.GradeLevel.toLocaleString();
+    })
+
+    console.log("EDIT SUBJECT : ",selectedSubject)
+    console.log("FITLER GRADES",this.filterGrades)
+    if(selectedSubject.IsPrimarySchool) {
+      this.switchToPrimary()
+    } else {
+      this.switchToHigh()
+    } 
   }
 
   public addSubjectGrade(selectedRow: Subject){
@@ -159,7 +185,7 @@ export class SubjectComponent {
     
 
     if(selectedRow.IsPrimarySchool  ){
-      this.filterGrades = ['prep', '1', '2', '3', '4', '5', '6'];
+      this.filterGrades = [ '1', '2', '3', '4', '5', '6'];
     }
     else{
       this.filterGrades = ['7', '8', '9', '10', '11', '12'];
