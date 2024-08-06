@@ -42,7 +42,7 @@
                                     <div class="px-2 inner-card-styling d-flex flex-column">
                                         <span class="pt-1 text-dark fs-5 fw-bolder">{{meeting.Topic}}</span>  
                                         <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]">Student: {{ meeting.UserName }}</span>                                                                              
-                                        <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isStudent" [routerLink]="['/profile', meeting.UserId]" >Tutor: {{ meeting.UserName }}</span>                                                                              
+                                        <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" >Tutor: {{ meeting.UserName }}</span>                                                                              
                                         <span class="pt-1 text-muted fs-6 fw-semibold">Start Date: {{ meeting.StartTime | date: 'dd/MMM/yyyy' }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-semibold">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-semibold">Meeting ended in {{ meeting.ActualDuration | duration }}</span>
@@ -54,7 +54,7 @@
                                     <div class="px-2 inner-card-styling inner-card-upcoming d-flex flex-column">
                                         <span class="pt-1 text-dark fs-5 fw-bolder">{{ meeting.Topic }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]">Student: {{ meeting.UserName }}</span>                                                                              
-                                        <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isStudent" [routerLink]="['/profile', meeting.UserId]" >Tutor: {{ meeting.UserName }}</span>                                                                              
+                                        <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" >Tutor: {{ meeting.UserName }}</span>                                                                              
                                         <span class="pt-1 text-muted fs-6 fw-semibold">Start Date: {{ meeting.StartTime | date: 'dd/MMM/yyyy' }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-semibold">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>                                        
                                         <span class="py-1 text-muted fs-6 fw-semibold">MeetingId: {{ meeting.MeetingId}}</span>
