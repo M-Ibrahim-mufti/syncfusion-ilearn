@@ -27,7 +27,6 @@ export class TutorSelectionComponent {
   public showSubjectDialogue: boolean = false;
   isExpanded: boolean = false;
   Subjects: any[] = [];
-  Grades = Array.from({ length: 13 }, (v, i) => ( i === 0 ? {label:'Select Grade', value:null } : { label: `Grade ${i }`, value: i}));
   TimeGroup = Array.from({ length: 24 }, (v, i) => {
     const hour12 = i % 12 == 0 ? 12 : i % 12;
     const period = i < 12 ? 'AM' : 'PM';
@@ -43,15 +42,27 @@ export class TutorSelectionComponent {
     { label: 'Friday', value: 'Fri' },
     { label: 'Saturday', value: 'Sat' }
   ];
+  public disableGrades:boolean = true;
+  public disableSubject:boolean = true
+  public disableCoreSubject:boolean = true;
+
   public selectedDay = this.days[0].value
   public selectedSubject!: string | null
-  public selectedGrade = this.Grades[0].value
   public selectedTimegroup!: number
   public selectedTutorAvailibilities: any = []
   public availabilityCont: string = ''
   @ViewChildren('tutorCard') tutorCards!: QueryList<ElementRef>;
   @ViewChild('availabilityContainer') availabilityContainers!: ElementRef;
   public availabilityContainerHeight: number | null = null;
+
+  public CoreSubjects:any[] = []
+  public SubSubjects:any[] = [];
+  public Grades:any[] = [];
+  public SchoolTypes:any[] = [
+    { label:'Filter by School', value:null},
+    { label:'Primary', value:true},
+    { label:'Secondary', value:false}
+  ]
 
   constructor( private spinnerService:SpinnerService,
                private tutorService: TutorService,
@@ -66,7 +77,7 @@ export class TutorSelectionComponent {
   }
 
   ngOnInit() {
-    this.getSubjects()
+    this.getSubjects();
     this.getTutors();
   }
 
@@ -87,10 +98,32 @@ export class TutorSelectionComponent {
       this.spinnerService.hide();
       this.availableTutor = tutors;
       this.currentAvailableTutor = tutors.length;
+      this.SubSubjects.push({
+        value:null,
+        label:'Filter By Sub Subject'
+      })
+      this.Grades.push({
+        value:null,
+        label:'Filter By Grades'
+      })
+      this.CoreSubjects.push({
+        Id: null,
+        Name: 'Filter By Core Subject'
+      })
     })
   }
 
- 
+  private getAllCoreSubjects(type:string)  {
+    this.tutorService.getAllCoreSubjects(true).subscribe((response) => {
+      this.CoreSubjects = response;
+      this.CoreSubjects = this.CoreSubjects.filter((subject) => subject.IsPrimarySchool === JSON.parse(type));
+      this.CoreSubjects.unshift({
+        Id: null,
+        Name: 'Filter By Core Subject'
+      })
+      this.disableCoreSubject = false 
+    })
+  }
 
   public getTutorEvents(tutorId:string, index:number) {
     const tutor = this.availableTutor.filter((tutor) => tutor.Id === tutorId);
@@ -102,7 +135,6 @@ export class TutorSelectionComponent {
       }
       return
     }) : [];
-    console.log(this.tutorEvents)
     setTimeout(() => {
       const tutorCard = this.tutorCards.toArray()[index];
       const availabilityContainer = this.availabilityContainers;
@@ -138,32 +170,44 @@ export class TutorSelectionComponent {
     )
   }
 
-  public onDayChange($event: any){
-    this.filters.Day = $event.target.value.split(': ')[1];
-    this.getTutors(this.filters);
+  public schoolType(event:any) {
+    this.getAllCoreSubjects(event.target.value);
   }
 
-  public onSubjectChange($event: any){
-    this.filters.SubjectId = $event.target.value.split(": ")[1];
-    this.getTutors(this.filters);
+  public onCoreChange(event: any){
+    this.tutorService.getSubSubjects(event.target.value, false).subscribe((response) => {
+      this.SubSubjects = response;
+      this.SubSubjects.unshift({
+        value: null,
+        label: 'Filter By Sub Subject'
+      })
+      console.log(this.SubSubjects)
+      this.disableSubject = false;
+    })
+  }
+
+  public onSubjectChange(event: any){
+    this.tutorService.getSubSubjectGrades(event.target.value, true).subscribe((response) => {
+      this.Grades = response;
+      this.Grades.sort((a,b) => parseInt(a.label,10) - parseInt(b.label,10) );
+      this.Grades.unshift({
+        label:'Filter By Grades',
+        value:null
+      })      
+      this.disableGrades = false;
+    })
   }
 
   public onGradeChange($event: any){
-    this.filters.Grade = 0
-  
-    if($event.target.value){
-      this.filters.Grade = $event.target.value.split(': ')[1];
-    }
-    this.getTutors(this.filters);
+    
   }
 
-  public onStartTimeChange($event: any){
-    this.filters.StartTime = null
-    if($event.target.value){
-      this.filters.StartTime = $event.target.value.split(': ')[1];
-    }
-    this.getTutors(this.filters);
-  }
+  // public onStartTimeChange($event: any){
+  //   this.filters.StartTime = null
+  //   if($event.target.value){
+  //     this.filters.StartTime = $event.target.value.split(': ')[1];
+  //   }
+  // }
 
   public onGlobalFilterTutor($event: any): void {
     if (this.filters.Query && this.filters.Query.length >= 3) {
@@ -172,13 +216,26 @@ export class TutorSelectionComponent {
   }
 
   public clearAllFilters($event: any) {
-    this.filters = {};
-    this.selectedDay = this.days[0].value
-    this.selectedSubject = this.Subjects[0].value
-    this.selectedGrade = this.Grades[0].value
-    this.selectedTimegroup = this.TimeGroup[0].value
+    const types:any[]= this.SchoolTypes;
+    this.SubSubjects = []; this.Grades = []; this.CoreSubjects = []; this.SchoolTypes = []
+    this.disableCoreSubject = true; this.disableGrades = true; this.disableSubject = true;
 
-    this.getTutors(this.filters);
+    setTimeout(() => {
+      this.SchoolTypes = types
+    },100)
+    this.CoreSubjects.push({
+      Id:null,
+      Name:'Filter By Core Subject'
+    })
+    this.SubSubjects.push({
+      value:null,
+      label:'Filter By Sub Subject'
+    })
+    this.Grades.push({
+      value:null,
+      label:'Filter By Grades'
+    })
+  
   }
 
 
@@ -186,87 +243,6 @@ export class TutorSelectionComponent {
     return this.selectedTutors[subject] || [];
   }
 
-
-
-  // isTutorAvailable(tutors: any[]) {
-  //   const currentDayAbbreviation = this.currentDayAbbreviation; // Assuming this is defined elsewhere in your component
-  //   const currentHour = this.today.getHours();
-  //   const currentMinute = this.today.getMinutes();
-  //   const currentTimeInMinutes = currentHour * 60 + currentMinute;
-
-  //   tutors.forEach(tutor => {
-  //     let isCurrentlyAvailable = false;
-
-  //     // Check tutor availabilities
-  //     if (tutor.TutorAvailabilities) {
-  //       tutor.TutorAvailabilities.forEach((availability: any) => {
-  //         if (availability.Day === currentDayAbbreviation) {
-  //           const openTimeInMinutes = availability.OpenTimeHours * 60 + availability.OpenTimeMinutes;
-  //           const closeTimeInMinutes = availability.CloseTimeHours * 60 + availability.CloseTimeMinutes;
-
-  //           if (currentTimeInMinutes >= openTimeInMinutes && currentTimeInMinutes < closeTimeInMinutes) {
-  //             isCurrentlyAvailable = true;
-  //           }
-  //         }
-  //       });
-  //     }
-
-  //     // Check tutor events
-  //     if (tutor.CreateEvents) {
-  //       tutor.CreateEvents.forEach((event: any) => {
-  //         const eventStartTimeString = event.EventStartTime;
-  //         const eventStartTime = new Date(eventStartTimeString);
-  //         const eventStartTimeInMinutes = eventStartTime.getHours() * 60 + eventStartTime.getMinutes();
-  //         const eventEndTimeInMinutes = eventStartTimeInMinutes + event.Duration;
-  //         if (currentTimeInMinutes >= eventStartTimeInMinutes && currentTimeInMinutes < eventEndTimeInMinutes) {
-  //           isCurrentlyAvailable = false;
-  //         }
-  //       });
-  //     }
-
-  //     this.isAvailable.push({
-  //       id: tutor.Id,
-  //       value: isCurrentlyAvailable
-  //     });
-
-  //   });
-  // }
-
-  // getValueOfAvalability(tutorId: string): string {
-  //   if (this.isAvailable.length > 0) {
-  //     let avalablility = this.isAvailable.find(x => x.id == tutorId)
-  //     if (avalablility.value == true) {
-  //       return 'Available'
-  //     }
-  //     return 'Not Available'
-  //   }
-  //   return ''
-  // }
-
-  // checkTodayAvalabilities(tutor: Tutor): boolean {
-  //   let aval = false;
-  //   if (tutor.TutorAvailabilities) {
-  //     tutor.TutorAvailabilities.forEach(x => {
-  //       if (x.Day == this.currentDayAbbreviation) {
-  //         aval = true;
-  //       }
-  //     })
-  //   }
-  //   return aval;
-  // }
-
-  // public getDayAbbreviation(dayIndex: number): string {
-  //   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  //   return days[dayIndex];
-  // }
-
-  // formatTimeTo12Hours(hours: number, minutes: number): string {
-  //   const period = hours >= 12 ? 'pm' : 'am';
-  //   let formattedHours = hours % 12;
-  //   formattedHours = formattedHours ? formattedHours : 12; // the hour '0' should be '12'
-  //   const formattedMinutes = minutes.toString().padStart(2, '0');
-  //   return `${formattedHours}:${formattedMinutes}${period}`;
-  // }
 
   enrollStudentRequest(tutor: Tutor) {
     this.router.navigate(['/student/event/add'], { state: { tutor: tutor } });

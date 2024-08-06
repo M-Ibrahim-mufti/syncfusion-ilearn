@@ -26,6 +26,7 @@
     "@syncfusion/ej2-angular-calendars": "^26.1.41",
     "@syncfusion/ej2-angular-dropdowns": "^26.1.40",
     "@syncfusion/ej2-angular-grids": "^26.1.40",
+    "@syncfusion/ej2-angular-inputs": "^26.2.5",
     "@syncfusion/ej2-angular-navigations": "^26.1.40",
     "@syncfusion/ej2-angular-popups": "^26.1.38",
     "@syncfusion/ej2-angular-richtexteditor": "^26.1.42",

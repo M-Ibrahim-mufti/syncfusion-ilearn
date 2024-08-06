@@ -55,6 +55,7 @@ import {SchedulerComponent} from "./components/tutor/scheduler/scheduler.compone
 import { ViewChildrenComponent } from './components/Parrent/view-children/view-children.component';
 import { DurationPipe } from './pipes/duration.pipe';
 import {ZoomComponent} from "./components/common_components/zoom/zoom.component";
+import { RatingModule } from '@syncfusion/ej2-angular-inputs';
 
 
 export function getTokenFactory(injector: Injector) {
@@ -136,7 +137,8 @@ export function getTokenFactory(injector: Injector) {
         DatePickerModule,
         CalendarModule,
         TooltipAllModule,
-        SwitchModule
+        SwitchModule,
+        RatingModule 
 
     ],
   exports: [RouterModule],

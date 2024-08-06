@@ -16,6 +16,7 @@
         </div>
         <div class="col-md-6 d-flex gap-4 justify-content-end">
             <button ejs-button cssClass="e-info py-2 rounded-3" iconCss="fa fa-plus" (click)="addNewClass('AddClassMeta')">  Add New </button>
+            <button ejs-button cssClass="e-info" (click)="openReview()"> Add Reviews</button>
         </div>
     </div>
     <div *ngIf="classMetaData.length > 0" class="col-md-12 mt-2 p-0">
@@ -96,5 +97,23 @@
                 <button *ngIf="!isAddData"  ejs-button class="ms-0 e-danger w-100 py-2 rounded-2" (click)="saveClassMetaData()" >Update Subject</button>
             </div>
         </ng-template>
+    </div>
+</ejs-dialog>
+
+
+
+<ejs-dialog [visible]="reviewBox" [isModal]="true" [width]="400" [showCloseIcon]="true" (close)="reviewBox = false">
+    <ng-template #header>
+        <p class="mb-0"> Add reviews about teacher</p>
+    </ng-template>
+    <div class="my-3 d-flex flex-column justify-content-center align-items-center">
+        <div class="mb-2 d-flex flex-column w-100">
+            <label class="form-label">Give rating About</label>
+            <input ejs-rating id="rating"/>
+        </div>
+        <div class="mb-2 d-flex flex-column w-100">
+            <label class="form-label">Add Comments</label>
+            <textarea placeholder="add Comments" style="height: 100px; resize: none;"></textarea>
+        </div>
     </div>
 </ejs-dialog>

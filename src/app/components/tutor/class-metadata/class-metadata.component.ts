@@ -36,6 +36,7 @@ export class ClassMetadataComponent {
     CoreSubjectId:'',
     GradeId:'',
   }
+  public reviewBox:boolean = false
 
   public isAddData!:boolean;
 
@@ -80,6 +81,10 @@ export class ClassMetadataComponent {
       this.insertClassData.GradeId = response.map(p => p.value)[0]!;
     
     });
+  }
+
+  public openReview() {
+    this.reviewBox = true
   }
 
   public addNewClass(type:string) {

@@ -7,36 +7,37 @@
     <div class="d-flex justify-content-around mt-0 py-4">
         <div class="filter-col filter-shadows rounded-4">        
             <select
-                (change)="onDayChange($event)"
-                class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center"
-                [(ngModel)]="selectedDay">
-                <option class="py-1 cursor-pointer" *ngFor="let day of days" [ngValue]="day.value" [disabled]="day.value === null" [selected]="day.value === null">{{ day.label }}</option>
-            </select>  
-        </div>
-        <div class="filter-col filter-shadows rounded-4">               
-            <select
-                (change)="onSubjectChange($event)"
-                class="cursor-pointer border-dull-white h-100 form-select form-select-solid py-3 bg-white text-center"
-                [(ngModel)]="selectedSubject">
-                <option class="py-1 cursor-pointer" *ngFor="let subject of Subjects" [ngValue]="subject.value" [disabled]="subject.value === null" [selected]="subject.value === null">{{ subject.label }}</option>
-            </select>  
-        </div>
-        <div class="filter-col filter-shadows rounded-4">               
-            <select
-                (change)="onGradeChange($event)"
-                class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center"
-                [(ngModel)]="selectedGrade">
-                <option class="py-1 cursor-pointer" *ngFor="let grade of Grades" [ngValue]="grade.value" [disabled]="grade.value === null" [selected]="grade.value === null">{{ grade.label }}</option>
-            </select>  
+                (change)="schoolType($event)"
+                class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center">            
+                <option class="py-1 cursor-pointer" *ngFor="let type of SchoolTypes" [value]="type.value" [disabled]="type.value === null" [selected]="type.value === null">{{ type.label }}</option>
+            </select>
         </div>
         <div class="filter-col filter-shadows rounded-4">        
             <select
-                (change)="onStartTimeChange($event)"
-                class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center"
-                [(ngModel)]="selectedTimegroup">
-            
-                <option class="py-1 cursor-pointer" *ngFor="let timeGroup of TimeGroup" [ngValue]="timeGroup.value" [disabled]="timeGroup.value === -1" [selected]="timeGroup.value === -1">{{ timeGroup.label }}</option>
-            </select>
+                [disabled]="disableCoreSubject"
+                (change)="onCoreChange($event)"
+                [ngClass]="{ 'opacity-50': disableCoreSubject, 'opacity-100 cursor-pointer': !disableCoreSubject}"
+                class="cursor-pointer border-dull-white h-100 form-select bg-white text-center">
+                <option class="py-1 cursor-pointer" *ngFor="let subject of CoreSubjects" [value]="subject.Id" [selected]="subject.Id === null" [disabled]="subject.Id === null" >{{ subject.Name }}</option>
+            </select>  
+        </div>
+        <div class="filter-col filter-shadows rounded-4">               
+            <select
+                [disabled]="disableSubject"
+                (change)="onSubjectChange($event)"
+                [ngClass]="{ 'opacity-50': disableSubject, 'opacity-100 cursor-pointer': !disableSubject }"
+                class="border-dull-white h-100 form-select form-select-solid py-3 bg-white text-center">
+                <option class="py-1 cursor-pointer" *ngFor="let subject of SubSubjects" [value]="subject.value" [selected]="subject.value === null" [disabled]="subject.value === null" >{{ subject.label }}</option>
+            </select>  
+        </div>
+        <div class="filter-col filter-shadows rounded-4">               
+            <select
+                [disabled]="disableGrades"
+                (change)="onGradeChange($event)"
+                [ngClass]="{ 'opacity-50': disableGrades, 'opacity-100 cursor-pointer': !disableGrades }"
+                class="border-dull-white h-100 form-select form-select-solid bg-white text-center">
+                <option *ngFor="let grade of Grades" [value]="grade.value" [selected]="grade.value === null" [disabled]="grade.value === null" > {{grade.label}}</option>
+            </select>  
         </div>
         <div class="col-md-1 filter-shadows rounded-5" style="border-radius: 8px;">
             <button (click)="clearAllFilters($event)" class="h-100 w-100 text-center btn btn-close-white border border-dull-white">
