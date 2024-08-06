@@ -140,3 +140,9 @@
     padding: 14px;
     border-bottom: 1px solid #f1f1f2 !important;
 }
+.e-footer-content {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 0 !important;
+    padding-right: 0px !important;
+}

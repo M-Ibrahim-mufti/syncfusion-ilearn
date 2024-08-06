@@ -56,6 +56,7 @@ import { ViewChildrenComponent } from './components/Parrent/view-children/view-c
 import { DurationPipe } from './pipes/duration.pipe';
 import {ZoomComponent} from "./components/common_components/zoom/zoom.component";
 import { RatingModule } from '@syncfusion/ej2-angular-inputs';
+import { ReviewsComponent } from './components/common_components/reviews/reviews.component';
 
 
 export function getTokenFactory(injector: Injector) {
@@ -94,7 +95,8 @@ export function getTokenFactory(injector: Injector) {
     TutorRegistrationComponent,
     ViewChildrenComponent,
     DurationPipe,
-    ZoomComponent
+    ZoomComponent,
+    ReviewsComponent
   ],
     imports: [
         BrowserModule,

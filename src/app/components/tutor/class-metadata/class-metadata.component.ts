@@ -36,8 +36,6 @@ export class ClassMetadataComponent {
     CoreSubjectId:'',
     GradeId:'',
   }
-  public reviewBox:boolean = false
-
   public isAddData!:boolean;
 
   constructor(private studentService: StudentService,
@@ -83,9 +81,6 @@ export class ClassMetadataComponent {
     });
   }
 
-  public openReview() {
-    this.reviewBox = true
-  }
 
   public addNewClass(type:string) {
     this.insertClassData = new ClassMetaData();
@@ -281,6 +276,12 @@ export class ClassMetadataComponent {
       this.grades = response
       console.log(this.grades)
     })
+  }
+
+
+  getPrecisionValue() {
+    const rating = document.getElementById('rating') as HTMLInputElement;
+    console.log(rating.value)
   }
 }
 

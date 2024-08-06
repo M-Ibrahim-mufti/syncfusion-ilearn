@@ -1,0 +1,20 @@
+<ejs-dialog [footerTemplate]="footerReview" [visible]="OpenReviewModal" [isModal]="true" [width]="400" [showCloseIcon]="true" (close)="OpenReviewModal = false" >
+    <ng-template #header>
+        <p class="mb-0"> Add reviews about teacher</p>
+    </ng-template>
+    <div class="my-2 d-flex flex-column justify-content-center align-items-center">
+        <div class="mb-2 d-flex flex-column w-100">
+            <label class="form-label">Give rating About</label>
+            <input ejs-rating precision="Half" id="rating"/>
+        </div>
+        <div class="mb-2 d-flex flex-column w-100">
+            <label class="mx-0 text-start form-label">Add Comments</label>
+            <textarea [(ngModel)]="review.Comment" class="form-control form-control-sm" placeholder="Add Comments" style="height: 100px; resize: none;"></textarea>
+        </div>
+    </div>
+    <ng-template #footerReview>
+        <div class="border-top mx-auto text-center">
+            <button (click)="getReviewData()" ejs-button style="width:95%;" class="mt-2 mb-1 mx-auto e-danger rounded-3">Submit Reviews</button>
+        </div>
+    </ng-template>
+</ejs-dialog>
