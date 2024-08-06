@@ -342,20 +342,21 @@ export class TutorDetailComponent {
     }
 
     // Get the meeting date
-    let meetingDate = new Date(this.generalConsultancy.MeetingStartTime!);
+    let meetingDate = new Date(this.generalConsultancy.MeetingStartTime!);   
 
     // Create a new Date object in UTC
-    let formattedMeetingStartTime = new Date(Date.UTC(
-        meetingDate.getUTCFullYear(),
-        meetingDate.getUTCMonth(),
-        meetingDate.getUTCDate(),
+    let formattedMeetingStartTime = new Date(
+        meetingDate.getFullYear(),
+        meetingDate.getMonth(),
+        meetingDate.getDate(),
         hours,
         minutes,
         0
-    ));
+    );
 
     // Update MeetingStartTime with the new UTC Date
     this.generalConsultancy.MeetingStartTime = formattedMeetingStartTime;
+    
     this.frameTimeSet = false;
     const selectedIndex = parseInt(event.target.value, 10) - 1; // Adjust if your value is not 1-based
     const nextOption = this.consultancyTimeFrames[selectedIndex + 1];
@@ -387,8 +388,10 @@ export class TutorDetailComponent {
     this.consultancyTimeFrames = [];
     if (event.value) {
       const selectedDate = new Date(event.value);
+      console.log('selectedDate', selectedDate);
+      
       const selectedFormattedDate = `${selectedDate.getFullYear()}/${selectedDate.getMonth() + 1}/${selectedDate.getDate()}`;
-
+      console.log('selectedFormattedDate', selectedFormattedDate);
       // Fetch booking requests for the selected date
       this.slotBookingService.getBookingRequestsForDate(this.tutorId, selectedFormattedDate).subscribe((bookingRequests: any[]) => {
         this.allConsultancy.forEach((consultancy: any) => {
@@ -454,7 +457,7 @@ export class TutorDetailComponent {
                 }
               }
               this.generalConsultancy.EventStartTime = consultancy.StartTime;
-              this.generalConsultancy.MeetingStartTime = selectedDate;
+              this.generalConsultancy.MeetingStartTime = selectedDate;              
               this.enableTimeFrame = false;
               this.frameTimeSet = true;
             }
@@ -505,10 +508,10 @@ export class TutorDetailComponent {
   }
   
   public enrollInGeneralConsultancy() {
-    this.generalConsultancy.TutorId = this.tutorId;
+    this.generalConsultancy.TutorId = this.tutorId;       
     this.spinnerService.show();
     this.slotBookingService.saveGeneralConsultancyRequest(this.generalConsultancy).subscribe((response) => {
-      if(response.success) {
+      if(response.Success) {
         this.toastr.success(
           'success',
           'Enrolled Successfully'
@@ -535,8 +538,10 @@ export class TutorDetailComponent {
   }
 
   public enRollClass(event: Event, index:number) {
+    
     this.spinnerService.show();
-    const model: RequestBooking = new RequestBooking(event.TutorId!, event.EventStartTime)
+    const model: RequestBooking = new RequestBooking(event.TutorId!, event.EventStartTime);
+    
     this.slotBookingService.slotBookingRequest(model).subscribe(response => {
       if (response.Success) {
         this.toastr.success(

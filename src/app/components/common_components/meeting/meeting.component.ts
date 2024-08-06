@@ -127,6 +127,9 @@ export class MeetingsComponent implements OnInit {
         }
       }
     });
+
+    console.log('this.todayMeetings', this.todayMeetings);
+    
   }
 
   isSameDay(date1: Date, date2: Date): boolean {

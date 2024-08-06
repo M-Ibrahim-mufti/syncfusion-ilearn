@@ -222,6 +222,7 @@ export class UserProfileComponent {
         this.updateSubjectData.Grades = newArr;
         this.CloseAddSubjectDialogue();
         this.toastr.success('success', 'subject updated successfully');
+        this.getAllTutorSubject();
       }
       else {
         this.toastr.error('error', 'unable to update subject')

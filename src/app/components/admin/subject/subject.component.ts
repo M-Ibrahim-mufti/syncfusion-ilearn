@@ -94,12 +94,14 @@ export class SubjectComponent {
 
   public saveSubject() {
     let data:any = {
+        Id: '',
         CoreSubjectId: '',
         Name: '',
         Description: '',
         Grades: []
     }  as object
-      
+     
+    data.Id = this.insertSubjectData.Id;
     data.CoreSubjectId = this.insertSubjectData.CoreSubjectId;
     data.Description = this.insertSubjectData.Description
     data.Name = this.insertSubjectData.Name
