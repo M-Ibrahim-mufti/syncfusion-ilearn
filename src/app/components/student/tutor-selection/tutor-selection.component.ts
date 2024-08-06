@@ -195,11 +195,15 @@ export class TutorSelectionComponent {
         value:null
       })      
       this.disableGrades = false;
-    })
+    });
+
+    this.filters.SubjectId = event.target.value;
+    this.getTutors(this.filters);
   }
 
   public onGradeChange($event: any){
-    
+    this.filters.GradeId = $event.target.value;
+    // this.getTutors(this.filters);
   }
 
   // public onStartTimeChange($event: any){
@@ -235,7 +239,7 @@ export class TutorSelectionComponent {
       value:null,
       label:'Filter By Grades'
     })
-  
+  this.getTutors();
   }
 
 

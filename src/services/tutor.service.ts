@@ -184,11 +184,8 @@ export class TutorSubject {
 }
 
 export class TutorRequest {
-  Qualification?: string;
-  Grade?: number;
+  GradeId?: string;
   SubjectId?: string;
-  Day?: string;
-  StartTime?: number | null;
   Query?: string;
 }
 
