@@ -22,10 +22,27 @@ export class ReviewService extends ServiceBase {
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.get<any[]>(url, httpOptions);
   }
-  public saveReviewFromStudentForTutor(model: any): Observable<ResponseObject> {
+
+  public hasAlreadyReviewed(meetingId: string): Observable<boolean> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Review';
-    const method: string = '/save-tutor-reviews';
+    const method: string = '/already-reviewed/' + meetingId;
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<boolean>(url, httpOptions);
+  }
+
+  public getAverageRating(meetingId: string): Observable<boolean> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Review';
+    const method: string = '/view-rating/' + meetingId;
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<boolean>(url, httpOptions);
+  }
+
+  public saveReview(model: ReviewRequest): Observable<ResponseObject> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Review';
+    const method: string = '/save-review';
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.post<ResponseObject>(url, model, httpOptions);
   }
@@ -37,4 +54,10 @@ export class ReviewService extends ServiceBase {
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.post<ResponseObject>(url, model, httpOptions);
   }
+}
+
+export class ReviewRequest{
+  MeetingId!: string;
+  Comment!: string;
+  Rating!: number;
 }

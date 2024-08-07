@@ -18,12 +18,12 @@ export class AdminTutorComponent {
   constructor(private tutorService: TutorService, private spinnerService: SpinnerService) {  }
 
   ngOnInit() {
-    this.getTutors();
+    this.getTutorsOnAdminLevel();
   }
 
-  public getTutors() {
+  public getTutorsOnAdminLevel() {
     this.spinnerService.show();
-    this.tutorService.getTutor().subscribe({
+    this.tutorService.getTutorOnAdminLevel().subscribe({
       next: (tutors: Tutor[]) => {
         this.spinnerService.hide();
         this.tutors = tutors;

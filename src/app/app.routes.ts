@@ -155,7 +155,7 @@ export const routes: Routes = [
         component:MeetingsComponent
     },
     {
-        path: 'meeting/:meetingId/:userId',
+        path: 'meeting/:Id',
         component:MeetingsComponent
     },
     {

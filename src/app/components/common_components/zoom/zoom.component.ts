@@ -51,7 +51,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
 
     this.ngZone.runOutsideAngular(() => {
       ZoomMtg.init({
-        leaveUrl: `${environment.LEAVE_MEETING_URL}/${this.zoomMeeting.meetingId}/${this.zoomMeeting.userId}`,
+        leaveUrl: `${environment.LEAVE_MEETING_URL}/${this.zoomMeeting.Id}`,
         patchJsMedia: true,
         leaveOnPageUnload: true,
         success: (success:any) => {

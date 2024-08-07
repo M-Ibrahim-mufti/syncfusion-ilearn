@@ -25,6 +25,14 @@ export class TutorService extends ServiceBase {
     return this.http.post<Tutor[]>(url, filters, httpOptions);
   }
 
+  public getTutorOnAdminLevel(): Observable<Tutor[]> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Tutor';
+    const method: string = '/fetch-tutor';
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<Tutor[]>(url, httpOptions);
+  }
+
   public fetchTutorDropdownData(): Observable<SelectItem[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Tutor';

@@ -5,13 +5,14 @@ import { AuthService } from '../../../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import {ReviewsComponent} from "../reviews/reviews.component";
+import { ReviewService } from '../../../../services/review.service';
 
 @Component({
   selector: 'app-meeting',
   templateUrl: './meeting.component.html',
   styleUrls: ['./meeting.component.scss'],
 })
-export class MeetingsComponent implements OnInit, AfterViewInit {
+export class MeetingsComponent implements OnInit {
   public showListView: boolean = true;
   todayDate = new Date();
   startTime?: string;
@@ -34,15 +35,40 @@ export class MeetingsComponent implements OnInit, AfterViewInit {
     private spinnerService: SpinnerService,
     private zoomService: ZoomMeetingService,
     private authService: AuthService,
+    private reviewService: ReviewService,
     private cdr: ChangeDetectorRef) {
     this.isTeacher = this.authService.isTeacher()
     this.isStudent = this.authService.isStudent()
   }
 
-  ngAfterViewInit(): void {
-    if(this.meetingDetails.meetingId && this.meetingDetails.userId){
-      this.showReviewDialog();
-    }
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      let meetingId = params.get('Id');
+      if (meetingId) {
+        this.meetingDetails = {
+          meetingId: meetingId
+        }
+      }
+    });
+    this.inProgressMeetingId = localStorage.getItem('inProgressMeetingId');
+    this.loadMeetings();
+    if(this.meetingDetails.meetingId){
+      this.hasAlreadyReviewed();
+    }    
+  }
+
+  // ngAfterViewInit(): void {
+  //   if(this.meetingDetails.meetingId){
+  //     this.showReviewDialog();
+  //   }
+  // }
+
+  private hasAlreadyReviewed() {
+    this.reviewService.hasAlreadyReviewed(this.meetingDetails.meetingId).subscribe(response => {
+      if(!response){
+        this.showReviewDialog();
+      }
+    })
   }
 
   showReviewDialog() {
@@ -52,22 +78,7 @@ export class MeetingsComponent implements OnInit, AfterViewInit {
     } else {
       console.error('ReviewsComponent is not initialized');
     }
-  }
-
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      let meetingId = params.get('meetingId');
-      let userId = params.get('userId');
-      if (meetingId && userId) {
-        this.meetingDetails = {
-          meetingId: meetingId,
-          userId: userId
-        }
-      }
-    });
-    this.inProgressMeetingId = localStorage.getItem('inProgressMeetingId');
-    this.loadMeetings();
-  }
+  } 
 
   //Switch Views::Start
   switchToListView() {
@@ -213,6 +224,7 @@ export class MeetingsComponent implements OnInit, AfterViewInit {
           meetingId: meeting.MeetingId,
           role:role,
           userId: meeting.UserId,
+          Id: meeting.Id,
           userName: meeting.UserName,
           userEmail: meeting.UserEmail,
           passWord: meeting.Password

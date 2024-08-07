@@ -45,7 +45,7 @@
                                         <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" >Tutor: {{ meeting.UserName }}</span>                                                                              
                                         <span class="pt-1 text-muted fs-6 fw-semibold">Start Date: {{ meeting.StartTime | date: 'dd/MMM/yyyy' }}</span>
                                         <span class="pt-1 text-muted fs-6 fw-semibold">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>
-                                        <span class="pt-1 text-muted fs-6 fw-semibold">Meeting ended in {{ meeting.ActualDuration | duration }}</span>
+                                        <span class="pt-1 text-muted fs-6 fw-semibold">Meeting ended in {{ meeting.MeetingId | duration }}</span>
                                     </div>
                                 </div>
                             </div>
