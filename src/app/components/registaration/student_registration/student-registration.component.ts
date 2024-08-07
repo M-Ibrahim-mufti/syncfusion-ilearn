@@ -7,6 +7,7 @@ import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { NotificationTypes } from '../../../app.enums';
 import { SelectItem } from '../../../../services/event.service';
 import { StepperChangedEventArgs } from "@syncfusion/ej2-navigations";
+import { ToastrService } from 'ngx-toastr';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -53,7 +54,7 @@ export class StudentRegistrationComponent {
     private uploadService: CloudinaryImageService,
     private spinnerService: SpinnerService,
     // private ngxSpinnerService: NgxSpinnerService,
-    // private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private studentService: StudentService) { }
 
   // Panel header based on active index
@@ -92,18 +93,10 @@ export class StudentRegistrationComponent {
       (response) => {
         this.spinnerService.hide();
         if (response.Success) {
-        //   this.notificationsService.showNotification(
-        //     'Success',
-        //     response.ResponseMessage,
-        //     NotificationTypes.Success
-        //   );
+          this.toastr.success('success', response.ResponseMessage);
           this.studentRegistrationForm = new StudentRegistrationModel();
         } else {
-        //   this.notificationsService.showNotification(
-        //     'Error',
-        //     response.ResponseMessage,
-        //     NotificationTypes.Error
-        //   );
+          this.toastr.error('Error', response.ResponseMessage);
         }
       },
       (error) => {

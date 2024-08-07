@@ -6,6 +6,7 @@ import { NotificationTypes } from '../../../app.enums';
 import { SaveTutorRequest, TutorService, TutorSubject } from '../../../../services/tutor.service';
 import { CloudinaryImageService } from '../../../../services/cloudinary-image.service';
 import { StepperChangedEventArgs } from "@syncfusion/ej2-navigations";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-tutor-registration',
@@ -25,7 +26,7 @@ export class TutorRegistrationComponent {
   ];
 
   constructor(private spinnerService: SpinnerService,
-    // private notificationsService: NotificationsService,
+    private toastr: ToastrService,
     private uploadService: CloudinaryImageService,
     private tutorService: TutorService) { 
       console.log(this.selectedSubjects)
@@ -75,17 +76,11 @@ export class TutorRegistrationComponent {
       (response) => {
         this.spinnerService.hide();
         if (response.Success) {
-          // this.notificationsService.showNotification(
-          //   'Success',
-          //   response.ResponseMessage,
-          //   NotificationTypes.Success
-          // );
+          this.toastr.success('success', response.ResponseMessage);
+          this.tutor = new SaveTutorRequest();
+
         } else {
-          // this.notificationsService.showNotification(
-          //   'Error',
-          //   response.ResponseMessage,
-          //   NotificationTypes.Error
-          // );
+          this.toastr.error('Error', response.ResponseMessage);
         }
       },
       (error) => {
