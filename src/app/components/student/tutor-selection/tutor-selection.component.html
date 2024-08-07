@@ -1,6 +1,16 @@
 <div class="row g-5 mx-1 my-2 bg-white rounded-2">
     <div class="m-0 d-flex justify-content-between py-2 align-items-center">
-        <h2 class="d-inline-flex align-items-center gap-3 my-3 fw-bold text-dark d-block fs-4 ">Available Tutors <span *ngIf="availableTutor.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{availableTutor.length}}</span></h2>
+        <h2 class="col-md-3 d-inline-flex align-items-center gap-3 my-3 fw-bold text-dark d-block fs-4 ">Available Tutors <span *ngIf="availableTutor.length > 0" class="fs-6 text-muted badge rounded-pill bg-secondary">{{availableTutor.length}}</span></h2>
+        <div class="col-md-6"> 
+            <div>
+                <div class="input-group">
+                    <span class="d-flex align-items-center px-4 bg-search-logo rounded-start-3">
+                        <span class="e-btn-icon e-icons e-search text-muted"></span>
+                    </span>
+                    <input [(ngModel)]="filters.Query" (input)="onGlobalFilterTutor($event)" placeholder="Search for Tutor" class="form-control form-control-lg py-2"/>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row g-5 mx-1 my-2 bg-white rounded-2">
@@ -8,7 +18,7 @@
         <div class="filter-col filter-shadows rounded-4">        
             <select
                 (change)="schoolType($event)"
-                class="cursor-pointer border-dull-white h-100 form-select form-select-solid bg-white text-center">            
+                class="cursor-pointer border-dull-white h-100 form-select form-select-solid hover-shadows bg-white text-center">            
                 <option class="py-1 cursor-pointer" *ngFor="let type of SchoolTypes" [value]="type.value" [disabled]="type.value === null" [selected]="type.value === null">{{ type.label }}</option>
             </select>
         </div>
@@ -16,7 +26,7 @@
             <select
                 [disabled]="disableCoreSubject"
                 (change)="onCoreChange($event)"
-                [ngClass]="{ 'opacity-50': disableCoreSubject, 'opacity-100 cursor-pointer': !disableCoreSubject}"
+                [ngClass]="{ 'opacity-50': disableCoreSubject, 'opacity-100 cursor-pointer hover-shadows': !disableCoreSubject}"
                 class="cursor-pointer border-dull-white h-100 form-select bg-white text-center">
                 <option class="py-1 cursor-pointer" *ngFor="let subject of CoreSubjects" [value]="subject.Id" [selected]="subject.Id === null" [disabled]="subject.Id === null" >{{ subject.Name }}</option>
             </select>  
@@ -25,7 +35,7 @@
             <select
                 [disabled]="disableSubject"
                 (change)="onSubjectChange($event)"
-                [ngClass]="{ 'opacity-50': disableSubject, 'opacity-100 cursor-pointer': !disableSubject }"
+                [ngClass]="{ 'opacity-50': disableSubject, 'opacity-100 cursor-pointer hover-shadows': !disableSubject }"
                 class="border-dull-white h-100 form-select form-select-solid py-3 bg-white text-center">
                 <option class="py-1 cursor-pointer" *ngFor="let subject of SubSubjects" [value]="subject.value" [selected]="subject.value === null" [disabled]="subject.value === null" >{{ subject.label }}</option>
             </select>  
@@ -34,15 +44,15 @@
             <select
                 [disabled]="disableGrades"
                 (change)="onGradeChange($event)"
-                [ngClass]="{ 'opacity-50': disableGrades, 'opacity-100 cursor-pointer': !disableGrades }"
-                class="border-dull-white h-100 form-select form-select-solid bg-white text-center">
+                [ngClass]="{ 'opacity-50': disableGrades, 'opacity-100 cursor-pointer hover-shadows': !disableGrades }"
+                class="border-dull-white h-100 form-select form-select-solid hover-shadows bg-white text-center">
                 <option *ngFor="let grade of Grades" [value]="grade.value" [selected]="grade.value === null" [disabled]="grade.value === null" > {{grade.label}}</option>
             </select>  
         </div>
         <div class="col-md-1 filter-shadows rounded-5" style="border-radius: 8px;">
-            <button (click)="clearAllFilters($event)" class="h-100 w-100 text-center btn btn-close-white border border-dull-white">
+            <button (click)="clearAllFilters($event)" class="h-100 w-100 hover-shadows text-center btn btn-close-white border border-dull-white">
                 <i class="fa fa-filter"></i>
-                 Clear</button>
+                 Clear All</button>
         </div>
     </div>
 </div>

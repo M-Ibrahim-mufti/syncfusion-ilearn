@@ -264,45 +264,11 @@ export class SubjectComponent {
   // }
 
   public filterSearch(event: Event) {
-    // this.filterSubjects = this.Subjects;
-    // const inputElement = event.target as HTMLInputElement
-    // const inputValue = inputElement.value;
-    
-    // this.filterSubjects = this.Subjects.filter((data) => {   
-    //   if (data.Name.includes(inputValue) || data.CoreSubjectName.includes(inputValue) ) {
-    //     if(data.Description !== null) {
-    //       if(data.Description.includes(inputValue)){
-    //         return data
-    //       }
-    //     }
-    //     return data
-    //   }
-    //   else {
-    //     if(data.Description !== null) {
-    //       if (data.Description.includes(inputValue)){
-    //         return data
-    //       }
-    //     }
-    //     return undefined
-    //   }
-    // })
 
     if (this.filters.Query && this.filters.Query.length >= 3) {
       this.viewSubjects(this.filters);
     }
   }
-
-  // public onPrimayChange(){
-  //   this.courseSubjects = this.AllSubjects.filter(p=>p.IsPrimarySchool === true)
-  //   console.log("courseSubjects",this.courseSubjects)
-  //   this.isCoreSubjectVisible = true
-  // }
-
-  // public onHighChange(){
-  //   this.courseSubjects = this.AllSubjects.filter(p=>p.IsPrimarySchool === false)
-  //   console.log("courseSubjects",this.courseSubjects)
-  //   this.isCoreSubjectVisible = true
-  // }
 
   public onCoreSubject(event: any){
      if(event.target.value != null){

@@ -12,6 +12,12 @@ import { environment } from '../../../../environments/environment';
 })
 export class ZoomComponent implements OnInit, OnDestroy {
   zoomMeeting: any;
+  meetindata:any = {
+    studentId:'',
+    tutorId:'',
+    meetingId:'',
+  }
+
   private userName:string = "";
   private userEmail:string = "";
   constructor(private router: Router, private httpClient: HttpClient, private ngZone: NgZone,private authService: AuthService) {}

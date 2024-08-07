@@ -71,6 +71,18 @@ export class TutorSelectionComponent {
                private renderer: Renderer2,
                private eventService: EventService
   ) { 
+    this.SubSubjects.push({
+      value:null,
+      label:'Filter By Sub Subject'
+    })
+    this.Grades.push({
+      value:null,
+      label:'Filter By Grades'
+    })
+    this.CoreSubjects.push({
+      Id: null,
+      Name: 'Filter By Core Subject'
+    })
     this.TimeGroup.unshift({
       label:'Select Timegroup', value: -1
     })
@@ -98,18 +110,7 @@ export class TutorSelectionComponent {
       this.spinnerService.hide();
       this.availableTutor = tutors;
       this.currentAvailableTutor = tutors.length;
-      this.SubSubjects.push({
-        value:null,
-        label:'Filter By Sub Subject'
-      })
-      this.Grades.push({
-        value:null,
-        label:'Filter By Grades'
-      })
-      this.CoreSubjects.push({
-        Id: null,
-        Name: 'Filter By Core Subject'
-      })
+
     })
   }
 
