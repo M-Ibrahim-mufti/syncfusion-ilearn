@@ -1,82 +1,139 @@
-<div class="container">
-    <div class="card">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="toggle-container">
-                            <button class="toggle-btn" [ngClass]="{'active': !showListView}" (click)="switchToListView()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-                                </svg>
-                                List View
-                            </button>
-                            <button class="toggle-btn" [ngClass]="{'active': showListView}" (click)="switchToCalendarView()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
-                                </svg>
-                                Calendar View
-                            </button>
+<div class="row g-5 mx-3 my-2 ">
+    <ul class="list-group list-group-flush pe-0 mt-0 bg-white rounded-3">
+        <li class="list-group-item py-1">
+            <div class="row">
+                <div class="col-md-12 px-0">
+                    <div class="toggle-container rounded-2 w-100">
+                        <button class="toggle-btn rounded-2 py-3 w-50" [ngClass]="{'active': !showListView}" (click)="switchToListView()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                            </svg>
+                            List View
+                        </button>
+                        <button class="toggle-btn rounded-2 py-3 w-50" [ngClass]="{'active': showListView}" (click)="switchToCalendarView()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                            </svg>
+                            Calendar View
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="bg-white my-2 px-0 rounded-3" >
+        <li class="list-group-item" *ngIf="!showListView">
+            <div class="bg-white rounded-3 pb-2">
+                <div class="col-md-12">
+                    <div class="d-flex flex-column">
+                        <div class="w-100 d-flex rounded-3 rounded-bottom-0 flex-row justify-content-around bg-light py-4">
+                            <button [disabled]="!activateBtn" (click)="toggleContentPreview()" class="ms-3 me-1 text-muted fw-bold fs-5 btn-width px-4 py-3" [ngClass]="{'bg-white': !activateBtn}">Upcoming meetings</button>
+                            <button [disabled]="activateBtn" (click)="toggleContentPreview()" class="me-3 me-1 text-muted fw-bold fs-5 btn-width px-4 py-3" [ngClass]="{'bg-white': activateBtn}">Previous meetings</button>
                         </div>
                     </div>
                 </div>
-            </li>
-            <li class="list-group-item" *ngIf="!showListView">
-                <div class="container">
-                    <div class="bg-white rounded-3 py-2">
-                        <div class="col-md-12">
-                            <div class="d-flex flex-column">
-                                <div class="w-100 d-flex flex-row justify-content-around bg-light py-4">
-                                    <button [disabled]="!activateBtn" (click)="toggleContentPreview()" class="text-muted fw-bold fs-5 btn-width px-4 py-3" [ngClass]="{'bg-white': !activateBtn}">Upcoming meetings</button>
-                                    <button [disabled]="activateBtn" (click)="toggleContentPreview()" class="text-muted fw-bold fs-5 btn-width px-4 py-3" [ngClass]="{'bg-white': activateBtn}">Previous meetings</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <!-- <div class="py-4 px-5">
-                                <span *ngIf="!activateBtn" class="fs-4 text-muted fw-bolder"> Upcoming Meetings </span>
-                                <span *ngIf="activateBtn" class="fs-4 text-muted fw-bolder"> Previous Meetings </span>
-                            </div> -->
-                            <div id="meeting-cont" *ngIf="activateBtn" class="z-2 py-4 px-2 d-flex flex-wrap flex-gap">
-                                <div class="card-styling border border-dull-white shadow-lg" *ngFor="let meeting of previousMeetings">
-                                    <div class="px-2 inner-card-styling d-flex flex-column">
-                                        <span class="pt-1 text-dark fs-5 fw-bolder">{{meeting.Topic}}</span>  
-                                        <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]">Student: {{ meeting.UserName }}</span>                                                                              
-                                        <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" >Tutor: {{ meeting.UserName }}</span>                                                                              
-                                        <span class="pt-1 text-muted fs-6 fw-semibold">Start Date: {{ meeting.StartTime | date: 'dd/MMM/yyyy' }}</span>
-                                        <span class="pt-1 text-muted fs-6 fw-semibold">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>
-                                        <span class="pt-1 text-muted fs-6 fw-semibold">Meeting ended in {{ meeting.MeetingId | duration }}</span>
+                <div class="col-md-12 px-3">
+                    <div id="meeting-cont" *ngIf="activateBtn" class="z-2 py-4 px-2 d-flex flex-wrap flex-gap">
+                        <div class="card-styling card-styling-on-sidebar-open border border-dull-white shadow-lg" *ngFor="let meeting of previousMeetings">
+                            <div class="inner-card-styling d-flex flex-column">
+                                <div class="px-3 border-bottom  mb-2 gap-3 d-flex">
+                                    <div
+                                        *ngIf="meeting.ImgUrl"
+                                        class=" my-2 w-25 rounded-3" 
+                                        [ngStyle]="{'width':'70px', 'height': '70px', 'background':getImage(meeting.ImgUrl) }"
+                                    ></div>
+                                    <div
+                                        *ngIf="!meeting.ImgUrl"
+                                        class=" my-2 w-25 rounded-3" 
+                                        style="width: 70px; height: 70px; background: #f1f1f2 url('../../../../assets/user-profile.png') no-repeat center/cover;"
+                                    ></div>
+                                    <div class="d-flex w-100 my-3 flex-column">
+                                        <div class="d-flex flex-row">
+                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">Tutor Name : </span>
+                                            <span class="custom-font-size text-start col-md-8 form-label" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]"> {{ meeting.UserName }}</span>                                                                              
+                                            <span class="custom-font-size text-start col-md-8 form-label" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" > {{ meeting.UserName }}</span>                                        
+                                        </div>
+                                        <div class="d-flex flex-row">
+                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">Tutor Email : </span>
+                                            <span class="custom-font-size text-start col-md-8 form-label">{{meeting.UserEmail}}</span>
+                                        </div>
+                                        <div class="d-flex flex-row">
+                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">Topic : </span>
+                                            <span class="custom-font-size text-start col-md-8 form-label">{{meeting.Topic}}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="meeting-cont" *ngIf="!activateBtn" class="z-2 py-4 px-2 d-flex flex-wrap flex-gap">
-                                <div class="card-styling card-upcoming border border-dull-white shadow-lg" *ngFor="let meeting of todayMeetings;">
-                                    <div class="px-2 inner-card-styling inner-card-upcoming d-flex flex-column">
-                                        <span class="pt-1 text-dark fs-5 fw-bolder">{{ meeting.Topic }}</span>
-                                        <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]">Student: {{ meeting.UserName }}</span>                                                                              
-                                        <span class="pt-1 text-muted fs-6 fw-semibold cursor-pointer" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" >Tutor: {{ meeting.UserName }}</span>                                                                              
-                                        <span class="pt-1 text-muted fs-6 fw-semibold">Start Date: {{ meeting.StartTime | date: 'dd/MMM/yyyy' }}</span>
-                                        <span class="pt-1 text-muted fs-6 fw-semibold">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>                                        
-                                        <span class="py-1 text-muted fs-6 fw-semibold">MeetingId: {{ meeting.MeetingId}}</span>
-                                        <button ejs-button (click)="redirectToZoomClass(meeting)" [disabled]="disableStartMeeting(meeting.StartTime) || inProgressMeetingId === meeting.Id" cssClass="e-info rounded-2 py-2 mt-2 fw-bold"> {{inProgressMeetingId == meeting.Id ? 'In Progress' : 'Start'}} </button>
-<!--                                        <button ejs-button *ngIf="isTeacher" (click)="redirectTo(meeting.StartUrl, meeting.Id)" [disabled]="disableStartMeeting(meeting.StartTime) || inProgressMeetingId === meeting.Id"  cssClass="e-info rounded-2 py-2 mt-2 fw-bold"> {{inProgressMeetingId == meeting.Id ? 'In Progress' : 'Start'}} </button>-->
-<!--                                        <button ejs-button *ngIf="isStudent" (click)="redirectTo(meeting.JoinUrl, meeting.Id)" [disabled]="disableStartMeeting(meeting.StartTime) || inProgressMeetingId === meeting.Id"  cssClass="e-info rounded-2 py-2 mt-2 fw-bold"> {{inProgressMeetingId == meeting.Id ? 'In Progress' : 'Join meeting'}} </button>-->
+                                <div class="d-flex justify-items-center px-3 flex-column">
+                                    <div class="d-flex w-100 flex-row">
+                                        <span class="custom-font-size fw-bold text-start col-md-4 form-label"> Start Date : </span>
+                                        <span class="custom-font-size text-start col-md-8 form-label">{{ meeting.StartTime | date: 'dd/MMM/yyyy' }}</span>
+                                    </div>
+                                    <div class="d-flex w-100 flex-row">
+                                        <span class="custom-font-size fw-bold text-start col-md-4 form-label"> Start time : </span>
+                                        <span class="custom-font-size text-start col-md-8 form-label">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>
+                                    </div>
+                                    <div class="d-flex w-100 flex-row">
+                                        <span class="custom-font-size fw-bold text-start col-md-4 form-label"> Ended in : </span>
+                                        <span class="custom-font-size text-start col-md-8 form-label">{{ meeting.ActualDuration | duration }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div *ngIf="!activateBtn" class="z-2 py-4 px-2 d-flex flex-wrap flex-gap">
+                        <div class="card-styling card-styling-on-sidebar-open card-upcoming border border-dull-white shadow-lg" *ngFor="let meeting of todayMeetings;">
+                            <div class="px-2 inner-card-styling inner-card-upcoming d-flex flex-column">
+                                <div class="px-3 border-bottom  mb-2 gap-3 d-flex">
+                                    <div
+                                        *ngIf="meeting.ImgUrl"
+                                        class=" my-2 w-25 rounded-3" 
+                                        [ngStyle]="{'width':'70px', 'height': '70px', 'background':getImage(meeting.ImgUrl) }"
+                                    ></div>
+                                    <div
+                                        *ngIf="!meeting.ImgUrl"
+                                        class=" my-2 w-25 rounded-3" 
+                                        style="width: 70px; height: 70px; background: #f1f1f2 url('../../../../assets/user-profile.png') no-repeat center/cover;"
+                                    ></div>
+                                    <div class="d-flex w-100 my-3 flex-column">
+                                        <div class="d-flex flex-row">
+                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">Tutor Name : </span>
+                                            <span class="custom-font-size text-start col-md-8 form-label" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]"> {{ meeting.UserName }}</span>                                                                              
+                                            <span class="custom-font-size text-start col-md-8 form-label" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" > {{ meeting.UserName }}</span>                                        
+                                        </div>
+                                        <div class="d-flex flex-row">
+                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">Tutor Email : </span>
+                                            <span class="custom-font-size text-start col-md-8 form-label">{{meeting.UserEmail}}</span>
+                                        </div>
+                                        <div class="d-flex flex-row">
+                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">Topic : </span>
+                                            <span class="custom-font-size text-start col-md-8 form-label">{{meeting.Topic}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-items-center px-3 flex-column">
+                                    <div class="d-flex w-100 flex-row">
+                                        <span class="custom-font-size fw-bold text-start col-md-4 form-label"> Start Date : </span>
+                                        <span class="custom-font-size text-start col-md-8 form-label">{{ meeting.StartTime | date: 'dd/MMM/yyyy' }}</span>
+                                    </div>
+                                    <div class="d-flex w-100 flex-row">
+                                        <span class="custom-font-size fw-bold text-start col-md-4 form-label"> Start time : </span>
+                                        <span class="custom-font-size text-start col-md-8 form-label">{{ meeting.StartTime | date: 'hh:mm a' }} - {{ meetingEndTime(meeting.StartTime, meeting.Duration) | date: 'hh:mm a' }}</span>
+                                    </div>
+                                </div>
+                                <button ejs-button (click)="redirectToZoomClass(meeting)" [disabled]="disableStartMeeting(meeting.StartTime) || inProgressMeetingId === meeting.Id" cssClass="e-danger rounded-2 py-2 mt-2 fw-bold"> {{inProgressMeetingId == meeting.Id ? 'In Progress' : 'Start'}} </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </li>
-            <li class="list-group-item" *ngIf="showListView">
-                <div class="container mt-4">
-                    <app-scheduler [meetings]="meetings"></app-scheduler>
-                </div>
-            </li>
-        </ul>
+            </div>
+        </li>
+        <li class="list-group-item rounded-3 px-0" *ngIf="showListView">
+            <div class="container px-0">
+                <app-scheduler [meetings]="meetings"></app-scheduler>
+            </div>
+        </li>
     </div>
 </div>
-
 <app-reviews [MeetingDetails]="meetingDetails"></app-reviews>
 
 <!-- <button *ngIf="isTeacher" class="btn btn-primary btn-color rounded-2 fw-bolder btn-sm mt-3" (click)="redirectTo(meeting.StartUrl)" [disabled]="disableStartMeeting(meeting.StartTime)">Start</button>

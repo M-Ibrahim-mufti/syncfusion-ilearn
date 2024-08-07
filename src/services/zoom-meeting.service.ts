@@ -91,6 +91,8 @@ export class ZoomMeetingDetail {
   Id!: string;
   UserId!: string;
   UserName!: string;
+  UserEmail!:string;
+  ImgUrl!:string;
   HostId!: string;
   HostEmail!: string;
   Topic!: string;

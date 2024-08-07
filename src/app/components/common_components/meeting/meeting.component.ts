@@ -99,9 +99,13 @@ export class MeetingsComponent implements OnInit {
       this.filterMeetings();
       // this.filterMeetingsForPrevious(); 
       this.cdr.detectChanges();
+      console.log(this.meetings)
     });
   }
 
+  getImage(meetingUrl:string) {
+    return `#f1f1f2 url(${meetingUrl}) no-repeat center/cover`
+  }
   // filterMeetingsForUpcoming(): void {
   //   const todayDate = new Date();   
   //   this.todayMeetings = [];

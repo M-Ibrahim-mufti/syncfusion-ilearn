@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { AuthConfig, AuthService, ResponseObject } from '../../../../services/auth.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { TutorService } from '../../../../services/tutor.service';
@@ -37,7 +38,10 @@ export class TopBarComponent implements OnInit {
   ]
   public isDropdownOpen: boolean = false;
   public viewingRoleAsAdmin: boolean = false;
-  
+  public currentPath:any = {
+    url:'',
+    id:''
+  }
   public Sidebar:boolean = true
 
   @Output() SidebarToggle: EventEmitter<boolean> = new EventEmitter<boolean>()
@@ -46,8 +50,16 @@ export class TopBarComponent implements OnInit {
     private authService: AuthService,
     private tutorService: TutorService,
     private studentService: StudentService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private location: Location,
+    private route: ActivatedRoute
+  ) { 
+    const path = this.location.path()
+    this.currentPath.url = '/' + path.split('/').splice(1,2).join('/') + '/'
+    this.currentPath.id = path.substring(path.lastIndexOf('/') + 1)
+    console.log(this.currentPath)
+  
+  }
 
   public ngOnInit(): void {
     this.authConfig = this.authService.getAuthConfig();
@@ -178,12 +190,30 @@ export class TopBarComponent implements OnInit {
     this.Sidebar = !this.Sidebar
     this.SidebarToggle.emit(this.Sidebar)
     const element = document.getElementById('tutorDetail-right-side') as HTMLElement
-    if(this.Sidebar){
-      element.classList.add('inner-right-col')
-      element.classList.remove('inner-right-col-sidebar-collapse')
-    } else {
-      element.classList.remove('inner-right-col')
-      element.classList.add('inner-right-col-sidebar-collapse')
+    if( this.location.path() === `${this.currentPath.url + this.currentPath.id}`) {
+      if(this.Sidebar){
+        element.classList.add('inner-right-col')
+        element.classList.remove('inner-right-col-sidebar-collapse')
+      } else {
+        element.classList.remove('inner-right-col')
+        element.classList.add('inner-right-col-sidebar-collapse')
+      }
+    }
+    else if(this.location.path() === '/meeting') {
+      const meetingCont = document.getElementById('meeting-cont') as HTMLElement
+      if(this.Sidebar) {
+        meetingCont.childNodes.forEach((element) => {
+          const ele = element as HTMLElement;
+          ele.classList.remove('card-styling-on-sidebar-close')
+          ele.classList.add('card-styling-on-sidebar-open')
+        })
+      } else {
+        meetingCont.childNodes.forEach((element) => {
+          const ele = element as HTMLElement;
+          ele.classList.add('card-styling-on-sidebar-close')
+          ele.classList.remove('card-styling-on-sidebar-open')   
+        })
+      }
     }
   }
 }

@@ -242,3 +242,7 @@ body {
 .rounded-dialog{
   border-radius: 6px !important;
 }
+
+.custom-font-size{
+  font-size: 12px !important;
+}

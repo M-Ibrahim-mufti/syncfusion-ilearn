@@ -1,0 +1,40 @@
+
+.e-schedule {
+    border:none!important;
+    border-radius: 6px;
+}
+::ng-deep .e-toolbar .e-toolbar-item .e-tbar-btn{
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    border-radius: 6px !important;
+transition: all .3s linear !important;
+}
+
+::ng-deep .e-content-wrap {
+    scrollbar-width: thin;
+    scrollbar-color: #f1f1f1 white;
+}
+
+::ng-deep .e-date-header-wrap {
+    border-right: none!important;
+}
+
+
+::ng-deep .e-schedule .e-vertical-view .e-left-indent{  
+    border-bottom: 1px solid #e5e5e5 !important;
+}
+
+::ng-deep .e-schedule-table tr:nth-child(2) td:nth-child(1) {
+    border-left: none !important;
+}
+
+::ng-deep .e-month-view > .e-date-header-container {
+    padding-right: 0px !important;
+}
+
+::ng-deep .e-date-header-container {
+    border-bottom: 1px solid #e5e5e5;
+    padding-right: 11px !important;
+}

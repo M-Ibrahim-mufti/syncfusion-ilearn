@@ -261,4 +261,8 @@ export class TutorSelectionComponent {
   toggleReadMore(tutorId: number) {
     this.availableTutor[tutorId].isExpanded = !this.availableTutor[tutorId].isExpanded;
   }
+
+  showReviews(tutorId:string) {
+    
+  }
 }
