@@ -10,17 +10,19 @@ import {ReviewRequest, ReviewService} from "../../../../services/review.service"
 export class ReviewsComponent implements OnInit {
   @Input() OpenReviewModal: boolean = false;
   @Input() MeetingDetails: any = {};
-
   public review: ReviewRequest = {} as ReviewRequest;
-
   public authConfig!: AuthConfig;
+  user:any;
 
   constructor(private authService: AuthService, private reviewService: ReviewService) {
     this.authConfig = this.authService.getAuthConfig();
   }
 
   ngOnInit() {
-    this.getAverageRating();
+    if(this.MeetingDetails){
+      this.getUserPreviousReview()
+    }
+    // this.getAverageRating();
   }
 
   public setReviewData() {
@@ -34,10 +36,15 @@ export class ReviewsComponent implements OnInit {
     })
   }
 
+  getUserPreviousReview(){
+    this.reviewService.getUserPreviousReview(this.MeetingDetails.meetingId).subscribe(response => {
+      this.user = response;
+    })
+  }
+
   private getAverageRating() {
     this.reviewService.getAverageRating(this.MeetingDetails.meetingId).subscribe(response => {
      console.log(response);
-     
     })
   }
 }

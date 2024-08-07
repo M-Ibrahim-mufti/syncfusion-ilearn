@@ -47,6 +47,14 @@ export class ReviewService extends ServiceBase {
     return this.http.post<ResponseObject>(url, model, httpOptions);
   }
 
+  public getUserPreviousReview(userId: string): Observable<ResponseObject> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Review';
+    const method: string = '/view-user-detail-review';
+    const url: string = `${environment.BASE_API_PATH}${api}${method}/${userId}`;
+    return this.http.get<ResponseObject>(url, httpOptions);
+  }
+
   public saveReviewFromTutorForStudent(model: any): Observable<ResponseObject> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Review';
