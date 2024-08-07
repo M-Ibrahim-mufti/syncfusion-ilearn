@@ -18,6 +18,7 @@ import { StudentRegistrationComponent } from './components/registaration/student
 import { TutorRegistrationComponent } from './components/registaration/tutor_registration/tutor-registration.component'
 import { ViewChildrenComponent } from './components/Parrent/view-children/view-children.component';
 import {ZoomComponent} from "./components/common_components/zoom/zoom.component";
+import {ReviewsComponent} from "./components/common_components/reviews/reviews.component";
 
 
 
@@ -154,8 +155,13 @@ export const routes: Routes = [
         component:MeetingsComponent
     },
     {
+        path: 'meeting/:meetingId/:userId',
+        component:MeetingsComponent
+    },
+    {
         path: 'zoom',
         component:ZoomComponent
     }
+
 
 ];

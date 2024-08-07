@@ -1,39 +1,63 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit, OnChanges, SimpleChanges, AfterViewInit} from '@angular/core';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
+import {ReviewService} from "../../../../services/review.service";
 
 @Component({
   selector: 'app-reviews',
   templateUrl: './reviews.component.html',
-  styleUrl: './reviews.component.css'
+  styleUrls: ['./reviews.component.css']
 })
-export class ReviewsComponent {
-  @Input() OpenReviewModal!:boolean
-  public review:any = {
-    Rating:'',
-    Comment:'',
-    meetingId:''
+export class ReviewsComponent implements AfterViewInit {
+  @Input() OpenReviewModal: boolean = false;
+  @Input() MeetingDetails: any = {};
+
+  public review: any = {
+    Rating: 0,
+    Comment: '',
+    meetingId: ''
   };
 
-  public authConfig!: AuthConfig
+  public authConfig!: AuthConfig;
 
-  constructor( authService: AuthService ) {
-    this.authConfig = authService.getAuthConfig();
+  constructor(private authService: AuthService, private reviewService: ReviewService) {
+    this.authConfig = this.authService.getAuthConfig();
+  }
+
+  ngOnInit() {
+
+  }
+
+  ngAfterViewInit(){
+    this.initializeReview();
+  }
+
+  private initializeReview() {
     if (this.authConfig.IsStudent) {
-      console.log('check student')
-      this.review.tutorId = '';
-    } else if(this.authConfig.IsTeacher) {
-      console.log('checl tutor')
-      this.review.studentId = '';
-    } else {
-      console.log("nothing")
+      this.review.tutorId = this.MeetingDetails.userId;
+    } else if (this.authConfig.IsTeacher) {
+      this.review.studentId = this.MeetingDetails.userId;
+    }
+
+    // Ensure MeetingDetails are properly set before accessing
+    if (this.MeetingDetails) {
+      this.review.meetingId = this.MeetingDetails.meetingId;
     }
   }
 
-  public getReviewData(){
-    const rating = document.getElementById('rating') as HTMLInputElement;
-    this.review.Rating = rating.value;
-    console.log(this.review)
+  public setReviewData() {
+    const ratingElement = document.getElementById('rating') as HTMLInputElement;
+    if (ratingElement) {
+      this.review.Rating = Number(ratingElement.value);
+    }
+    if(this.authConfig.IsStudent){
+      this.reviewService.saveReviewFromStudentForTutor(this.review).subscribe(response => {
+        console.log(response)
+      })
+    }
+    if(this.authConfig.IsTeacher){
+      this.reviewService.saveReviewFromTutorForStudent(this.review).subscribe(response => {
+        console.log(response)
+      })
+    }
   }
-
 }
-

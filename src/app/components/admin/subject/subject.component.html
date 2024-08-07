@@ -40,7 +40,7 @@
                 </select>  
             </div>
             <div class="col-md-2 d-flex gap-4 justify-content-end">
-                <button ejs-button cssClass="e-danger py-2 rounded-3" iconCss="fa fa-close" (click)="clearAll()">Clear</button>
+                <button ejs-button cssClass="e-danger py-2 rounded-3" iconCss="fa fa-filter" (click)="clearAll()">Clear</button>
             </div>
         </div>
     </div>
@@ -84,9 +84,6 @@
 </div>
 
 <ng-template #actionTemplate let-data>
-    <button ejs-button cssClass='e-info e-icon-btn' class="me-2" (click)="addSubjectGrade(data)">
-        <span class="e-btn-icon e-icons e-add me-1"></span>Add Grade
-    </button>
     <button ejs-button cssClass='e-info e-icon-btn ml-2' class="me-2" (click)="editSubject(data, data.Grades)">
         <span class="e-btn-icon e-icons e-edit"></span>
     </button>
@@ -151,29 +148,6 @@
         </div>
         <div class="text-center mt-4">
             <button ejs-button cssClass="e-info w-100" (click)="saveSubject()">
-                Submit
-            </button>
-        </div>
-    </div>
-</ejs-dialog>
-
-<ejs-dialog header="Add Subject Grade" [visible]="addSubjectGradeDialogueBox" [width]="430" [showCloseIcon]="true"
-    [isModal]="true" [isModal]="true" (close)="onGradeDialogClose()">
-    <div class="form-horizontal mt-2 px-3">
-        <div class="form-group mt-2">
-            <label for="Name" class="form-label">Name <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="Name" name="Name" [(ngModel)]="insertSubjectData.Name"
-                placeholder="Enter Subject Name" disabled="true" />
-        </div>
-        <div class="form-group mt-2">
-            <label class="form-label">Grades</label>
-            <ejs-multiselect (change)="onGradeChange($event)" [dataSource]="filterGrades"
-                [fields]="{text:'label', value:'value'}" [mode]="mode"
-                [placeholder]="'Select Grade(s)'"></ejs-multiselect>
-        </div>
-
-        <div class="text-center mt-4">
-            <button ejs-button cssClass="e-info w-100" (click)="saveSubjectGrade()">
                 Submit
             </button>
         </div>

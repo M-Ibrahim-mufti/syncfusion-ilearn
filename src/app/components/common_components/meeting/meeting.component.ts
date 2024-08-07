@@ -1,16 +1,17 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import { CalendarModule } from 'angular-calendar';
 import { ZoomMeetingService, ZoomMeetingDetail, StudentMeeting } from '../../../../services/zoom-meeting.service';
 import { AuthService } from '../../../../services/auth.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
+import {ReviewsComponent} from "../reviews/reviews.component";
 
 @Component({
   selector: 'app-meeting',
   templateUrl: './meeting.component.html',
   styleUrls: ['./meeting.component.scss'],
 })
-export class MeetingsComponent implements OnInit {
+export class MeetingsComponent implements OnInit, AfterViewInit {
   public showListView: boolean = true;
   todayDate = new Date();
   startTime?: string;
@@ -25,8 +26,11 @@ export class MeetingsComponent implements OnInit {
   public activateBtn: boolean = false
   studentMeetings: any;
   public inProgressMeetingId: string | null = null
+  meetingDetails:any = {};
+  @ViewChild(ReviewsComponent) reviewsComponent!: ReviewsComponent;
 
-  constructor(private router: Router,
+  constructor(private route: ActivatedRoute,
+    private router: Router,
     private spinnerService: SpinnerService,
     private zoomService: ZoomMeetingService,
     private authService: AuthService,
@@ -35,7 +39,32 @@ export class MeetingsComponent implements OnInit {
     this.isStudent = this.authService.isStudent()
   }
 
+  ngAfterViewInit(): void {
+    if(this.meetingDetails.meetingId && this.meetingDetails.userId){
+      this.showReviewDialog();
+    }
+  }
+
+  showReviewDialog() {
+    if (this.reviewsComponent) {
+      this.reviewsComponent.OpenReviewModal = true;
+      this.cdr.detectChanges();
+    } else {
+      console.error('ReviewsComponent is not initialized');
+    }
+  }
+
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      let meetingId = params.get('meetingId');
+      let userId = params.get('userId');
+      if (meetingId && userId) {
+        this.meetingDetails = {
+          meetingId: meetingId,
+          userId: userId
+        }
+      }
+    });
     this.inProgressMeetingId = localStorage.getItem('inProgressMeetingId');
     this.loadMeetings();
   }
@@ -127,9 +156,6 @@ export class MeetingsComponent implements OnInit {
         }
       }
     });
-
-    console.log('this.todayMeetings', this.todayMeetings);
-    
   }
 
   isSameDay(date1: Date, date2: Date): boolean {
@@ -163,8 +189,6 @@ export class MeetingsComponent implements OnInit {
   }
 
   redirectToZoomClass(meeting: any) {
-
-
     let startTime = new Date(meeting.StartTime);
     let duration = meeting.Duration;
     let expireTime = new Date(startTime.getTime() + duration * 60000);
@@ -172,25 +196,23 @@ export class MeetingsComponent implements OnInit {
 
     // Calculate the expire time in seconds from the current time
     let expireTimeInSeconds = Math.floor((expireTime.getTime() - currentTime.getTime()) / 1000);
-    console.log("expireTimeInSeconds", expireTimeInSeconds);
-
     let role = 0;
     if(this.isTeacher){
       role = 1
     }
     let isMeetingDisable = this.disableStartMeeting(meeting.StartTime)
-    if(isMeetingDisable){
-      console.log("Kaka g Kidhr?")
-      return;
-    }
-    this.zoomService.getSignature(meeting.MeetingId.toString(), role, expireTimeInSeconds).subscribe((data: any) => {
+    // if(isMeetingDisable){
+    //   console.log("Kaka g Kidhr?")
+    //
+    //   return;
+    // }
+    this.zoomService.getSignature(meeting.MeetingId.toString(), role, 7200).subscribe((data: any) => {
       if (data.signature) {
-        console.log(data.signature);
-        
         const zoomMeeting = {
           signature: data.signature,
           meetingId: meeting.MeetingId,
           role:role,
+          userId: meeting.UserId,
           userName: meeting.UserName,
           userEmail: meeting.UserEmail,
           passWord: meeting.Password

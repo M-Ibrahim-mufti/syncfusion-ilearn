@@ -26,6 +26,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
     ZoomMtg.preLoadWasm();
     ZoomMtg.prepareWebSDK();
     this.zoomMeeting = history.state.zoomMeeting;
+    console.log(this.zoomMeeting)
     var currentUser = this.authService.getCurrentUser();
     if (currentUser) {
       this.userName = currentUser.FullName;
@@ -50,11 +51,10 @@ export class ZoomComponent implements OnInit, OnDestroy {
 
     this.ngZone.runOutsideAngular(() => {
       ZoomMtg.init({
-        leaveUrl: environment.LEAVE_MEETING_URL,
+        leaveUrl: `${environment.LEAVE_MEETING_URL}/${this.zoomMeeting.meetingId}/${this.zoomMeeting.userId}`,
         patchJsMedia: true,
         leaveOnPageUnload: true,
         success: (success:any) => {
-          console.log(success);
           ZoomMtg.join({
             signature: signature,
             sdkKey: environment.SDK_KEY,
@@ -63,7 +63,6 @@ export class ZoomComponent implements OnInit, OnDestroy {
             userName: this.userName,
             userEmail: this.userEmail,
             success: (success:any) => {
-              console.log(success);
               this.removeParticipantButton();
             },
             error: (error:any) => {
