@@ -154,16 +154,15 @@ export class MeetingsComponent implements OnInit {
         if (meetingEndTime >= todayDate) {
           // Meeting is ongoing or will start later today
           this.todayMeetings.push(meeting);
+          
         } else {
           // Meeting has ended earlier today
           this.previousMeetings.push(meeting);
         }
-      } else if (this.isTomorrow(meetingDate, todayDate)) {
-        // For meetings tomorrow
-        this.tomorrowMeetings.push(meeting);
       } else if (meetingDate > todayDate) {
         // For future meetings
-        this.todayMeetings.push(meeting);
+        this.todayMeetings.push(meeting);       
+        
       } else if (meetingDate < todayDate) {
         // For past meetings
         if (meetingEndTime < todayDate) {
@@ -171,6 +170,7 @@ export class MeetingsComponent implements OnInit {
         }
       }
     });
+
   }
 
   isSameDay(date1: Date, date2: Date): boolean {
