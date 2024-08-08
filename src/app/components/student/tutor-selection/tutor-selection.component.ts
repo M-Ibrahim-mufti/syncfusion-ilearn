@@ -278,10 +278,6 @@ export class TutorSelectionComponent {
     })
   }
 
-  getImage(image:string) {
-    return `#f1f1f1 url(${image}) no-repeat center/cover`
-  }
-
   changeStarColors() {
     const stars = document.querySelectorAll('.e-rating-selected') as NodeList;
     stars.forEach((star) => {
@@ -297,6 +293,9 @@ export class TutorSelectionComponent {
           innerStar.style.webkitTextStroke ='1px #ce9f30';
       }
     })
+  }
+  closeReviewDialog(resetBox:boolean) {
+    this.toggleDialogBox = resetBox
   }
 
 }
