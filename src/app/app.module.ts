@@ -58,6 +58,16 @@ import {ZoomComponent} from "./components/common_components/zoom/zoom.component"
 import { RatingModule } from '@syncfusion/ej2-angular-inputs';
 import { ReviewsComponent } from './components/common_components/reviews/reviews.component';
 import { ShowReviewsComponent } from './components/common_components/reviews/show-reviews/show-reviews.component';
+import {StudentDetailComponent} from "./components/tutor/student-detail/student-detail.component";
+import {
+    UserDetailComponent
+} from "./components/tutor/student-detail/partial-components/user-detail/user-detail.component";
+import {
+    UserMeetingsComponent
+} from "./components/tutor/student-detail/partial-components/user-meetings/user-meetings.component";
+import {
+    UserReviewsComponent
+} from "./components/tutor/student-detail/partial-components/user-reviews/user-reviews.component";
 
 
 export function getTokenFactory(injector: Injector) {
@@ -98,7 +108,8 @@ export function getTokenFactory(injector: Injector) {
     DurationPipe,
     ZoomComponent,
     ReviewsComponent,
-    ShowReviewsComponent
+    ShowReviewsComponent,
+    StudentDetailComponent
   ],
     imports: [
         BrowserModule,
@@ -142,7 +153,10 @@ export function getTokenFactory(injector: Injector) {
         CalendarModule,
         TooltipAllModule,
         SwitchModule,
-        RatingModule 
+        RatingModule,
+        UserDetailComponent,
+        UserMeetingsComponent,
+        UserReviewsComponent
 
     ],
   exports: [RouterModule],

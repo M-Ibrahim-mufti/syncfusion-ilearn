@@ -23,6 +23,15 @@ export class ReviewService extends ServiceBase {
     return this.http.get<any[]>(url, httpOptions);
   }
 
+  public getReviewsByStudentId(studentId: string): Observable<any> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Review';
+    const method: string = '/get-student-reviews-by-id/' + studentId;
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<any>(url, httpOptions);
+  }
+
+
   public hasAlreadyReviewed(meetingId: string): Observable<boolean> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Review';

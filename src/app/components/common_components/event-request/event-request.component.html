@@ -27,7 +27,7 @@
                             <div class="mb-2 d-flex flex-grow-1">
                                 <div class="w-100 mb-2">
                                     <div class="m-0 d-flex flex-column">
-                                        <h5 class="m-0 fw-bolder text-muted-dark">{{bookingRequest.StudentName}}</h5>
+                                        <h5 class="m-0 fw-bolder text-muted-dark" (click)="redirectToStudentDetail(bookingRequest.StudentId)">{{bookingRequest.StudentName}}</h5>
                                         <span class="fw-bold text-muted">{{bookingRequest.SubjectName ? bookingRequest.SubjectName : 'Not provided'}}</span>
                                     </div>
                                     <div *ngIf="authConfig.IsStudent" class="m-0 d-flex flex-row gap-2">
@@ -80,7 +80,7 @@
                                 <div class="mb-2 d-flex flex-grow-1">
                                     <div class="w-100 mb-2">
                                         <div class="m-0 d-flex flex-column">
-                                            <h5 class="m-0 fw-bolder text-muted-dark">{{bookingRequest.StudentName}}</h5>
+                                            <h5 class="m-0 fw-bolder text-muted-dark" (click)="redirectToStudentDetail(bookingRequest.StudentId)">{{bookingRequest.StudentName}}</h5>
                                             <span class="fw-semibold text-muted">{{bookingRequest.SubjectName ? bookingRequest.SubjectName : 'Not Provided'}}</span>
                                         </div>
                                         <div *ngIf="authConfig.IsStudent" class="m-0 d-flex flex-row gap-2">

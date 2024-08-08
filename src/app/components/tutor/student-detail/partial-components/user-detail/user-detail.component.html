@@ -1,0 +1,102 @@
+<ng-container *ngIf="user == null; else dataLoaded">
+    <div class="d-flex bg-white py-3 mt-0 rounded-4 gap-2 position-relative">
+        <!-- Skeleton Loader -->
+        <div class="d-flex justify-content-center ms-4">
+            <ejs-skeleton shape="circle" width="150px" height="150px"></ejs-skeleton>
+        </div>
+
+        <div class="d-flex justify-content-start flex-column">
+            <div class="py-1">
+                <ejs-skeleton width="200px" height="24px"></ejs-skeleton>
+                <br>
+                <ejs-skeleton width="150px" height="18px" style="margin-top: 5px;"></ejs-skeleton>
+            </div>
+
+            <div class="d-flex flex-row gap-2 py-1">
+                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                    <ejs-skeleton width="70px" height="34px"></ejs-skeleton>
+                </div>
+                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                    <ejs-skeleton width="70px" height="34px"></ejs-skeleton>
+                </div>
+                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                    <ejs-skeleton width="70px" height="34px"></ejs-skeleton>
+                </div>
+            </div>
+
+            <!--        <div class="mt-0 py-1 text-muted">-->
+            <!--            <ejs-skeleton width="280%" height="80px"></ejs-skeleton>-->
+            <!--        </div>-->
+        </div>
+    </div>
+    <div class="d-flex bg-white py-3 mt-3 rounded-4 gap-2 position-relative">
+        <div class="d-flex justify-content-start flex-column ms-4">
+            <h5 class="fs-4 fw-bold mb-4">Subject(s)</h5>
+            <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                <ejs-skeleton width="70px" height="34px"></ejs-skeleton>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #dataLoaded>
+    <div class="d-flex bg-white py-3 mt-0 rounded-4 gap-2 position-relative">
+        <div class="d-flex justify-content-center ms-4">
+            <img style="object-fit:cover; width: 150px; height: 150px; border-radius: 50%; "
+                 [src]="user?.ImgUrl ? user?.ImgUrl : '../../../../assets/user-profile.png'" />
+        </div>
+        <div class="d-flex justify-content-start flex-column">
+            <div class="py-1">
+                <h5 class="fs-4 fw-bold">{{ user?.FullName }}</h5>
+                <div class="text-muted">{{ user?.City }}, {{user?.State}}, {{user.PostCode}}, {{user.Country}}</div>
+            </div>
+            <div class="d-flex flex-row gap-2 py-1">
+                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                    <i class="e-icons e-bookmark-fill fs-4 text-danger text-opacity-50 d-flex gap-2">
+                        <span class="text-black fs-5 fw-bold">{{ user?.StudentSubjects.length }}</span>
+                    </i>
+                    <p class="m-0 mt-2 text-muted fw-semibold">Subject(s)</p>
+                </div>
+                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                    <i class="e-icons e-bookmark-fill fs-5 text-success text-opacity-50 d-flex gap-2">
+                        <span class="text-black fs-5 fw-bold">{{ user?.SchoolGrade }}</span>
+                    </i>
+                    <p class="m-0 mt-2 text-muted fw-semibold">Grade</p>
+                </div>
+
+                <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
+                    <ng-container *ngIf="user?.AverageReview > 0; else newuser;">
+                        <i class="e-icons e-star-filled fs-5 text-warning text-opacity-50 d-flex gap-2">
+                            <span class="text-black fs-5 fw-bold">{{ user?.AverageReview }}</span>
+                        </i>
+                        <p class="m-0 mt-2 text-muted fw-semibold">Rating</p>
+                    </ng-container>
+                    <ng-template #newuser>
+                        <i class="e-icons e-people fs-5 text-warning text-opacity-50 d-flex gap-2">
+                            <span class="text-black fs-5 fw-bold">New</span>
+                        </i>
+                        <p class="m-0 mt-2 text-muted fw-semibold">User</p>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="mt-0 py-1 text-muted">
+                <p style="text-align: justify;" class="fw-semibold">{{ user?.aboutDetail }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex bg-white py-3 mt-3 rounded-4 gap-2 position-relative">
+        <div class="d-flex justify-content-start flex-column ms-4">
+            <h5 class="fs-4 fw-bold mb-4">Subject(s)</h5>
+            <div class="d-flex justify-content-center">
+                <ng-container *ngFor="let subject of user?.StudentSubjects">
+                    <div class="card pt-1">
+                        <div class="card-body">
+                            <h5 class="card-title">{{subject.Name}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Humanities and Social Sciences (HASS)</h6>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>

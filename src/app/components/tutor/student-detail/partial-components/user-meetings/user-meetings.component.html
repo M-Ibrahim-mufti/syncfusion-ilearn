@@ -1,0 +1,40 @@
+<div class="d-flex bg-white py-3 mt-0 rounded-4 gap-2 position-relative justify-content-center align-items-center">
+    <div class="d-flex flex-column align-items-center w-100">
+        <div class="control-section sb-property-border w-100">
+            <div class="text-center">
+                <p class="fs-5 fw-bold">Meetings</p>
+                <!-- Skeleton Loader -->
+                <ng-container *ngIf="!isDataLoaded; else timelineContent">
+                    <div class="d-flex flex-column align-content-center">
+                        <div class="d-flex flex-row justify-content-center w-100 skeleton-item">
+                            <ejs-skeleton width="40%" height="30px" class="mb-2"></ejs-skeleton>
+                            <div class="skeleton-dot"></div>
+                            <ejs-skeleton width="40%" height="30px" class="mb-2"></ejs-skeleton>
+                        </div>
+                        <div class="d-flex flex-row justify-content-center w-100 skeleton-item">
+                            <ejs-skeleton width="40%" height="30px" class="mb-2"></ejs-skeleton>
+                            <div class="skeleton-dot"></div>
+                            <ejs-skeleton width="40%" height="30px" class="mb-2"></ejs-skeleton>
+                        </div>
+                        <div class="d-flex flex-row justify-content-center w-100 skeleton-item">
+                            <ejs-skeleton width="40%" height="30px" class="mb-2"></ejs-skeleton>
+                            <div class="skeleton-dot"></div>
+                            <ejs-skeleton width="40%" height="30px" class="mb-2"></ejs-skeleton>
+                        </div>
+                    </div>
+                </ng-container>
+                <!-- Timeline Content -->
+                <ng-template #timelineContent>
+                    <ejs-timeline [items]="timelineItems" [orientation]="orientation" [align]="alignment">
+                        <e-items>
+                            <e-item *ngFor="let item of timelineItems"
+                                    [content]="item.content"
+                                    [oppositeContent]="item.oppositeContent">
+                            </e-item>
+                        </e-items>
+                    </ejs-timeline>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

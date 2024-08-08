@@ -1,0 +1,30 @@
+.e-rating-container .e-rating-item-container[style*="--rating-value: 100%"] .e-rating-icon {
+    -webkit-text-fill-color: gold;
+}
+
+.e-rating-container.e-disabled .e-rating-item-container[style*="--rating-value: 50%"] .e-rating-selected .e-rating-icon, .e-rating-container.e-disabled .e-rating-item-container.e-rating-intermediate .e-rating-icon {
+    background: linear-gradient(to right, transparent 50%, transparent 50%);
+}
+
+
+.e-rating-container .e-rating-item-container[style*="--rating-value: 50%"] .e-rating-icon {
+    position: relative; /* Make sure positioning works */
+    color: transparent; /* Hide the text color to show gradient */
+}
+
+.e-rating-container .e-rating-item-container[style*="--rating-value: 50%"] .e-rating-icon::before {
+    content: "\e94f"; /* Ensure this matches the star icon unicode or name */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, gold 50%, transparent 50%); /* Gradient fill */
+    -webkit-background-clip: text; /* Clip background to text */
+    background-clip: text; /* Clip background to text */
+    color: transparent; /* Hide text color */
+}
+
+.review-border {
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 4px;     /* Rounded corners */
+}

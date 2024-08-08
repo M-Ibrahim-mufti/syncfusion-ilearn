@@ -6,6 +6,7 @@ import { environment } from '../environments/environment';
 import { AuthService, ResponseObject } from './auth.service';
 import { Tutor } from './tutor.service';
 import { KJUR } from 'jsrsasign';
+import {Student} from "./student.service";
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +55,14 @@ export class ZoomMeetingService extends ServiceBase{
     const method: string = '/meetings';
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.get<ZoomMeetingDetail[]>(url, httpOptions);
+  }
+
+  getStudentMeetingsByStudentId(userId:string): Observable<Student> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Zoom';
+    const method: string = '/get-student-meetings/' + userId;
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<Student>(url, httpOptions);
   }
 
   generateSignature(meetingNumber: string, role: number, expirationSeconds: number): string {

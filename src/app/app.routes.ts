@@ -19,6 +19,7 @@ import { TutorRegistrationComponent } from './components/registaration/tutor_reg
 import { ViewChildrenComponent } from './components/Parrent/view-children/view-children.component';
 import {ZoomComponent} from "./components/common_components/zoom/zoom.component";
 import {ReviewsComponent} from "./components/common_components/reviews/reviews.component";
+import {StudentDetailComponent} from "./components/tutor/student-detail/student-detail.component";
 
 
 
@@ -161,6 +162,10 @@ export const routes: Routes = [
     {
         path: 'zoom',
         component:ZoomComponent
+    },
+    {
+        path: 'tutor/student-detail/:userId',
+        component:StudentDetailComponent
     }
 
 

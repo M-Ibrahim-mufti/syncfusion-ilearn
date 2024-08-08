@@ -5,6 +5,7 @@ import { RequestBooking, SlotBookingService } from '../../../../services/slot-bo
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { NotificationTypes } from '../../../app.enums';
 import { valueAccessor } from '@syncfusion/ej2-angular-grids';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-request',
@@ -43,6 +44,7 @@ export class EventRequestComponent implements OnInit{
   public consultancyRequests:any[] = []
 
   constructor(
+      private router: Router,
     private authService: AuthService,
     private spinnerService: SpinnerService,
     private toastr: ToastrService,
@@ -79,7 +81,14 @@ export class EventRequestComponent implements OnInit{
 
   }
 
-   // Method to open the dialog
+  redirectToStudentDetail(tutorId:string){
+    if(tutorId){
+      this.router.navigate([`tutor/student-detail/${tutorId}`])
+    }
+  }
+
+
+  // Method to open the dialog
    public openSlotBookingDialog(bookingRequest: RequestBooking) {
     this.slotBookingDetail = bookingRequest;
     this.isSlotBookingDialogVisible = true;

@@ -71,6 +71,15 @@ export class StudentService extends ServiceBase{
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.post<ResponseObject>(url, httpOptions);
   }
+
+  getStudentById(userId:string): Observable<Student> {
+    var httpOptions = this.RequestHeaders();
+    const api: string = '/Student';
+    const method: string = '/get-student-by-id/' + userId;
+    const url: string = environment.BASE_API_PATH + api + method;
+    return this.http.get<Student>(url, httpOptions);
+  }
+
 }
 
 export class StudentRegistrationModel {

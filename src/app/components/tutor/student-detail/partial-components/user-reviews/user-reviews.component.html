@@ -1,0 +1,77 @@
+<div class="d-flex bg-white p-3 m-0 mt-3 rounded-4 position-relative justify-content-around">
+    <div class="row">
+        <p class="fs-5 fw-bold ">Reviews</p>
+        <!-- Skeleton Review Block 1 -->
+        <div *ngIf="!reviewsLoaded" class="d-flex flex-row justify-content-between gap-2" style="width:49%">
+            <div class="d-flex p-3 rounded-4 w-100 review-border">
+                <!-- Skeleton Profile Image -->
+                <div class="d-flex justify-content-center me-3">
+                    <ejs-skeleton shape="circle" width="60px" height="60px"></ejs-skeleton>
+                </div>
+                <!-- Skeleton Review Content -->
+                <div class="d-flex flex-column w-100">
+                    <!-- Skeleton User Name and Rating -->
+                    <div class="d-flex justify-content-between align-items-center w-100 mb-2">
+                        <ejs-skeleton width="120px" height="24px"></ejs-skeleton>
+                        <div class="d-flex align-items-center">
+                            <ejs-skeleton width="100px" height="20px"></ejs-skeleton>
+                        </div>
+                    </div>
+                    <!-- Skeleton Review Date -->
+                    <ejs-skeleton width="100px" height="20px" class="mb-2"></ejs-skeleton>
+                    <!-- Skeleton Review Text -->
+                    <ejs-skeleton width="100%" height="60px"></ejs-skeleton>
+                </div>
+            </div>
+        </div>
+        <!-- Skeleton Review Block 2 -->
+        <div *ngIf="!reviewsLoaded" class="d-flex flex-row justify-content-between gap-2" style="width:49%">
+            <div class="d-flex p-3 rounded-4 w-100 review-border">
+                <!-- Skeleton Profile Image -->
+                <div class="d-flex justify-content-center me-3">
+                    <ejs-skeleton shape="circle" width="60px" height="60px"></ejs-skeleton>
+                </div>
+                <!-- Skeleton Review Content -->
+                <div class="d-flex flex-column w-100">
+                    <!-- Skeleton User Name and Rating -->
+                    <div class="d-flex justify-content-between align-items-center w-100 mb-2">
+                        <ejs-skeleton width="120px" height="24px"></ejs-skeleton>
+                        <div class="d-flex align-items-center">
+                            <ejs-skeleton width="100px" height="20px"></ejs-skeleton>
+                        </div>
+                    </div>
+                    <!-- Skeleton Review Date -->
+                    <ejs-skeleton width="100px" height="20px" class="mb-2"></ejs-skeleton>
+                    <!-- Skeleton Review Text -->
+                    <ejs-skeleton width="100%" height="60px"></ejs-skeleton>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="reviewsLoaded">
+            <div class="d-flex flex-row justify-content-between gap-2" *ngFor="let review of reviews" style="width:49%">
+                <div class="d-flex p-3 rounded-4 review-border">
+                    <!-- User Profile Image -->
+                    <div class="d-flex justify-content-center me-3">
+                        <img [src]="review.ImgUrl" class="rounded-circle" alt="User Image" style="width: 60px; height: 60px; object-fit: cover;">
+                    </div>
+                    <!-- Review Content -->
+                    <div class="d-flex flex-column w-100">
+                        <!-- User Name and Rating -->
+                        <div class="d-flex justify-content-between align-items-center w-100 mb-2">
+                            <h5 class="fs-5 fw-bold m-0">{{ review.Name }}</h5>
+                            <div class="d-flex align-items-center">
+                                <input class="small-rating" ejs-rating precision="Half" [value]="review.Rating" [disabled]="true" />
+                            </div>
+                        </div>
+                        <!-- Review Date -->
+                        <div class="text-muted small">{{ review.ReviewDate | date: 'MMM d, yyyy' }}</div>
+                        <!-- Review Text -->
+                        <div class="mt-2 text-muted">
+                            <p class="m-0">{{ review.Comment }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
