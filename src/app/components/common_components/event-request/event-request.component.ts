@@ -168,4 +168,5 @@ export class EventRequestComponent implements OnInit{
     this.selectedStatus = this.Status[0].value;
     this.filterRequests = this.bookingRequests;
   }
+
 }

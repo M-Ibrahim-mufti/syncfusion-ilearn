@@ -1,26 +1,26 @@
-<ejs-dialog [footerTemplate]="footerReview" [visible]="OpenReviewModal" [isModal]="true" [width]="500" [showCloseIcon]="true" (close)="OpenReviewModal = false">
+<ejs-dialog [footerTemplate]="footerReview" [visible]="OpenReviewModal" [isModal]="true" [width]="400" [showCloseIcon]="true" (close)="OpenReviewModal = false">
     <ng-template #header>
-        <div class="header">
-            <div class="user-info">
-                <div *ngIf="user">
-                    <img *ngIf="user.ImgUrl" class="profile-pic" src="{{user.ImgUrl}}" alt="{{user.Name}}">
-                </div>
-                <div *ngIf="user">
-                    <div class="username">{{user.Name}}</div>
-                    <div class="rating-container" *ngIf="user.PreviousRatingAvrage">
-                        <input class="small-rating" ejs-rating precision="Half" id="user-rating" [(ngModel)]="user.PreviousRatingAvrage" [disabled]="true" />
-                        <p class="user-rating-count" *ngIf="user.PreviousRatingCount">{{user.PreviousRatingCount}} Reviews</p>
-                    </div>
-                    <p class="user-detail" *ngIf="user.PreviousRatingAvrage">This User Get {{user.PreviousRatingAvrage}}/5 Rating.</p>
-                </div>
+        <div class="d-flex align-items-center justify-content-center flex-row">
+            <div class="col-md-3 d-flex justify-content-center">
+                <div
+                    class="rounded-circle"
+                    *ngIf="user.ImgUrl"
+                    [ngStyle]="{'width':'75px', 'height':'75px', 'background':getImage(user.ImgUrl)}"
+                ></div>
+                <div
+                    class="rounded-circle"
+                    *ngIf="!user.ImgUrl"
+                    style="width: 60px; height: 60px; background: #f1f1f1 url(../../../../assets/user-profile.png) no-repeat center/cover;"
+                ></div>
             </div>
-            <div class="rating">
-
+            <div style="margin-bottom: -5px;" *ngIf="user" class="col-md-9 py-2 d-flex align-items-start flex-column">
+                <h5 class="m-0 ms-2 text-muted-dark fw-bold fs-6"> {{user.Name}}</h5>
+                <input ejs-rating precision="half" [(ngModel)]="user.PreviousRatingAvrage" [disabled]="true" />
+                <span style="font-size: 12px; margin-top: -8px;" class="mb-0 ms-2 text-muted" *ngIf="user.PreviousRatingCount"> This user got {{user.PreviousRatingAvrage}}/5 Rating</span>
             </div>
         </div>
     </ng-template>
     <div class="comment-section">
-        <h2 class="heading">Review:</h2>
         <div class="mb-2 w-100">
             <label class="form-label">Give rating About Class</label>
             <input ejs-rating precision="Half" id="rating" />
@@ -28,6 +28,6 @@
         <textarea [(ngModel)]="review.Comment" class="form-control form-control-sm" placeholder="Write Comment About Class..." style="height: 100px; resize: none;"></textarea>
     </div>
     <ng-template #footerReview>
-        <button (click)="setReviewData()" ejs-button style="width:30%; font-size:12px !important;" class="mt-2 mb-1 mx-auto e-danger rounded-3">Submit Reviews</button>
+        <button (click)="setReviewData()" ejs-button style="width:30%; font-size:12px !important;" class="mt-2 mb-1 pe-2 mx-auto e-danger rounded-3">Submit Reviews</button>
     </ng-template>
 </ejs-dialog>

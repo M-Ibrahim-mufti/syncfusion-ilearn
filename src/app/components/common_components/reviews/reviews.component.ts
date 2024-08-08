@@ -42,6 +42,10 @@ export class ReviewsComponent implements OnInit {
     })
   }
 
+  getImage(img:string) {
+    return `#f1f1f1 url(${img}) no-repeat center/cover`;
+  }
+
   private getAverageRating() {
     this.reviewService.getAverageRating(this.MeetingDetails.meetingId).subscribe(response => {
      console.log(response);

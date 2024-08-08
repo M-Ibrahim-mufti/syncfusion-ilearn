@@ -13,6 +13,7 @@ import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickTool
 import { TutorService, AddSubjects } from '../../../../services/tutor.service';
 import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
 import { ActivatedRoute } from '@angular/router';
+import { ReviewService } from '../../../../services/review.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -58,6 +59,8 @@ export class UserProfileComponent {
   public dialogType:string = ''
   public selectedSubject:any;
   public currentSubjectIndex:number = 0
+  public reviews:any[] = [];
+  public toggleReviewBox:boolean = false
 
   constructor(private UserService: UsersService,
     private spinner: SpinnerService,
@@ -67,10 +70,13 @@ export class UserProfileComponent {
     private meetingService:ZoomMeetingService,
     private tutorSevice: TutorService,
     private tutorService:TutorService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private reviewService:ReviewService
   ) { 
     this.isStudent = this.authService.isStudent()
     this.isTeacher = this.authService.isTeacher()
+    this.userId = this.authService.getUserId();
+    console.log(this.userId)
   }
 
   public mode:string = 'CheckBox';
@@ -91,7 +97,6 @@ export class UserProfileComponent {
   };
 
   async ngOnInit():Promise<void> {
-   this.userId = this.route.snapshot.paramMap.get('id')!;    
     this.authConfig = this.authService.getAuthConfig();
     if(this.authConfig.IsTeacher){
       this.logginUserId = this.authService.getUserId();
@@ -99,6 +104,7 @@ export class UserProfileComponent {
     this.getAllCoreSubjects();
     this.getPreviousMeetings();
     this.getUserDetail();
+    
   }
 
   public getUserDetail(){
@@ -114,9 +120,9 @@ export class UserProfileComponent {
       }
       if(this.authConfig.IsTeacher){
         this.tutorSevice.getTutorEditorDetails(this.logginUserId).subscribe((response) => {
-          this.user.Certification = response.Certification;
-          this.user.WorkHistory = response.WorkHistory;
-          this.user.Qualifications = response.Qualifications;
+          this.user.Certification = response.Certification ? response.Certification : '';
+          this.user.WorkHistory = response.WorkHistory ? response.WorkHistory : '';
+          this.user.Qualifications = response.Qualifications ? response.Qualifications : '';
         })
       }
       this.spinner.hide(); 
@@ -433,5 +439,17 @@ export class UserProfileComponent {
       toolbarButton ? toolbarButton.classList.add('e-link') : null;
     })
   }
+
+  public showReviews() {
+    this.toggleReviewBox = true
+    this.reviewService.getReviews(this.userId,true).subscribe((response) => {
+      this.reviews = response
+      console.log(this.reviews)
+    })
+  }
+   public closeReview(event:boolean) {
+      this.toggleReviewBox = event
+   }
+  
 }
 

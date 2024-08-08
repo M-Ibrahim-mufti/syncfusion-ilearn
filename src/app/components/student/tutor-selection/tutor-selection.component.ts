@@ -269,29 +269,8 @@ export class TutorSelectionComponent {
 
   showReviews(tutorId:string) {
     this.toggleDialogBox = true;
-    this.reviewService.getReviews(tutorId).subscribe((response) => {
+    this.reviewService.getReviews(tutorId,false).subscribe((response) => {
       this.reviews = response
-      console.log(this.reviews)
-      setTimeout(() => {
-        this.changeStarColors();
-      },200)
-    })
-  }
-
-  changeStarColors() {
-    const stars = document.querySelectorAll('.e-rating-selected') as NodeList;
-    stars.forEach((star) => {
-      const selectedStar = star as HTMLElement;
-      const computedStyle = getComputedStyle(selectedStar);
-      const ratingValue = computedStyle.getPropertyValue('--rating-value');
-      const ratingPercentage = parseFloat(ratingValue);
-      const innerStar = selectedStar.querySelector('.e-rating-icon') as HTMLElement
-      if (innerStar) {
-          innerStar.style.background = `linear-gradient(to right, #ce9f30 ${ratingPercentage}%, transparent ${ratingPercentage}%)`;
-          innerStar.style.backgroundClip = 'text';
-          innerStar.style.webkitBackgroundClip = 'text';
-          innerStar.style.webkitTextStroke ='1px #ce9f30';
-      }
     })
   }
   closeReviewDialog(resetBox:boolean) {

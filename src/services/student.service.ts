@@ -136,6 +136,8 @@ export class ApplicationViewStudent {
   AboutMe!:string | '';
   AllowLogin!: boolean;
   City!: string; 
+  AverageRating!:number;
+  Reviews!:number;
   Title!: string;
   Country!: string;
   CreateEvents!: string;

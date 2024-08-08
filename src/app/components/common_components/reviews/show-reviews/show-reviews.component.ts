@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ReviewService } from '../../../../../services/review.service';
 
 @Component({
@@ -18,20 +18,16 @@ export class ShowReviewsComponent {
 
   }
 
-  ngOnInit(){
+  ngOnChanges(changes:SimpleChanges){
     if(this.ShowReviews && this.Reviews) {
-      this.showReviews()
+      setTimeout(() => {
+        this.changeStarColors();
+      },200)
     }
   }
 
   closeDialog() {
     this.ResetReviewBox.emit(false)
-  }
-
-  showReviews() {
-    setTimeout(() => {
-      this.changeStarColors();
-    },200)
   }
 
   getImage(image:string) {

@@ -127,13 +127,24 @@
                     <h5 class="fw-bolder text-muted-dark mb-0">Your Average Rating</h5>
                     <p class="mb-0 text-muted fw-semibold">Open reviews to see what student says about you!</p>
                 </div>
-                <div class="col-md-2 d-flex flex-column me-3">
-                    <div class="d-flex gap-1 justify-content-start align-items-center flex-row">
-                        <i class="fa fa-solid fa-star fs-4"></i>
-                        <p class="mb-0 fs-5 text-black fw-bolder"> 3.5 </p>
+                <ng-container *ngIf="user.Reviews > 0">
+                    <div (click)="showReviews()" class="cursor-pointer col-md-2 d-flex flex-column me-3">
+                        <div class="d-flex gap-1 justify-content-start align-items-center flex-row">
+                            <i class="fa fa-solid fa-star fs-4"></i>
+                            <p class="mb-0 fs-5 text-black fw-bolder"> {{user.AverageRating}} </p>
+                        </div>
+                        <p class="mb-0 text-start fw-light">{{user.Reviews}} reviews</p>
                     </div>
-                    <p class="mb-0 text-start fw-light">3 reviews</p>
-                </div>
+                </ng-container>
+                <ng-container *ngIf="user.Reviews <= 0" >
+                    <div class="col-md-2 d-flex flex-column me-3">
+                        <div class="d-flex gap-1 justify-content-start align-items-center flex-row">
+                            <p class="mb-0 text-muted-dark fw-bolder"> New </p>
+                        </div>
+                        <p class="mb-0 text-muted fw-semibold"> Tutor</p>
+                    </div>
+                </ng-container>
+
             </div>
         </div>
         <div class="bg-white px-0 py-2 bg-white rounded-3">
@@ -163,7 +174,7 @@
                 <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Certification </h5>
             </div>
             <div class="col-md-12">
-                <ejs-richtexteditor id='rteTool' [toolbarSettings]="tools" [quickToolbarSettings]="quickTools" [(ngModel)]="user.Certification" [placeholder]="user.Certification ? '' : 'Add Your Certifications'" ></ejs-richtexteditor>
+                <ejs-richtexteditor id='rteTool' [toolbarSettings]="tools" [quickToolbarSettings]="quickTools" [(ngModel)]="user.Certification" [(ngModel)]="user.Certification"></ejs-richtexteditor>
             </div>
         </div>
         <div class="bg-white px-0 py-2 bg-white rounded-3" >
@@ -223,3 +234,4 @@
         </ng-template>
     </div>
 </ejs-dialog>
+<app-show-reviews [ShowReviews]="toggleReviewBox" (ResetReviewBox)="closeReview($event)" [Reviews]="reviews" ></app-show-reviews>
