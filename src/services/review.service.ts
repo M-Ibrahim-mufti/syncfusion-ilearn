@@ -18,7 +18,7 @@ export class ReviewService extends ServiceBase {
   public getReviews(userId: string): Observable<any[]> {
     var httpOptions = this.RequestHeaders();
     const api: string = '/Review';
-    const method: string = '/view-all-tutor-reviews' + '/' + userId;
+    const method: string = '/view-reviews' + '/' + userId;
     const url: string = environment.BASE_API_PATH + api + method;
     return this.http.get<any[]>(url, httpOptions);
   }

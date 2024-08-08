@@ -5,6 +5,7 @@ import { StudentService } from '../../../../services/student.service';
 import { SpinnerService } from '../../../../services/Shared/spinner.service';
 import { EventService } from '../../../../services/event.service';
 import { columnSelected } from '@syncfusion/ej2-angular-grids';
+import { ReviewService } from '../../../../services/review.service';
 @Component({
   selector: 'app-tutor-selection',
   templateUrl: './tutor-selection.component.html',
@@ -63,13 +64,17 @@ export class TutorSelectionComponent {
     { label:'Primary', value:true},
     { label:'Secondary', value:false}
   ]
+  public toggleDialogBox:boolean = false
+  public reviews:any[] = []
+  public todayDate:Date = new Date();
 
   constructor( private spinnerService:SpinnerService,
                private tutorService: TutorService,
                private studentService: StudentService,
                private router: Router,
                private renderer: Renderer2,
-               private eventService: EventService
+               private eventService: EventService,
+               private reviewService: ReviewService
   ) { 
     this.SubSubjects.push({
       value:null,
@@ -263,6 +268,36 @@ export class TutorSelectionComponent {
   }
 
   showReviews(tutorId:string) {
-    
+    this.toggleDialogBox = true;
+    this.reviewService.getReviews(tutorId).subscribe((response) => {
+      this.reviews = response
+      console.log(this.reviews)
+      setTimeout(() => {
+        this.changeStarColors();
+      },200)
+    })
   }
+
+  getImage(image:string) {
+    return `#f1f1f1 url(${image}) no-repeat center/cover`
+  }
+
+  changeStarColors() {
+    const stars = document.querySelectorAll('.e-rating-selected') as NodeList;
+    stars.forEach((star) => {
+      const selectedStar = star as HTMLElement;
+      const computedStyle = getComputedStyle(selectedStar);
+      const ratingValue = computedStyle.getPropertyValue('--rating-value');
+      const ratingPercentage = parseFloat(ratingValue);
+      const innerStar = selectedStar.querySelector('.e-rating-icon') as HTMLElement
+      if (innerStar) {
+          innerStar.style.background = `linear-gradient(to right, #ce9f30 ${ratingPercentage}%, transparent ${ratingPercentage}%)`;
+          innerStar.style.backgroundClip = 'text';
+          innerStar.style.webkitBackgroundClip = 'text';
+          innerStar.style.webkitTextStroke ='1px #ce9f30';
+      }
+    })
+  }
+
 }
+

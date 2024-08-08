@@ -98,12 +98,12 @@
                                         <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708"/>
                                     </svg>
                                 </h5>
-                                <div (click)="showReviews(tutor.Id)" class="col-2 d-flex flex-column justify-content-center align-items-start ">
+                                <div (click)="showReviews(tutor.Id)" class="cursor-pointer col-2 d-flex flex-column justify-content-center align-items-start ">
                                     <div class="d-flex gap-1 justify-content-start align-items-center flex-row">
                                         <i class="fa fa-solid fa-star fs-4"></i>
-                                        <p class="mb-0 fs-5 text-black fw-bolder"> 5 </p>
+                                        <p class="mb-0 fs-5 text-black fw-bolder"> {{tutor.AverageRating}} </p>
                                     </div>
-                                    <p class="mb-0 fw-light">17 reviews</p>
+                                    <p class="mb-0 fw-light">{{tutor.Reviews}} reviews</p>
                                 </div>
                             </div>
                             <p class="text-muted mb-0 fw-semibold">{{tutor.Title}}</p>
@@ -153,6 +153,43 @@
         </div>
     </ng-container>
 </div>
+
+<ejs-dialog [visible]="toggleDialogBox" [isModal]="true" [showCloseIcon]="true" [width]="450" (close)="toggleDialogBox = false">
+    <ng-template #header>
+        <p class="mb-0"> Tutor Reviews</p>
+    </ng-template>
+    <div class="d-flex flex-column">
+        <div class="d-flex flex-row gap-3">  
+           <div  class=" col-md-12 d-flex gap-2 flex-column">
+                <div  *ngFor="let review of reviews; let i = index;" class="w-100 rounded-3 py-2 review-container"  >
+                    <div class="d-flex align-items-start px-3 flex-column my-2">
+                        <div class="d-flex col-md-12 flex-row align-items-center justify-content-between">
+                            <input [disabled]="true" cssClass="custom"  ejs-rating [value]="review.Rating.toLocaleString()" class="text-white mb-2"/>   
+                            <span class="w-100 pb-2 text-end text-transition"> {{ todayDate | date:  'yyyy/MM/dd HH:mm' }} </span>
+                        </div>
+                        <blockquote [id]="'blockquote' + i" class="ps-2 mb-3 text-transition"> "{{review.Comment}} teaches very good has a great time with him especially his english speaking skills are upto the mark im looking forward to learn from him"</blockquote>
+                        <div class="d-flex align-items-center ps-2 gap-2">
+                            <div
+                                class="rounded-circle"
+                                *ngIf="review.ImgUrl"
+                                [ngStyle]="{'width': '40px', 'height': '40px','background':getImage(review.ImgUrl)}"
+                            ></div>
+                            <div
+                                class="rounded-circle"
+                                *ngIf="!review.ImgUrl"
+                                style="width: 40px; height: 40px;background:#f1f1f1 url(../../../../assets/user-profile.png) no-repeat center/cover;"
+                            ></div>
+                            <div [id]="'userReview' + i" class="d-flex flex-column ">
+                                <p class="mb-0 fw-bold text-muted-dark text-transition">{{review.Name}}</p>
+                                <p class="mb-0 text-muted text-transition">Brilliant student from Pakistan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           </div>
+        </div>
+    </div>
+</ejs-dialog>
 
         <!-- <div class="profile-card">
             <div class="profile-header">

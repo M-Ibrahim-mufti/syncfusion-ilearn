@@ -231,6 +231,8 @@ export class Tutor {
   TotalMeetings!: number;
   TotalStudents!: number;
   Description!: string;
+  AverageRating!:number;
+  Reviews!:number;
 
 }
 

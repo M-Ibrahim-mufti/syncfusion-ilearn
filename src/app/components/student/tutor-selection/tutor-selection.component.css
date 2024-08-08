@@ -200,3 +200,35 @@
     scrollbar-width: thin;  
     scrollbar-color: #f1f1f1 white
 }
+
+.e-dlg-header-content{
+    border-bottom: 1px solid #f1f1f1;
+    border-radius: 10px!important;
+}
+
+  .e-control, .e-dialog, .e-lib, .e-dlg-modal, .e-popup, .e-popup-open {
+    border-radius: 10px!important;
+}
+
+.e-dlg-content {
+    padding: 18px 8px!important;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+.review-container {
+    background-color: #e7e9ef;
+}
+
+.review-container:hover{
+    background-color: #d64113!important;
+    transition: all .2s linear;
+
+    .text-transition {
+        color: white!important;
+        transition: all .2s linear;
+    }
+}
+
+.e-rating-item-list .e-control, .e-tooltip, .e-lib{
+    color: white !important; /* For filled stars */
+}
