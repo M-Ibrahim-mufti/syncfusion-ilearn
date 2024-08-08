@@ -122,6 +122,21 @@
     </div>
     <div class="right-col-width d-flex flex-column gap-3 px-0 my-2">
         <div class="bg-white px-0 py-2 bg-white rounded-3">
+            <div class="d-flex align-items-center justify-content-between py-3 px-3">
+                <div class="col-md-10">
+                    <h5 class="fw-bolder text-muted-dark mb-0">Your Average Rating</h5>
+                    <p class="mb-0 text-muted fw-semibold">Open reviews to see what student says about you!</p>
+                </div>
+                <div class="col-md-2 d-flex flex-column me-3">
+                    <div class="d-flex gap-1 justify-content-start align-items-center flex-row">
+                        <i class="fa fa-solid fa-star fs-4"></i>
+                        <p class="mb-0 fs-5 text-black fw-bolder"> 3.5 </p>
+                    </div>
+                    <p class="mb-0 text-start fw-light">3 reviews</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white px-0 py-2 bg-white rounded-3">
             <div class="border-bottom border-dull-white d-flex py-2 align-items-center gap-3">
                 <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Change Password </h5>
             </div>
@@ -148,7 +163,7 @@
                 <h5 class="px-3 fw-bolder text-muted-dark mb-3"> Certification </h5>
             </div>
             <div class="col-md-12">
-                <ejs-richtexteditor id='rteTool' [toolbarSettings]="tools" [quickToolbarSettings]="quickTools" [(ngModel)]="user.Certification" ></ejs-richtexteditor>
+                <ejs-richtexteditor id='rteTool' [toolbarSettings]="tools" [quickToolbarSettings]="quickTools" [(ngModel)]="user.Certification" [placeholder]="user.Certification ? '' : 'Add Your Certifications'" ></ejs-richtexteditor>
             </div>
         </div>
         <div class="bg-white px-0 py-2 bg-white rounded-3" >
