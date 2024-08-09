@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { ZoomMeetingDetail, ZoomMeetingService } from '../../../../services/zoom-meeting.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +14,9 @@ export class DashboardComponent {
   public latestMeeting!:ZoomMeetingDetail
 
   constructor( private authService:AuthService,
-               private meetingService:ZoomMeetingService
+               private meetingService:ZoomMeetingService,
+                private router: Router,
+                private zoomService: ZoomMeetingService
   ) {
     this.isTutor = this.authService.isTeacher();
   }
@@ -32,6 +35,7 @@ export class DashboardComponent {
       const todayDate = new Date();
       this.meetings = this.meetings.filter((meeting) => {
         const eventDate = new Date(meeting.StartTime);
+        eventDate.setMinutes(eventDate.getMinutes() + meeting.Duration);
         console.log(eventDate)
         if (eventDate >= todayDate){
           return meeting
@@ -57,4 +61,47 @@ export class DashboardComponent {
     const startTime = new Date(time);
     return startTime
   }
+
+  redirectToZoomClass(meeting: any) {
+    let startTime = new Date(meeting.StartTime);
+    let duration = meeting.Duration;
+    let expireTime = new Date(startTime.getTime() + duration * 60000);
+    let currentTime = new Date();
+
+    // Calculate the expire time in seconds from the current time
+    let expireTimeInSeconds = Math.floor((expireTime.getTime() - currentTime.getTime()) / 1000);
+    let role = 0;
+    if(this.isTutor){
+      role = 1
+    }
+    let isMeetingDisable = this.disableStartMeeting(meeting.StartTime)
+    // if(isMeetingDisable){
+    //   console.log("Kaka g Kidhr?")
+    //
+    //   return;
+    // }
+    this.zoomService.getSignature(meeting.MeetingId.toString(), role, 7200).subscribe((data: any) => {
+      if (data.signature) {
+        const zoomMeeting = {
+          signature: data.signature,
+          meetingId: meeting.MeetingId,
+          role:role,
+          userId: meeting.UserId,
+          Id: meeting.Id,
+          userName: meeting.UserName,
+          userEmail: meeting.UserEmail,
+          passWord: meeting.Password
+        }
+        this.router.navigate(['/zoom'], { state: { zoomMeeting } });
+      }
+    })
+  }
+  disableStartMeeting(meetingTiming: any): boolean {
+    const meetingTime = new Date(meetingTiming)
+    const currentDate = new Date();
+    if (currentDate < meetingTime)
+      return true
+    return false
+  }
+
 }

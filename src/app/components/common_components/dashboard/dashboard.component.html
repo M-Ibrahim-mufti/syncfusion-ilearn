@@ -1,5 +1,5 @@
-<div *ngIf="latestMeeting" class="row g-5 my-2 mx-2">
-    <div class="col-md-5 px-0 bg-white py-3 border rounded-2">
+<div *ngIf="latestMeeting" class="row mt-0 g-5 my-2 mx-2">
+    <div class="col-md-5 mt-0 px-0 bg-white py-3 border rounded-2">
         <h5 class=" px-3 pb-3 text-center text-muted-dark border-bottom"> Your Latest Meeting </h5>
         <div class="px-3 d-flex py-2">
             <div  class="col-md-custom me-3">
@@ -32,7 +32,7 @@
                     <span class="upcoming-meeting-font form-label col-mf-6 text-start mx-0 fw-bolder">: {{ latestMeeting.MeetingId }}</span>
                 </div>              
             </div>
-            <div *ngIf="currentDate() >= meetingStartTime(latestMeeting.StartTime)   && currentDate() <=  getEndTime(latestMeeting.StartTime, latestMeeting.Duration)" class="col-md-2 loader">
+            <div (click)="redirectToZoomClass(latestMeeting)" *ngIf="currentDate() >= meetingStartTime(latestMeeting.StartTime)   && currentDate() <=  getEndTime(latestMeeting.StartTime, latestMeeting.Duration)" class="cursor-pointer col-md-2 loader">
                 <div class="circle"></div>
                 <div class="circle"></div>
                 <div class="circle"></div>
@@ -42,5 +42,3 @@
     </div>
 </div> 
 
-
-<button class="test-color">testing</button>
