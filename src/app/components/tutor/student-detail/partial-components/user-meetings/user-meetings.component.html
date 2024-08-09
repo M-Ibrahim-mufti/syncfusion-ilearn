@@ -2,7 +2,7 @@
     <div class="d-flex flex-column align-items-center w-100">
         <div class="control-section sb-property-border w-100">
             <div class="text-center">
-                <p class="fs-5 fw-bold">Meetings</p>
+                <p class="fs-5 fw-bold">Upcoming Meetings With Student</p>
                 <!-- Skeleton Loader -->
                 <ng-container *ngIf="!isDataLoaded; else timelineContent">
                     <div class="d-flex flex-column align-content-center">
@@ -25,14 +25,19 @@
                 </ng-container>
                 <!-- Timeline Content -->
                 <ng-template #timelineContent>
-                    <ejs-timeline [items]="timelineItems" [orientation]="orientation" [align]="alignment">
-                        <e-items>
-                            <e-item *ngFor="let item of timelineItems"
-                                    [content]="item.content"
-                                    [oppositeContent]="item.oppositeContent">
-                            </e-item>
-                        </e-items>
-                    </ejs-timeline>
+                    <ng-container *ngIf="timelineItems.length > 0">
+                        <ejs-timeline [items]="timelineItems" [orientation]="orientation" [align]="alignment">
+                            <e-items>
+                                <e-item *ngFor="let item of timelineItems"
+                                        [content]="item.content"
+                                        [oppositeContent]="item.oppositeContent">
+                                </e-item>
+                            </e-items>
+                        </ejs-timeline>
+                    </ng-container>
+                    <ng-container *ngIf="timelineItems.length == 0">
+                        <p class="text-muted">No Meeting</p>
+                    </ng-container>
                 </ng-template>
             </div>
         </div>

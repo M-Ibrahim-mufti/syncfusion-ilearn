@@ -31,9 +31,7 @@ export class UserMeetingsComponent implements OnInit{
   ngOnInit(){
     this.userId = this.route.snapshot.paramMap.get('userId');
     if(this.userId != null){
-      setTimeout(() => {
-        this.getMeetingsByStudentId();
-      }, 5000);
+      this.getMeetingsByStudentId();
     }
   }
 

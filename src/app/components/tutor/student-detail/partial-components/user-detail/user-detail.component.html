@@ -48,7 +48,7 @@
         <div class="d-flex justify-content-start flex-column">
             <div class="py-1">
                 <h5 class="fs-4 fw-bold">{{ user?.FullName }}</h5>
-                <div class="text-muted">{{ user?.City }}, {{user?.State}}, {{user.PostCode}}, {{user.Country}}</div>
+                <div class="text-muted">{{ user?.City }}, {{user?.State}}, {{user.Country}}</div>
             </div>
             <div class="d-flex flex-row gap-2 py-1">
                 <div class="py-2 ps-2 pe-4 border border-dull-white rounded-3">
@@ -89,10 +89,10 @@
             <h5 class="fs-4 fw-bold mb-4">Subject(s)</h5>
             <div class="d-flex justify-content-center">
                 <ng-container *ngFor="let subject of user?.StudentSubjects">
-                    <div class="card pt-1">
+                    <div class="card pt-1 me-2">
                         <div class="card-body">
                             <h5 class="card-title">{{subject.Name}}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Humanities and Social Sciences (HASS)</h6>
+                            <h6 class="card-subtitle mb-2 text-muted" *ngIf="subject.CoreSubjectName">{{subject.CoreSubjectName}}</h6>
                         </div>
                     </div>
                 </ng-container>

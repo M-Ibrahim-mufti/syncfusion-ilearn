@@ -24,16 +24,37 @@ export class UserReviewsComponent implements OnInit {
   ngOnInit(){
     this.userId = this.route.snapshot.paramMap.get('userId');
     if(this.userId){
-      setTimeout(() => {
-        this.getReviews()
-      }, 5000)
-
+      this.getReviews()
     }
   }
   getReviews(){
-    this.reviewService.getReviewsByStudentId(this.userId!).subscribe(response => {
-      this.reviews = response;
+    this.reviewService.getReviewsByStudentId(this.userId!).subscribe(async response => {
+      this.reviews = await response;
       this.reviewsLoaded = true;
+      setTimeout(() => {
+        this.changeStarColors();
+      },200)
+    })
+  }
+
+  getImage(image:string) {
+    return `#f1f1f1 url(${image}) no-repeat center/cover`
+  }
+
+  changeStarColors() {
+    const stars = document.querySelectorAll('.e-rating-selected') as NodeList;
+    stars.forEach((star) => {
+      const selectedStar = star as HTMLElement;
+      const computedStyle = getComputedStyle(selectedStar);
+      const ratingValue = computedStyle.getPropertyValue('--rating-value');
+      const ratingPercentage = parseFloat(ratingValue);
+      const innerStar = selectedStar.querySelector('.e-rating-icon') as HTMLElement
+      if (innerStar) {
+        innerStar.style.background = `linear-gradient(to right, #ce9f30 ${ratingPercentage}%, transparent ${ratingPercentage}%)`;
+        innerStar.style.backgroundClip = 'text';
+        innerStar.style.webkitBackgroundClip = 'text';
+        innerStar.style.webkitTextStroke ='1px #ce9f30';
+      }
     })
   }
 }
