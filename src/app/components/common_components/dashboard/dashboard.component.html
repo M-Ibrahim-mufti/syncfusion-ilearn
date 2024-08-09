@@ -1,1 +1,46 @@
-<p>Admin Dashboard</p>
+<div *ngIf="latestMeeting" class="row g-5 my-2 mx-2">
+    <div class="col-md-5 px-0 bg-white py-3 border rounded-2">
+        <h5 class=" px-3 pb-3 text-center text-muted-dark border-bottom"> Your Latest Meeting </h5>
+        <div class="px-3 d-flex py-2">
+            <div  class="col-md-custom me-3">
+                <div
+                    class="rounded-2"
+                    *ngIf="latestMeeting.ImgUrl"
+                    [ngStyle]="{'width': '100px', 'height': '100px', 'background': getImgUrl(latestMeeting.ImgUrl)}"
+                ></div>
+                <div
+                    class="rounded-2"
+                    *ngIf="!latestMeeting.ImgUrl"
+                    style="width: 100px; height: 100px; background:#f1f1f1 url(../../../../assets/user-profile.png) no-repeat center / cover;"
+                ></div> 
+            </div>
+            <div class="col-md-7 py-2">
+                <div class="d-flex items-center justify-content-start">
+                    <span class="upcoming-meeting-font form-label col-md-4 text-start mx-0">Meeting Title </span>
+                    <span class="upcoming-meeting-font form-label col-mf-6 text-start mx-0 fw-bolder">: {{latestMeeting.Topic}}</span>
+                </div>
+                <div class="d-flex items-center justify-content-start">
+                    <span class="upcoming-meeting-font form-label col-md-4 text-start mx-0">Start Time </span>
+                    <span class="upcoming-meeting-font form-label col-mf-6 text-start mx-0 fw-bolder">: {{latestMeeting.StartTime | date: 'dd/MMM/yyyy HH:mm'}}</span>
+                </div>
+                <div class="d-flex items-center justify-content-start">
+                    <span class="upcoming-meeting-font form-label col-md-4 text-start mx-0">End Time </span>
+                    <span class="upcoming-meeting-font form-label col-mf-6 text-start mx-0 fw-bolder">: {{ getEndTime(latestMeeting.StartTime, latestMeeting.Duration) | date: 'dd/MMM/yyyy HH:mm'  }}</span>
+                </div>
+                <div class="d-flex items-center justify-content-start">
+                    <span class="upcoming-meeting-font form-label col-md-4 text-start mx-0">Meeting Id </span>
+                    <span class="upcoming-meeting-font form-label col-mf-6 text-start mx-0 fw-bolder">: {{ latestMeeting.MeetingId }}</span>
+                </div>              
+            </div>
+            <div *ngIf="currentDate() >= meetingStartTime(latestMeeting.StartTime)   && currentDate() <=  getEndTime(latestMeeting.StartTime, latestMeeting.Duration)" class="col-md-2 loader">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+<button class="test-color">testing</button>
