@@ -57,15 +57,9 @@ export class MeetingsComponent implements OnInit {
     }    
   }
 
-  // ngAfterViewInit(): void {
-  //   if(this.meetingDetails.meetingId){
-  //     this.showReviewDialog();
-  //   }
-  // }
-
   private hasAlreadyReviewed() {
     this.reviewService.hasAlreadyReviewed(this.meetingDetails.meetingId).subscribe(response => {
-      if(!response){
+      if(response){
         this.showReviewDialog();
       }
     })
@@ -105,39 +99,7 @@ export class MeetingsComponent implements OnInit {
 
   getImage(meetingUrl:string) {
     return `#f1f1f2 url(${meetingUrl}) no-repeat center/cover`
-  }
-  // filterMeetingsForUpcoming(): void {
-  //   const todayDate = new Date();   
-  //   this.todayMeetings = [];
-
-  //   this.meetings.forEach(meeting => {      
-  //     const meetingDate = new Date(meeting.StartTime);
-  //     const meetingEndTime = this.meetingEndTime(meetingDate, meeting.Duration);
-  //     if (this.isSameDay(meetingDate, todayDate)) {
-  //       if(meetingEndTime >= todayDate)
-  //         this.todayMeetings.push(meeting);
-
-  //     } else if (this.isTomorrow(meetingDate, todayDate)) {
-  //       if(meetingEndTime >= todayDate)
-  //         this.tomorrowMeetings.push(meeting);
-  //     } else if (meetingDate > todayDate) {
-  //         this.todayMeetings.push(meeting);
-  //     }
-  //   });
-  // }
-
-  // filterMeetingsForPrevious(): void {
-  //   const todayDate = new Date();
-  //   this.previousMeetings =[];
-  //   this.meetings.forEach(meeting => {
-  //     const meetingDate = new Date(meeting.StartTime);
-  //     if(meetingDate < todayDate){
-  //       const upcomingmeeting = this.futureMeetings.filter(x => x.Id == meeting.Id)
-  //       if(upcomingmeeting.length == 0)
-  //         this.previousMeetings.push(meeting);
-  //     }
-  //   });
-  // }
+  }  
 
   filterMeetings(): void {
     const todayDate = new Date();
@@ -170,7 +132,6 @@ export class MeetingsComponent implements OnInit {
         }
       }
     });
-
   }
 
   isSameDay(date1: Date, date2: Date): boolean {

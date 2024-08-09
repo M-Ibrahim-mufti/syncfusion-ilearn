@@ -103,12 +103,13 @@
                             </div>
                             <div  class="d-flex">
                                 <span class="event-title-width text-muted-dark fw-bold">Repetition</span>
-                                <p *ngIf="event[0]?.ClassCount === 0 || event[0]?.ClassDay || event[0]?.ClassRepeat; else noRepetition"   class="mb-0 text-muted fw-semibold">
+                                <p *ngIf="(event[0]?.ClassCount === 0 || event[0]?.ClassDay || event[0]?.ClassRepeat) && event[1]?.EventStartTime; else noRepetition"   class="mb-0 text-muted fw-semibold">
                                    : Total {{event[0]?.ClassCount }} {{event[0]?.ClassCount > 1 ? 'classes' : 'class'}} next on {{event[1]?.EventStartTime | date:"yyyy/MM/dd"}}
                                 </p>
                                 <ng-template #noRepetition>
                                     <p class="mb-0 text-muted fw-semibold">: No upcoming classes</p>
                                 </ng-template>
+                                
                             </div>
                         </div>
                         <div class="event-button-width">
