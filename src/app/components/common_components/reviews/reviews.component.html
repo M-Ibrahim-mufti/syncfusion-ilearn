@@ -1,4 +1,4 @@
-<ejs-dialog *ngIf="user" [footerTemplate]="footerReview" [visible]="OpenReviewModal" [isModal]="true" [width]="400" [showCloseIcon]="true" (close)="OpenReviewModal = false">
+<ejs-dialog [footerTemplate]="footerReview" [visible]="OpenReviewModal" [isModal]="true" [width]="400" [showCloseIcon]="true" (close)="OpenReviewModal = false" *ngIf="user">
     <ng-template #header>
         <div class="d-flex align-items-center justify-content-center flex-row">
             <div class="col-md-3 d-flex justify-content-center">

@@ -11,7 +11,7 @@
                             <input [disabled]="true" cssClass="custom"  ejs-rating [value]="review.Rating.toLocaleString()" class="text-white mb-2"/>   
                             <span class="w-100 pb-2 text-end text-transition"> {{ review.ReviewDate | date:  'yyyy/MM/dd HH:mm' }} </span>
                         </div>
-                        <blockquote [id]="'blockquote' + i" class="ps-2 mb-3 text-transition"> "{{review.Comment}} teaches very good has a great time with him especially his english speaking skills are upto the mark im looking forward to learn from him"</blockquote>
+                        <blockquote [id]="'blockquote' + i" class="ps-2 mb-3 text-transition"> {{review.Comment}}</blockquote>
                         <div class="d-flex align-items-center ps-2 gap-2">
                             <div
                                 class="rounded-circle"

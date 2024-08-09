@@ -69,40 +69,77 @@ export class TutorDetailComponent {
     this.getAllSubjectName();
   }
 
+  // public getTutorEvents(tutorId: string) {
+  //   this.eventService.getEvents(tutorId).subscribe(response => {
+  //     this.events = response;
+  //     const data: any[] = [];
+  //     const todayDateTime = new Date();
+  //     this.events!.forEach(event => {
+  //       const eventDate = new Date(event.EventStartTime);
+  //       if (!event.IsOneOnOne && eventDate >= todayDateTime) {
+  //         let multiArr: any[] = [];
+  //         const relatedEvents = this.events.filter(innerEvent =>
+  //           event.AvailabilityId === innerEvent.AvailabilityId
+  //         );
+  //         relatedEvents.forEach(innerEvent => {
+  //           if (!multiArr.includes(innerEvent)) {
+  //             multiArr.push(innerEvent);
+  //           }
+  //         });
+  //         if (!data.some(arr => arr.includes(event))) {
+  //           data.push(multiArr);
+  //         }
+  //       }
+  //     });
+  //     for(let i = 0; i < data.length; i++) {
+  //       let sortedArr:any[] = data[i];
+  //       sortedArr.sort((a, b) => new Date(a.EventStartTime).getTime() - new Date(b.EventStartTime).getTime());
+  //       data[i] = sortedArr
+  //     }
+  //     this.events = data;
+  //     console.log("events",this.events)
+  //   })
+  // }
+
   public getTutorEvents(tutorId: string) {
     this.eventService.getEvents(tutorId).subscribe(response => {
       this.events = response;
       const data: any[] = [];
       const todayDateTime = new Date();
-      this.events!.forEach(event => {
+      const processedEvents = new Set<any>();
+  
+      // Filter out past events and group upcoming events
+      const upcomingEvents = this.events.filter(event => {
         const eventDate = new Date(event.EventStartTime);
-        if (!event.IsOneOnOne && eventDate >= todayDateTime) {
+        return !event.IsOneOnOne && eventDate >= todayDateTime;
+      });
+  
+      upcomingEvents.forEach(event => {
+        if (!processedEvents.has(event)) {
           let multiArr: any[] = [];
-          const relatedEvents = this.events.filter(innerEvent =>
-            event.AvailabilityId === innerEvent.AvailabilityId
+          const relatedEvents = upcomingEvents.filter(innerEvent =>
+            event.AvailabilityId === innerEvent.AvailabilityId && !processedEvents.has(innerEvent)
           );
+          
           relatedEvents.forEach(innerEvent => {
-            if (!multiArr.includes(innerEvent)) {
-              multiArr.push(innerEvent);
-            }
+            multiArr.push(innerEvent);
+            processedEvents.add(innerEvent);
           });
-          if (!data.some(arr => arr.includes(event))) {
+  
+          if (multiArr.length > 0) {
             data.push(multiArr);
           }
         }
       });
-      for(let i = 0; i < data.length; i++) {
-        let sortedArr:any[] = data[i];
-        sortedArr.sort((a, b) => new Date(a.EventStartTime).getTime() - new Date(b.EventStartTime).getTime());
-        data[i] = sortedArr
-      }
+  
+      // Sort each array of events by EventStartTime
+      data.forEach(arr => {
+        arr.sort((a: { EventStartTime: string | number | Date; }, b: { EventStartTime: string | number | Date; }) => new Date(a.EventStartTime).getTime() - new Date(b.EventStartTime).getTime());
+      });  
       this.events = data;
-      console.log(this.events)
-    })
+    });
   }
-
-
-
+  
   public getTutorDetail() {
     this.spinnerService.show()
     this.tutorService.tutorProfile(this.tutorId).subscribe(async (response) => {      

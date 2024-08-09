@@ -37,8 +37,8 @@ export class ReviewsComponent implements OnInit {
   }
 
   getUserPreviousReview(){
-    this.reviewService.getUserPreviousReview(this.MeetingDetails.meetingId).subscribe(response => {
-      this.user = response;
+    this.reviewService.getUserPreviousReview(this.MeetingDetails.meetingId).subscribe(response => {     
+      this.user = response;      
     })
   }
 
