@@ -49,9 +49,9 @@
                                     ></div>
                                     <div class="d-flex w-100 my-3 flex-column">
                                         <div class="d-flex flex-row">
-                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">Tutor Name : </span>
-                                            <span class="custom-font-size text-start col-md-8 form-label" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]"> {{ meeting.UserName }}</span>                                                                              
-                                            <span class="custom-font-size text-start col-md-8 form-label" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" > {{ meeting.UserName }}</span>                                        
+                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">{{this.isTeacher ? 'Student' : 'Tutor'}} Name : </span>
+                                            <span class="custom-font-size text-start col-md-8 form-label cursor-pointer" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]"> {{ meeting.UserName }}</span>
+                                            <span class="custom-font-size text-start col-md-8 form-label cursor-pointer" *ngIf="isStudent" [routerLink]="['/tutor/student-detail', meeting.UserId]" > {{ meeting.UserName }}</span>
                                         </div>
                                         <div class="d-flex flex-row">
                                             <span class="custom-font-size fw-bold text-start col-md-4 form-label">Tutor Email : </span>
@@ -96,9 +96,9 @@
                                     ></div>
                                     <div class="d-flex w-100 my-3 flex-column">
                                         <div class="d-flex flex-row">
-                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">Tutor Name : </span>
-                                            <span class="custom-font-size text-start col-md-8 form-label" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]"> {{ meeting.UserName }}</span>                                                                              
-                                            <span class="custom-font-size text-start col-md-8 form-label" *ngIf="isStudent" [routerLink]="['/student/tutor-detail', meeting.UserId]" > {{ meeting.UserName }}</span>                                        
+                                            <span class="custom-font-size fw-bold text-start col-md-4 form-label">{{this.isTeacher ? 'Student' : 'Tutor'}} Name : </span>
+                                            <span class="custom-font-size text-start col-md-8 form-label cursor-pointer" *ngIf="isTeacher" [routerLink]="['/profile', meeting.UserId]"> {{ meeting.UserName }}</span>
+                                            <span class="custom-font-size text-start col-md-8 form-label cursor-pointer" *ngIf="isStudent" [routerLink]="['/tutor/student-detail', meeting.UserId]" > {{ meeting.UserName }}</span>
                                         </div>
                                         <div class="d-flex flex-row">
                                             <span class="custom-font-size fw-bold text-start col-md-4 form-label">Tutor Email : </span>

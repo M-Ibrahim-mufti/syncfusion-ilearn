@@ -299,6 +299,11 @@ export class AvailabilitySelectionComponent implements OnInit {
             const subjectId = eventData && eventData['SubjectId'] ? eventData['SubjectId'] : selectedEventData.SubjectId;
             this.subjectDropDownList.value = subjectId;
             this.subjectDropDownList.dataBind();
+            const inputElement = document.getElementById('Description') as HTMLInputElement;
+            if (inputElement) {
+                if(selectedEventData.Description)
+                inputElement.value = selectedEventData.Description;
+            }
         }
     }
 

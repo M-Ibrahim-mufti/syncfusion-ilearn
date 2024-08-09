@@ -1,5 +1,5 @@
-<div class="d-flex bg-white p-3 m-0 mt-3 rounded-4 position-relative" *ngIf="reviews != null || !reviewsLoaded">
-    <div class="row">
+<div class="d-flex bg-white py-3 ps-4 mt-3 rounded-4 position-relative" *ngIf="reviews != null || !reviewsLoaded">
+    <div class="row w-100">
         <p class="fs-5 fw-bold">Reviews For You</p>
         <div class="d-flex flex-column" *ngIf="!reviewsLoaded">
             <div class="d-flex flex-row gap-3">
@@ -47,31 +47,27 @@
         </div>
         <!-- Actual Reviews -->
         <ng-container *ngIf="reviewsLoaded">
-            <div class="d-flex flex-column">
-                <div class="d-flex flex-row gap-3">
-                    <div class="col-md-12 d-flex gap-2 flex-row">
-                        <div *ngFor="let review of reviews; let i = index;" class="w-100 rounded-3 py-2 review-container review-border">
-                            <div class="d-flex align-items-start px-3 flex-column my-2">
-                                <div class="d-flex col-md-12 flex-row align-items-center justify-content-between">
-                                    <input [disabled]="true" cssClass="custom" ejs-rating [value]="review.Rating" class="text-white mb-2"/>
-                                    <span class="w-100 pb-2 text-end text-transition"> {{ review.ReviewDate | date:  'yyyy/MM/dd HH:mm' }} </span>
-                                </div>
-                                <blockquote [id]="'blockquote' + i" class="ps-2 mb-3 text-transition"> {{review.Comment}}</blockquote>
-                                <div class="d-flex align-items-center ps-2 gap-2">
-                                    <div
-                                            class="rounded-circle"
-                                            *ngIf="review.ImgUrl"
-                                            [ngStyle]="{'width': '40px', 'height': '40px','background':getImage(review.ImgUrl)}"
-                                    ></div>
-                                    <div
-                                            class="rounded-circle"
-                                            *ngIf="!review.ImgUrl"
-                                            style="width: 40px; height: 40px;background:#f1f1f1 url('../../../../assets/user-profile.png') no-repeat center/cover;"
-                                    ></div>
-                                    <div [id]="'userReview' + i" class="d-flex flex-column ">
-                                        <p class="mb-0 fw-bold text-muted-dark text-transition">{{review.Name}}</p>
-                                    </div>
-                                </div>
+            <div class="d-flex flex-column mb-2" *ngFor="let review of reviews; let i = index;">
+                <div class="w-100 rounded-3 py-2 review-container review-border">
+                    <div class="d-flex align-items-start px-3 flex-column my-2">
+                        <div class="d-flex w-100 flex-row align-items-center justify-content-between">
+                            <input [disabled]="true" cssClass="custom" ejs-rating [value]="review.Rating" class="text-white mb-2"/>
+                            <span class="w-100 pb-2 text-end text-transition"> {{ review.ReviewDate | date:  'MMM yyyy/dd hh:mm aa' }} </span>
+                        </div>
+                        <blockquote [id]="'blockquote' + i" class="ps-2 mb-3 text-transition"> {{review.Comment}}</blockquote>
+                        <div class="d-flex align-items-center ps-2 gap-2">
+                            <div
+                                    class="rounded-circle"
+                                    *ngIf="review.ImgUrl"
+                                    [ngStyle]="{'width': '40px', 'height': '40px','background':getImage(review.ImgUrl)}"
+                            ></div>
+                            <div
+                                    class="rounded-circle"
+                                    *ngIf="!review.ImgUrl"
+                                    style="width: 40px; height: 40px;background:#f1f1f1 url('../../../../assets/user-profile.png') no-repeat center/cover;"
+                            ></div>
+                            <div [id]="'userReview' + i" class="d-flex flex-column ">
+                                <p class="mb-0 fw-bold text-muted-dark text-transition">{{review.Name}}</p>
                             </div>
                         </div>
                     </div>

@@ -22,12 +22,12 @@
                     <div class="shadow-sm border border-1 py-2 prounded-3 custom-card-width rounded-2 position-relative">
                         <div class="d-flex">
                             <div class="d-flex me-2 justify-content-end">
-                                <img class="rounded-circle" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover    ;" />
+                                <img class="rounded-circle cursor-pointer" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover    ;" (click)="redirectToStudentDetail(bookingRequest.StudentId)"/>
                             </div>
                             <div class="mb-2 d-flex flex-grow-1">
                                 <div class="w-100 mb-2">
                                     <div class="m-0 d-flex flex-column">
-                                        <h5 class="m-0 fw-bolder text-muted-dark" (click)="redirectToStudentDetail(bookingRequest.StudentId)">{{bookingRequest.StudentName}}</h5>
+                                        <h5 class="m-0 fw-bolder text-muted-dark cursor-pointer" (click)="redirectToStudentDetail(bookingRequest.StudentId)">{{bookingRequest.StudentName}}</h5>
                                         <span class="fw-bold text-muted">{{bookingRequest.SubjectName ? bookingRequest.SubjectName : 'Not provided'}}</span>
                                     </div>
                                     <div *ngIf="authConfig.IsStudent" class="m-0 d-flex flex-row gap-2">
@@ -75,12 +75,12 @@
                         <div class="shadow-sm border border-1 py-2 px-2 prounded-3 custom-card-width rounded-2 position-relative">
                             <div class="d-flex">
                                 <div class="d-flex me-2 justify-content-end">
-                                    <img class="rounded-circle" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover;" />
+                                    <img class="rounded-circle cursor-pointer" [src]="bookingRequest.StudentImgUrl ? bookingRequest.StudentImgUrl : '../../../assets/Ilearn-assets/user-profile.png'" style="width: 75px; height: 75px; object-fit: cover;" (click)="redirectToStudentDetail(bookingRequest.StudentId)" />
                                 </div>
                                 <div class="mb-2 d-flex flex-grow-1">
                                     <div class="w-100 mb-2">
                                         <div class="m-0 d-flex flex-column">
-                                            <h5 class="m-0 fw-bolder text-muted-dark" (click)="redirectToStudentDetail(bookingRequest.StudentId)">{{bookingRequest.StudentName}}</h5>
+                                            <h5 class="m-0 fw-bolder text-muted-dark cursor-pointer" (click)="redirectToStudentDetail(bookingRequest.StudentId)">{{bookingRequest.StudentName}}</h5>
                                             <span class="fw-semibold text-muted">{{bookingRequest.SubjectName ? bookingRequest.SubjectName : 'Not Provided'}}</span>
                                         </div>
                                         <div *ngIf="authConfig.IsStudent" class="m-0 d-flex flex-row gap-2">

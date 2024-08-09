@@ -1,6 +1,8 @@
 import {Component, Input, OnInit, OnChanges, SimpleChanges, AfterViewInit} from '@angular/core';
 import { AuthConfig, AuthService } from '../../../../services/auth.service';
 import {ReviewRequest, ReviewService} from "../../../../services/review.service";
+import {SpinnerService} from "../../../../services/Shared/spinner.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-reviews',
@@ -14,7 +16,12 @@ export class ReviewsComponent implements OnInit {
   public authConfig!: AuthConfig;
   user:any;
 
-  constructor(private authService: AuthService, private reviewService: ReviewService) {
+  constructor(
+      private authService: AuthService,
+      private reviewService: ReviewService,
+      private spinnerService: SpinnerService,
+      private toastrService: ToastrService,
+  ) {
     this.authConfig = this.authService.getAuthConfig();
   }
 
@@ -26,13 +33,18 @@ export class ReviewsComponent implements OnInit {
   }
 
   public setReviewData() {
+    this.spinnerService.show()
     const ratingElement = document.getElementById('rating') as HTMLInputElement;
     if (ratingElement) {
       this.review.Rating = Number(ratingElement.value);
     }
     this.review.MeetingId = this.MeetingDetails.meetingId;
+    this.OpenReviewModal = false;
     this.reviewService.saveReview(this.review).subscribe(response => {
-      console.log(response);
+      if(response){
+        this.toastrService.success('Thanks For Review')
+      }
+      this.spinnerService.hide()
     })
   }
 
