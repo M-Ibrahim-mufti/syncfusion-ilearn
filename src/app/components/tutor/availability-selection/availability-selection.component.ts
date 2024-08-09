@@ -69,6 +69,7 @@ export class AvailabilitySelectionComponent implements OnInit {
     public eventTitle: any[] = [];
     public selectedEvent: SelectItem | null = null;
     public subjects: any[] = [];
+    public currentView: View = 'Month';
 
     @ViewChild("addButton")
     public addButton?: ButtonComponent;
